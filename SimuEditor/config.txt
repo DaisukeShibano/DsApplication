@@ -1,0 +1,2 @@
+VertexShaderPath C:\work\Source\DsLib\DsLib\Source\Graphics\Shader\ShaderSource\vertex.shader
+FragmetShaderPath C:\work\Source\DsLib\DsLib\Source\Graphics\Shader\ShaderSource\fragment.shader

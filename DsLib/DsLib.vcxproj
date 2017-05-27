@@ -1,0 +1,320 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2BF77C36-A2B6-4A87-99AC-8BFDEFCC71E6}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>DsLib</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\Library\Include;$(MSBuildProjectDirectory)\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>DsPch.h</PrecompiledHeaderFile>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>glew32.lib;freeglutd.lib;freeglut_staticd.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(MSBuildProjectDirectory)\Library\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\Library\Include;$(MSBuildProjectDirectory)\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>DsPch.h</PrecompiledHeaderFile>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>glew32.lib;freeglutd.lib;freeglut_staticd.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(MSBuildProjectDirectory)\Library\Lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\Library\Include;$(MSBuildProjectDirectory)\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>DsPch.h</PrecompiledHeaderFile>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <PostBuildEvent>
+      <Command>IF EXIST "D:\Dropbox/DsLib" (xcopy /Y /E "$(ProjectDir)../../DsLib" "D:\Dropbox/DsLib")</Command>
+    </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>glew32.lib;freeglut.lib;freeglut_static.lib</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>$(MSBuildProjectDirectory)\Library\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(MSBuildProjectDirectory)\Library\Include;$(MSBuildProjectDirectory)\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>DsPch.h</PrecompiledHeaderFile>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>glew32.lib;freeglut.lib;freeglut_static.lib</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>$(MSBuildProjectDirectory)\Library\Lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="..\..\DsApp\DsApp.vcxproj" />
+    <None Include="ReadMe.txt" />
+    <None Include="Source\Graphics\Shader\ShaderSource\Fragment.shader" />
+    <None Include="Source\Graphics\Shader\ShaderSource\Vertex.shader" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Animation\ActionRequest\DsActReq.cpp" />
+    <ClCompile Include="Source\Animation\ActionRequest\DsAnimController.cpp" />
+    <ClCompile Include="Source\Animation\AnimSM\DsAnimSM.cpp" />
+    <ClCompile Include="Source\Animation\Blend\DsAnimBlend.cpp" />
+    <ClCompile Include="Source\Animation\DsAnimation.cpp" />
+    <ClCompile Include="Source\Animation\DsAnimClip.cpp" />
+    <ClCompile Include="Source\Animation\DsAnimModel.cpp" />
+    <ClCompile Include="Source\Animation\DsAnimSkelton.cpp" />
+    <ClCompile Include="Source\Animation\DsKeyFrameAnim.cpp" />
+    <ClCompile Include="Source\Animation\DsKeyFrameAnimCtrl.cpp" />
+    <ClCompile Include="Source\Animation\DsKeyFrameInterpolate.cpp" />
+    <ClCompile Include="Source\Animation\SkinMesh\DsSkinMesh.cpp" />
+    <ClCompile Include="Source\Config\DsConf.cpp" />
+    <ClCompile Include="Source\DsPch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\Error\DsError.cpp" />
+    <ClCompile Include="Source\Graphics\Camera\DsCamera.cpp" />
+    <ClCompile Include="Source\Graphics\Command\DsDrawCommand.cpp" />
+    <ClCompile Include="Source\Graphics\Image\DsImage.cpp" />
+    <ClCompile Include="Source\Graphics\Light\DsLight.cpp" />
+    <ClCompile Include="Source\Graphics\Light\DsLightMan.cpp" />
+    <ClCompile Include="Source\Graphics\Light\DsSunLight.cpp" />
+    <ClCompile Include="Source\Graphics\Render\DsAnimModelRender.cpp" />
+    <ClCompile Include="Source\Graphics\Render\DsRender.cpp" />
+    <ClCompile Include="Source\Graphics\Render\DsRenderCamCaptureImage.cpp" />
+    <ClCompile Include="Source\Graphics\Render\DsShadowMap.cpp" />
+    <ClCompile Include="Source\Graphics\Render\DsTexture.cpp" />
+    <ClCompile Include="Source\Graphics\Render\Tool\Cloud\DsCloudEmitter.cpp" />
+    <ClCompile Include="Source\Graphics\Render\Tool\Cloud\DsCloudIns.cpp" />
+    <ClCompile Include="Source\Graphics\Render\Tool\Cloud\DsToolCloud.cpp" />
+    <ClCompile Include="Source\Graphics\Render\Tool\DsRenderTool.cpp" />
+    <ClCompile Include="Source\Graphics\Shader\DsShader.cpp" />
+    <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsDefaultShader.cpp" />
+    <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsShadowMapShader.cpp" />
+    <ClCompile Include="Source\Keyboard\DsKeyboard.cpp" />
+    <ClCompile Include="Source\Math\DsAabb.cpp" />
+    <ClCompile Include="Source\Math\DsInverseMatIteration.cpp" />
+    <ClCompile Include="Source\Math\DsInverseMatrix .cpp" />
+    <ClCompile Include="Source\Math\DsMathUtil.cpp" />
+    <ClCompile Include="Source\Math\DsQuaternion.cpp" />
+    <ClCompile Include="Source\Mouse\DsMouse.cpp" />
+    <ClCompile Include="Source\Res\DsAnimRes.cpp" />
+    <ClCompile Include="Source\Res\DsHitRes.cpp" />
+    <ClCompile Include="Source\Res\DsMapRes.cpp" />
+    <ClCompile Include="Source\Res\DsResource.cpp" />
+    <ClCompile Include="Source\System\DsDbgSys.cpp" />
+    <ClCompile Include="Source\System\DsPerf.cpp" />
+    <ClCompile Include="Source\System\DsSys.cpp" />
+    <ClCompile Include="Source\System\DsWindow.cpp" />
+    <ClCompile Include="Source\System\DsWindowEz.cpp" />
+    <ClCompile Include="Source\System\DsWindowGL.cpp" />
+    <ClCompile Include="Source\System\DsWindowManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Animation\ActionRequest\DsActReq.h" />
+    <ClInclude Include="Source\Animation\ActionRequest\DsAnimController.h" />
+    <ClInclude Include="Source\Animation\AnimSM\DsAnimSM.h" />
+    <ClInclude Include="Source\Animation\Blend\DsAnimBlend.h" />
+    <ClInclude Include="Source\Animation\DsAnimation.h" />
+    <ClInclude Include="Source\Animation\DsAnimClip.h" />
+    <ClInclude Include="Source\Animation\DsAnimModel.h" />
+    <ClInclude Include="Source\Animation\DsAnimSkelton.h" />
+    <ClInclude Include="Source\Animation\DsKeyFrameAnim.h" />
+    <ClInclude Include="Source\Animation\DsKeyFrameAnimCtrl.h" />
+    <ClInclude Include="Source\Animation\DsKeyFrameInterpolate.h" />
+    <ClInclude Include="Source\Animation\SkinMesh\DsSkinMesh.h" />
+    <ClInclude Include="Source\Config\DsConf.h" />
+    <ClInclude Include="Source\DsLib.h" />
+    <ClInclude Include="Source\DsPch.h" />
+    <ClInclude Include="Source\Error\DsError.h" />
+    <ClInclude Include="Source\Graphics\Camera\DsCamera.h" />
+    <ClInclude Include="Source\Graphics\Command\DsDrawCommand.h" />
+    <ClInclude Include="Source\Graphics\Image\DsImage.h" />
+    <ClInclude Include="Source\Graphics\Light\DsLight.h" />
+    <ClInclude Include="Source\Graphics\Light\DsLightMan.h" />
+    <ClInclude Include="Source\Graphics\Light\DsSunLight.h" />
+    <ClInclude Include="Source\Graphics\Render\DsAnimModelRender.h" />
+    <ClInclude Include="Source\Graphics\Render\DsRender.h" />
+    <ClInclude Include="Source\Graphics\Render\DsRenderCamCaptureImage.h" />
+    <ClInclude Include="Source\Graphics\Render\DsShadowMap.h" />
+    <ClInclude Include="Source\Graphics\Render\DsTexture.h" />
+    <ClInclude Include="Source\Graphics\Render\Tool\Cloud\DsCloudEmitter.h" />
+    <ClInclude Include="Source\Graphics\Render\Tool\Cloud\DsCloudIns.h" />
+    <ClInclude Include="Source\Graphics\Render\Tool\Cloud\DsToolCloud.h" />
+    <ClInclude Include="Source\Graphics\Render\Tool\DsRenderTool.h" />
+    <ClInclude Include="Source\Graphics\Shader\DsShader.h" />
+    <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsDefaultShader.h" />
+    <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsShadowMapShader.h" />
+    <ClInclude Include="Source\Keyboard\DsKeyboard.h" />
+    <ClInclude Include="Source\Math\DsAabb.h" />
+    <ClInclude Include="Source\Math\DsInverseMatIteration.h" />
+    <ClInclude Include="Source\Math\DsInverseMatrix.h" />
+    <ClInclude Include="Source\Math\DsMath.h" />
+    <ClInclude Include="Source\Math\DsMathUtil.h" />
+    <ClInclude Include="Source\Math\DsMatrix22.h" />
+    <ClInclude Include="Source\Math\DsMatrix33.h" />
+    <ClInclude Include="Source\Math\DsMatrix33d.h" />
+    <ClInclude Include="Source\Math\DsMatrix33f.h" />
+    <ClInclude Include="Source\Math\DsMatrix44.h" />
+    <ClInclude Include="Source\Math\DsMatrix44d.h" />
+    <ClInclude Include="Source\Math\DsMatrix44f.h" />
+    <ClInclude Include="Source\Math\DsQuaternion.h" />
+    <ClInclude Include="Source\Math\DsVector2.h" />
+    <ClInclude Include="Source\Math\DsVector3.h" />
+    <ClInclude Include="Source\Math\DsVector3d.h" />
+    <ClInclude Include="Source\Math\DsVector3f.h" />
+    <ClInclude Include="Source\Math\DsVector4.h" />
+    <ClInclude Include="Source\Math\DsVector4d.h" />
+    <ClInclude Include="Source\Math\DsVector4f.h" />
+    <ClInclude Include="Source\Mouse\DsMouse.h" />
+    <ClInclude Include="Source\Res\DsAnimRes.h" />
+    <ClInclude Include="Source\Res\DsHitRes.h" />
+    <ClInclude Include="Source\Res\DsMapRes.h" />
+    <ClInclude Include="Source\Res\DsResource.h" />
+    <ClInclude Include="Source\System\DsDbgSys.h" />
+    <ClInclude Include="Source\System\DsMainLoop.h" />
+    <ClInclude Include="Source\System\DsPerf.h" />
+    <ClInclude Include="Source\System\DsSys.h" />
+    <ClInclude Include="Source\System\DsSysDefine.h" />
+    <ClInclude Include="Source\System\DsWindow.h" />
+    <ClInclude Include="Source\System\DsWindowEz.h" />
+    <ClInclude Include="Source\System\DsWindowGL.h" />
+    <ClInclude Include="Source\System\DsWindowManager.h" />
+    <ClInclude Include="Source\targetver.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

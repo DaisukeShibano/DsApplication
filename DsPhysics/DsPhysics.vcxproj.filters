@@ -1,0 +1,333 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{49b47fba-25ed-4fad-9bfe-c63bb4bbbff2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Actor">
+      <UniqueIdentifier>{034d61bc-c35e-4a7d-882f-9c83922cd254}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Collision">
+      <UniqueIdentifier>{7e6b1df0-6e40-4c12-b4e1-3e613e041c6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Common">
+      <UniqueIdentifier>{ffbb32d6-b03f-4f3b-8cfc-9f3703f485e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Constraint">
+      <UniqueIdentifier>{a9f12eb7-1122-4904-bf46-5f26f980029d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Constraint\ConstraintSolver">
+      <UniqueIdentifier>{f361c600-384a-4712-98df-f3ede0ecab05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Doll">
+      <UniqueIdentifier>{bc0565c4-0d30-4ecb-877c-3770b5f78bbd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Joint">
+      <UniqueIdentifier>{68463de9-36ed-4efb-af28-13baa611934c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\PhysicsUtil">
+      <UniqueIdentifier>{f32aa774-37ee-46e3-bcd5-dd6e5e16860a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Tool">
+      <UniqueIdentifier>{934710af-8fef-4eba-a196-60b8cac5750b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Collision\GJK">
+      <UniqueIdentifier>{89e8e76a-e872-4267-9b1c-9b2da9c8725b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Collision\BoundingTree">
+      <UniqueIdentifier>{257ffacf-8838-415a-92ff-b5824873a7ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Collision\EachGeom">
+      <UniqueIdentifier>{18813633-48f3-4be5-be16-0307103668f5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\DsMass.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DsPhysicsManager.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DsPhysicsWorld.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DsFace.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DsLine.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\DsActor.h">
+      <Filter>Source\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\DsActorFactory.h">
+      <Filter>Source\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\DsActorMaterial.h">
+      <Filter>Source\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\DsRay.h">
+      <Filter>Source\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\DsRigidBody.h">
+      <Filter>Source\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\DsCollisionDetection.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\DsCollisionExecuter.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\DsCollisionGroup.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\DsCollisionListener.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\DsCollisionResult.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\DsCollisionContext.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\DsPose.h">
+      <Filter>Source\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Constraint\DsBallConstraint.h">
+      <Filter>Source\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Constraint\DsCollisionConstraint.h">
+      <Filter>Source\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Constraint\DsHingeConstraint.h">
+      <Filter>Source\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Constraint\IConstraint.h">
+      <Filter>Source\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Constraint\ConstraintSolver\DsConstraintSolver.h">
+      <Filter>Source\Constraint\ConstraintSolver</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Doll\DsDollJoint.h">
+      <Filter>Source\Doll</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Doll\DsDollJointChain.h">
+      <Filter>Source\Doll</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Doll\DsDoll.h">
+      <Filter>Source\Doll</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Joint\DsJoint.h">
+      <Filter>Source\Joint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Joint\DsHingeJoint.h">
+      <Filter>Source\Joint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PhysicsUtil\DsPhysicsUtil.h">
+      <Filter>Source\PhysicsUtil</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DsPhysicsPch.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Tool\DsActorSelector.h">
+      <Filter>Source\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DsPhysics.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\DsRigidMesh.h">
+      <Filter>Source\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Joint\DsBallJoint.h">
+      <Filter>Source\Joint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Constraint\DsConstraint.h">
+      <Filter>Source\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\GJK\DsGJK.h">
+      <Filter>Source\Collision\GJK</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\BoundingTree\DsBoundingTreeBase.h">
+      <Filter>Source\Collision\BoundingTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\BoundingTree\DsBoundingTreeAabb.h">
+      <Filter>Source\Collision\BoundingTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\BoundingTree\DsBoundingTreeAabbColideGroup.h">
+      <Filter>Source\Collision\BoundingTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\BoundingTree\DsBoundingOctree.h">
+      <Filter>Source\Collision\BoundingTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\DsRigidSphere.h">
+      <Filter>Source\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionCubeCube.h">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionCubeMesh.h">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionCubeRay.h">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionMeshRay.h">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionSphereMesh.h">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\EachGeom\ICollisionGeom.h">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionSphereCube.h">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionSphereSphere.h">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\DsRigidCapsule.h">
+      <Filter>Source\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionCapsuleMesh.h">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\DsActorFixer.h">
+      <Filter>Source\Actor</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\DsPhysicsManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DsPhysicsWorld .cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\DsActorMaterial.cpp">
+      <Filter>Source\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\DsRay.cpp">
+      <Filter>Source\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\DsRigidBody.cpp">
+      <Filter>Source\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\DsActor.cpp">
+      <Filter>Source\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\DsCollisionDetection.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\DsCollisionExecuter.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\DsCollisionGroup.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\DsCollisionListener.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Common\DsPose.cpp">
+      <Filter>Source\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Constraint\DsCollisionConstraint.cpp">
+      <Filter>Source\Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Constraint\DsHingeConstraint .cpp">
+      <Filter>Source\Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Constraint\DsBallConstraint.cpp">
+      <Filter>Source\Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Constraint\ConstraintSolver\DsConstraintSolver.cpp">
+      <Filter>Source\Constraint\ConstraintSolver</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Doll\DsDollJoint.cpp">
+      <Filter>Source\Doll</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Doll\DsDollJointChain.cpp">
+      <Filter>Source\Doll</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Doll\DsDoll.cpp">
+      <Filter>Source\Doll</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Joint\DsJoint.cpp">
+      <Filter>Source\Joint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Joint\DsHingeJoint.cpp">
+      <Filter>Source\Joint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PhysicsUtil\DsPhysicsUtil.cpp">
+      <Filter>Source\PhysicsUtil</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DsPhysicsPch.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Tool\DsActorSelector.cpp">
+      <Filter>Source\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\DsCollisionResult.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\DsRigidMesh.cpp">
+      <Filter>Source\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Joint\DsBallJoint.cpp">
+      <Filter>Source\Joint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Constraint\DsConstraint.cpp">
+      <Filter>Source\Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\GJK\DsGJK.cpp">
+      <Filter>Source\Collision\GJK</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\BoundingTree\DsBoundingTreeBase.cpp">
+      <Filter>Source\Collision\BoundingTree</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\BoundingTree\DsBoundingTreeAabb.cpp">
+      <Filter>Source\Collision\BoundingTree</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\BoundingTree\DsBoundingTreeAabbColideGroup.cpp">
+      <Filter>Source\Collision\BoundingTree</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\BoundingTree\DsBoundingOctree.cpp">
+      <Filter>Source\Collision\BoundingTree</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\DsRigidSphere.cpp">
+      <Filter>Source\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionCubeMesh.cpp">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionCubeRay.cpp">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionMeshRay.cpp">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionSphereMesh.cpp">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionCubeCube.cpp">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionSphereCube.cpp">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionSphereSphere.cpp">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\DsRigidCapsule.cpp">
+      <Filter>Source\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionCapsuleMesh.cpp">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\DsActorFixer.cpp">
+      <Filter>Source\Actor</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{ad97202e-9a9d-431d-8e79-504efb5149c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\World">
+      <UniqueIdentifier>{5d675e3b-402e-411f-8347-c8104e99ba14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\World\Population">
+      <UniqueIdentifier>{e3a2205a-f979-4fab-a003-f9e15efcfdaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\World\Population\Creator">
+      <UniqueIdentifier>{97cb237c-b61c-4373-8d5a-44e1d81eb2a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Evolve">
+      <UniqueIdentifier>{b03c4796-c855-4319-ac65-98db49f4d60b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Evolve\Gene">
+      <UniqueIdentifier>{e50592ea-78dd-4cc4-bf5a-44858b057d67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\World\Population\Controller">
+      <UniqueIdentifier>{e57b3ea2-9d3c-472c-b08e-8fd31eb26d75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\NeuralNetwork">
+      <UniqueIdentifier>{c15caf6c-357a-4da6-8bd9-8b595cb1d3a2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\World\Population\Creator\DsPopulationCreator.h">
+      <Filter>Source\World\Population\Creator</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Population\DsFieldHit.h">
+      <Filter>Source\World\Population</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Population\DsFieldObj.h">
+      <Filter>Source\World\Population</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DsAppPch.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DsApp.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Population\DsFieldChr.h">
+      <Filter>Source\World\Population</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Population\DsFieldPlayer.h">
+      <Filter>Source\World\Population</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Evolve\Gene\DsGene.h">
+      <Filter>Source\Evolve\Gene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Evolve\Gene\DsDecisionTreeNode.h">
+      <Filter>Source\Evolve\Gene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Evolve\Gene\DsDecisionTreeOperator.h">
+      <Filter>Source\Evolve\Gene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Evolve\DsGP.h">
+      <Filter>Source\Evolve</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Evolve\DsEvoDefine.h">
+      <Filter>Source\Evolve</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Population\Controller\DsChrController.h">
+      <Filter>Source\World\Population\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Population\Controller\DsGpController.h">
+      <Filter>Source\World\Population\Controller</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\NeuralNetwork\DsNeuron.h">
+      <Filter>Source\NeuralNetwork</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\NeuralNetwork\DsNeuronCtrl.h">
+      <Filter>Source\NeuralNetwork</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\World\Population\Creator\DsPopulationCreator.cpp">
+      <Filter>Source\World\Population\Creator</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Population\DsFieldObj.cpp">
+      <Filter>Source\World\Population</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Population\DsFieldHit.cpp">
+      <Filter>Source\World\Population</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DsAppPch.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Population\DsFieldChr.cpp">
+      <Filter>Source\World\Population</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Population\DsFieldPlayer.cpp">
+      <Filter>Source\World\Population</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Evolve\Gene\DsGene.cpp">
+      <Filter>Source\Evolve\Gene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Evolve\Gene\DsDecisionTreeNode.cpp">
+      <Filter>Source\Evolve\Gene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Evolve\Gene\DsDecisionTreeOperator.cpp">
+      <Filter>Source\Evolve\Gene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Evolve\DsGP.cpp">
+      <Filter>Source\Evolve</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Evolve\DsEvoDefine.cpp">
+      <Filter>Source\Evolve</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Population\Controller\DsChrController.cpp">
+      <Filter>Source\World\Population\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Population\Controller\DsGpController.cpp">
+      <Filter>Source\World\Population\Controller</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\NeuralNetwork\DsNeuron.cpp">
+      <Filter>Source\NeuralNetwork</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\NeuralNetwork\DsNeuronCtrl.cpp">
+      <Filter>Source\NeuralNetwork</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

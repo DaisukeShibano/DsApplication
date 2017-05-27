@@ -1,0 +1,451 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+    <None Include="Source\Graphics\Shader\ShaderSource\Vertex.shader">
+      <Filter>Source\Graphics\Shader\ShaderSource</Filter>
+    </None>
+    <None Include="Source\Graphics\Shader\ShaderSource\Fragment.shader">
+      <Filter>Source\Graphics\Shader\ShaderSource</Filter>
+    </None>
+    <None Include="..\..\DsApp\DsApp.vcxproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{b2bd363b-089a-41be-bcf4-1fa39e3b8a48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Math">
+      <UniqueIdentifier>{3f1ffbcb-4bf9-415d-ae4b-1b4296241522}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Graphics">
+      <UniqueIdentifier>{66183184-4b5c-4e8c-b64f-042f9a066ba9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Graphics\Shader">
+      <UniqueIdentifier>{63d7e969-b787-46b5-aa2d-d8f78553a4a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Config">
+      <UniqueIdentifier>{f8c48344-e112-4940-97ab-ec81662ee1a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Error">
+      <UniqueIdentifier>{6dd072c5-577f-4b8c-bda8-6a14158b6fce}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Graphics\Render">
+      <UniqueIdentifier>{b684fa77-82bd-40bb-9d70-995ad5c818b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Graphics\Camera">
+      <UniqueIdentifier>{09dc0063-f67e-4ca9-af4e-a4721dc106b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Graphics\Light">
+      <UniqueIdentifier>{0aa380ae-9317-490e-b0c2-948a1e4e3ab3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Graphics\Command">
+      <UniqueIdentifier>{5463f176-6050-40d9-931f-ac900b260cd9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\System">
+      <UniqueIdentifier>{188bf2d5-92d0-428f-a34c-2f659540ab83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Graphics\Shader\ShaderSource">
+      <UniqueIdentifier>{ba5bee65-8378-43bd-bbc2-c8de4293fb9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Graphics\Render\Tool">
+      <UniqueIdentifier>{0b46c2fb-d7e1-4e24-955b-f1e1f1c3ab8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Graphics\Render\Tool\Cloud">
+      <UniqueIdentifier>{64626d9f-1141-4773-a49f-8f6930023f33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Mouse">
+      <UniqueIdentifier>{af718b30-5221-4c60-9013-422d5dece716}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Animation">
+      <UniqueIdentifier>{1666eebb-11f9-4c15-9587-245e963a07ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Animation\SkinMesh">
+      <UniqueIdentifier>{add30883-a4f6-4fea-8fbf-295311287fd2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Graphics\Image">
+      <UniqueIdentifier>{319583d1-a83e-45aa-b30a-706402129d9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Animation\AnimSM">
+      <UniqueIdentifier>{261da0fe-1ef7-4c3b-92cd-d3aebe0f9010}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Animation\ActionRequest">
+      <UniqueIdentifier>{4f299f02-9b84-4522-b56c-8855c55fa9b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Keyboard">
+      <UniqueIdentifier>{07c901da-8179-49aa-ae1f-5dc8edf46ee9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Animation\Blend">
+      <UniqueIdentifier>{b4a6d1a5-3c5b-45ee-96fc-652b5d2034ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Res">
+      <UniqueIdentifier>{11b3c97b-9f85-44d8-a63d-529c7e3481b6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\DsPch.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\DsInverseMatrix .cpp">
+      <Filter>Source\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\DsMathUtil.cpp">
+      <Filter>Source\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\DsInverseMatIteration.cpp">
+      <Filter>Source\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Shader\DsShader.cpp">
+      <Filter>Source\Graphics\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Config\DsConf.cpp">
+      <Filter>Source\Config</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Error\DsError.cpp">
+      <Filter>Source\Error</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Render\DsShadowMap.cpp">
+      <Filter>Source\Graphics\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Camera\DsCamera.cpp">
+      <Filter>Source\Graphics\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Render\DsRender.cpp">
+      <Filter>Source\Graphics\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Light\DsLight.cpp">
+      <Filter>Source\Graphics\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Command\DsDrawCommand.cpp">
+      <Filter>Source\Graphics\Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\DsSys.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsDefaultShader.cpp">
+      <Filter>Source\Graphics\Shader\ShaderSource</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Light\DsLightMan.cpp">
+      <Filter>Source\Graphics\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\DsDbgSys.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Light\DsSunLight.cpp">
+      <Filter>Source\Graphics\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Render\Tool\Cloud\DsToolCloud.cpp">
+      <Filter>Source\Graphics\Render\Tool\Cloud</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Render\Tool\DsRenderTool.cpp">
+      <Filter>Source\Graphics\Render\Tool</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Render\Tool\Cloud\DsCloudIns.cpp">
+      <Filter>Source\Graphics\Render\Tool\Cloud</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Render\Tool\Cloud\DsCloudEmitter.cpp">
+      <Filter>Source\Graphics\Render\Tool\Cloud</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Mouse\DsMouse.cpp">
+      <Filter>Source\Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\DsQuaternion.cpp">
+      <Filter>Source\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\DsAnimSkelton.cpp">
+      <Filter>Source\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\DsKeyFrameAnim.cpp">
+      <Filter>Source\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\DsKeyFrameAnimCtrl.cpp">
+      <Filter>Source\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\DsKeyFrameInterpolate.cpp">
+      <Filter>Source\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\DsAnimModel.cpp">
+      <Filter>Source\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\SkinMesh\DsSkinMesh.cpp">
+      <Filter>Source\Animation\SkinMesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Render\DsAnimModelRender.cpp">
+      <Filter>Source\Graphics\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Image\DsImage.cpp">
+      <Filter>Source\Graphics\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Render\DsTexture.cpp">
+      <Filter>Source\Graphics\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\AnimSM\DsAnimSM.cpp">
+      <Filter>Source\Animation\AnimSM</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\ActionRequest\DsActReq.cpp">
+      <Filter>Source\Animation\ActionRequest</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Keyboard\DsKeyboard.cpp">
+      <Filter>Source\Keyboard</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\DsAnimClip.cpp">
+      <Filter>Source\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\DsAnimation.cpp">
+      <Filter>Source\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\Blend\DsAnimBlend.cpp">
+      <Filter>Source\Animation\Blend</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Res\DsResource.cpp">
+      <Filter>Source\Res</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\DsWindow.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\DsWindowManager.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\DsWindowGL.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\DsWindowEz.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\ActionRequest\DsAnimController.cpp">
+      <Filter>Source\Animation\ActionRequest</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Res\DsMapRes.cpp">
+      <Filter>Source\Res</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Math\DsAabb.cpp">
+      <Filter>Source\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Res\DsHitRes.cpp">
+      <Filter>Source\Res</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Res\DsAnimRes.cpp">
+      <Filter>Source\Res</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\System\DsPerf.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Render\DsRenderCamCaptureImage.cpp">
+      <Filter>Source\Graphics\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsShadowMapShader.cpp">
+      <Filter>Source\Graphics\Shader\ShaderSource</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\DsPch.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\targetver.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\DsInverseMatIteration.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\DsInverseMatrix.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\DsMathUtil.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Shader\DsShader.h">
+      <Filter>Source\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Config\DsConf.h">
+      <Filter>Source\Config</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Error\DsError.h">
+      <Filter>Source\Error</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Render\DsShadowMap.h">
+      <Filter>Source\Graphics\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Camera\DsCamera.h">
+      <Filter>Source\Graphics\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Render\DsRender.h">
+      <Filter>Source\Graphics\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Light\DsLight.h">
+      <Filter>Source\Graphics\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Command\DsDrawCommand.h">
+      <Filter>Source\Graphics\Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\DsMainLoop.h">
+      <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\DsSys.h">
+      <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsDefaultShader.h">
+      <Filter>Source\Graphics\Shader\ShaderSource</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\DsMatrix33.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Light\DsLightMan.h">
+      <Filter>Source\Graphics\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\DsDbgSys.h">
+      <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Light\DsSunLight.h">
+      <Filter>Source\Graphics\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Render\Tool\Cloud\DsToolCloud.h">
+      <Filter>Source\Graphics\Render\Tool\Cloud</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Render\Tool\DsRenderTool.h">
+      <Filter>Source\Graphics\Render\Tool</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Render\Tool\Cloud\DsCloudIns.h">
+      <Filter>Source\Graphics\Render\Tool\Cloud</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Render\Tool\Cloud\DsCloudEmitter.h">
+      <Filter>Source\Graphics\Render\Tool\Cloud</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DsLib.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\DsVector2.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\DsVector3.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Mouse\DsMouse.h">
+      <Filter>Source\Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\DsQuaternion.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\DsMatrix44.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\DsVector4.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\DsAnimModel.h">
+      <Filter>Source\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\DsAnimSkelton.h">
+      <Filter>Source\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\DsKeyFrameAnim.h">
+      <Filter>Source\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\DsKeyFrameAnimCtrl.h">
+      <Filter>Source\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\DsKeyFrameInterpolate.h">
+      <Filter>Source\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\DsMath.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Render\DsAnimModelRender.h">
+      <Filter>Source\Graphics\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Image\DsImage.h">
+      <Filter>Source\Graphics\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Render\DsTexture.h">
+      <Filter>Source\Graphics\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\AnimSM\DsAnimSM.h">
+      <Filter>Source\Animation\AnimSM</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\ActionRequest\DsActReq.h">
+      <Filter>Source\Animation\ActionRequest</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Keyboard\DsKeyboard.h">
+      <Filter>Source\Keyboard</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\DsAnimClip.h">
+      <Filter>Source\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\DsAnimation.h">
+      <Filter>Source\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\Blend\DsAnimBlend.h">
+      <Filter>Source\Animation\Blend</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Res\DsResource.h">
+      <Filter>Source\Res</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\DsWindow.h">
+      <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\DsWindowManager.h">
+      <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\DsWindowGL.h">
+      <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\DsWindowEz.h">
+      <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\SkinMesh\DsSkinMesh.h">
+      <Filter>Source\Animation\SkinMesh</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\ActionRequest\DsAnimController.h">
+      <Filter>Source\Animation\ActionRequest</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Res\DsMapRes.h">
+      <Filter>Source\Res</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\DsAabb.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Res\DsHitRes.h">
+      <Filter>Source\Res</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Res\DsAnimRes.h">
+      <Filter>Source\Res</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\DsMatrix22.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\DsPerf.h">
+      <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\DsSysDefine.h">
+      <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\DsVector3d.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\DsVector4d.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\DsMatrix44d.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\DsMatrix44f.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\DsVector4f.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\DsVector3f.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\DsMatrix33d.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Math\DsMatrix33f.h">
+      <Filter>Source\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Render\DsRenderCamCaptureImage.h">
+      <Filter>Source\Graphics\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsShadowMapShader.h">
+      <Filter>Source\Graphics\Shader\ShaderSource</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

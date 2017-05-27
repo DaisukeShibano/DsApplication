@@ -1,0 +1,290 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{76E68504-BEEF-4FC8-9484-6ECEFD3F5BB2}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>DsPhysics</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>Source;..\DsLib\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>DsPhysicsPch.h</PrecompiledHeaderFile>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>DsLib.lib</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>..\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>Source;..\DsLib\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeaderFile>DsPhysicsPch.h</PrecompiledHeaderFile>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>DsLib.lib</AdditionalDependencies>
+    </Lib>
+    <Lib>
+      <AdditionalLibraryDirectories>..\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>Source;..\DsLib\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <PrecompiledHeaderFile>DsPhysicsPch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>DsLib.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+    <PostBuildEvent>
+      <Command>IF EXIST "D:\Dropbox/DsPhysics" (xcopy /Y /E "$(ProjectDir)../../DsPhysics" "D:\Dropbox/DsPhysics")</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>Source;..\DsLib\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <PrecompiledHeaderFile>DsPhysicsPch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <AdditionalDependencies>DsLib.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Actor\DsActor.h" />
+    <ClInclude Include="Source\Actor\DsActorFactory.h" />
+    <ClInclude Include="Source\Actor\DsActorFixer.h" />
+    <ClInclude Include="Source\Actor\DsActorMaterial.h" />
+    <ClInclude Include="Source\Actor\DsRay.h" />
+    <ClInclude Include="Source\Actor\DsRigidBody.h" />
+    <ClInclude Include="Source\Actor\DsRigidCapsule.h" />
+    <ClInclude Include="Source\Actor\DsRigidMesh.h" />
+    <ClInclude Include="Source\Actor\DsRigidSphere.h" />
+    <ClInclude Include="Source\Collision\BoundingTree\DsBoundingTreeAabb.h" />
+    <ClInclude Include="Source\Collision\BoundingTree\DsBoundingTreeAabbColideGroup.h" />
+    <ClInclude Include="Source\Collision\BoundingTree\DsBoundingTreeBase.h" />
+    <ClInclude Include="Source\Collision\BoundingTree\DsBoundingOctree.h" />
+    <ClInclude Include="Source\Collision\DsCollisionContext.h" />
+    <ClInclude Include="Source\Collision\DsCollisionDetection.h" />
+    <ClInclude Include="Source\Collision\DsCollisionExecuter.h" />
+    <ClInclude Include="Source\Collision\DsCollisionGroup.h" />
+    <ClInclude Include="Source\Collision\DsCollisionListener.h" />
+    <ClInclude Include="Source\Collision\DsCollisionResult.h" />
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionCapsuleMesh.h" />
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionCubeCube.h" />
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionCubeMesh.h" />
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionCubeRay.h" />
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionMeshRay.h" />
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionSphereCube.h" />
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionSphereMesh.h" />
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionSphereSphere.h" />
+    <ClInclude Include="Source\Collision\EachGeom\ICollisionGeom.h" />
+    <ClInclude Include="Source\Collision\GJK\DsGJK.h" />
+    <ClInclude Include="Source\Common\DsPose.h" />
+    <ClInclude Include="Source\Constraint\ConstraintSolver\DsConstraintSolver.h" />
+    <ClInclude Include="Source\Constraint\DsBallConstraint.h" />
+    <ClInclude Include="Source\Constraint\DsCollisionConstraint.h" />
+    <ClInclude Include="Source\Constraint\DsConstraint.h" />
+    <ClInclude Include="Source\Constraint\DsHingeConstraint.h" />
+    <ClInclude Include="Source\Constraint\IConstraint.h" />
+    <ClInclude Include="Source\Doll\DsDoll.h" />
+    <ClInclude Include="Source\Doll\DsDollJoint.h" />
+    <ClInclude Include="Source\Doll\DsDollJointChain.h" />
+    <ClInclude Include="Source\DsFace.h" />
+    <ClInclude Include="Source\DsLine.h" />
+    <ClInclude Include="Source\DsMass.h" />
+    <ClInclude Include="Source\DsPhysics.h" />
+    <ClInclude Include="Source\DsPhysicsManager.h" />
+    <ClInclude Include="Source\DsPhysicsPch.h" />
+    <ClInclude Include="Source\DsPhysicsWorld.h" />
+    <ClInclude Include="Source\Joint\DsBallJoint.h" />
+    <ClInclude Include="Source\Joint\DsHingeJoint.h" />
+    <ClInclude Include="Source\Joint\DsJoint.h" />
+    <ClInclude Include="Source\PhysicsUtil\DsPhysicsUtil.h" />
+    <ClInclude Include="Source\Tool\DsActorSelector.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Actor\DsActor.cpp" />
+    <ClCompile Include="Source\Actor\DsActorFixer.cpp" />
+    <ClCompile Include="Source\Actor\DsActorMaterial.cpp" />
+    <ClCompile Include="Source\Actor\DsRay.cpp" />
+    <ClCompile Include="Source\Actor\DsRigidBody.cpp" />
+    <ClCompile Include="Source\Actor\DsRigidCapsule.cpp" />
+    <ClCompile Include="Source\Actor\DsRigidMesh.cpp" />
+    <ClCompile Include="Source\Actor\DsRigidSphere.cpp" />
+    <ClCompile Include="Source\Collision\BoundingTree\DsBoundingTreeAabb.cpp" />
+    <ClCompile Include="Source\Collision\BoundingTree\DsBoundingTreeAabbColideGroup.cpp" />
+    <ClCompile Include="Source\Collision\BoundingTree\DsBoundingTreeBase.cpp" />
+    <ClCompile Include="Source\Collision\BoundingTree\DsBoundingOctree.cpp" />
+    <ClCompile Include="Source\Collision\DsCollisionDetection.cpp" />
+    <ClCompile Include="Source\Collision\DsCollisionExecuter.cpp" />
+    <ClCompile Include="Source\Collision\DsCollisionGroup.cpp" />
+    <ClCompile Include="Source\Collision\DsCollisionListener.cpp" />
+    <ClCompile Include="Source\Collision\DsCollisionResult.cpp" />
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionCapsuleMesh.cpp" />
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionCubeCube.cpp" />
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionCubeMesh.cpp" />
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionCubeRay.cpp" />
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionMeshRay.cpp" />
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionSphereCube.cpp" />
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionSphereMesh.cpp" />
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionSphereSphere.cpp" />
+    <ClCompile Include="Source\Collision\GJK\DsGJK.cpp" />
+    <ClCompile Include="Source\Common\DsPose.cpp" />
+    <ClCompile Include="Source\Constraint\ConstraintSolver\DsConstraintSolver.cpp" />
+    <ClCompile Include="Source\Constraint\DsBallConstraint.cpp" />
+    <ClCompile Include="Source\Constraint\DsCollisionConstraint.cpp" />
+    <ClCompile Include="Source\Constraint\DsConstraint.cpp" />
+    <ClCompile Include="Source\Constraint\DsHingeConstraint .cpp" />
+    <ClCompile Include="Source\Doll\DsDoll.cpp" />
+    <ClCompile Include="Source\Doll\DsDollJoint.cpp" />
+    <ClCompile Include="Source\Doll\DsDollJointChain.cpp" />
+    <ClCompile Include="Source\DsPhysicsManager.cpp" />
+    <ClCompile Include="Source\DsPhysicsPch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Source\DsPhysicsWorld .cpp" />
+    <ClCompile Include="Source\Joint\DsBallJoint.cpp" />
+    <ClCompile Include="Source\Joint\DsHingeJoint.cpp" />
+    <ClCompile Include="Source\Joint\DsJoint.cpp" />
+    <ClCompile Include="Source\PhysicsUtil\DsPhysicsUtil.cpp" />
+    <ClCompile Include="Source\Tool\DsActorSelector.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

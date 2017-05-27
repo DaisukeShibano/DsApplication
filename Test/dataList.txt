@@ -1,0 +1,2 @@
+C:\work\data\build\chr\chr0.dmdl
+C:\work\data\build\map\hit0.dmdl
