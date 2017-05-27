@@ -11,7 +11,7 @@ namespace
 	/***************************************************
 	@brief		バーテックスシェーダー
 	***************************************************/
-	static const char s_pVertex[] = DS_SHADER_STR(
+	static const char s_vertex[] = DS_SHADER_STR(
 		//影ぼやかしと試し中
 		
 		varying vec4 v_position;
@@ -27,7 +27,7 @@ namespace
 	/***************************************************
 	@brief		フラグメントシェーダー
 	***************************************************/
-	static const char s_pFragment[] = DS_SHADER_STR(
+	static const char s_fragment[] = DS_SHADER_STR(
 		varying vec4 v_position;
 
 		void main(void)
@@ -52,10 +52,10 @@ namespace
 
 const char* DsLib::GetShadowMapVertexShader()
 {
-	return s_pVertex;
+	return s_vertex;
 }
 
 const char* DsLib::GetShadowMapFragmentShader()
 {
-	return s_pFragment;
+	return s_fragment;
 }

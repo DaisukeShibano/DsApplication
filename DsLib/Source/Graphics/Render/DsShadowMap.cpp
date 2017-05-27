@@ -92,7 +92,7 @@ namespace
 
 
 
-		// FBOçÏê¨
+		// FBOçÏê¨h
 		glGenFramebuffersEXT(1, &m_iFBODepth);
 		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_iFBODepth);
 
@@ -274,8 +274,8 @@ namespace
 		glDisable(GL_LIGHTING);
 		glColor4f(1, 1, 1, 1);
 		glActiveTexture(GL_TEXTURE0);
-		//glBindTexture(GL_TEXTURE_2D, m_iTexDepth);
-		glBindTexture(GL_TEXTURE_2D, m_colorTextureId);
+		glBindTexture(GL_TEXTURE_2D, m_iTexDepth);
+		//glBindTexture(GL_TEXTURE_2D, m_colorTextureId);
 		glEnable(GL_TEXTURE_2D);
 		
 		glNormal3d(0, 0, 1);

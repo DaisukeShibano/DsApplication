@@ -11,7 +11,7 @@ namespace
 	/***************************************************
 	@brief		バーテックスシェーダー
 	***************************************************/
-	static const char s_pVertex[] = DS_SHADER_STR(
+	static const char s_vertex[] = DS_SHADER_STR(
 		// フラグメントシェーダに値を渡すための変数
 		varying vec4 vPos;
 		varying vec3 vNrm;
@@ -35,7 +35,7 @@ namespace
 	/***************************************************
 	@brief		フラグメントシェーダー
 	***************************************************/
-	static const char s_pFragment[] = DS_SHADER_STR(
+	static const char s_fragment[] = DS_SHADER_STR(
 		// バーテックスシェーダから受け取る変数
 		varying vec4 vPos;
 		varying vec3 vNrm;
@@ -154,10 +154,10 @@ namespace
 
 const char* DsLib::GetDefaultVertexShader()
 {
-	return s_pVertex;
+	return s_vertex;
 }
 
 const char* DsLib::GetDefaultFragmentShader()
 {
-	return s_pFragment;
+	return s_fragment;
 }
