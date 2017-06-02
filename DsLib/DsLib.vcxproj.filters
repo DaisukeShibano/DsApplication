@@ -235,6 +235,9 @@
     <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsShadowMapShader.cpp">
       <Filter>Source\Graphics\Shader\ShaderSource</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsShadowBlurShader.cpp">
+      <Filter>Source\Graphics\Shader\ShaderSource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsPch.h">
@@ -445,6 +448,9 @@
       <Filter>Source\Graphics\Render</Filter>
     </ClInclude>
     <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsShadowMapShader.h">
+      <Filter>Source\Graphics\Shader\ShaderSource</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsShadowBlurShader.h">
       <Filter>Source\Graphics\Shader\ShaderSource</Filter>
     </ClInclude>
   </ItemGroup>

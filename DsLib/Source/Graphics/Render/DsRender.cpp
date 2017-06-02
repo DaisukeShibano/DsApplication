@@ -107,27 +107,28 @@ void DsRender::Render( const float dt )
 		camLook.x, camLook.y, camLook.z,
 		camUp.x, camUp.y, camUp.z);
 
-	
+	//雲描画
 	GetRenderTool().RefCloud().Update(dt);
 	
-	m_pShadow->ActiveShadow();
-	m_pShader->EnableShader(SHADER_TYPE::DEFAULT);
+	//影描画
+	m_pShadow->DrawShadow();
 	
 	//シーン描画
+	m_pShader->EnableShader(SHADER_TYPE::DEFAULT);
+
 	_RenderModel();
-	
 	//外部で使う用のレンダリング画像の保存
-	m_pShader->SetUseShadow(false);//この視点の影テクスチャは作ってないのでOFF
+	//m_pShader->SetUseShadow(false);//この視点の影テクスチャは作ってないのでOFF
 	for (DsRenderCamCaptureImage* pImage : m_renderImages) {
 		pImage->BeginCapture();
 		_RenderModel();
 		pImage->EndCapture();
 	}
-	m_pShader->SetUseShadow(true);
+	//m_pShader->SetUseShadow(true);
 	
 	m_pShader->DisableShader();
 	
-
+	//デバッグ用
 	m_pShadow->DrawDepthTex();
 }
 

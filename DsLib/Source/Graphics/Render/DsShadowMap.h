@@ -16,8 +16,7 @@ namespace DsLib
 		static DsShadowMap& Create( const DsRender& ren, DsShader& pShader);
 
 	public:
-		virtual void ActiveShadow() = NULL;
-		virtual void DeActiveShadow() = NULL;
+		virtual void DrawShadow() = NULL;
 		virtual void DrawDepthTex() = NULL;
 	};
 }

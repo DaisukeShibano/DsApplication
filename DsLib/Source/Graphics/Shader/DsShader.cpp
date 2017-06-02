@@ -3,13 +3,14 @@
 #include "Config/DsConf.h"
 #include "Graphics/Shader/ShaderSource/DsDefaultShader.h"
 #include "Graphics/Shader/ShaderSource/DsShadowMapShader.h"
+#include "Graphics/Shader/ShaderSource/DsShadowBlurShader.h"
 
 #include "gl/glew.h"
 #include <gl/GL.h>
 #include <fstream>
 
 using namespace DsLib;
-static const float s_shadowCoef = 0.7f;
+static const float s_shadowCoef = 0.3f;//影の一番くらいとこ。0で真っ黒
 
 namespace
 {		
@@ -78,53 +79,6 @@ namespace
 		return 0;
 	}
 
-	static std::string _GetVertexStr()
-	{
-		std::string ret(GetDefaultVertexShader());
-		return ret;
-
-		//ファイルから読むメリットがないのでやめ
-		//const char* path = DsConf::GetIns().Str(CONF_VX_SHADER_PATH);
-		//std::ifstream ifs(path);
-		//if (ifs.fail())
-		//{
-		//	DS_ERROR("%s vertexシェーダーが見つかりません。デフォルトが適用されます。\n", path);
-		//	std::string ret(GetDefaultVertexShader());
-		//	return ret;
-		//}
-		//else
-		//{
-		//	std::istreambuf_iterator<char> it(ifs);
-		//	std::istreambuf_iterator<char> last;
-		//	std::string ret(it, last);
-		//	return ret;
-		//}
-	}
-
-	static std::string _GetFragmentStr()
-	{
-		std::string ret(GetDefaultFragmentShader());
-		return ret;
-
-		//ファイルから読むメリットがないのでやめ
-		//const char* path = DsConf::GetIns().Str(CONF_FR_SHADER_PATH);
-		//std::ifstream ifs(path);
-		//if (ifs.fail())
-		//{
-		//	DS_ERROR("%s fragmentシェーダーが見つかりません。デフォルトが適用されます。\n", path);
-		//	std::string ret(GetDefaultFragmentShader());
-		//	return ret;
-		//}
-		//else
-		//{
-		//	std::istreambuf_iterator<char> it(ifs);
-		//	std::istreambuf_iterator<char> last;
-		//	std::string ret(it, last);
-		//	return ret;
-		//}
-	}
-
-
 	/*****************************************************
 	@brief	シェーダー実装クラス
 	******************************************************/
@@ -141,6 +95,7 @@ namespace
 		virtual void SetUseTexture(bool isUse) override;
 		virtual void SetUseLight(bool isUse)override;
 		virtual void SetUseShadow(bool isUse)override;
+		virtual void SetShadowBlurParam(DsVec2f s, int ts)override;
 
 	private:
 		unsigned int m_currentIdx;
@@ -169,6 +124,7 @@ namespace
 		{
 			{ GetDefaultVertexShader(), GetDefaultFragmentShader() },
 			{ GetShadowMapVertexShader(), GetShadowMapFragmentShader() },
+			{ GetShadowBlurVertexShader(), GetShadowBlurFragmentShader() },
 		};
 		const int sourceNum = static_cast<int>(SHADER_TYPE::NUM);
 		static_assert(sizeof(sources)/sizeof(sources[0]) == sourceNum, "シェーダーのソースの数が合いません");
@@ -226,6 +182,7 @@ namespace
 			glUseProgram(m_prog[idx]);
 			glUniform1i(glGetUniformLocation(m_prog[idx], "tex"), 0);//普通のテクスチャは０番に
 			glUniform1i(glGetUniformLocation(m_prog[idx], "depth_tex"), 7);//GLSLの"depth_tex"という変数に値をセット
+			glUniform1i(glGetUniformLocation(m_prog[idx], "depth_tex2"), 6);
 			glUniform1f(glGetUniformLocation(m_prog[idx], "shadow_ambient"), s_shadowCoef);//GLSLの"shadow_ambient"という変数に値をセット
 		}
 	}
@@ -259,6 +216,13 @@ namespace
 	{
 		const float val = (isUse) ? (s_shadowCoef) : (0.0f);
 		glUniform1f(glGetUniformLocation(m_prog[m_currentIdx], "shadow_ambient"), val);
+	}
+
+	//virtual
+	void DsShaderImp::SetShadowBlurParam(DsVec2f s, int ts)
+	{
+		glUniform2f(glGetUniformLocation(m_prog[m_currentIdx], "ScaleU"), s.x, s.y);
+		glUniform1i(glGetUniformLocation(m_prog[m_currentIdx], "textureSource"), ts);
 	}
 }
 
