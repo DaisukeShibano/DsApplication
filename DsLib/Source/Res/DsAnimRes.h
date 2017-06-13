@@ -26,7 +26,7 @@ namespace DsLib
 		DsKeyFrameAnimCtrl* CreateKeyFrameAnim() const;
 		DsAnimModel* CreateAnimModel() const;
 		int GetAnimNum() const;
-		DsAnimCustomProperty* CreateRagdollInfo()const;
+		DsAnimCustomProperty* CustomProperty()const;
 
 	public:
 		void DbgDraw(int animIdx, float dt, DsDrawCommand& com);

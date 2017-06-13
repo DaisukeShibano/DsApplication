@@ -34,7 +34,7 @@ namespace DsLib
 		void SetRootMatrix(const DsVec3d& p, const DsMat33d& r);
 		const DsVec3d& GetPosition() const;
 		const DsMat33d& GetRotation() const;
-		const DsAnimCustomProperty* GetRagdollInfo() const { return m_pRagdollInfo; }
+		const DsAnimCustomProperty* GetCustomProperty() const { return m_pCustomProperty; }
 
 	private:
 		DsAnimModel* _GetAnimModel();
@@ -45,7 +45,7 @@ namespace DsLib
 		DsKeyFrameAnimCtrl* m_pKeyFrameAnim;
 		DsAnimModel* m_pAnimModel;
 		DsSkinMesh* m_pSkinMesh;
-		DsAnimCustomProperty* m_pRagdollInfo;
+		DsAnimCustomProperty* m_pCustomProperty;
 		DsAnimBlend m_blend;
 		DsVec3d m_pos;
 		DsMat33d m_rot;

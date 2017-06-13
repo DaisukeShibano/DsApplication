@@ -38,7 +38,7 @@ DsAnimation::DsAnimation(const DsAnimController& animController, const DsAnimRes
 	, m_pKeyFrameAnim(NULL)
 	, m_pAnimModel(NULL)
 	, m_pSkinMesh(NULL)
-	, m_pRagdollInfo(NULL)
+	, m_pCustomProperty(NULL)
 	, m_blend()
 	, m_pos(DsVec3d::Zero())
 	, m_rot(DsMat33d::Identity())
@@ -47,7 +47,7 @@ DsAnimation::DsAnimation(const DsAnimController& animController, const DsAnimRes
 	m_pSkeleton = anim.CreateSkeleton();
 	m_pKeyFrameAnim = anim.CreateKeyFrameAnim();
 	m_pAnimModel = anim.CreateAnimModel();
-	m_pRagdollInfo = anim.CreateRagdollInfo();
+	m_pCustomProperty = anim.CustomProperty();
 
 	//アニメ再生クラスがアニメ遷移制御を呼び出すんじゃなく、アニメ遷移制御がアニメ再生クラスを呼び出す形にしたい。
 	if (m_pKeyFrameAnim && m_pSkeleton && m_pAnimModel)
@@ -72,7 +72,7 @@ DsAnimation::~DsAnimation()
 	delete m_pKeyFrameAnim; m_pKeyFrameAnim = NULL;
 	delete m_pAnimModel; m_pAnimModel = NULL;
 	delete m_pSkinMesh; m_pSkinMesh = NULL;
-	delete m_pRagdollInfo; m_pRagdollInfo = NULL;
+	delete m_pCustomProperty; m_pCustomProperty = NULL;
 	
 }
 

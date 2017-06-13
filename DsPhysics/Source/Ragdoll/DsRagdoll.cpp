@@ -20,7 +20,7 @@ using namespace DsLib;
 using namespace DsPhysics;
 
 
-DsRagdoll::DsRagdoll(const DsAnimCustomProperty& ragdollInfo, DsAnimSkeleton& skeleton, DsPhysicsWorld& world)
+DsRagdoll::DsRagdoll(const DsAnimCustomProperty& customProperty, DsAnimSkeleton& skeleton, DsPhysicsWorld& world)
 	: m_animSkeleton(skeleton)
 	, m_world(world)
 	, m_actors()
@@ -30,7 +30,7 @@ DsRagdoll::DsRagdoll(const DsAnimCustomProperty& ragdollInfo, DsAnimSkeleton& sk
 	//ボーンの長さがとれれば1ボーン1リジッドでいけたが、取れなかったので。
 
 	DsAnimBone** pAnimBone = skeleton.RefBoneArray().data();
-	for (const DsAnimCustomProperty::RagdollParamId& param : ragdollInfo.ragdollParamIds) {
+	for (const DsAnimCustomProperty::RagdollParamId& param : customProperty.ragdollParamIds) {
 		DS_ASSERT(pAnimBone[param.boneIndex]->arrayIdx != param.boneIndex, "ボーンインデックス実装ミス");
 		const DsAnimBone* pParent = pAnimBone[param.boneIndex]->pParent;
 		if (pParent) {

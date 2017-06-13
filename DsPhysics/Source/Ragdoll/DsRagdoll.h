@@ -19,7 +19,7 @@ namespace DsPhysics
 	class DsRagdoll
 	{
 	public:
-		DsRagdoll(const DsAnimCustomProperty& ragdollInfo, DsAnimSkeleton& skeleton, DsPhysicsWorld& world);
+		DsRagdoll(const DsAnimCustomProperty& customProperty, DsAnimSkeleton& skeleton, DsPhysicsWorld& world);
 		virtual ~DsRagdoll();
 
 	private:

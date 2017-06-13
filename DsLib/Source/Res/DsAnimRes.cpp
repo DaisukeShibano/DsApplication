@@ -1142,7 +1142,7 @@ int DsAnimRes::GetAnimNum() const
 	return ret;
 }
 
-DsAnimCustomProperty* DsAnimRes::CreateRagdollInfo() const
+DsAnimCustomProperty* DsAnimRes::CustomProperty() const
 {
 	OutputRes* pRes = static_cast<OutputRes*>(m_resTop);
 	DsAnimCustomProperty* ret = NULL;
