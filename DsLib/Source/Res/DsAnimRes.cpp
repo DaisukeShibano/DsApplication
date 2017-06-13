@@ -8,10 +8,10 @@
 #include "Animation/DsAnimSkeleton.h"
 #endif
 #ifndef _DS_KEYFRAME_ANIM_
-#include "Animation/DsKeyFrameAnim.h"
+#include "Animation/DsKeyframeAnim.h"
 #endif
-#ifndef _DS_KEYFRAME_ANIM_CTRL_
-#include "Animation/DsKeyFrameAnimCtrl.h"
+#ifndef _DS_KEYFRAME_ANIM_SET_
+#include "Animation/DsKeyframeAnimSet.h"
 #endif
 #ifndef _DS_ANIM_MODEL_
 #include "Animation/DsAnimModel.h"
@@ -966,14 +966,14 @@ DsAnimSkeleton* DsAnimRes::CreateSkeleton() const
 	return pSkeleton;
 }
 
-DsKeyFrameAnimCtrl* DsAnimRes::CreateKeyFrameAnim() const
+DsKeyframeAnimSet* DsAnimRes::CreateKeyframeAnim() const
 {
 	OutputRes* pRes = static_cast<OutputRes*>(m_resTop);
 
 	if (0 >= pRes->dsAnimBone.an) return NULL;//アニメがない
 	if (0 >= pRes->dsAnimBone.bn) return NULL;//ボーンがない
 
-	DsKeyFrameAnim* pKeyAnim = new DsKeyFrameAnim[pRes->dsAnimBone.an];
+	DsKeyframeAnim* pKeyAnim = new DsKeyframeAnim[pRes->dsAnimBone.an];
 	for (int aIdx = 0; aIdx < pRes->dsAnimBone.an; ++aIdx)
 	{
 		const DS_ANIM& anim = pRes->dsAnimBone.pAnim[aIdx];
@@ -982,7 +982,7 @@ DsKeyFrameAnimCtrl* DsAnimRes::CreateKeyFrameAnim() const
 			DsError::Panic("キーフレームアニメボーン数とスケルトンボーン数が一致しない");
 		}
 		pKeyAnim[aIdx].m_name = anim.animName;
-		pKeyAnim[aIdx].m_pBone = new DsKeyFrameAnim::Pose[anim.poseNum];
+		pKeyAnim[aIdx].m_pBone = new DsKeyframeAnim::Pose[anim.poseNum];
 		pKeyAnim[aIdx].m_boneNum = anim.poseNum;
 		
 		for (int bIdx = 0; bIdx < anim.poseNum; ++bIdx)
@@ -1008,7 +1008,7 @@ DsKeyFrameAnimCtrl* DsAnimRes::CreateKeyFrameAnim() const
 
 			//回転
 			pKeyAnim[aIdx].m_pBone[bIdx].m_keyFrameNumRot = anim.pose[bIdx].keyFrameNumRX;
-			pKeyAnim[aIdx].m_pBone[bIdx].m_pRot = new DsKeyFrameAnim::Vec4Key[anim.pose[bIdx].keyFrameNumRX];
+			pKeyAnim[aIdx].m_pBone[bIdx].m_pRot = new DsKeyframeAnim::Vec4Key[anim.pose[bIdx].keyFrameNumRX];
 			for (int k = 0; k < anim.pose[bIdx].keyFrameNumRX; ++k)
 			{
 				if (anim.pose[bIdx].keyFrameRX[k].localTimeMs != anim.pose[bIdx].keyFrameRY[k].localTimeMs ||
@@ -1028,7 +1028,7 @@ DsKeyFrameAnimCtrl* DsAnimRes::CreateKeyFrameAnim() const
 
 			//位置
 			pKeyAnim[aIdx].m_pBone[bIdx].m_keyFrameNumPos = anim.pose[bIdx].keyFrameNumTX;
-			pKeyAnim[aIdx].m_pBone[bIdx].m_pPos = new DsKeyFrameAnim::Vec3Key[anim.pose[bIdx].keyFrameNumTX];
+			pKeyAnim[aIdx].m_pBone[bIdx].m_pPos = new DsKeyframeAnim::Vec3Key[anim.pose[bIdx].keyFrameNumTX];
 			for (int k = 0; k < anim.pose[bIdx].keyFrameNumTX; ++k)
 			{
 				if (anim.pose[bIdx].keyFrameTX[k].localTimeMs != anim.pose[bIdx].keyFrameTY[k].localTimeMs ||
@@ -1046,7 +1046,7 @@ DsKeyFrameAnimCtrl* DsAnimRes::CreateKeyFrameAnim() const
 
 			//拡大
 			pKeyAnim[aIdx].m_pBone[bIdx].m_keyFrameNumScale = anim.pose[bIdx].keyFrameNumSX;
-			pKeyAnim[aIdx].m_pBone[bIdx].m_pScale = new DsKeyFrameAnim::Vec3Key[anim.pose[bIdx].keyFrameNumSX];
+			pKeyAnim[aIdx].m_pBone[bIdx].m_pScale = new DsKeyframeAnim::Vec3Key[anim.pose[bIdx].keyFrameNumSX];
 			for (int k = 0; k < anim.pose[bIdx].keyFrameNumSX; ++k)
 			{
 				if (anim.pose[bIdx].keyFrameSX[k].localTimeMs != anim.pose[bIdx].keyFrameSY[k].localTimeMs ||
@@ -1066,7 +1066,7 @@ DsKeyFrameAnimCtrl* DsAnimRes::CreateKeyFrameAnim() const
 
 	}
 
-	DsKeyFrameAnimCtrl* ret = new DsKeyFrameAnimCtrl(pKeyAnim, pRes->dsAnimBone.an);
+	DsKeyframeAnimSet* ret = new DsKeyframeAnimSet(pKeyAnim, pRes->dsAnimBone.an);
 	return ret;
 }
 

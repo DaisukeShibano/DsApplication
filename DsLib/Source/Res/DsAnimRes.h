@@ -5,9 +5,9 @@ namespace DsLib
 {
 	class DsAnimSkeleton;
 	struct DsAnimBone;
-	class DsKeyFrameAnimCtrl;
+	class DsKeyframeAnimSet;
 	class DsAnimModel;
-	class DsAnimCustomProperty;
+	struct DsAnimCustomProperty;
 }
 
 namespace DsLib
@@ -23,7 +23,7 @@ namespace DsLib
 
 		//既存のアニメリソースから生成される。DsAnimResに新しくデータが追加される訳ではない。
 		DsAnimSkeleton* CreateSkeleton() const;
-		DsKeyFrameAnimCtrl* CreateKeyFrameAnim() const;
+		DsKeyframeAnimSet* CreateKeyframeAnim() const;
 		DsAnimModel* CreateAnimModel() const;
 		int GetAnimNum() const;
 		DsAnimCustomProperty* CustomProperty()const;

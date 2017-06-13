@@ -151,15 +151,6 @@
     <ClCompile Include="Source\Math\DsQuaternion.cpp">
       <Filter>Source\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Animation\DsKeyFrameAnim.cpp">
-      <Filter>Source\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Animation\DsKeyFrameAnimCtrl.cpp">
-      <Filter>Source\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Animation\DsKeyFrameInterpolate.cpp">
-      <Filter>Source\Animation</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Animation\DsAnimModel.cpp">
       <Filter>Source\Animation</Filter>
     </ClCompile>
@@ -239,6 +230,18 @@
       <Filter>Source\Animation</Filter>
     </ClCompile>
     <ClCompile Include="Source\Animation\DsAnimCustomProperty.cpp">
+      <Filter>Source\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\DsAnimSkeletonModifier.cpp">
+      <Filter>Source\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\DsKeyframeAnim.cpp">
+      <Filter>Source\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\DsKeyframeInterpolate.cpp">
+      <Filter>Source\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\DsKeyframeAnimSet.cpp">
       <Filter>Source\Animation</Filter>
     </ClCompile>
   </ItemGroup>
@@ -337,15 +340,6 @@
       <Filter>Source\Math</Filter>
     </ClInclude>
     <ClInclude Include="Source\Animation\DsAnimModel.h">
-      <Filter>Source\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Animation\DsKeyFrameAnim.h">
-      <Filter>Source\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Animation\DsKeyFrameAnimCtrl.h">
-      <Filter>Source\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Animation\DsKeyFrameInterpolate.h">
       <Filter>Source\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Source\Math\DsMath.h">
@@ -457,6 +451,18 @@
       <Filter>Source\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Source\Animation\DsAnimCustomProperty.h">
+      <Filter>Source\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\DsAnimSkeletonModifier.h">
+      <Filter>Source\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\DsKeyframeAnim.h">
+      <Filter>Source\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\DsKeyframeInterpolate.h">
+      <Filter>Source\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\DsKeyframeAnimSet.h">
       <Filter>Source\Animation</Filter>
     </ClInclude>
   </ItemGroup>

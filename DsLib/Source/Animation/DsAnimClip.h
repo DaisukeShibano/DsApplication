@@ -3,7 +3,7 @@
 
 namespace DsLib
 {
-	class DsKeyFrameAnim;
+	class DsKeyframeAnim;
 }
 
 namespace DsLib
@@ -11,7 +11,7 @@ namespace DsLib
 	class DsAnimClip
 	{
 	public:
-		DsAnimClip(DsKeyFrameAnim& anim);
+		DsAnimClip(DsKeyframeAnim& anim);
 		virtual ~DsAnimClip();
 
 	public:
@@ -24,10 +24,10 @@ namespace DsLib
 		double GetBlendRate() const { return m_blendRate; }
 
 	public:
-		const DsKeyFrameAnim& RefAnim() const { return m_anim; }
+		const DsKeyframeAnim& RefAnim() const { return m_anim; }
 
 	private:
-		DsKeyFrameAnim& m_anim;
+		DsKeyframeAnim& m_anim;
 		bool m_isLoop;
 		bool m_isActive;
 		double m_blendRate;

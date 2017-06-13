@@ -8,7 +8,7 @@ namespace DsLib
 }
 namespace DsLib
 {
-	class DsKeyFrameAnim
+	class DsKeyframeAnim
 	{
 		friend DsAnimRes;
 		friend DsAnimBlend;//•âŠÔ‚ÌŒvZ‚·‚é‚Æ‚«‚Éƒƒ“ƒhƒC‚Ì‚ÅŠÛŒ©‚¦‚É‚·‚é
@@ -98,8 +98,8 @@ namespace DsLib
 		};
 
 	public:
-		DsKeyFrameAnim();
-		virtual ~DsKeyFrameAnim();
+		DsKeyframeAnim();
+		virtual ~DsKeyframeAnim();
 
 	public:
 		void Update(double dt);

@@ -53,6 +53,9 @@
 #ifndef _DS_ANIMATION_H_
 #include "Animation/DsAnimation.h"
 #endif
+#ifndef _DS_ANIM_SKELETON_MODIFIER_
+#include "Animation/DsAnimSkeletonModifier.h"
+#endif
 #ifndef _DS_ANIM_CONTROLLER_H_
 #include "Animation/ActionRequest/DsAnimController.h"
 #endif
@@ -70,9 +73,6 @@
 #endif
 #ifndef _DS_PERF_H_
 #include "System/DsPerf.h"
-#endif
-#ifndef _DS_RES_PARAM_DS_RAGDOLL_PARAM_
-#include "Res/Param/DsRagdollParam.h"
 #endif
 
 

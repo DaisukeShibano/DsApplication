@@ -21,23 +21,23 @@ DsAnimBlend::~DsAnimBlend()
 	m_pBlendAnim = NULL;
 }
 
-void DsAnimBlend::Initialize(const DsKeyFrameAnim& src)
+void DsAnimBlend::Initialize(const DsKeyframeAnim& src)
 {
-	m_pBlendAnim = new DsKeyFrameAnim();
+	m_pBlendAnim = new DsKeyframeAnim();
 	m_pBlendAnim->m_name = "blend";
 	m_pBlendAnim->m_boneNum = src.m_boneNum;
-	m_pBlendAnim->m_pBone = new DsKeyFrameAnim::Pose[src.m_boneNum];
+	m_pBlendAnim->m_pBone = new DsKeyframeAnim::Pose[src.m_boneNum];
 	for (int bi = 0; bi < src.m_boneNum; ++bi)
 	{
-		m_pBlendAnim->m_pBone[bi].m_pPos = new DsKeyFrameAnim::Vec3Key();
+		m_pBlendAnim->m_pBone[bi].m_pPos = new DsKeyframeAnim::Vec3Key();
 		*(m_pBlendAnim->m_pBone[bi].m_pPos) = src.m_pBone[bi].m_pPos[0];
 		m_pBlendAnim->m_pBone[bi].m_currentIdxPos = 0;
 
-		m_pBlendAnim->m_pBone[bi].m_pRot = new DsKeyFrameAnim::Vec4Key();
+		m_pBlendAnim->m_pBone[bi].m_pRot = new DsKeyframeAnim::Vec4Key();
 		*(m_pBlendAnim->m_pBone[bi].m_pRot) = src.m_pBone[bi].m_pRot[0];
 		m_pBlendAnim->m_pBone[bi].m_currentIdxRot = 0;
 
-		m_pBlendAnim->m_pBone[bi].m_pScale = new DsKeyFrameAnim::Vec3Key();
+		m_pBlendAnim->m_pBone[bi].m_pScale = new DsKeyframeAnim::Vec3Key();
 		*(m_pBlendAnim->m_pBone[bi].m_pScale) = src.m_pBone[bi].m_pScale[0];
 		m_pBlendAnim->m_pBone[bi].m_currentIdxScale = 0;
 		
@@ -47,15 +47,15 @@ void DsAnimBlend::Initialize(const DsKeyFrameAnim& src)
 }
 
 //blendRate = 1 で A。 blendRate = 0 で B
-const DsKeyFrameAnim& DsAnimBlend::Blend(const DsAnimClip* pClipA, const DsAnimClip* pClipB, double blendRate)
+const DsKeyframeAnim& DsAnimBlend::Blend(const DsAnimClip* pClipA, const DsAnimClip* pClipB, double blendRate)
 {
 	if (pClipA && pClipB)
 	{
 		const double rateA = blendRate;
 		const double rateB = (1.0 - blendRate);
 
-		const DsKeyFrameAnim& animA = pClipA->RefAnim();
-		const DsKeyFrameAnim& animB = pClipB->RefAnim();
+		const DsKeyframeAnim& animA = pClipA->RefAnim();
+		const DsKeyframeAnim& animB = pClipB->RefAnim();
 		
 		//無駄な計算しないようにブレンド率が0or1なら何もせず返す
 		if (0.999999 <= blendRate)
@@ -70,8 +70,8 @@ const DsKeyFrameAnim& DsAnimBlend::Blend(const DsAnimClip* pClipA, const DsAnimC
 		const int bn = animA.GetBoneNum();
 		for (int bi = 0; bi < bn; ++bi)
 		{
-			const DsKeyFrameAnim::Pose& poseA = animA.m_pBone[bi];
-			const DsKeyFrameAnim::Pose& poseB = animB.m_pBone[bi];
+			const DsKeyframeAnim::Pose& poseA = animA.m_pBone[bi];
+			const DsKeyframeAnim::Pose& poseB = animB.m_pBone[bi];
 
 			const double toLocalTime = poseA.m_pPos[poseA.m_currentIdxPos].localTime;
 			const int toBoneIdx = poseA.m_currentIdxPos;

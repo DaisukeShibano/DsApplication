@@ -3,18 +3,18 @@
 
 namespace DsLib
 {
-	class DsKeyFrameInterpolate
+	class DsKeyframeInterpolate
 	{
 	public:
-		DsKeyFrameInterpolate(const float* pTimes, const float* pVals, int maxFrame)
+		DsKeyframeInterpolate(const float* pTimes, const float* pVals, int maxFrame)
 			: m_val(pVals[0])
 			, m_localTime(pTimes[0])
 			, m_index(0)
-			, m_pKeyFrameTime(pTimes)
-			, m_pKeyFrameVal(pVals)
+			, m_pKeyframeTime(pTimes)
+			, m_pKeyframeVal(pVals)
 			, m_maxFrameNum(maxFrame)
 		{}
-		virtual ~DsKeyFrameInterpolate(){};
+		virtual ~DsKeyframeInterpolate(){};
 
 	public:
 		float GetVal() const { return m_val; }
@@ -26,8 +26,8 @@ namespace DsLib
 		float m_localTime;
 		int m_index;
 
-		const float* m_pKeyFrameTime;
-		const float* m_pKeyFrameVal;
+		const float* m_pKeyframeTime;
+		const float* m_pKeyframeVal;
 		const int m_maxFrameNum;
 	};
 }

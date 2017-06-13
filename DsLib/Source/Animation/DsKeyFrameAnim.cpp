@@ -1,13 +1,13 @@
 ﻿#include "DsPch.h"
 #ifndef _DS_KEYFRAME_ANIM_
-#include "Animation/DsKeyFrameAnim.h"
+#include "Animation/DsKeyframeAnim.h"
 #endif
 
 using namespace DsLib;
 
 
 //１フレで２回呼ぶとずれるので注意
-void DsKeyFrameAnim::Pose::Update(double dt)
+void DsKeyframeAnim::Pose::Update(double dt)
 {
 	m_currentTimeMs += (dt*1000.0);
 
@@ -48,7 +48,7 @@ void DsKeyFrameAnim::Pose::Update(double dt)
 	}
 }
 
-void DsKeyFrameAnim::Pose::Reset()
+void DsKeyframeAnim::Pose::Reset()
 {
 	m_currentTimeMs = 0.0;
 	m_currentIdxRot = 0;
@@ -57,7 +57,7 @@ void DsKeyFrameAnim::Pose::Reset()
 	m_endFlag = 0;
 }
 
-bool DsKeyFrameAnim::Pose::IsEnd() const
+bool DsKeyframeAnim::Pose::IsEnd() const
 {
 	return (m_endFlag == END_FLAG_ALL);
 }
@@ -69,20 +69,20 @@ bool DsKeyFrameAnim::Pose::IsEnd() const
 
 
 
-DsKeyFrameAnim::DsKeyFrameAnim()
+DsKeyframeAnim::DsKeyframeAnim()
 	: m_name()
 	, m_pBone(NULL)
 	, m_boneNum(0)
 {
 }
 
-DsKeyFrameAnim::~DsKeyFrameAnim()
+DsKeyframeAnim::~DsKeyframeAnim()
 {
 	delete[] m_pBone; 
 	m_pBone = NULL;
 }
 
-void DsKeyFrameAnim::Update(double dt)
+void DsKeyframeAnim::Update(double dt)
 {
 	for (int i = 0; i < m_boneNum; ++i)
 	{
@@ -90,7 +90,7 @@ void DsKeyFrameAnim::Update(double dt)
 	}
 }
 
-void DsKeyFrameAnim::Reset()
+void DsKeyframeAnim::Reset()
 {
 	for (int i = 0; i < m_boneNum; ++i)
 	{
@@ -98,7 +98,7 @@ void DsKeyFrameAnim::Reset()
 	}
 }
 
-bool DsKeyFrameAnim::IsEnd() const
+bool DsKeyframeAnim::IsEnd() const
 {
 	for (int i = 0; i < m_boneNum; ++i)
 	{

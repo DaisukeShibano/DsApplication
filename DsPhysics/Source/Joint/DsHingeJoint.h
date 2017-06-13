@@ -43,10 +43,22 @@ namespace DsPhysics
 		DsMat33d m_initDiffRot;
 		bool m_isAttach;
 
-
 	public:
 		virtual void DbgDraw(DsDrawCommand& com) const override;
 
+	};
+
+
+	class DsHingeJointFactory : public DsJointFactory
+	{
+	public:
+		DsHingeJointFactory(DsPhysicsWorld& world) : m_world(world) {}
+		virtual DsJoint* CreateIns() override
+		{
+			return new DsHingeJoint(m_world);
+		}
+	private:
+		DsPhysicsWorld& m_world;
 	};
 }
 

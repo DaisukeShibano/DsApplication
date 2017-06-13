@@ -20,6 +20,8 @@
 namespace DsPhysics
 {
 	class DsActorFactory;
+	class DsJoint;
+	class DsJointFactory;
 }
 
 namespace DsPhysics
@@ -44,7 +46,8 @@ namespace DsPhysics
 	class DsPhysicsWorld
 	{
 	public:
-		typedef std::list<DsActor*> ActorArray;
+		typedef std::list<DsActor*> Actors;
+		typedef std::list<DsJoint*> Joints;
 		typedef std::vector<IConstraint*> ConstraintArray;
 
 	public:
@@ -54,10 +57,12 @@ namespace DsPhysics
 	public:
 		DsActorId CreateActor(const DsActorFactory& factory);
 		DsActorId DeleteActor(const DsActorId& id);
+		DsJoint* CreateJoint(DsJointFactory& jointFactory);
+		void DeleteJoint(DsJoint* pJoint);
 		void Update( double dt );
 		void Clear();
 		DsActor* GetActor(const DsActorId& id) const;
-		ActorArray& GetActors() { return m_actors; }
+		Actors& GetActors() { return m_actors; }
 		DsActor* RayCast_CollectNear( const DsVec3d& startPos, const DsVec3d& endPos, double* depth=NULL ) const;
 		double GetDt() const;
 		const DsVec3d& GetGravity() const { m_gravity; }
@@ -70,6 +75,7 @@ namespace DsPhysics
 	
 	private:
 		void _ApplyGravity();
+		void _UpdateJoint(double dt);
 		void _UpdateConstraint(double dt);  //毎フレクリアされる。衝突など追加、削除を頻繁に行うと断片化しやすい
 		void _UpdateActor();
 		void _DeleteNoLifeActor();
@@ -77,7 +83,8 @@ namespace DsPhysics
 	private:
 		DsCollisionListener m_listener;
 		DsCollisionGroup m_group;
-		ActorArray m_actors;
+		Actors m_actors;
+		Joints m_joints;
 		DsPhysicsWorldSetting m_setting;
 		DsConstraintSolver m_constraintSolver;
 

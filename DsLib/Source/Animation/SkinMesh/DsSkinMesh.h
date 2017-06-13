@@ -3,7 +3,7 @@
 
 namespace DsLib
 {
-	class DsKeyFrameAnimCtrl;
+	class DsKeyframeAnimSet;
 	class DsAnimSkeleton;
 	class DsAnimModel;
 }

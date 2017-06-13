@@ -8,6 +8,9 @@
 #include "Actor/DsRay.h"
 #include "DsMass.h"
 #include "Tool/DsActorSelector.h"
+#ifndef _DS_JOINT_
+#include "Joint/DsJoint.h"
+#endif
 
 using namespace DsPhysics;
 
@@ -30,6 +33,7 @@ DsPhysicsWorld::DsPhysicsWorld(const DsPhysicsWorldSetting setting)
 	: m_listener(*this)
 	, m_group()
 	, m_actors()
+	, m_joints()
 	, m_setting(setting)
 	, m_constraintSolver(*this)
 	, m_isGravity(true)
@@ -65,7 +69,7 @@ DsActorId DsPhysicsWorld::DeleteActor(const DsActorId& id)
 		{
 			m_group.RemoveGroup(id);
 			DsActor* pActor = (*it);
-			m_actors.remove(*it);
+			m_actors.erase(it);
 			delete pActor;
 			return DsActorId();
 		}
@@ -74,12 +78,35 @@ DsActorId DsPhysicsWorld::DeleteActor(const DsActorId& id)
 	return id;//íœo—ˆ‚È‚©‚Á‚½‚ç‚»‚Ì‚Ü‚Ü•Ô‚·
 }
 
+DsJoint* DsPhysicsWorld::CreateJoint(DsJointFactory& jointFactory)
+{
+	DsJoint* pJoint = jointFactory.CreateIns();
+	if (pJoint) {
+		m_joints.push_back(pJoint);
+	}
+	return pJoint;
+}
+
+void DsPhysicsWorld::DeleteJoint(DsJoint* pJoint)
+{
+	auto end = m_joints.end();
+	for (auto it = m_joints.begin(); end != it; ++it) {
+		if (pJoint == (*it)) {
+			m_joints.erase(it);
+			break;
+		}
+	}
+	delete pJoint;
+}
+
 
 void DsPhysicsWorld::Update(double dt)
 {
 	m_setting.SetDT(dt);
 
 	_ApplyGravity();
+
+	_UpdateJoint(dt);
 
 	_UpdateConstraint(dt);
 	
@@ -99,6 +126,13 @@ void DsPhysicsWorld::_ApplyGravity()
 		{
 			pActor->AddForce(m_gravity*pActor->GetMass().mass);
 		}
+	}
+}
+
+void DsPhysicsWorld::_UpdateJoint(double dt)
+{
+	for (DsJoint* pJoint : m_joints) {
+		pJoint->Update(dt);
 	}
 }
 

@@ -4,7 +4,7 @@
 #include "Animation/DsAnimClip.h"
 #endif
 #ifndef _DS_KEYFRAME_ANIM_
-#include "Animation/DsKeyFrameAnim.h"
+#include "Animation/DsKeyframeAnim.h"
 #endif
 
 using namespace DsLib;
@@ -12,7 +12,7 @@ using namespace DsLib;
 static const double BLEND_TIME = 0.4;
 
 
-DsAnimClip::DsAnimClip(DsKeyFrameAnim& anim)
+DsAnimClip::DsAnimClip(DsKeyframeAnim& anim)
 	: m_anim(anim)
 	, m_isLoop(false)
 	, m_isActive(false)

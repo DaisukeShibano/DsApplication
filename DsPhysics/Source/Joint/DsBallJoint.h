@@ -43,7 +43,19 @@ namespace DsPhysics
 
 	public:
 		virtual void DbgDraw(DsDrawCommand& com) const override;
+	};
 
+
+	class DsBallJointFactory : public DsJointFactory
+	{
+	public:
+		DsBallJointFactory(DsPhysicsWorld& world) : m_world(world) {}
+		virtual DsJoint* CreateIns() override
+		{
+			return new DsBallJoint(m_world);
+		}
+	private:
+		DsPhysicsWorld& m_world;
 	};
 }
 

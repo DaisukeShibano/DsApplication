@@ -9,8 +9,8 @@
 #ifndef _DS_AMIM_RES_
 #include "Res/DsAnimRes.h"
 #endif
-#ifndef _DS_KEYFRAME_ANIM_CTRL_
-#include "Animation/DsKeyFrameAnimCtrl.h"
+#ifndef _DS_KEYFRAME_ANIM_SET_
+#include "Animation/DsKeyframeAnimSet.h"
 #endif
 #ifndef _DS_SKINMESH_
 #include "Animation/SkinMesh/DsSkinMesh.h"
@@ -27,6 +27,9 @@
 #ifndef _DS_AMIM_RAGDOLL_INFO_
 #include "Animation/DsAnimCustomProperty.h"
 #endif
+#ifndef _DS_ANIM_SKELETON_MODIFIER_
+#include "Animation/DsAnimSkeletonModifier.h"
+#endif
 
 
 
@@ -35,24 +38,25 @@ using namespace DsLib;
 DsAnimation::DsAnimation(const DsAnimController& animController, const DsAnimRes& anim, DsDrawCommand& com)
 	: m_animSM(animController)
 	, m_pSkeleton(NULL)
-	, m_pKeyFrameAnim(NULL)
+	, m_pKeyframeAnim(NULL)
 	, m_pAnimModel(NULL)
 	, m_pSkinMesh(NULL)
 	, m_pCustomProperty(NULL)
+	, m_animModifier(NULL)
 	, m_blend()
 	, m_pos(DsVec3d::Zero())
 	, m_rot(DsMat33d::Identity())
 	, m_com(com)
 {
 	m_pSkeleton = anim.CreateSkeleton();
-	m_pKeyFrameAnim = anim.CreateKeyFrameAnim();
+	m_pKeyframeAnim = anim.CreateKeyframeAnim();
 	m_pAnimModel = anim.CreateAnimModel();
 	m_pCustomProperty = anim.CustomProperty();
 
 	//アニメ再生クラスがアニメ遷移制御を呼び出すんじゃなく、アニメ遷移制御がアニメ再生クラスを呼び出す形にしたい。
-	if (m_pKeyFrameAnim && m_pSkeleton && m_pAnimModel)
+	if (m_pKeyframeAnim && m_pSkeleton && m_pAnimModel)
 	{
-		m_animSM.Initialize(m_pKeyFrameAnim->GetKeyFrameAnims(), m_pKeyFrameAnim->GetKeyFrameAnimNum());
+		m_animSM.Initialize(m_pKeyframeAnim->GetKeyframeAnims(), m_pKeyframeAnim->GetKeyframeAnimNum());
 
 		//キーフレームアニメないならスキンメッシュモデルは無駄。
 		m_pSkinMesh = new DsSkinMesh(*m_pAnimModel);
@@ -69,7 +73,7 @@ DsAnimation::~DsAnimation()
 {
 	m_com.RefAnimRender().UnRegister(_GetAnimModel());
 	delete m_pSkeleton; m_pSkeleton = NULL;
-	delete m_pKeyFrameAnim; m_pKeyFrameAnim = NULL;
+	delete m_pKeyframeAnim; m_pKeyframeAnim = NULL;
 	delete m_pAnimModel; m_pAnimModel = NULL;
 	delete m_pSkinMesh; m_pSkinMesh = NULL;
 	delete m_pCustomProperty; m_pCustomProperty = NULL;
@@ -96,7 +100,7 @@ void DsAnimation::Update(double dt)
 	m_animSM.Update(dt);
 	
 	//ブレンド結果をアニメボーンに適用。
-	if (m_pKeyFrameAnim && m_pSkeleton)
+	if (m_pKeyframeAnim && m_pSkeleton)
 	{
 		double blendRate = 1.0;
 		const DsAnimClip* pPre = m_animSM.GetPreActiveClip();
@@ -105,8 +109,13 @@ void DsAnimation::Update(double dt)
 			//ブレンド率は、前のアニメから今のアニメに徐々にウェイトが行くようにする
 			blendRate = 1.0 - pPre->GetBlendRate();
 		}
-		const DsKeyFrameAnim& blend = m_blend.Blend(m_animSM.GetActiveClip(), pPre, blendRate);
-		m_pKeyFrameAnim->ApplyAnim(dt, *m_pSkeleton, blend);
+		const DsKeyframeAnim& blend = m_blend.Blend(m_animSM.GetActiveClip(), pPre, blendRate);
+		if (m_animModifier) {
+			m_animModifier->ModifyAnim(dt, *m_pSkeleton, blend);
+		}
+		else {
+			DsAnimSkeletonModifier::UtilKeyframeAnim(dt, *m_pSkeleton, blend);
+		}
 	}
 
 	//ボーンの結果を頂点に適用。

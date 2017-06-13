@@ -14,7 +14,6 @@ namespace DsPhysics
 	public:
 		virtual void Update(double dt) = 0;
 
-	protected:
 		DsJoint( DsPhysicsWorld& world )
 		: m_world(world)
 		{}
@@ -23,6 +22,12 @@ namespace DsPhysics
 
 	public:
 		virtual void DbgDraw(DsDrawCommand& com) const{};
+	};
+
+	class DsJointFactory
+	{
+	public:
+		virtual DsJoint* CreateIns()=0;
 	};
 }
 

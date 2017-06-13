@@ -7,7 +7,7 @@
 #include "Animation/ActionRequest/DsAnimController.h"
 #endif
 #ifndef _DS_KEYFRAME_ANIM_
-#include "Animation/DsKeyFrameAnim.h"
+#include "Animation/DsKeyframeAnim.h"
 #endif
 #ifndef _DS_ANIM_CLIP_H_
 #include "Animation/DsAnimClip.h"
@@ -38,7 +38,7 @@ DsAnimSM::~DsAnimSM()
 	}
 }
 
-void DsAnimSM::Initialize(DsKeyFrameAnim* pAnim, int animNum)
+void DsAnimSM::Initialize(DsKeyframeAnim* pAnim, int animNum)
 {
 	struct TmpClipSetting
 	{

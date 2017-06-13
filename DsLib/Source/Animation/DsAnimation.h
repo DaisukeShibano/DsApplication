@@ -12,12 +12,13 @@ namespace DsLib
 {
 	class DsAnimController;
 	class DsAnimSkeleton;
-	class DsKeyFrameAnimCtrl;
+	class DsKeyframeAnimSet;
 	class DsAnimModel;
 	class DsSkinMesh;
 	class DsDrawCommand;
 	class DsAnimRes;
-	class DsAnimCustomProperty;
+	struct DsAnimCustomProperty;
+	class DsAnimSkeletonModifier;
 }
 
 namespace DsLib
@@ -35,6 +36,7 @@ namespace DsLib
 		const DsVec3d& GetPosition() const;
 		const DsMat33d& GetRotation() const;
 		const DsAnimCustomProperty* GetCustomProperty() const { return m_pCustomProperty; }
+		void SetAnimSkeletonModifier(DsAnimSkeletonModifier* pModifier) { m_animModifier = pModifier; }
 
 	private:
 		DsAnimModel* _GetAnimModel();
@@ -42,10 +44,11 @@ namespace DsLib
 	private:
 		DsAnimSM m_animSM;
 		DsAnimSkeleton* m_pSkeleton;
-		DsKeyFrameAnimCtrl* m_pKeyFrameAnim;
+		DsKeyframeAnimSet* m_pKeyframeAnim;
 		DsAnimModel* m_pAnimModel;
 		DsSkinMesh* m_pSkinMesh;
 		DsAnimCustomProperty* m_pCustomProperty;
+		DsAnimSkeletonModifier* m_animModifier;
 		DsAnimBlend m_blend;
 		DsVec3d m_pos;
 		DsMat33d m_rot;

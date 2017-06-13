@@ -2,7 +2,7 @@
 #define _DS_ANIM_BLEND_H_
 
 #ifndef _DS_KEYFRAME_ANIM_
-#include "Animation/DsKeyFrameAnim.h"
+#include "Animation/DsKeyframeAnim.h"
 #endif
 
 namespace DsLib
@@ -19,14 +19,14 @@ namespace DsLib
 		virtual ~DsAnimBlend();
 
 	public:
-		void Initialize(const DsKeyFrameAnim& src);
+		void Initialize(const DsKeyframeAnim& src);
 
 	public:
 		//blendRate = 1 Ç≈ AÅB blendRate = 0 Ç≈ B
-		const DsKeyFrameAnim& Blend(const DsAnimClip* pClipA, const DsAnimClip* pClipB, double blendRate);
+		const DsKeyframeAnim& Blend(const DsAnimClip* pClipA, const DsAnimClip* pClipB, double blendRate);
 
 	private:
-		DsKeyFrameAnim* m_pBlendAnim;
+		DsKeyframeAnim* m_pBlendAnim;
 
 	};
 

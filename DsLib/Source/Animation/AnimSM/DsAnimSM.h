@@ -5,7 +5,7 @@ namespace DsLib
 {
 	class DsAnimBaseNode;
 	class DsAnimController;
-	class DsKeyFrameAnim;
+	class DsKeyframeAnim;
 	class DsAnimClip;
 }
 
@@ -28,7 +28,7 @@ namespace DsLib
 		virtual ~DsAnimSM();
 
 	public:
-		void Initialize(DsKeyFrameAnim* pAnim, int animNum);
+		void Initialize(DsKeyframeAnim* pAnim, int animNum);
 		void Update(double dt);
 		const DsAnimClip* GetActiveClip() const;
 		const DsAnimClip* GetPreActiveClip() const;
