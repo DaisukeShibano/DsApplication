@@ -118,18 +118,16 @@ void DsRender::Render( const float dt )
 
 	_RenderModel();
 	//外部で使う用のレンダリング画像の保存
-	//m_pShader->SetUseShadow(false);//この視点の影テクスチャは作ってないのでOFF
 	for (DsRenderCamCaptureImage* pImage : m_renderImages) {
 		pImage->BeginCapture();
 		_RenderModel();
 		pImage->EndCapture();
 	}
-	//m_pShader->SetUseShadow(true);
 	
 	m_pShader->DisableShader();
 	
 	//デバッグ用
-	m_pShadow->DrawDepthTex();
+	//m_pShadow->DrawDepthTex();
 }
 
 void DsRender::Update( const double dt )

@@ -54,11 +54,13 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 			maxPos.y = max(maxPos.y, tmpPos.y + tmpLen.y);
 			maxPos.z = max(maxPos.z, tmpPos.z + tmpLen.z);
 		}
+
+		//actorの所属空間更新
 		m_pBoundingTree->Update(pActors, totalActTNum, minPos, maxPos);
 
 		//ツリーを巡って当たり判定
 		//http://marupeke296.com/COL_2D_No8_QuadTree.html
-		//まったく同じではない。参考にしている程度
+		//まったく同じではない。でも概念は同じ
 		std::vector < const DsActor* > colideStack;
 		colideStack.reserve(totalActTNum);
 

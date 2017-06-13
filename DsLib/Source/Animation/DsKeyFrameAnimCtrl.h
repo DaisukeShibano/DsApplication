@@ -4,7 +4,7 @@
 namespace DsLib
 {
 	class DsKeyFrameAnim;
-	class DsAnimSkelton;
+	class DsAnimSkeleton;
 }
 
 namespace DsLib
@@ -22,8 +22,7 @@ namespace DsLib
 		int GetKeyFrameAnimNum() const { return m_animNum; }
 
 	public:
-		void DriveKeyFrame(double dt, DsAnimSkelton& skelton, int animIdx);
-		void ApplyAnim(double dt, DsAnimSkelton& skelton, const DsKeyFrameAnim& anim) const;
+		void ApplyAnim(double dt, DsAnimSkeleton& skeleton, const DsKeyFrameAnim& anim) const;
 
 	private:
 		DsKeyFrameAnim* m_pAnim;

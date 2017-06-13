@@ -4,8 +4,8 @@
 #include "Res/DsAnimRes.h"
 #endif
 
-#ifndef _DS_AMIM_SKELTON_
-#include "Animation/DsAnimSkelton.h"
+#ifndef _DS_AMIM_SKELETON_
+#include "Animation/DsAnimSkeleton.h"
 #endif
 #ifndef _DS_KEYFRAME_ANIM_
 #include "Animation/DsKeyFrameAnim.h"
@@ -16,11 +16,17 @@
 #ifndef _DS_ANIM_MODEL_
 #include "Animation/DsAnimModel.h"
 #endif
+#ifndef _DS_AMIM_RAGDOLL_INFO_
+#include "Animation/DsAnimCustomProperty.h"
+#endif
 
 using namespace DsLib;
 
 namespace
 {
+//--------------------------------------------------------------------------------
+//ここから構造体定義
+//--------------------------------------------------------------------------------
 	typedef unsigned long vari_size;
 
 	struct DS_VERTEX
@@ -408,11 +414,38 @@ namespace
 		DS_ANIM* pAnim;
 	};
 
+	struct DS_RAGDOLL_PARAM_ID
+	{
+		DS_RAGDOLL_PARAM_ID()
+			: id(0)
+			, boneIdx(0)
+		{}
+		int id;
+		unsigned long boneIdx;
+	};
+
+	struct DS_CUSTOM_PROPERTY
+	{
+		DS_CUSTOM_PROPERTY()
+			: pRagdollParamId(NULL)
+			, ragdollNum(0)
+		{}
+		~DS_CUSTOM_PROPERTY()
+		{
+			delete[] pRagdollParamId;
+			pRagdollParamId = NULL;
+		}
+		DS_RAGDOLL_PARAM_ID* pRagdollParamId;
+		long ragdollNum;
+	};
+
 	class OutputRes
 	{
 	public:
 		OutputRes()
 			: dsAnimModel()
+			, dsAnimBone()
+			, dsCustomProperty()
 			, dataSize(0)
 		{};
 		virtual ~OutputRes(){};
@@ -420,8 +453,14 @@ namespace
 	public:
 		DS_ANIM_MODEL dsAnimModel;
 		DS_ANIM_BONE dsAnimBone;
+		DS_CUSTOM_PROPERTY dsCustomProperty;
 		unsigned long long dataSize;
 	};
+//--------------------------------------------------------------------------------
+//ここまで構造体定義
+//--------------------------------------------------------------------------------
+
+
 
 	OutputRes* _LoadAnim(const char* path)
 	{
@@ -805,6 +844,22 @@ namespace
 				}
 			}
 		}
+
+		////////////////////ここからカスタムプロパティ
+		{//ragdollParam
+			unsigned long ragdollParamNum=0;
+			fs.read((char*)(&ragdollParamNum), sizeof(ragdollParamNum));
+			const long ragParaSize = ragdollParamNum * sizeof(DS_RAGDOLL_PARAM_ID);
+			res.dsCustomProperty.ragdollNum = ragdollParamNum;
+			if (0 < ragdollParamNum) {
+				DS_RAGDOLL_PARAM_ID* pRagdollaramId= new DS_RAGDOLL_PARAM_ID[ragdollParamNum];
+				fs.read((char*)(pRagdollaramId), sizeof(DS_RAGDOLL_PARAM_ID)*ragdollParamNum);
+				res.dsCustomProperty.pRagdollParamId = pRagdollaramId;
+			}
+
+		}
+
+
 		return &res;
 	}
 }
@@ -830,7 +885,7 @@ void DsAnimRes::Initialize(const char* path)
 }
 
 //子ボーン
-void DsAnimRes::_CreateBone(DsAnimBone* pParent, const void* pParentSrcData) const
+void DsAnimRes::_CreateBone(DsAnimBone* pParent, const void* pParentSrcData, std::vector<DsAnimBone*> boneArray) const
 {
 	const DS_BONE* pParentSrc = static_cast<const DS_BONE*>(pParentSrcData);
 	const OutputRes* pRes = static_cast<OutputRes*>(m_resTop);
@@ -860,17 +915,18 @@ void DsAnimRes::_CreateBone(DsAnimBone* pParent, const void* pParentSrcData) con
 			pBone->pIndex[vIdx] = tmp->pIndex[vIdx];
 			pBone->pWeight[vIdx] = tmp->pWeight[vIdx];
 		}
+		boneArray[pBone->arrayIdx] = pBone;
 		pParent->child.push_back(pBone);
 	}
 	for (int cIdx = 0; cIdx < pParentSrc->childNum; ++cIdx)
 	{
 		//DS_BONEは子ボーンへのインデックスを持ってるのでそれを元に生成
 		const int tmpIdx = pParentSrc->pChildIdx[cIdx];
-		_CreateBone(pParent->child[cIdx], &pRes->dsAnimBone.pBone[tmpIdx]);
+		_CreateBone(pParent->child[cIdx], &pRes->dsAnimBone.pBone[tmpIdx], boneArray);
 	}
 }
 
-DsAnimSkelton* DsAnimRes::CreateSkelton() const
+DsAnimSkeleton* DsAnimRes::CreateSkeleton() const
 {
 	OutputRes* pRes = static_cast<OutputRes*>(m_resTop);
 	const int bn = pRes->dsAnimBone.bn;
@@ -879,6 +935,8 @@ DsAnimSkelton* DsAnimRes::CreateSkelton() const
 	}
 
 	std::vector<DsAnimBone*> roots;
+	std::vector<DsAnimBone*> boneArray(bn, NULL);
+
 	for (int bIdx = 0; bIdx < bn; ++bIdx)
 	{
 		if (pRes->dsAnimBone.pBone[bIdx].parentIdx < 0)
@@ -898,13 +956,14 @@ DsAnimSkelton* DsAnimRes::CreateSkelton() const
 				root->pIndex[vIdx] = rootSrc->pIndex[vIdx];
 				root->pWeight[vIdx] = rootSrc->pWeight[vIdx];
 			}
-			_CreateBone(root, rootSrc);
+			boneArray[root->arrayIdx] = root;
+			_CreateBone(root, rootSrc, boneArray);
 			roots.push_back(root);
 		}
 	}
 
-	DsAnimSkelton* pSkelton = new DsAnimSkelton(roots);
-	return pSkelton;
+	DsAnimSkeleton* pSkeleton = new DsAnimSkeleton(roots, boneArray);
+	return pSkeleton;
 }
 
 DsKeyFrameAnimCtrl* DsAnimRes::CreateKeyFrameAnim() const
@@ -1076,10 +1135,30 @@ DsAnimModel* DsAnimRes::CreateAnimModel() const
 	return pAnimModel;
 }
 
-int DsAnimRes::GetAnimNum()
+int DsAnimRes::GetAnimNum() const
 {
 	OutputRes* pRes = static_cast<OutputRes*>(m_resTop);
 	const int ret = pRes->dsAnimBone.an;
+	return ret;
+}
+
+DsAnimCustomProperty* DsAnimRes::CreateRagdollInfo() const
+{
+	OutputRes* pRes = static_cast<OutputRes*>(m_resTop);
+	DsAnimCustomProperty* ret = NULL;
+	const long num = pRes->dsCustomProperty.ragdollNum;
+	ret = new DsAnimCustomProperty();
+	DS_ASSERT(ret, "メモリ確保失敗");
+	if (0 < num) {
+		ret->ragdollParamIds.reserve(num);
+		for (int i = 0; i < num; ++i) {
+			const DS_RAGDOLL_PARAM_ID& id = pRes->dsCustomProperty.pRagdollParamId[i];
+			DsAnimCustomProperty::RagdollParamId param;
+			param.boneIndex = id.boneIdx;
+			param.ragdollParamId = id.id;
+			ret->ragdollParamIds.push_back(param);
+		}
+	}
 	return ret;
 }
 

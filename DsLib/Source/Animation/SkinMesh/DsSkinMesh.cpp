@@ -6,8 +6,8 @@
 #ifndef _DS_ANIM_MODEL_
 #include "Animation/DsAnimModel.h"
 #endif
-#ifndef _DS_AMIM_SKELTON_
-#include "Animation/DsAnimSkelton.h"
+#ifndef _DS_AMIM_SKELETON_
+#include "Animation/DsAnimSkeleton.h"
 #endif
 #ifndef _DS_DRAW_COMMAND_H_
 #include "Graphics/Command/DsDrawCommand.h"
@@ -79,14 +79,14 @@ namespace
 }
 
 //頂点データをスケルトンの姿勢に合わせる
-void DsSkinMesh::ApplySkelton(const DsAnimSkelton& skelton)
+void DsSkinMesh::ApplySkeleton(const DsAnimSkeleton& skeleton)
 {
 	//for (int i = 0; i < S_WEI_NUM; ++i)
 	//{
 	//	s_weigth[i] = 0.0;//デバッグ用
 	//}
 	
-	const DsAnimSkelton::Bones& roots = skelton.RefRootBone();
+	const DsAnimSkeleton::Bones& roots = skeleton.RefRootBone();
 	if (roots.empty())
 	{
 		//骨がない場合はRootが適用されないので別途処理
@@ -95,7 +95,7 @@ void DsSkinMesh::ApplySkelton(const DsAnimSkelton& skelton)
 		const DsVec4d* pSrcVertex = m_srcModel.GetVertex();
 		for (int vIdx = 0; vIdx < vn; ++vIdx)
 		{
-			pVertex[vIdx] = (skelton.GetRootRot()*pSrcVertex[vIdx]) + skelton.GetRootPos();
+			pVertex[vIdx] = (skeleton.GetRootRot()*pSrcVertex[vIdx]) + skeleton.GetRootPos();
 		}
 	}
 	else
@@ -118,11 +118,11 @@ void DsSkinMesh::ApplySkelton(const DsAnimSkelton& skelton)
 		//intWorldはFbx変換かかってる。localPoseはかかってない。Fbx変換成分だけを抜き出す。ただし、localPoseの姿勢がキーフレームで変わってるとダメ
 		const DsMat33d fbxR = root->initWorldPose.ToMat33()*root->localPose.ToMat33().ToTransposition();
 
-		const DsMat33d m = skelton.GetRootRot()*fbxR*root->localPose.ToMat33();	//マスターの姿勢は変えられなかったから考慮しなくてOK
+		const DsMat33d m = skeleton.GetRootRot()*fbxR*root->localPose.ToMat33();	//マスターの姿勢は変えられなかったから考慮しなくてOK
 		//localPoseはエクスポート時のFbx座標変換がかかってない
 		//localPoseを打ち消したら考慮した座標と一致した。とりあえずこれで行く
 		const DsVec3d offset = (fbxR*root->localPose.GetPos());
-		const DsVec3d p = offset + skelton.GetRootPos() + root->initWorldPose.GetPos();
+		const DsVec3d p = offset + skeleton.GetRootPos() + root->initWorldPose.GetPos();
 
 		_Mapping(root, m, p, m_pModel->GetVertex(), m_srcModel.GetVertex());
 	}

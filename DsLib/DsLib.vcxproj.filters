@@ -151,9 +151,6 @@
     <ClCompile Include="Source\Math\DsQuaternion.cpp">
       <Filter>Source\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Animation\DsAnimSkelton.cpp">
-      <Filter>Source\Animation</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Animation\DsKeyFrameAnim.cpp">
       <Filter>Source\Animation</Filter>
     </ClCompile>
@@ -237,6 +234,12 @@
     </ClCompile>
     <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsShadowBlurShader.cpp">
       <Filter>Source\Graphics\Shader\ShaderSource</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\DsAnimSkeleton.cpp">
+      <Filter>Source\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\DsAnimCustomProperty.cpp">
+      <Filter>Source\Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -334,9 +337,6 @@
       <Filter>Source\Math</Filter>
     </ClInclude>
     <ClInclude Include="Source\Animation\DsAnimModel.h">
-      <Filter>Source\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Animation\DsAnimSkelton.h">
       <Filter>Source\Animation</Filter>
     </ClInclude>
     <ClInclude Include="Source\Animation\DsKeyFrameAnim.h">
@@ -452,6 +452,12 @@
     </ClInclude>
     <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsShadowBlurShader.h">
       <Filter>Source\Graphics\Shader\ShaderSource</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\DsAnimSkeleton.h">
+      <Filter>Source\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\DsAnimCustomProperty.h">
+      <Filter>Source\Animation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

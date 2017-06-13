@@ -1,5 +1,5 @@
-#ifndef _DS_AMIM_SKELTON_
-#define _DS_AMIM_SKELTON_
+#ifndef _DS_AMIM_SKELETON_
+#define _DS_AMIM_SKELETON_
 
 namespace DsLib
 {
@@ -41,17 +41,18 @@ namespace DsLib
 		double* pWeight;
 	};
 
-	class DsAnimSkelton
+	class DsAnimSkeleton
 	{
 	public:
 		typedef std::vector<DsAnimBone*> Bones;
 
 	public:
-		DsAnimSkelton(const std::vector<DsAnimBone*>& pRootBone);
-		virtual ~DsAnimSkelton();
+		DsAnimSkeleton(const std::vector<DsAnimBone*>& pRootBone, const std::vector<DsAnimBone*>& boneArray);
+		virtual ~DsAnimSkeleton();
 
 	public:
 		const Bones& RefRootBone() const{ return  m_pRootBone; }
+		Bones& RefBoneArray() { return  m_boneArray; }
 		const DsVec3d& GetRootPos() const { return m_rootPos; }
 		void SetRootPos(const DsVec3d& p){ m_rootPos = p; }
 		const DsMat33d& GetRootRot() const { return m_rootRot; }
@@ -78,6 +79,7 @@ namespace DsLib
 
 	private:
 		Bones m_pRootBone;
+		Bones m_boneArray;//配列アクセス用。最初からこっち使う方がよかったかも。
 		DsVec3d m_rootPos;
 		DsMat33d m_rootRot;
 

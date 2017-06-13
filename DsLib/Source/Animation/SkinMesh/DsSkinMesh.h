@@ -4,7 +4,7 @@
 namespace DsLib
 {
 	class DsKeyFrameAnimCtrl;
-	class DsAnimSkelton;
+	class DsAnimSkeleton;
 	class DsAnimModel;
 }
 
@@ -19,7 +19,7 @@ namespace DsLib
 	public:
 		void Initialize();
 
-		void ApplySkelton(const DsAnimSkelton& skelton);
+		void ApplySkeleton(const DsAnimSkeleton& skeleton);
 		DsAnimModel* GetSkinMeshModel() { return m_pModel; }
 
 	public:

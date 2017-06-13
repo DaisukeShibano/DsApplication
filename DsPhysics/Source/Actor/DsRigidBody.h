@@ -75,13 +75,22 @@ namespace DsPhysics
 	{
 	public:
 		DsRigidBodyFactory( const DsVec3d* pv, const double mass, const char* name )
-		:m_pv(pv)
-		,m_mass(mass)
-		,m_initPos(DsVec3d::Zero())
-		,m_initRot(DsMat33d::Identity())
-		,m_initOption(Option::Default())
-		,m_name(name)
-		{}
+			: m_pv()
+			, m_sizeVertex(NULL)
+			, m_mass(mass)
+			, m_initPos(DsVec3d::Zero())
+			, m_initRot(DsMat33d::Identity())
+			, m_initOption(Option::Default())
+			, m_name(name)
+		{
+			for (int i = 0; i < DsRigidBodyGeometryInfo::VERTEX_NUM; ++i) {
+				m_pv[i] = pv[i];
+			}
+		}
+
+		virtual ~DsRigidBodyFactory()
+		{
+		}
 
 		virtual DsActor* CreateIns( const DsActorId& id ) const override;
 
@@ -91,7 +100,8 @@ namespace DsPhysics
 		void SetOption(const Option& option){ m_initOption = option; }
 
 	private:
-		const DsVec3d* m_pv;
+		DsVec3d m_pv[DsRigidBodyGeometryInfo::VERTEX_NUM];
+		DsVec3d* m_sizeVertex;
 		const double m_mass;
 		DsVec3d m_initPos;
 		DsMat33d m_initRot;

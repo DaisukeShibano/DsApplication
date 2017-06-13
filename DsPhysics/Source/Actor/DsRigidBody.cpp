@@ -402,7 +402,7 @@ void DsRigidBodyCube::Draw(DsDrawCommand& com)
 }
 
 
-void DsRigidBodyCube::GetVertex( DsVec3d* pv, double xl, double yl, double zl)
+void DsRigidBodyCube::GetVertex( DsVec3d pv[DsRigidBodyGeometryInfo::VERTEX_NUM], double xl, double yl, double zl)
 {
 	pv[0].Set( -xl/2.0, yl/2.0, zl/2.0 );
 	pv[1].Set(  xl/2.0, yl/2.0, zl/2.0 );

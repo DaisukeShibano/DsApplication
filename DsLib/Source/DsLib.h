@@ -71,6 +71,9 @@
 #ifndef _DS_PERF_H_
 #include "System/DsPerf.h"
 #endif
+#ifndef _DS_RES_PARAM_DS_RAGDOLL_PARAM_
+#include "Res/Param/DsRagdollParam.h"
+#endif
 
 
 #endif

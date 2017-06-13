@@ -3,8 +3,8 @@
 #include "Animation/DsAnimation.h"
 #endif
 
-#ifndef _DS_AMIM_SKELTON_
-#include "Animation/DsAnimSkelton.h"
+#ifndef _DS_AMIM_SKELETON_
+#include "Animation/DsAnimSkeleton.h"
 #endif
 #ifndef _DS_AMIM_RES_
 #include "Res/DsAnimRes.h"
@@ -24,27 +24,33 @@
 #ifndef _DS_ANIM_CLIP_H_
 #include "Animation/DsAnimClip.h"
 #endif
+#ifndef _DS_AMIM_RAGDOLL_INFO_
+#include "Animation/DsAnimCustomProperty.h"
+#endif
+
 
 
 using namespace DsLib;
 
 DsAnimation::DsAnimation(const DsAnimController& animController, const DsAnimRes& anim, DsDrawCommand& com)
 	: m_animSM(animController)
-	, m_pSkelton(NULL)
+	, m_pSkeleton(NULL)
 	, m_pKeyFrameAnim(NULL)
 	, m_pAnimModel(NULL)
 	, m_pSkinMesh(NULL)
+	, m_pRagdollInfo(NULL)
 	, m_blend()
 	, m_pos(DsVec3d::Zero())
 	, m_rot(DsMat33d::Identity())
 	, m_com(com)
 {
-	m_pSkelton = anim.CreateSkelton();
+	m_pSkeleton = anim.CreateSkeleton();
 	m_pKeyFrameAnim = anim.CreateKeyFrameAnim();
 	m_pAnimModel = anim.CreateAnimModel();
+	m_pRagdollInfo = anim.CreateRagdollInfo();
 
 	//アニメ再生クラスがアニメ遷移制御を呼び出すんじゃなく、アニメ遷移制御がアニメ再生クラスを呼び出す形にしたい。
-	if (m_pKeyFrameAnim && m_pSkelton && m_pAnimModel)
+	if (m_pKeyFrameAnim && m_pSkeleton && m_pAnimModel)
 	{
 		m_animSM.Initialize(m_pKeyFrameAnim->GetKeyFrameAnims(), m_pKeyFrameAnim->GetKeyFrameAnimNum());
 
@@ -62,10 +68,11 @@ DsAnimation::DsAnimation(const DsAnimController& animController, const DsAnimRes
 DsAnimation::~DsAnimation()
 {
 	m_com.RefAnimRender().UnRegister(_GetAnimModel());
-	delete m_pSkelton; m_pSkelton = NULL;
+	delete m_pSkeleton; m_pSkeleton = NULL;
 	delete m_pKeyFrameAnim; m_pKeyFrameAnim = NULL;
 	delete m_pAnimModel; m_pAnimModel = NULL;
 	delete m_pSkinMesh; m_pSkinMesh = NULL;
+	delete m_pRagdollInfo; m_pRagdollInfo = NULL;
 	
 }
 
@@ -89,7 +96,7 @@ void DsAnimation::Update(double dt)
 	m_animSM.Update(dt);
 	
 	//ブレンド結果をアニメボーンに適用。
-	if (m_pKeyFrameAnim && m_pSkelton)
+	if (m_pKeyFrameAnim && m_pSkeleton)
 	{
 		double blendRate = 1.0;
 		const DsAnimClip* pPre = m_animSM.GetPreActiveClip();
@@ -99,21 +106,21 @@ void DsAnimation::Update(double dt)
 			blendRate = 1.0 - pPre->GetBlendRate();
 		}
 		const DsKeyFrameAnim& blend = m_blend.Blend(m_animSM.GetActiveClip(), pPre, blendRate);
-		m_pKeyFrameAnim->ApplyAnim(dt, *m_pSkelton, blend);
+		m_pKeyFrameAnim->ApplyAnim(dt, *m_pSkeleton, blend);
 	}
 
 	//ボーンの結果を頂点に適用。
-	if (m_pSkinMesh && m_pSkelton)
+	if (m_pSkinMesh && m_pSkeleton)
 	{
-		m_pSkinMesh->ApplySkelton(*m_pSkelton);
+		m_pSkinMesh->ApplySkeleton(*m_pSkeleton);
 	}
 }
 
 void DsAnimation::SetRootMatrix(const DsVec3d& p, const DsMat33d& r)
 {
-	if (m_pSkelton) {
-		m_pSkelton->SetRootPos(p);
-		m_pSkelton->SetRootRot(r);
+	if (m_pSkeleton) {
+		m_pSkeleton->SetRootPos(p);
+		m_pSkeleton->SetRootRot(r);
 	}
 	else {
 		//スケルトンを持ってなかった場合
@@ -124,12 +131,12 @@ void DsAnimation::SetRootMatrix(const DsVec3d& p, const DsMat33d& r)
 
 const DsVec3d& DsAnimation::GetPosition() const
 {
-	return (m_pSkelton) ? (m_pSkelton->GetRootPos()) : (m_pos);
+	return (m_pSkeleton) ? (m_pSkeleton->GetRootPos()) : (m_pos);
 }
 
 const DsMat33d& DsAnimation::GetRotation() const
 {
-	return (m_pSkelton) ? (m_pSkelton->GetRootRot()) : (m_rot);
+	return (m_pSkeleton) ? (m_pSkeleton->GetRootRot()) : (m_rot);
 }
 
 DsAnimModel* DsAnimation::_GetAnimModel()

@@ -192,7 +192,8 @@
     <ClCompile Include="Source\Animation\DsAnimation.cpp" />
     <ClCompile Include="Source\Animation\DsAnimClip.cpp" />
     <ClCompile Include="Source\Animation\DsAnimModel.cpp" />
-    <ClCompile Include="Source\Animation\DsAnimSkelton.cpp" />
+    <ClCompile Include="Source\Animation\DsAnimCustomProperty.cpp" />
+    <ClCompile Include="Source\Animation\DsAnimSkeleton.cpp" />
     <ClCompile Include="Source\Animation\DsKeyFrameAnim.cpp" />
     <ClCompile Include="Source\Animation\DsKeyFrameAnimCtrl.cpp" />
     <ClCompile Include="Source\Animation\DsKeyFrameInterpolate.cpp" />
@@ -251,7 +252,8 @@
     <ClInclude Include="Source\Animation\DsAnimation.h" />
     <ClInclude Include="Source\Animation\DsAnimClip.h" />
     <ClInclude Include="Source\Animation\DsAnimModel.h" />
-    <ClInclude Include="Source\Animation\DsAnimSkelton.h" />
+    <ClInclude Include="Source\Animation\DsAnimCustomProperty.h" />
+    <ClInclude Include="Source\Animation\DsAnimSkeleton.h" />
     <ClInclude Include="Source\Animation\DsKeyFrameAnim.h" />
     <ClInclude Include="Source\Animation\DsKeyFrameAnimCtrl.h" />
     <ClInclude Include="Source\Animation\DsKeyFrameInterpolate.h" />

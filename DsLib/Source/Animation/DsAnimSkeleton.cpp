@@ -1,6 +1,6 @@
 #include "DsPch.h"
-#ifndef _DS_AMIM_SKELTON_
-#include "Animation/DsAnimSkelton.h"
+#ifndef _DS_AMIM_SKELETON_
+#include "Animation/DsAnimSkeleton.h"
 #endif
 
 #ifndef _DS_DRAW_COMMAND_H_
@@ -9,15 +9,16 @@
 
 using namespace DsLib;
 
-DsAnimSkelton::DsAnimSkelton(const std::vector<DsAnimBone*>& pRootBone)
+DsAnimSkeleton::DsAnimSkeleton(const std::vector<DsAnimBone*>& pRootBone, const std::vector<DsAnimBone*>& boneArray)
 :m_pRootBone(pRootBone)
+,m_boneArray(boneArray)
 ,m_rootPos(DsVec3d::Zero())
 ,m_rootRot(DsMat33d::Identity())
 {
 
 }
 
-DsAnimSkelton::~DsAnimSkelton()
+DsAnimSkeleton::~DsAnimSkeleton()
 {
 	for each(DsAnimBone* pBone in m_pRootBone)
 	{
@@ -47,7 +48,7 @@ namespace
 	}
 }
 
-void DsAnimSkelton::DbgDraw() const
+void DsAnimSkeleton::DbgDraw() const
 {
 	for each(const DsAnimBone* pBone in m_pRootBone)
 	{

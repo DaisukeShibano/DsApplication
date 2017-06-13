@@ -66,6 +66,8 @@ namespace DsPhysics
 
 		const DsCollisionResult& Exe(const DsActor& actor1, const DsActor& actor2)
 		{
+			//ここは１フレでかなり高頻度で呼ばれる場所
+
 			//キューブとキューブ
 			if ((actor1.GetType() == DsActor::RIGID_CUBE) && (actor2.GetType() == DsActor::RIGID_CUBE))
 			{
@@ -157,7 +159,7 @@ namespace DsPhysics
 		}
 
 	private:
-		//一時クラスとして使ってたがインスタンス生成に時間かかってたので、メンバで持っとく
+		//一時的なクラスとして使ってたがインスタンス生成に時間かかってたので、メンバで持っとく
 		DsCollisionCubeCube m_cubeCube;
 		DsCollisionCubeRay m_rayCube;
 		DsCollisionCubeMesh m_cubeMesh;

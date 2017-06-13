@@ -11,12 +11,13 @@
 namespace DsLib
 {
 	class DsAnimController;
-	class DsAnimSkelton;
+	class DsAnimSkeleton;
 	class DsKeyFrameAnimCtrl;
 	class DsAnimModel;
 	class DsSkinMesh;
 	class DsDrawCommand;
 	class DsAnimRes;
+	class DsAnimCustomProperty;
 }
 
 namespace DsLib
@@ -33,16 +34,18 @@ namespace DsLib
 		void SetRootMatrix(const DsVec3d& p, const DsMat33d& r);
 		const DsVec3d& GetPosition() const;
 		const DsMat33d& GetRotation() const;
+		const DsAnimCustomProperty* GetRagdollInfo() const { return m_pRagdollInfo; }
 
 	private:
 		DsAnimModel* _GetAnimModel();
 
 	private:
 		DsAnimSM m_animSM;
-		DsAnimSkelton* m_pSkelton;
+		DsAnimSkeleton* m_pSkeleton;
 		DsKeyFrameAnimCtrl* m_pKeyFrameAnim;
 		DsAnimModel* m_pAnimModel;
 		DsSkinMesh* m_pSkinMesh;
+		DsAnimCustomProperty* m_pRagdollInfo;
 		DsAnimBlend m_blend;
 		DsVec3d m_pos;
 		DsMat33d m_rot;

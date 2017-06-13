@@ -112,7 +112,7 @@ namespace
 			float d = distance - moments.x;//日向と日陰の距離が近いほど１（日向）に近づく 影に遠いと日向に近づいて欲しいんだけど・・・
 			float p_max = variance / (variance + d*d);//variance(エッジ)が大きければ大きいほど１(日向)に近づく
 
-			return p_max;//影になる確率？逆？←P(x>t)でxはシャドウマップの深度、tは描画対象までの距離なので、日向になる確率だからこれで合ってる
+			return p_max;//影になる確率？逆？
 		}
 
 		/*!
