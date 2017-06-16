@@ -8,7 +8,7 @@
 
 namespace DsPhysics
 {
-	class DsCollisionContext;
+	class DsCollisionGeometry;
 	class DsCollisionResult;
 	class DsActor;
 	class IConstraint;
@@ -119,7 +119,7 @@ namespace DsPhysics
 	public:
 		virtual ACTOR_TYPE GetType() const = 0;
 
-		virtual const DsCollisionContext* GetCollContext() const = 0;
+		virtual const DsCollisionGeometry* GetCollisionGeometry() const = 0;
 		
 		virtual void Update() = 0;
 

@@ -10,7 +10,7 @@
 
 namespace DsPhysics
 {
-	class DsCollisionContext;
+	class DsCollisionGeometry;
 	class DsPhysicsWorld;
 }
 
@@ -26,7 +26,7 @@ namespace DsPhysics
 		,m_info()
 		{}
 
-		void Initialize(const DsCollisionContext* pCube1, const DsCollisionContext* pCube2)
+		void Initialize(const DsCollisionGeometry* pCube1, const DsCollisionGeometry* pCube2)
 		{
 			m_pCube1 = pCube1;
 			m_pCube2 = pCube2;
@@ -41,8 +41,8 @@ namespace DsPhysics
 		DsCollisionResult& _ColideFinal();
 
 	private:
-		const DsCollisionContext* m_pCube1;
-		const DsCollisionContext* m_pCube2;
+		const DsCollisionGeometry* m_pCube1;
+		const DsCollisionGeometry* m_pCube2;
 		DsCollisionResult m_info;
 	};
 

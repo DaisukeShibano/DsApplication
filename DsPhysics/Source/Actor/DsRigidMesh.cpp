@@ -56,7 +56,7 @@ DsRigidMesh::DsRigidMesh(const DsActorId& id, const char* name)
 DsRigidMesh::~DsRigidMesh()
 {
 	delete m_pAabbTree; m_pAabbTree = NULL;
-	delete m_pCollisionContext; m_pCollisionContext = NULL;
+	delete m_pCollisionGeometry; m_pCollisionGeometry = NULL;
 }
 
 void DsRigidMesh::Create(const DsAnimModel& animModel)
@@ -219,7 +219,7 @@ void DsRigidMesh::Create(const DsAnimModel& animModel)
 
 	_Update(m_initPos, m_initRot);
 
-	m_pCollisionContext = new DsCollisionContext(m_geomInfo.pVertex, m_geomInfo.vn, m_geomInfo.pFace, m_geomInfo.fn,
+	m_pCollisionGeometry = new DsCollisionGeometry(m_geomInfo.pVertex, m_geomInfo.vn, m_geomInfo.pFace, m_geomInfo.fn,
 		m_geomInfo.pLine, m_geomInfo.ln, GetId(), m_physicsInfo.centerOfGravity, NULL, //1フレ前頂点はパフォーマンスのためやらない。
 		m_sideSize, m_pAabbTree, &m_aabb, GetRotation());
 }

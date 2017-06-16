@@ -6,7 +6,7 @@
 #include "DsFace.h"
 #include "DsLine.h"
 #include "Collision/DsCollisionResult.h"
-#include "Collision/DsCollisionContext.h"
+#include "Collision/DsCollisionGeometry.h"
 
 
 using namespace DsPhysics;
@@ -18,7 +18,7 @@ inline double _DsCD_PointFace( const DsVec3d& p, const DsQuad& f, const DsVec3d*
 	return dot;
 }
 
-bool DsPhysics::DsCD_PointFace( const DsCollisionContext* pCube1, const DsCollisionContext* pCube2, DsCollisionResult& info )
+bool DsPhysics::DsCD_PointFace( const DsCollisionGeometry* pCube1, const DsCollisionGeometry* pCube2, DsCollisionResult& info )
 {
 	bool ret = false;
 
@@ -80,7 +80,7 @@ bool DsPhysics::DsCD_PointFace( const DsCollisionContext* pCube1, const DsCollis
 	return ret;
 }
 
-bool DsPhysics::DsCD_PointFace(const DsActorId& p1Id, const DsVec3d& p1, const DsCollisionContext* pCube2, DsCollisionResult& info)
+bool DsPhysics::DsCD_PointFace(const DsActorId& p1Id, const DsVec3d& p1, const DsCollisionGeometry* pCube2, DsCollisionResult& info)
 {
 	bool ret = false;
 
@@ -130,7 +130,7 @@ bool DsPhysics::DsCD_PointFace(const DsActorId& p1Id, const DsVec3d& p1, const D
 }
 
 //位置p1を基準としてpConvexのnormal方向の一番深い深度を求める
-double DsPhysics::DsCD_NormalFaceDepthMax(const DsVec3d& p1, const DsVec3d& normal, const DsCollisionContext* pConvex)
+double DsPhysics::DsCD_NormalFaceDepthMax(const DsVec3d& p1, const DsVec3d& normal, const DsCollisionGeometry* pConvex)
 {
 	double ret = 0.0;
 
@@ -261,7 +261,7 @@ inline bool _DsCD_LineFaceParallel(const DsActorId& p1Id, const DsVec3d& lineV0,
 
 }
 
-bool DsPhysics::DsCD_LineFace( const DsCollisionContext* pCube1, const DsCollisionContext* pCube2, DsCollisionResult& info )
+bool DsPhysics::DsCD_LineFace( const DsCollisionGeometry* pCube1, const DsCollisionGeometry* pCube2, DsCollisionResult& info )
 {
 	bool ret = false;
 
@@ -290,7 +290,7 @@ bool DsPhysics::DsCD_LineFace( const DsCollisionContext* pCube1, const DsCollisi
 }
 
 
-bool DsPhysics::DsCD_LineFaceVelocity(const DsCollisionContext* pCube1, const DsCollisionContext* pCube2, DsCollisionResult& info)
+bool DsPhysics::DsCD_LineFaceVelocity(const DsCollisionGeometry* pCube1, const DsCollisionGeometry* pCube2, DsCollisionResult& info)
 {
 	bool ret = false;
 
@@ -475,7 +475,7 @@ inline bool _DsCD_TriangleFace(const DsActorId& meshActorId, const DsQuad& tri, 
 	return true;//三角形の中に面が完全に入っているときを検知したいので、三角形と面を入れ替えるためtrueを返す
 }
 
-bool DsPhysics::DsCD_TriangleFace(const DsCollisionContext* pMesh, const DsCollisionContext* pCube, DsCollisionResult& info)
+bool DsPhysics::DsCD_TriangleFace(const DsCollisionGeometry* pMesh, const DsCollisionGeometry* pCube, DsCollisionResult& info)
 {
 	bool ret = false;
 

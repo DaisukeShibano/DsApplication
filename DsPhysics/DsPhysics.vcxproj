@@ -196,7 +196,7 @@
     <ClInclude Include="Source\Collision\BoundingTree\DsBoundingTreeAabbColideGroup.h" />
     <ClInclude Include="Source\Collision\BoundingTree\DsBoundingTreeBase.h" />
     <ClInclude Include="Source\Collision\BoundingTree\DsBoundingOctree.h" />
-    <ClInclude Include="Source\Collision\DsCollisionContext.h" />
+    <ClInclude Include="Source\Collision\DsCollisionGeometry.h" />
     <ClInclude Include="Source\Collision\DsCollisionDetection.h" />
     <ClInclude Include="Source\Collision\DsCollisionExecuter.h" />
     <ClInclude Include="Source\Collision\DsCollisionCallback.h" />

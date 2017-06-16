@@ -13,8 +13,8 @@
 #ifndef __DS_LINE__
 #include "DsLine.h"
 #endif
-#ifndef __DS_COLLISION_CONTEXT__
-#include "Collision/DsCollisionContext.h"
+#ifndef __DS_COLLISION_GEOMETRY__
+#include "Collision/DsCollisionGeometry.h"
 #endif
 #ifndef __DS_ACTOR_FACTORY__
 #include "Actor/DsActorFactory.h"
@@ -76,7 +76,7 @@ namespace DsPhysics
 	public:
 		virtual void Update();
 
-		virtual const DsCollisionContext* GetCollContext() const override { return m_pCollisionContext; }
+		virtual const DsCollisionGeometry* GetCollisionGeometry() const override { return m_pCollisionGeometry; }
 
 		virtual const DsVec3d& GetPosition()const override { return m_physicsInfo.pos; }
 		virtual const DsVec3d& GetVelocity()const override { return m_physicsInfo.vel; }
@@ -116,7 +116,7 @@ namespace DsPhysics
 	public:
 		virtual void SetExVelocity(const DsVec3d& v) override { m_exVel = v; }
 
-	public:
+	protected:
 		int GetFaceNum()const { return m_geomInfo.fn; }
 		const DsQuad& GetFace(int fn)const { return m_geomInfo.pFace[fn]; }
 		const DsVec3d* GetVertex()const { return m_geomInfo.pVertex; }
@@ -149,7 +149,7 @@ namespace DsPhysics
 		double m_restTimer;
 
 	protected:
-		DsCollisionContext* m_pCollisionContext;
+		DsCollisionGeometry* m_pCollisionGeometry;
 
 	};
 }

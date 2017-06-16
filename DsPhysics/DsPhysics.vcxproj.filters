@@ -96,9 +96,6 @@
     <ClInclude Include="Source\Collision\DsCollisionResult.h">
       <Filter>Source\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Collision\DsCollisionContext.h">
-      <Filter>Source\Collision</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Common\DsPose.h">
       <Filter>Source\Common</Filter>
     </ClInclude>
@@ -218,6 +215,9 @@
     </ClInclude>
     <ClInclude Include="Source\Actor\DsRigidBody.h">
       <Filter>Source\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\DsCollisionGeometry.h">
+      <Filter>Source\Collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

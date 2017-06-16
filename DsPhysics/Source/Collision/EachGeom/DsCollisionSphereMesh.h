@@ -10,7 +10,7 @@
 
 namespace DsPhysics
 {
-	class DsCollisionContext;
+	class DsCollisionGeometry;
 	class DsPhysicsWorld;
 }
 
@@ -25,7 +25,7 @@ namespace DsPhysics
 			, m_pMesh(NULL)
 			, m_info()
 		{}
-		void Initialize(const DsCollisionContext* pSphere, const DsCollisionContext* pMesh)
+		void Initialize(const DsCollisionGeometry* pSphere, const DsCollisionGeometry* pMesh)
 		{
 			m_pSphere = pSphere;
 			m_pMesh = pMesh;
@@ -40,8 +40,8 @@ namespace DsPhysics
 		bool _ColideAABB();
 
 	private:
-		const DsCollisionContext* m_pSphere;
-		const DsCollisionContext* m_pMesh;
+		const DsCollisionGeometry* m_pSphere;
+		const DsCollisionGeometry* m_pMesh;
 		DsCollisionResult m_info;
 	};
 

@@ -57,7 +57,7 @@ DsRigidBody::DsRigidBody(const DsActorId& id, const char* name)
 , m_aabb()
 , m_sideSize(DsVec3d::Zero())
 , m_restTimer(0)
-, m_pCollisionContext(NULL)
+, m_pCollisionGeometry(NULL)
 {}
 
 

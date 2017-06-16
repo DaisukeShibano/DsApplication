@@ -6,8 +6,8 @@
 #ifndef __DS_COLLISION_DETECTION__
 #include "Collision/DsCollisionDetection.h"
 #endif
-#ifndef __DS_COLLISION_CONTEXT__
-#include "Collision/DsCollisionContext.h"
+#ifndef __DS_COLLISION_GEOMETRY__
+#include "Collision/DsCollisionGeometry.h"
 #endif
 #ifndef __DS_BOUNDING_TREE_BASE__
 #include "Collision/BoundingTree/DsBoundingTreeBase.h"
@@ -41,7 +41,7 @@ namespace
 
 	struct _BoxGeom
 	{
-		_BoxGeom(const DsCollisionContext* pCube)
+		_BoxGeom(const DsCollisionGeometry* pCube)
 			: pContext(pCube)
 			, pos(pCube->GetBasePos())
 		{
@@ -52,7 +52,7 @@ namespace
 			rot[1] = pCube->RefOwnerId().GetActor()->GetRotation().GetAxisY();
 			rot[2] = pCube->RefOwnerId().GetActor()->GetRotation().GetAxisZ();
 		}
-		const DsCollisionContext* pContext;
+		const DsCollisionGeometry* pContext;
 		DsVec3d pos;
 		double size[3];
 		DsVec3d rot[3];
@@ -60,7 +60,7 @@ namespace
 
 	struct _TriGeom
 	{
-		_TriGeom(const DsCollisionContext* pMesh, int faceIdx)
+		_TriGeom(const DsCollisionGeometry* pMesh, int faceIdx)
 			: pContext(pMesh)
 			, pos(pMesh->GetBasePos())
 			, normal(pMesh->GetFace()[faceIdx].normal)
@@ -74,7 +74,7 @@ namespace
 			vE2 = vE1 - vE0;
 			vN = DsVec3d::Cross(vE0, vE1);//Ç±ÇÍó\ÇﬂãÅÇﬂÇ∆Ç´ÇΩÇ¢
 		}
-		const DsCollisionContext* pContext;
+		const DsCollisionGeometry* pContext;
 		DsVec3d pos;
 		DsVec3d normal;
 		DsVec3d v[3];

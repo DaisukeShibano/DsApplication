@@ -6,8 +6,8 @@
 #ifndef __DS_COLLISION_DETECTION__
 #include "Collision/DsCollisionDetection.h"
 #endif
-#ifndef __DS_COLLISION_CONTEXT__
-#include "Collision/DsCollisionContext.h"
+#ifndef __DS_COLLISION_GEOMETRY__
+#include "Collision/DsCollisionGeometry.h"
 #endif
 #ifndef __DS_BOUNDING_TREE_BASE__
 #include "Collision/BoundingTree/DsBoundingTreeBase.h"
@@ -29,7 +29,7 @@ namespace
 	class _TrimeshCapsuleCollider
 	{
 	public:
-		_TrimeshCapsuleCollider(const DsCollisionContext* s)
+		_TrimeshCapsuleCollider(const DsCollisionGeometry* s)
 			:m_pSphere(s)
 		{
 
@@ -507,7 +507,7 @@ namespace
 
 	private:
 		//Å‰‚©‚çÅŒã‚Ü‚Å•Ï‚í‚ç‚È‚­A—\‚ß•ª‚©‚Á‚Ä‚é‚Ì
-		const DsCollisionContext* m_pSphere;
+		const DsCollisionGeometry* m_pSphere;
 		const DsVec3d* m_pV;
 		DsVec3d m_vN;
 		//Š„‚ÆÅ‰‚Ì•û‚É•ª‚©‚èAˆÈ~•Ï‚í‚ç‚È‚¢‚Ì

@@ -60,13 +60,13 @@ DsRigidCapsule::DsRigidCapsule(const DsActorId& id, const char* name )
 ,m_aabb()
 ,m_sideSize(DsVec3d::Zero())
 ,m_restTimer(0)
-,m_pCollisionContext(NULL)
+,m_pCollisionGeometry(NULL)
 {
 }
 
 DsRigidCapsule::~DsRigidCapsule()
 {
-	delete m_pCollisionContext; m_pCollisionContext = NULL;
+	delete m_pCollisionGeometry; m_pCollisionGeometry = NULL;
 }
 
 void DsRigidCapsule::Update()
@@ -139,7 +139,7 @@ void DsRigidCapsule::Create(const double r, const double halfLen, const double m
 
 	_Update(m_initPos, m_initRot);
 
-	m_pCollisionContext = new DsCollisionContext(NULL, 0, NULL, 0,
+	m_pCollisionGeometry = new DsCollisionGeometry(NULL, 0, NULL, 0,
 		NULL, 0, GetId(), m_physicsInfo.centerOfGravity, NULL, m_sideSize, NULL, &m_aabb, GetRotation());
 }
 

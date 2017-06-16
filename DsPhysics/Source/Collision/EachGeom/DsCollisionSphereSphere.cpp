@@ -6,8 +6,8 @@
 #ifndef __DS_COLLISION_DETECTION__
 #include "Collision/DsCollisionDetection.h"
 #endif
-#ifndef __DS_COLLISION_CONTEXT__
-#include "Collision/DsCollisionContext.h"
+#ifndef __DS_COLLISION_GEOMETRY__
+#include "Collision/DsCollisionGeometry.h"
 #endif
 #ifndef __DS_BOUNDING_TREE_BASE__
 #include "Collision/BoundingTree/DsBoundingTreeBase.h"

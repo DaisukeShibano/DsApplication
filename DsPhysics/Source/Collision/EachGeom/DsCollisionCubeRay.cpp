@@ -6,7 +6,7 @@
 #include "Actor/DsRigidCube.h"
 #include "Collision/DsCollisionResult.h"
 #include "Collision/DsCollisionDetection.h"
-#include "Collision/DsCollisionContext.h"
+#include "Collision/DsCollisionGeometry.h"
 #ifndef __DS_COLLISION_CALLBACK__
 #include "Collision/DsCollisionCallback.h"
 #endif

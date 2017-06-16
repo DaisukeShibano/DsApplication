@@ -1,9 +1,9 @@
-#ifndef __DS_COLLISION_CONTEXT__
-#define __DS_COLLISION_CONTEXT__
+#ifndef __DS_COLLISION_GEOMETRY__
+#define __DS_COLLISION_GEOMETRY__
 
 /*
-#ifndef __DS_COLLISION_CONTEXT__
-#include "Collision/DsCollisionContext.h"
+#ifndef __DS_COLLISION_GEOMETRY__
+#include "Collision/DsCollisionGeometry.h"
 #endif
 */
 #ifndef __DS_FACE__
@@ -21,15 +21,15 @@ namespace DsPhysics
 
 namespace DsPhysics
 {
-	class DsCollisionContext
+	class DsCollisionGeometry
 	{
 	public:
 		//@各種Actorで初期化できるコンストラクタ用意する@
-		//DsCollisionContext(const DsRigidCube& rigid);
-		//DsCollisionContext(const DsRigidMesh& mesh);
+		//DsCollisionGeometry(const DsRigidCube& rigid);
+		//DsCollisionGeometry(const DsRigidMesh& mesh);
 		
 
-		DsCollisionContext(const DsVec3d* pVertex, const int vertexNum, const DsQuad* pFace, const int faceNum,
+		DsCollisionGeometry(const DsVec3d* pVertex, const int vertexNum, const DsQuad* pFace, const int faceNum,
 			const DsLine* pLine, const int lineNum, const DsActorId& id, const DsVec3d& basePos, const DsVec3d* pPreVertex,
 			const DsVec3d& side, const DsBoundingTreeBase* pBoungingTree, const DsAabb* pAabb, const DsMat33d& rot)
 			: m_pVertex(pVertex)

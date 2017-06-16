@@ -6,8 +6,8 @@
 #ifndef __DS_COLLISION_DETECTION__
 #include "Collision/DsCollisionDetection.h"
 #endif
-#ifndef __DS_COLLISION_CONTEXT__
-#include "Collision/DsCollisionContext.h"
+#ifndef __DS_COLLISION_GEOMETRY__
+#include "Collision/DsCollisionGeometry.h"
 #endif
 #ifndef __DS_BOUNDING_TREE_BASE__
 #include "Collision/BoundingTree/DsBoundingTreeBase.h"
@@ -112,7 +112,7 @@ namespace
 	@param[out] Õ“Ë”»’èŒ‹‰Ê
 	@return “–‚½‚Á‚Ä‚é‚©
 	*/
-	bool IsColide(const DsCollisionContext* pSphere, DsVec3d normal, const DsVec3d* pVertex, const int vertexNum, _ColideResult& result)
+	bool IsColide(const DsCollisionGeometry* pSphere, DsVec3d normal, const DsVec3d* pVertex, const int vertexNum, _ColideResult& result)
 	{
 		const double radius = pSphere->GetSide().x;
 		const double radiusWithThreshold = radius /*+ contactBreakingThreshold 0.02‚­‚ç‚¢ */;

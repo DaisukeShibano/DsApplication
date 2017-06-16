@@ -7,7 +7,7 @@ namespace DsPhysics
 	struct DsLine;
 	class DsCollisionResult;
 	class DsActorId;
-	class DsCollisionContext;
+	class DsCollisionGeometry;
 }
 
 namespace DsPhysics
@@ -15,7 +15,7 @@ namespace DsPhysics
 	class DsGJK
 	{
 		public:
-			bool CalcColide(const DsCollisionContext& convex1, const DsCollisionContext& convex2);
+			bool CalcColide(const DsCollisionGeometry& convex1, const DsCollisionGeometry& convex2);
 	};
 }
 

@@ -13,8 +13,8 @@
 #ifndef __DS_LINE__
 #include "DsLine.h"
 #endif
-#ifndef __DS_COLLISION_CONTEXT__
-#include "Collision/DsCollisionContext.h"
+#ifndef __DS_COLLISION_GEOMETRY__
+#include "Collision/DsCollisionGeometry.h"
 #endif
 #ifndef __DS_ACTOR_FACTORY__
 #include "Actor/DsActorFactory.h"
@@ -97,7 +97,7 @@ namespace DsPhysics
 	public:
 		virtual DsActor::ACTOR_TYPE GetType() const override{ return DsActor::RIGID_SPHERE; }
 
-		virtual const DsCollisionContext* GetCollContext() const override { return m_pCollisionContext; }
+		virtual const DsCollisionGeometry* GetCollisionGeometry() const override { return m_pCollisionGeometry; }
 
 		virtual void Update() override;
 
@@ -174,7 +174,7 @@ namespace DsPhysics
 		double m_restTimer;
 
 	private:
-		DsCollisionContext* m_pCollisionContext;
+		DsCollisionGeometry* m_pCollisionGeometry;
 
 	};
 }

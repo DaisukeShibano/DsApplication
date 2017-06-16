@@ -50,7 +50,7 @@ DsRigidCube::DsRigidCube(const DsActorId& id, const char* name )
 
 DsRigidCube::~DsRigidCube()
 {
-	delete m_pCollisionContext; m_pCollisionContext = NULL;
+	delete m_pCollisionGeometry; m_pCollisionGeometry = NULL;
 }
 
 void DsRigidCube::Create(const DsVec3d* pv, const double mass )
@@ -165,10 +165,9 @@ void DsRigidCube::Create(const DsVec3d* pv, const double mass )
 
 	_Update(m_initPos, m_initRot);
 
-	m_pCollisionContext = new DsCollisionContext(m_geomInfo.pVertex, VERTEX_NUM, m_geomInfo.pFace, FACE_NUM,
+	m_pCollisionGeometry = new DsCollisionGeometry(m_geomInfo.pVertex, VERTEX_NUM, m_geomInfo.pFace, FACE_NUM,
 		m_geomInfo.pLine, LINE_NUM, GetId(), m_physicsInfo.centerOfGravity, NULL, m_sideSize, NULL, &m_aabb, GetRotation());
 }
-
 
 /*
 	デバッグ用描画

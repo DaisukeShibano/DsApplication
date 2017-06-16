@@ -11,7 +11,7 @@
 namespace DsPhysics
 {
 	class DsRigidCube;
-	class DsCollisionContext;
+	class DsCollisionGeometry;
 	class DsPhysicsWorld;
 }
 
@@ -27,7 +27,7 @@ namespace DsPhysics
 		, m_info()
 		{}
 
-		void Initialize(const DsCollisionContext* pCube, const DsCollisionContext* pRay)
+		void Initialize(const DsCollisionGeometry* pCube, const DsCollisionGeometry* pRay)
 		{
 			m_pCube = pCube;
 			m_pRay = pRay;
@@ -39,8 +39,8 @@ namespace DsPhysics
 		virtual DsCollisionResult& Collide() override;
 
 	private:
-		const DsCollisionContext* m_pCube;
-		const DsCollisionContext* m_pRay;
+		const DsCollisionGeometry* m_pCube;
+		const DsCollisionGeometry* m_pRay;
 		DsCollisionResult m_info;
 
 	};

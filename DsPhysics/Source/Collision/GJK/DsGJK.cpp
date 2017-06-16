@@ -6,13 +6,13 @@
 #include "DsFace.h"
 #include "DsLine.h"
 #include "Collision/DsCollisionResult.h"
-#include "Collision/DsCollisionContext.h"
+#include "Collision/DsCollisionGeometry.h"
 
 
 using namespace DsPhysics;
 
 
-bool DsGJK::CalcColide(const DsCollisionContext& convex1, const DsCollisionContext& convex2)
+bool DsGJK::CalcColide(const DsCollisionGeometry& convex1, const DsCollisionGeometry& convex2)
 {
 	//Œ´“_
 	const DsVec3d origine(0, 0, 0);
