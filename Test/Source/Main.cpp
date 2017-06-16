@@ -26,6 +26,7 @@ private:
 	DsResource m_resource;
 	DsHingeJoint* m_joint;
 	DsHingeJoint* m_joint2;
+	DsAppCollisionCallback m_callback;
 
 	DsCamera m_cam;
 	DsRenderCamCaptureImage* m_pImage;
@@ -43,6 +44,8 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 		DsPhysicsWorld* pWorld = DsPhysicsManager::GetDefaultWorld();
 		if (pWorld)
 		{
+			pWorld->SetCollisionCallback(&m_callback);
+
 			DsActorId act1;
 			DsActorId act2;
 			DsActorId act3;
@@ -138,7 +141,7 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 		for each(DsActor* actor in pWorld->GetActors() )
 		{
 			std::string tmp = actor->GetName();
-			if ((tmp == "” ‚P") || (tmp == "” ‚Q") || (tmp == "” ‚R"))
+			//if ((tmp == "” ‚P") || (tmp == "” ‚Q") || (tmp == "” ‚R"))
 			//if (actor->GetType() == DsActor::RIGID_CUBE)
 			{
 				const double rC = (actor->IsRest()) ? (0.5) : (1.0);

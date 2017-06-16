@@ -17,6 +17,18 @@
 #ifndef _DS_WINDOW_H_
 #include "System/DsWindow.h"
 #endif
+#ifndef _DS_RAGDOLL_
+#include "Ragdoll/DsRagdoll.h"
+#endif
+#ifndef _DS_ANIMATION_H_
+#include "Animation/DsAnimation.h"
+#endif
+#ifndef _DS_AMIM_CUSTOM_PROPERTY_
+#include "Animation/DsAnimCustomProperty.h"
+#endif
+#ifndef _DS_ANIM_RAGDOLL_MODIFIER_
+#include "World/Physics/DsAnimRagdollModifier.h"
+#endif
 
 using namespace DsLib;
 using namespace DsPhysics;
@@ -30,11 +42,14 @@ DsFieldPlayer::DsFieldPlayer(DsSys& sys, DsPhysicsWorld& world)
 	, m_mouse(sys.RefMouse())
 	, m_window(sys.RefWindow())
 	, m_actReq(sys)
+	, m_pRagdoll(NULL)
+	, m_pAnimRagdollModifier(NULL)
 {
 }
 
 DsFieldPlayer::~DsFieldPlayer()
 {
+	delete m_pRagdoll; m_pRagdoll = NULL;
 }
 
 //virtual
@@ -44,6 +59,23 @@ void DsFieldPlayer::Initialize(const InitInfo& initInfo)
 	const DsVec3d pos = DsVec3d(0, 1.5f, -3.5f) + GetPosition();
 	m_cam.SetPos(pos);
 	m_cam.SetRot(GetRotation());
+	const DsAnimCustomProperty* pProperty = m_pAnimation->GetCustomProperty();
+	DsAnimSkeleton* pSkeleton = m_pAnimation->GetSkeleton();
+	if (pProperty && pSkeleton) {
+		m_pRagdoll = new DsRagdoll(pProperty->ragdollParamIds, *pSkeleton, m_world);
+		DS_ASSERT(m_pRagdoll, "ƒƒ‚ƒŠŠm•Û¸”s");
+		std::vector<DsRagdollParts>& partsVec = m_pRagdoll->RefParts();
+		for (DsRagdollParts& parts : partsVec){
+			parts.pActor->SetUserData(this);
+		}
+
+		m_pAnimRagdollModifier = new DsAnimRagdollModifier(*m_pRagdoll);
+		DS_ASSERT(m_pAnimRagdollModifier, "ƒƒ‚ƒŠŠm•Û¸”s");
+
+		m_pAnimation->SetAnimSkeletonModifier(m_pAnimRagdollModifier);
+	}
+
+	m_actorId.GetActor()->SetUserData(this);
 }
 
 //virtual 

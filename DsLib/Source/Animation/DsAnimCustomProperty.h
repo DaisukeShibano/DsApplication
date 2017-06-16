@@ -3,14 +3,16 @@
 
 namespace DsLib
 {
+	struct DsAnimRagdollParamId
+	{
+		int boneIndex;
+		int ragdollParamId;
+	};
+
 	struct DsAnimCustomProperty
 	{
-		struct RagdollParamId
-		{
-			int boneIndex;
-			int ragdollParamId;
-		};
-		std::vector<RagdollParamId> ragdollParamIds;
+		
+		std::vector<DsAnimRagdollParamId> ragdollParamIds;
 	};
 }
 

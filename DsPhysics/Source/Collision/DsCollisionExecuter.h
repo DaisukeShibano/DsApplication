@@ -41,6 +41,7 @@ namespace DsPhysics
 {
 	class DsActor;
 	class DsCollisionResult;
+	class DsPhysicsWorld;
 }
 
 namespace DsPhysics
@@ -51,15 +52,15 @@ namespace DsPhysics
 		static DsCollisionResult m_noCollide;
 
 	public:
-		DsCollisionExecuter()
-			: m_cubeCube()
-			, m_rayCube()
-			, m_cubeMesh()
-			, m_meshRay()
-			, m_sphereMesh()
-			, m_sphereCube()
-			, m_sphereSphere()
-			, m_capsuleMesh()
+		DsCollisionExecuter(const DsPhysicsWorld& world)
+			: m_cubeCube(world)
+			, m_rayCube(world)
+			, m_cubeMesh(world)
+			, m_meshRay(world)
+			, m_sphereMesh(world)
+			, m_sphereCube(world)
+			, m_sphereSphere(world)
+			, m_capsuleMesh(world)
 		{}
 		virtual ~DsCollisionExecuter()
 		{}
@@ -72,73 +73,73 @@ namespace DsPhysics
 			if ((actor1.GetType() == DsActor::RIGID_CUBE) && (actor2.GetType() == DsActor::RIGID_CUBE))
 			{
 				m_cubeCube.Initialize(actor1.GetCollContext(), actor2.GetCollContext());
-				return m_cubeCube.Colide();
+				return m_cubeCube.Collide();
 			}
 
 			//キューブとレイ
 			else if ((actor1.GetType() == DsActor::RIGID_CUBE) && (actor2.GetType() == DsActor::RAY))
 			{
 				m_rayCube.Initialize(actor1.GetCollContext(), actor2.GetCollContext());
-				return m_rayCube.Colide();
+				return m_rayCube.Collide();
 			}
 			else if ((actor2.GetType() == DsActor::RIGID_CUBE) && (actor1.GetType() == DsActor::RAY))
 			{
 				m_rayCube.Initialize(actor1.GetCollContext(), actor2.GetCollContext());
-				return m_rayCube.Colide();
+				return m_rayCube.Collide();
 			}
 
 			//キューブとメッシュ
 			else if ((actor1.GetType() == DsActor::RIGID_CUBE) && (actor2.GetType() == DsActor::RIGID_MESH))
 			{
 				m_cubeMesh.Initialize(actor1.GetCollContext(), actor2.GetCollContext());
-				return m_cubeMesh.Colide();
+				return m_cubeMesh.Collide();
 			}
 			else if ((actor2.GetType() == DsActor::RIGID_CUBE) && (actor1.GetType() == DsActor::RIGID_MESH))
 			{
 				m_cubeMesh.Initialize(actor2.GetCollContext(), actor1.GetCollContext());
-				return m_cubeMesh.Colide();
+				return m_cubeMesh.Collide();
 			}
 
 			//メッシュとレイ
 			else if ((actor1.GetType() == DsActor::RIGID_MESH) && (actor2.GetType() == DsActor::RAY))
 			{
 				m_meshRay.Initialize(actor1.GetCollContext(), actor2.GetCollContext());
-				return m_meshRay.Colide();
+				return m_meshRay.Collide();
 			}
 			else if ((actor2.GetType() == DsActor::RIGID_CUBE) && (actor1.GetType() == DsActor::RAY))
 			{
 				m_meshRay.Initialize(actor2.GetCollContext(), actor1.GetCollContext());
-				return m_meshRay.Colide();
+				return m_meshRay.Collide();
 			}
 
 			//スフィアとスフィア
 			else if ((actor1.GetType() == DsActor::RIGID_SPHERE) && (actor2.GetType() == DsActor::RIGID_SPHERE)){
 				m_sphereSphere.Initialize(actor1.GetCollContext(), actor2.GetCollContext());
-				return m_sphereSphere.Colide();
+				return m_sphereSphere.Collide();
 			}
 
 			//スフィアとメッシュ
 			else if ((actor1.GetType() == DsActor::RIGID_SPHERE) && (actor2.GetType() == DsActor::RIGID_MESH))
 			{
 				m_sphereMesh.Initialize(actor1.GetCollContext(), actor2.GetCollContext());
-				return m_sphereMesh.Colide();
+				return m_sphereMesh.Collide();
 			}
 			else if ((actor1.GetType() == DsActor::RIGID_MESH) && (actor2.GetType() == DsActor::RIGID_SPHERE))
 			{
 				m_sphereMesh.Initialize(actor2.GetCollContext(), actor1.GetCollContext());
-				return m_sphereMesh.Colide();
+				return m_sphereMesh.Collide();
 			}
 
 			//スフィアとキューブ
 			else if ((actor1.GetType() == DsActor::RIGID_SPHERE) && (actor2.GetType() == DsActor::RIGID_CUBE))
 			{
 				m_sphereCube.Initialize(actor1.GetCollContext(), actor2.GetCollContext());
-				return m_sphereCube.Colide();
+				return m_sphereCube.Collide();
 			}
 			else if ((actor1.GetType() == DsActor::RIGID_CUBE) && (actor2.GetType() == DsActor::RIGID_SPHERE))
 			{
 				m_sphereCube.Initialize(actor2.GetCollContext(), actor1.GetCollContext());
-				return m_sphereCube.Colide();
+				return m_sphereCube.Collide();
 			}
 
 
@@ -146,12 +147,12 @@ namespace DsPhysics
 			else if ((actor1.GetType() == DsActor::RIGID_CAPSULE) && (actor2.GetType() == DsActor::RIGID_MESH))
 			{
 				m_capsuleMesh.Initialize(actor1.GetCollContext(), actor2.GetCollContext());
-				return m_capsuleMesh.Colide();
+				return m_capsuleMesh.Collide();
 			}
 			else if ((actor1.GetType() == DsActor::RIGID_MESH) && (actor2.GetType() == DsActor::RIGID_CAPSULE))
 			{
 				m_capsuleMesh.Initialize(actor2.GetCollContext(), actor1.GetCollContext());
-				return m_capsuleMesh.Colide();
+				return m_capsuleMesh.Collide();
 			}
 
 

@@ -3,8 +3,9 @@
 
 namespace DsLib
 {
-	struct DsAnimCustomProperty;
+	struct DsAnimRagdollParamId;
 	class DsAnimSkeleton;
+	struct DsAnimBone;
 }
 
 namespace DsPhysics
@@ -16,16 +17,30 @@ namespace DsPhysics
 
 namespace DsPhysics
 {
+	struct DsRagdollParts
+	{
+		DsActor* pActor;
+		int skeletonBoneIdx;
+		int ragdollParamId;
+	};
+
 	class DsRagdoll
 	{
 	public:
-		DsRagdoll(const DsAnimCustomProperty& customProperty, DsAnimSkeleton& skeleton, DsPhysicsWorld& world);
+		DsRagdoll(const std::vector<DsLib::DsAnimRagdollParamId>& ragdollParamIds, DsAnimSkeleton& skeleton, DsPhysicsWorld& world);
 		virtual ~DsRagdoll();
+
+	public:
+		const std::vector<DsRagdollParts>& RefParts() const { return m_parts; }
+		std::vector<DsRagdollParts>& RefParts() { return m_parts; }
+
+	private:
+		void _ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActor, const DsVec3d attachPos, const std::map<int, DsAnimRagdollParamId>& params);
 
 	private:
 		DsAnimSkeleton& m_animSkeleton;
 		DsPhysicsWorld& m_world;
-		std::vector<DsActor*> m_actors;
+		std::vector<DsRagdollParts> m_parts;
 		std::vector<DsBallJoint*> m_joints;
 	};
 }

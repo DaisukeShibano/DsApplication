@@ -9,7 +9,12 @@
 #ifndef __DS_BALL_CONSTRAINT__
 #include "Constraint/DsBallConstraint.h"
 #endif
-
+#ifndef __DS_CONSTRAINT_SOLVER__
+#include "Constraint/ConstraintSolver/DsConstraintSolver.h"
+#endif
+#ifndef __DS_CONSTRAINT_SOLVER__
+#include "Constraint/ConstraintSolver/DsConstraintSolver.h"
+#endif
 
 using namespace DsPhysics;
 
@@ -48,7 +53,7 @@ void DsBallJoint::AttachJoint(const DsActorId act1, const DsActorId act2, const 
 			m_rot = pMas->GetRotation();
 			m_rotSub = pSub->GetRotation();
 			m_pConstarint->RequestAttach(m_masterId, m_subId, pos, m_rot.GetAxisX(), m_rot.GetAxisY(), m_rot.GetAxisZ(), m_world.GetDt(), DsVec3d::Zero());
-			m_world.RefConstraintSolver().AddConstraint(m_pConstarint);
+			m_world.GetConstraintSolver()->AddConstraint(m_pConstarint);
 			m_isAttach = true;
 		}
 		else
@@ -90,7 +95,7 @@ void DsBallJoint::Update(double dt)
 void DsBallJoint::DetachJoint()
 {
 	m_isAttach = false;
-	m_world.RefConstraintSolver().RemoveConstraint(m_pConstarint);
+	m_world.GetConstraintSolver()->RemoveConstraint(m_pConstarint);
 }
 
 

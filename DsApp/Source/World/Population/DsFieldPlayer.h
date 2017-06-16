@@ -5,9 +5,14 @@
 #include "World/Population/DsFieldChr.h"
 #endif
 
-namespace DsLib
+namespace DsPhysics
 {
-	class DsHitRes;
+	class DsRagdoll;
+}
+
+namespace DsApp
+{
+	class DsAnimRagdollModifier;
 }
 
 namespace DsApp
@@ -33,7 +38,8 @@ namespace DsApp
 		DsLib::DsMouse& m_mouse;
 		DsLib::DsWindow& m_window;
 		DsLib::DsActReq m_actReq;
-
+		DsPhysics::DsRagdoll* m_pRagdoll;
+		DsAnimRagdollModifier* m_pAnimRagdollModifier;
 
 	public:
 		virtual void DbgDraw(DsLib::DsDrawCommand& com);

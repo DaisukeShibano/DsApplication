@@ -11,6 +11,7 @@
 namespace DsPhysics
 {
 	class DsCollisionContext;
+	class DsPhysicsWorld;
 }
 
 namespace DsPhysics
@@ -18,8 +19,9 @@ namespace DsPhysics
 	class DsCollisionSphereMesh : public ICollisionGeom
 	{
 	public:
-		DsCollisionSphereMesh()
-			: m_pSphere(NULL)
+		DsCollisionSphereMesh(const DsPhysicsWorld& world)
+			: ICollisionGeom(world)
+			, m_pSphere(NULL)
 			, m_pMesh(NULL)
 			, m_info()
 		{}
@@ -32,7 +34,7 @@ namespace DsPhysics
 		virtual ~DsCollisionSphereMesh(){}
 
 	public:
-		virtual DsCollisionResult& Colide();
+		virtual DsCollisionResult& Collide() override;
 
 	private:
 		bool _ColideAABB();

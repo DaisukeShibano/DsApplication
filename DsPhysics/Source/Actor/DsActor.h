@@ -106,6 +106,7 @@ namespace DsPhysics
 			,m_id(id)
 			,m_lifeTime(1)
 			,m_dt(0.0)
+			,m_pUserData(NULL)
 			,m_pOctreeNodeActorNext(NULL)
 
 			,m_dbgColor(DsVec4d::Zero())
@@ -152,16 +153,16 @@ namespace DsPhysics
 
 	public:
 		virtual const char* GetName() const { static char dummy[] = ""; return dummy; }
-		std::string GetNameStr() const { std::string ret = GetName(); return ret; }
+		std::string GetNameString() const { std::string ret = GetName(); return ret; }
 
 	public:
 		virtual void SetPosition(const DsVec3d& pos){};//配置などで使う
 		virtual void SetRotation(const DsMat33d& rot){};//配置などで使う
-		virtual void SetVelocity(const DsVec3d& v){};//あんまり使わない想定
-		virtual void SetAngularVelocity(const DsVec3d& v){};//あんまり使わない想定
-		virtual void AddVelocity(const DsVec3d& v){};//あんまり使わない想定
-		virtual void AddAngularVelocity(const DsVec3d& v){};//あんまり使わない想定
-		virtual void SetForce(const DsVec3d& f){};//あんまり使わない想定。AddForceの方で。
+		virtual void SetVelocity(const DsVec3d& v){};//あんまり使わない想定。AddForceで。
+		virtual void SetAngularVelocity(const DsVec3d& v){};//あんまり使わない想定。AddTorqueで
+		virtual void AddVelocity(const DsVec3d& v){};//あんまり使わない想定。AddForceで。
+		virtual void AddAngularVelocity(const DsVec3d& v){};//あんまり使わない想定。AddTorqueで
+		virtual void SetForce(const DsVec3d& f){};//あんまり使わない想定。AddForceで。
 		virtual void SetMaterial(const DsActorMaterial& material){}
 
 	public:
@@ -182,12 +183,11 @@ namespace DsPhysics
 		void SetRestContagion(bool isRest){ m_isRestContagion = isRest; }
 
 	public:
-		//void AddConstraint(IConstraint* constraint){ m_constraints.push_back(constraint); }
-		//void GetConstraint(std::vector<IConstraint*>& constraints) const{ constraints = m_constraints; }
-		//void ClearConstraint(){ m_constraints.clear(); }
+		void* GetUserData() { return m_pUserData; }
+		const void* GetUserData() const { return m_pUserData; }
+		void SetUserData(void *pData) { m_pUserData = pData; }
 
 	public://空間分割用
-		//頻繁に書き換わることが想定されたユーザーデータ
 		void SetOctreeNodeNext(const DsActor* pActor){ m_pOctreeNodeActorNext = pActor; }
 		const DsActor* GetOctreeNodeNext() const { return m_pOctreeNodeActorNext; }
 
@@ -208,8 +208,9 @@ namespace DsPhysics
 		DsActorId m_id;
 		long int m_lifeTime;
 		double m_dt;
+		void* m_pUserData;
 
-	private://空間分割用
+	private://空間分割用。actorに持つのは微妙だけど
 		const DsActor* m_pOctreeNodeActorNext;
 
 	public:

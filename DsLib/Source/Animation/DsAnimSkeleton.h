@@ -10,6 +10,7 @@ namespace DsLib
 			, child()
 			, name()
 			, localPose({ 0 })
+			, worldPose({ 0 })
 			, initWorldPose({ 0 })
 			, initParentToChildPose({ 0 })
 			, arrayIdx(-1)
@@ -32,6 +33,7 @@ namespace DsLib
 		std::vector<DsAnimBone*> child;
 		std::string name;
 		DsMat44d localPose;
+		DsMat44d worldPose;
 		DsMat44d initParentToChildPose;//親→自分への変換行列
 		DsMat44d initWorldPose;
 		int arrayIdx;
@@ -41,18 +43,16 @@ namespace DsLib
 		double* pWeight;
 	};
 
+
 	class DsAnimSkeleton
 	{
-	public:
-		typedef std::vector<DsAnimBone*> Bones;
-
 	public:
 		DsAnimSkeleton(const std::vector<DsAnimBone*>& pRootBone, const std::vector<DsAnimBone*>& boneArray);
 		virtual ~DsAnimSkeleton();
 
 	public:
-		const Bones& RefRootBone() const{ return  m_pRootBone; }
-		Bones& RefBoneArray() { return  m_boneArray; }
+		const std::vector<DsAnimBone*>& RefRootBone() const{ return  m_pRootBone; }
+		std::vector<DsAnimBone*>& RefBoneArray() { return  m_boneArray; }
 		const DsVec3d& GetRootPos() const { return m_rootPos; }
 		void SetRootPos(const DsVec3d& p){ m_rootPos = p; }
 		const DsMat33d& GetRootRot() const { return m_rootRot; }
@@ -78,8 +78,8 @@ namespace DsLib
 		}
 
 	private:
-		Bones m_pRootBone;
-		Bones m_boneArray;//配列アクセス用。最初からこっち使う方がよかったかも。
+		std::vector<DsAnimBone*> m_pRootBone;
+		std::vector<DsAnimBone*> m_boneArray;//配列アクセス用。最初からこっち使う方がよかったかも。
 		DsVec3d m_rootPos;
 		DsMat33d m_rootRot;
 

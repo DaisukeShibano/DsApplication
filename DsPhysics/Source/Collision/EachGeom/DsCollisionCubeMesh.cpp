@@ -12,6 +12,12 @@
 #ifndef __DS_BOUNDING_TREE_BASE__
 #include "Collision/BoundingTree/DsBoundingTreeBase.h"
 #endif
+#ifndef __DS_COLLISION_CALLBACK__
+#include "Collision/DsCollisionCallback.h"
+#endif
+#ifndef __DS_PHYSICS_WORLD__
+#include "DsPhysicsWorld.h"
+#endif
 
 using namespace DsPhysics;
 
@@ -671,11 +677,18 @@ namespace
 	}
 }
 
-DsCollisionResult& DsCollisionCubeMesh::Colide()
+DsCollisionResult& DsCollisionCubeMesh::Collide()
 {
 	//return m_info;
 	m_info.Clear();
 	if (_ColideAABB()){
+
+		if (m_world.GetCollisionCallback()) {
+			if (!m_world.GetCollisionCallback()->IsCollide(*m_pMesh->RefOwnerId().GetActor(), *m_pCube->RefOwnerId().GetActor())) {
+				return m_info;
+			}
+		}
+
 		return _ColideFinal();
 	}
 	return m_info;
@@ -683,15 +696,13 @@ DsCollisionResult& DsCollisionCubeMesh::Colide()
 
 DsCollisionResult& DsCollisionCubeMesh::_ColideFinal()
 {
-	if (_ColideAABB()){
-		_BoxGeom box(m_pCube);
-		const int faceNum = m_pMesh->GetFaceNum();
-		for (int fi = 0; fi < faceNum; ++fi){
-			_TriGeom tri(m_pMesh, fi);
-			const _ResultSeparateAxis spa = _CalcSeparateAxis(box, tri);
-			if (spa.isColide){
-				_IsCldClipping(spa, box, tri, m_info);
-			}
+	_BoxGeom box(m_pCube);
+	const int faceNum = m_pMesh->GetFaceNum();
+	for (int fi = 0; fi < faceNum; ++fi){
+		_TriGeom tri(m_pMesh, fi);
+		const _ResultSeparateAxis spa = _CalcSeparateAxis(box, tri);
+		if (spa.isColide){
+			_IsCldClipping(spa, box, tri, m_info);
 		}
 	}
 	

@@ -45,6 +45,8 @@ using namespace DsLib;
 #ifndef _DS_HINGE_JOINT_
 #include "Joint/DsHingeJoint.h"
 #endif
-
+#ifndef _DS_RAGDOLL_
+#include "Ragdoll/DsRagdoll.h"
+#endif
 
 #endif

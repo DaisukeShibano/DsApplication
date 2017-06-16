@@ -12,6 +12,10 @@
 #ifndef __DS_BOUNDING_OCTREE__
 #include "Collision/BoundingTree/DsBoundingOctree.h"
 #endif
+#ifndef __DS_CONSTRAINT_SOLVER__
+#include "Constraint/ConstraintSolver/DsConstraintSolver.h"
+#endif
+
 using namespace DsPhysics;
 
 static const int ITERATION_NUM = 4;
@@ -22,7 +26,7 @@ DsCollisionListener::DsCollisionListener( DsPhysicsWorld& world )
 ,m_pColExecuter(NULL)
 ,m_pBoundingTree(NULL)
 {
-	m_pColExecuter = new DsCollisionExecuter();
+	m_pColExecuter = new DsCollisionExecuter(world);
 	m_pBoundingTree = new DsBoundingOctree();
 	m_pBoundingTree->CreateTree(64);
 }
@@ -38,7 +42,7 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 	//group.SortActor();//積み重なったときに安定するように。iteration増やしたほうがマシかも
 	const int totalActTNum = group.GetActorNumber();
 	DsActor** pActors = group.GetActors();
-	DsConstraintSolver& solver = m_world.RefConstraintSolver();
+	DsConstraintSolver* pSolver = m_world.GetConstraintSolver();
 
 	if (_IsUseBoundingGroup(totalActTNum))
 	{
@@ -90,7 +94,7 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 								if (!isSkip) {
 									const DsCollisionResult& result = m_pColExecuter->Exe(*pActor, *pParent);
 									if (0 < result.GetColNum()) {
-										solver.AddCollision(result);
+										pSolver->AddCollision(result);
 									}
 								}
 								//同空間の次のactorへ
@@ -112,7 +116,7 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 							if (!isSkip){
 								const DsCollisionResult& result = m_pColExecuter->Exe(*pActor, *pNextActor);
 								if (0 < result.GetColNum()){
-									solver.AddCollision(result);
+									pSolver->AddCollision(result);
 								}
 							}
 							pNextActor = pNextActor->GetOctreeNodeNext();
@@ -156,7 +160,7 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 					{
 						const DsCollisionResult& result = m_pColExecuter->Exe(*pActors[actIdx_1], *pActors[actIdx_2]);
 						if (0 < result.GetColNum()){
-							solver.AddCollision(result);
+							pSolver->AddCollision(result);
 						}
 					}
 				}
@@ -173,7 +177,7 @@ void DsCollisionListener::Cast( const DsActor& actor, const DsCollisionGroup& gr
 
 	for(int actIdx = 0; actNum > actIdx; ++actIdx)
 	{
-		DsCollisionExecuter executor;
+		DsCollisionExecuter executor(m_world);
 		const DsCollisionResult& result =  executor.Exe( *pActors[actIdx], actor );
 
 		if( result.GetColNum() > 0 )

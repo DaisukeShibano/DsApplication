@@ -7,6 +7,9 @@
 #ifndef __DS_HINGE_CONSTRAINT__
 #include "Constraint/DsHingeConstraint.h"
 #endif
+#ifndef __DS_CONSTRAINT_SOLVER__
+#include "Constraint/ConstraintSolver/DsConstraintSolver.h"
+#endif
 
 using namespace DsPhysics;
 
@@ -63,7 +66,7 @@ void DsHingeJoint::AttachJoint(const DsActorId act1, const DsActorId act2, const
 
 			m_pConstarint->RequestAttach(m_masterId, m_subId, pos, cX, cY, cZ, m_world.GetDt(), DsVec3d::Zero());
 			m_pConstarint->SetAxis(cZ, cZ);
-			m_world.RefConstraintSolver().AddConstraint(m_pConstarint);
+			m_world.GetConstraintSolver()->AddConstraint(m_pConstarint);
 
 			
 			m_isAttach = true;
@@ -78,7 +81,7 @@ void DsHingeJoint::AttachJoint(const DsActorId act1, const DsActorId act2, const
 void DsHingeJoint::DetachJoint()
 {
 	m_isAttach = false;
-	m_world.RefConstraintSolver().RemoveConstraint(m_pConstarint);
+	m_world.GetConstraintSolver()->RemoveConstraint(m_pConstarint);
 }
 
 //virtual

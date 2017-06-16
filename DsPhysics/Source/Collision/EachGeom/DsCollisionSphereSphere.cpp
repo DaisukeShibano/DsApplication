@@ -12,16 +12,28 @@
 #ifndef __DS_BOUNDING_TREE_BASE__
 #include "Collision/BoundingTree/DsBoundingTreeBase.h"
 #endif
+#ifndef __DS_COLLISION_CALLBACK__
+#include "Collision/DsCollisionCallback.h"
+#endif
+#ifndef __DS_PHYSICS_WORLD__
+#include "DsPhysicsWorld.h"
+#endif
 
 using namespace DsPhysics;
 
 
 
-DsCollisionResult& DsCollisionSphereSphere::Colide()
+DsCollisionResult& DsCollisionSphereSphere::Collide()
 {
 	m_info.Clear();
 	//if (_ColideAABB())//‘½•ª‚â‚ç‚È‚¢‚Ù‚¤‚ª‚¨“¾
 	{
+		if (m_world.GetCollisionCallback()) {
+			if (!m_world.GetCollisionCallback()->IsCollide(*m_pSphere1->RefOwnerId().GetActor(), *m_pSphere2->RefOwnerId().GetActor())) {
+				return m_info;
+			}
+		}
+
 		const DsVec3d dist = m_pSphere1->GetBasePos() - m_pSphere2->GetBasePos();
 		const double lenSq = dist.LengthSq();
 		const double r1 = m_pSphere1->GetSide().x;

@@ -13,6 +13,7 @@ namespace DsPhysics
 	class DsRigidMesh;
 	class DsRay;
 	class DsCollisionContext;
+	class DsPhysicsWorld;
 }
 
 namespace DsPhysics
@@ -20,8 +21,9 @@ namespace DsPhysics
 	class DsCollisionMeshRay : public ICollisionGeom
 	{
 	public:
-		DsCollisionMeshRay()
-			: m_pMesh(NULL)
+		DsCollisionMeshRay(const DsPhysicsWorld& world)
+			: ICollisionGeom(world)
+			, m_pMesh(NULL)
 			, m_pRay(NULL)
 			, m_info()
 		{}
@@ -32,7 +34,7 @@ namespace DsPhysics
 			m_info.Clear();
 		}
 		virtual ~DsCollisionMeshRay(){}
-		virtual DsCollisionResult& Colide();
+		virtual DsCollisionResult& Collide() override;
 
 	private:
 		const DsCollisionContext* m_pMesh;

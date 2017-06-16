@@ -11,6 +11,12 @@
 #ifndef _DS_JOINT_
 #include "Joint/DsJoint.h"
 #endif
+#ifndef __DS_COLLISION_LISTENER__
+#include "Collision/DsCollisionListener.h"
+#endif 
+#ifndef __DS_CONSTRAINT_SOLVER__
+#include "Constraint/ConstraintSolver/DsConstraintSolver.h"
+#endif
 
 using namespace DsPhysics;
 
@@ -30,15 +36,20 @@ DsPhysicsWorldSetting DsPhysicsWorldSetting::Default()
 
 
 DsPhysicsWorld::DsPhysicsWorld(const DsPhysicsWorldSetting setting)
-	: m_listener(*this)
+	: m_pListener(NULL)
 	, m_group()
 	, m_actors()
 	, m_joints()
 	, m_setting(setting)
-	, m_constraintSolver(*this)
+	, m_pConstraintSolver(NULL)
+	, m_pCollisionCallback(NULL)
 	, m_isGravity(true)
 	, m_gravity(0, -setting.GetGravity(), 0)
 {
+	m_pListener = new DsCollisionListener(*this);
+	DS_ASSERT(m_pListener, "ƒƒ‚ƒŠŠm•ÛŽ¸”s");
+	m_pConstraintSolver = new DsConstraintSolver(*this);
+	DS_ASSERT(m_pConstraintSolver, "ƒƒ‚ƒŠŠm•ÛŽ¸”s");
 	m_actors.clear();
 };
 
@@ -112,7 +123,7 @@ void DsPhysicsWorld::Update(double dt)
 	
 	_UpdateActor();
 
-	m_listener.Collide(m_group);
+	m_pListener->Collide(m_group);
 
 	_DeleteNoLifeActor();
 }
@@ -138,8 +149,8 @@ void DsPhysicsWorld::_UpdateJoint(double dt)
 
 void DsPhysicsWorld::_UpdateConstraint(double dt)
 {
-	const int iteNum = m_constraintSolver.GetIterationNum();
-	m_constraintSolver.Solve(iteNum, dt);
+	const int iteNum = m_pConstraintSolver->GetIterationNum();
+	m_pConstraintSolver->Solve(iteNum, dt);
 }
 
 void DsPhysicsWorld::_UpdateActor()
@@ -211,7 +222,7 @@ DsActor*  DsPhysicsWorld::RayCast_CollectNear(const DsVec3d& startPos, const DsV
 	ray.Create(startPos, endPos);
 
 	resultVec results;
-	m_listener.Cast(ray, m_group, results);
+	m_pListener->Cast(ray, m_group, results);
 
 	DsActorId retId;
 	double minLen = DsMathUtil::DS_INFINITY_D;

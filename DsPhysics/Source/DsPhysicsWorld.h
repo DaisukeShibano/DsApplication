@@ -1,9 +1,6 @@
 #ifndef __DS_PHYSICS_WORLD__
 #define __DS_PHYSICS_WORLD__
 
-#ifndef __DS_COLLISION_LISTENER__
-#include "Collision/DsCollisionListener.h"
-#endif 
 #ifndef __DS_COLLISION_GROUP__
 #include "Collision/DsCollisionGroup.h"
 #endif
@@ -13,15 +10,15 @@
 #ifndef __ICONSTRAINT__
 #include "Constraint/IConstraint.h"
 #endif
-#ifndef __DS_CONSTRAINT_SOLVER__
-#include "Constraint/ConstraintSolver/DsConstraintSolver.h"
-#endif
 
 namespace DsPhysics
 {
 	class DsActorFactory;
-	class DsJoint;
 	class DsJointFactory;
+	class DsJoint;
+	class DsCollisionListener;
+	class DsConstraintSolver;
+	class DsCollisionCallback;
 }
 
 namespace DsPhysics
@@ -69,9 +66,13 @@ namespace DsPhysics
 
 	public:
 		//拘束ソルバーの取得
-		DsConstraintSolver& RefConstraintSolver(){ return m_constraintSolver; }
-		const DsConstraintSolver& RefConstraintSolver() const { return m_constraintSolver; }
+		DsConstraintSolver* GetConstraintSolver() { return m_pConstraintSolver; }
+		const DsConstraintSolver* GetConstraintSolver() const { return m_pConstraintSolver; }
 
+	public:
+		//衝突コールバック登録
+		void SetCollisionCallback(DsCollisionCallback* pCallback) { m_pCollisionCallback = pCallback; }
+		const DsCollisionCallback* GetCollisionCallback() const { return m_pCollisionCallback; }
 	
 	private:
 		void _ApplyGravity();
@@ -81,12 +82,13 @@ namespace DsPhysics
 		void _DeleteNoLifeActor();
 
 	private:
-		DsCollisionListener m_listener;
+		DsCollisionListener* m_pListener;
 		DsCollisionGroup m_group;
 		Actors m_actors;
 		Joints m_joints;
 		DsPhysicsWorldSetting m_setting;
-		DsConstraintSolver m_constraintSolver;
+		DsConstraintSolver* m_pConstraintSolver;
+		DsCollisionCallback* m_pCollisionCallback;
 
 	private:
 		bool m_isGravity;

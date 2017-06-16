@@ -1,7 +1,7 @@
 #ifndef _DS_BALL_JOINT_H_
 #define _DS_BALL_JOINT_H_
 
-#ifndef __DS_ACTOR__
+#ifndef _DS_JOINT_
 #include "Joint/DsJoint.h"
 #endif
 

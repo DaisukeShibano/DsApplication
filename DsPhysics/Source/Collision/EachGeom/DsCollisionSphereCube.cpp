@@ -12,6 +12,12 @@
 #ifndef __DS_BOUNDING_TREE_BASE__
 #include "Collision/BoundingTree/DsBoundingTreeBase.h"
 #endif
+#ifndef __DS_COLLISION_CALLBACK__
+#include "Collision/DsCollisionCallback.h"
+#endif
+#ifndef __DS_PHYSICS_WORLD__
+#include "DsPhysicsWorld.h"
+#endif
 
 using namespace DsPhysics;
 
@@ -96,10 +102,17 @@ namespace
 }
 
 
-DsCollisionResult& DsCollisionSphereCube::Colide()
+DsCollisionResult& DsCollisionSphereCube::Collide()
 {
 	m_info.Clear();
 	if (_ColideAABB()){
+
+		if (m_world.GetCollisionCallback()) {
+			if (!m_world.GetCollisionCallback()->IsCollide(*m_pSphere->RefOwnerId().GetActor(), *m_pCube->RefOwnerId().GetActor())) {
+				return m_info;
+			}
+		}
+
 		_ColideResult result;
 		if (dCollideSphereBox(m_pSphere, m_pCube, result)) {
 			const DsActorId& o1 = m_pSphere->RefOwnerId();

@@ -30,5 +30,8 @@
 #ifndef _DS_POPULATION_CREATOR_H_
 #include "World/Population/Creator/DsPopulationCreator.h"
 #endif
+#ifndef __DS_APP_COLLISION_CALLBACK__
+#include "World/Physics/DsAppCollisionCallback.h"
+#endif
 
 #endif

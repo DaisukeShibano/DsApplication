@@ -38,6 +38,9 @@ namespace
 
 	void _Mapping(const DsAnimBone* bone, const DsMat33d& bRot, const DsVec3d& bPos, DsVec4d* vertex, const DsVec4d* srcVertex)
 	{
+		DsAnimBone* pTest = (DsAnimBone*)bone;
+		pTest->worldPose = DsMat44d::Get(bRot, bPos);
+
 		for (int idx = 0; idx < bone->vIndexNum; ++idx)
 		{	
 			const DsVec3d srcV = srcVertex[bone->pIndex[idx]];
@@ -86,7 +89,7 @@ void DsSkinMesh::ApplySkeleton(const DsAnimSkeleton& skeleton)
 	//	s_weigth[i] = 0.0;//デバッグ用
 	//}
 	
-	const DsAnimSkeleton::Bones& roots = skeleton.RefRootBone();
+	const std::vector<DsAnimBone*>& roots = skeleton.RefRootBone();
 	if (roots.empty())
 	{
 		//骨がない場合はRootが適用されないので別途処理

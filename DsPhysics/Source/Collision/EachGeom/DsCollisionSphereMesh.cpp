@@ -12,7 +12,12 @@
 #ifndef __DS_BOUNDING_TREE_BASE__
 #include "Collision/BoundingTree/DsBoundingTreeBase.h"
 #endif
-
+#ifndef __DS_COLLISION_CALLBACK__
+#include "Collision/DsCollisionCallback.h"
+#endif
+#ifndef __DS_PHYSICS_WORLD__
+#include "DsPhysicsWorld.h"
+#endif
 using namespace DsPhysics;
 
 
@@ -189,12 +194,18 @@ namespace
 }
 
 
-DsCollisionResult& DsCollisionSphereMesh::Colide()
+DsCollisionResult& DsCollisionSphereMesh::Collide()
 {
 	m_info.Clear();
 	if (_ColideAABB()){
 		const DsActorId& o1 = m_pSphere->RefOwnerId();
 		const DsActorId& o2 = m_pMesh->RefOwnerId();
+
+		if (m_world.GetCollisionCallback()) {
+			if (!m_world.GetCollisionCallback()->IsCollide(*o1.GetActor(), *o2.GetActor())) {
+				return m_info;
+			}
+		}
 
 		const double r = m_pSphere->GetSide().x;
 		const DsVec3d& sPos = m_pSphere->GetBasePos();

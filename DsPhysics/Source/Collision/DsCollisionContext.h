@@ -24,6 +24,11 @@ namespace DsPhysics
 	class DsCollisionContext
 	{
 	public:
+		//@各種Actorで初期化できるコンストラクタ用意する@
+		//DsCollisionContext(const DsRigidCube& rigid);
+		//DsCollisionContext(const DsRigidMesh& mesh);
+		
+
 		DsCollisionContext(const DsVec3d* pVertex, const int vertexNum, const DsQuad* pFace, const int faceNum,
 			const DsLine* pLine, const int lineNum, const DsActorId& id, const DsVec3d& basePos, const DsVec3d* pPreVertex,
 			const DsVec3d& side, const DsBoundingTreeBase* pBoungingTree, const DsAabb* pAabb, const DsMat33d& rot)

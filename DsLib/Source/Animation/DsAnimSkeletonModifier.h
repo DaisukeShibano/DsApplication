@@ -9,6 +9,9 @@ namespace DsLib
 
 namespace DsLib
 {
+	/*
+	@brief アニメボーンを加工する
+	*/
 	class DsAnimSkeletonModifier
 	{
 	public:

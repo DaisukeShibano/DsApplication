@@ -168,7 +168,6 @@ void DsRigidBodyCube::Create(const DsVec3d* pv, const double mass )
 		//pi.centerOfGravity = _GetCenterOfGravity(gi.vertex, DsRigidBodyGeometryInfo::VERTEX_NUM);
 		pi.centerOfGravity = GetPosition();
 
-		
 		//AABB
 		DsVec3d maxLen = DsVec3d::Zero();
 		for (int i = 0; i < DsRigidBodyGeometryInfo::VERTEX_NUM; ++i)

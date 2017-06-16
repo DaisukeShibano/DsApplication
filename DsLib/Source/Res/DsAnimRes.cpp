@@ -885,7 +885,7 @@ void DsAnimRes::Initialize(const char* path)
 }
 
 //子ボーン
-void DsAnimRes::_CreateBone(DsAnimBone* pParent, const void* pParentSrcData, std::vector<DsAnimBone*> boneArray) const
+void DsAnimRes::_CreateBone(DsAnimBone* pParent, const void* pParentSrcData, std::vector<DsAnimBone*>& boneArray) const
 {
 	const DS_BONE* pParentSrc = static_cast<const DS_BONE*>(pParentSrcData);
 	const OutputRes* pRes = static_cast<OutputRes*>(m_resTop);
@@ -905,6 +905,7 @@ void DsAnimRes::_CreateBone(DsAnimBone* pParent, const void* pParentSrcData, std
 		const DsVec3d localPos = pBone->initWorldPose.GetPos() - parentWorldMat.GetPos();
 		const DsMat33d localMat = parentWorldMat.ToMat33().ToTransposition()*pBone->initWorldPose.ToMat33();
 		pBone->localPose = DsMat44d::Identity();
+		pBone->worldPose = DsMat44d::Identity();
 		pBone->initParentToChildPose = DsMat44d::Get(localMat, localPos);
 		pBone->arrayIdx = tmpIdx;	//配列でのインデックス保存
 		pBone->vIndexNum = tmp->indexNum;
@@ -945,6 +946,7 @@ DsAnimSkeleton* DsAnimRes::CreateSkeleton() const
 			DsAnimBone* root = new DsAnimBone;
 			root->name = rootSrc->name;
 			root->localPose = DsMat44d::Identity();
+			root->worldPose = DsMat44d::Identity();
 			root->initParentToChildPose = DsMat44d::Identity();
 			root->initWorldPose = rootSrc->initMat.m;
 			root->arrayIdx = bIdx;
@@ -1153,7 +1155,7 @@ DsAnimCustomProperty* DsAnimRes::CustomProperty() const
 		ret->ragdollParamIds.reserve(num);
 		for (int i = 0; i < num; ++i) {
 			const DS_RAGDOLL_PARAM_ID& id = pRes->dsCustomProperty.pRagdollParamId[i];
-			DsAnimCustomProperty::RagdollParamId param;
+			DsAnimRagdollParamId param;
 			param.boneIndex = id.boneIdx;
 			param.ragdollParamId = id.id;
 			ret->ragdollParamIds.push_back(param);

@@ -198,6 +198,7 @@
     <ClInclude Include="Source\Collision\DsCollisionContext.h" />
     <ClInclude Include="Source\Collision\DsCollisionDetection.h" />
     <ClInclude Include="Source\Collision\DsCollisionExecuter.h" />
+    <ClInclude Include="Source\Collision\DsCollisionCallback.h" />
     <ClInclude Include="Source\Collision\DsCollisionGroup.h" />
     <ClInclude Include="Source\Collision\DsCollisionListener.h" />
     <ClInclude Include="Source\Collision\DsCollisionResult.h" />

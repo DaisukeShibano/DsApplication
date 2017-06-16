@@ -37,6 +37,8 @@ namespace DsLib
 		const DsMat33d& GetRotation() const;
 		const DsAnimCustomProperty* GetCustomProperty() const { return m_pCustomProperty; }
 		void SetAnimSkeletonModifier(DsAnimSkeletonModifier* pModifier) { m_animModifier = pModifier; }
+		DsAnimSkeleton* GetSkeleton() { return m_pSkeleton; }
+		const DsAnimSkeleton* GetSkeleton() const { return m_pSkeleton; }
 
 	private:
 		DsAnimModel* _GetAnimModel();

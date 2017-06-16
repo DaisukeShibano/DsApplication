@@ -4,13 +4,19 @@
 namespace DsPhysics
 {
 	class DsCollisionResult;
+	class DsPhysicsWorld;
 }
 
 namespace DsPhysics
 {
 	class ICollisionGeom
 	{
-		virtual DsCollisionResult& Colide() = 0;
+	public:
+		ICollisionGeom(const DsPhysicsWorld& world) :m_world(world) {}
+		virtual DsCollisionResult& Collide() = 0;
+
+	protected:
+		const DsPhysicsWorld& m_world;
 	};
 }
 

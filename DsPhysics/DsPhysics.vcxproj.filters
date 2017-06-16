@@ -213,6 +213,9 @@
     <ClInclude Include="Source\Res\Param\DsRagdollParam.h">
       <Filter>Source\Res\Param</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Collision\DsCollisionCallback.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsPhysicsManager.cpp">

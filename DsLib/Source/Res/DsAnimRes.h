@@ -33,7 +33,7 @@ namespace DsLib
 
 
 	private:
-		void _CreateBone(DsAnimBone* pParent, const void* pParentSrcData, std::vector<DsAnimBone*> boneArray) const;
+		void _CreateBone(DsAnimBone* pParent, const void* pParentSrcData, std::vector<DsAnimBone*>& boneArray) const;
 
 	private:
 		void* m_resTop;

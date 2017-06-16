@@ -7,6 +7,13 @@
 #ifndef __DS_COLLISION_DETECTION__
 #include "Collision/DsCollisionDetection.h"
 #endif
+#ifndef __DS_COLLISION_CALLBACK__
+#include "Collision/DsCollisionCallback.h"
+#endif
+#ifndef __DS_PHYSICS_WORLD__
+#include "DsPhysicsWorld.h"
+#endif
+
 using namespace DsPhysics;
 
 namespace
@@ -160,7 +167,7 @@ namespace
 
 
 
-DsCollisionResult& DsCollisionCubeCube::Colide()
+DsCollisionResult& DsCollisionCubeCube::Collide()
 {
 	//return m_info;
 	DS_ASSERT(m_pCube1, "衝突オーナー1がNULL");
@@ -170,6 +177,11 @@ DsCollisionResult& DsCollisionCubeCube::Colide()
 	m_info.Clear();
 	const bool isContain = DsAabb::IsContain(*m_pCube1->GetAabb(), *m_pCube2->GetAabb());
 	if (isContain){
+		if (m_world.GetCollisionCallback()) {
+			if (!m_world.GetCollisionCallback()->IsCollide(*m_pCube1->RefOwnerId().GetActor(), *m_pCube2->RefOwnerId().GetActor())) {
+				return m_info;
+			}
+		}
 		return _ColideFinal();
 	}
 
@@ -192,8 +204,8 @@ DsCollisionResult& DsCollisionCubeCube::_ColideFinal()
 	めり込み量は衝突点のめり込み量
 	方向は分離軸
 	*/
-	const DsVec3d& sideA = m_pCube1->GetSide();
-	const DsVec3d& sideB = m_pCube2->GetSide();
+	const DsVec3d sideA = m_pCube1->GetSide();
+	const DsVec3d sideB = m_pCube2->GetSide();
 	const DsVec3d Ra[3] = {
 		m_pCube1->GetRot().GetAxisX(),
 		m_pCube1->GetRot().GetAxisY(),
@@ -487,12 +499,4 @@ DsCollisionResult& DsCollisionCubeCube::_ColideFinal()
 	}
 
 	return m_info;
-}
-
-bool DsCollisionCubeCube::_ColideAABB()
-{
-	const DsAabb& aabb1 = m_pCube1->RefOwnerId().GetActor()->RefAabb();
-	const DsAabb& aabb2 = m_pCube2->RefOwnerId().GetActor()->RefAabb();
-	const bool ret = DsAabb::IsContain(aabb1, aabb2);
-	return ret;
 }

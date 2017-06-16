@@ -12,6 +12,7 @@ namespace DsPhysics
 {
 	class DsRigidBodyCube;
 	class DsCollisionContext;
+	class DsPhysicsWorld;
 }
 
 namespace DsPhysics
@@ -19,8 +20,9 @@ namespace DsPhysics
 	class DsCollisionCubeRay : public ICollisionGeom
 	{
 	public:
-		DsCollisionCubeRay()
-		:m_pCube(NULL)
+		DsCollisionCubeRay(const DsPhysicsWorld& world)
+		:ICollisionGeom(world)
+		,m_pCube(NULL)
 		,m_pRay(NULL)
 		, m_info()
 		{}
@@ -34,7 +36,7 @@ namespace DsPhysics
 
 		virtual ~DsCollisionCubeRay(){}
 
-		virtual DsCollisionResult& Colide();
+		virtual DsCollisionResult& Collide() override;
 
 	private:
 		const DsCollisionContext* m_pCube;

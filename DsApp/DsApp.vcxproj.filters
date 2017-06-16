@@ -28,6 +28,9 @@
     <Filter Include="Source\NeuralNetwork">
       <UniqueIdentifier>{c15caf6c-357a-4da6-8bd9-8b595cb1d3a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\World\Physics">
+      <UniqueIdentifier>{fca3da02-3bb2-4a34-a85b-ab94cf9248f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\World\Population\Creator\DsPopulationCreator.h">
@@ -78,6 +81,12 @@
     <ClInclude Include="Source\NeuralNetwork\DsNeuronCtrl.h">
       <Filter>Source\NeuralNetwork</Filter>
     </ClInclude>
+    <ClInclude Include="Source\World\Physics\DsAppCollisionCallback.h">
+      <Filter>Source\World\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Physics\DsAnimRagdollModifier.h">
+      <Filter>Source\World\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\World\Population\Creator\DsPopulationCreator.cpp">
@@ -124,6 +133,12 @@
     </ClCompile>
     <ClCompile Include="Source\NeuralNetwork\DsNeuronCtrl.cpp">
       <Filter>Source\NeuralNetwork</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Physics\DsAnimRagdollModifier.cpp">
+      <Filter>Source\World\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Physics\DsAppCollisionCallback.cpp">
+      <Filter>Source\World\Physics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
