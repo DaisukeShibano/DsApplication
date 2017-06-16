@@ -122,10 +122,10 @@ namespace DsPhysics
 		const DsVec3d* GetVertex()const { return m_geomInfo.pVertex; }
 
 	protected:
-		void _Update(const DsVec3d& deltaPos, const DsMat33d& deltaRot);
-		void _UpdateForRest();
-		void _IntegralF();
-		void _IntegralVel();
+		virtual void _Update(const DsVec3d& deltaPos, const DsMat33d& deltaRot);
+		virtual void _UpdateForRest();
+		virtual void _IntegralF();
+		virtual void _IntegralVel();
 
 	protected:
 		DsRigidGeometryInfo m_geomInfo;

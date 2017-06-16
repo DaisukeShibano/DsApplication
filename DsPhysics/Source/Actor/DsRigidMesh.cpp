@@ -48,25 +48,8 @@ namespace
 
 
 DsRigidMesh::DsRigidMesh(const DsActorId& id, const char* name)
-	: DsActor(id)
-	, m_name(name)
-	, m_geomInfo()
-	, m_physicsInfo()
-	, m_material()
-	, m_isForceUpdate(false)
-	, m_isForceRotation(false)
-	, m_addPos(DsVec3d::Zero())
-	, m_addRot(DsMat33d::Identity())
-	, m_initPos(DsVec3d::Zero())
-	, m_initRot(DsMat33d::Identity())
-	, m_referenceF(m_physicsInfo.exForce)
-	, m_referenceT(m_physicsInfo.exTorque)
-	, m_exVel(DsVec3d::Zero())
-	, m_aabb()
-	, m_sideSize(DsVec3d::Zero())
-	, m_restTimer(0)
+	: DsRigidBody(id, name)
 	, m_pAabbTree(NULL)
-	, m_pCollisionContext(NULL)
 {
 }
 
@@ -74,21 +57,6 @@ DsRigidMesh::~DsRigidMesh()
 {
 	delete m_pAabbTree; m_pAabbTree = NULL;
 	delete m_pCollisionContext; m_pCollisionContext = NULL;
-}
-
-//virtual
-void DsRigidMesh::Update()
-{
-	_IntegralF();
-	_UpdateForRest();
-
-	if (!IsRest()){
-		_Update(m_addPos, m_addRot);
-		m_addPos = DsVec3d::Zero();
-		m_addRot = DsMat33d::Identity();
-	}
-
-	m_isRestContagion = false;
 }
 
 void DsRigidMesh::Create(const DsAnimModel& animModel)
@@ -188,7 +156,7 @@ void DsRigidMesh::Create(const DsAnimModel& animModel)
 	m_geomInfo.pLine = 0;
 
 	{
-		DsRigidMeshPhysicsInfo& pi = m_physicsInfo;
+		DsRigidPhysicsInfo& pi = m_physicsInfo;
 
 		//mass
 		{//äµê´ÉeÉìÉ\ÉãÇÕóßï˚ëÃ
@@ -216,7 +184,7 @@ void DsRigidMesh::Create(const DsAnimModel& animModel)
 		pi.pos.Set(0.0, 0.0, 0.0);
 
 		//èdêSà íu
-		DsRigidMeshGeometryInfo& gi = m_geomInfo;
+		DsRigidGeometryInfo& gi = m_geomInfo;
 		//pi.centerOfGravity = _GetCenterOfGravity(m_geomInfo.pVertex, m_geomInfo.vn);
 		pi.centerOfGravity = GetPosition();
 
@@ -263,8 +231,8 @@ void DsRigidMesh::_Update(const DsVec3d& deltaPos, const DsMat33d& deltaRot)
 		return;
 	}
 
-	DsRigidMeshGeometryInfo& gi = m_geomInfo;
-	DsRigidMeshPhysicsInfo& pi = m_physicsInfo;
+	DsRigidGeometryInfo& gi = m_geomInfo;
+	DsRigidPhysicsInfo& pi = m_physicsInfo;
 
 	//èâä˙épê®îΩâfÇÃÇΩÇﬂâÒì]ê¨ï™ÇóLå¯âª
 	if (m_option.isRotation || m_isForceRotation)
@@ -358,118 +326,6 @@ void DsRigidMesh::_Update(const DsVec3d& deltaPos, const DsMat33d& deltaRot)
 
 	m_isForceUpdate = false;
 	m_isForceRotation = false;
-}
-
-void DsRigidMesh::_UpdateForRest()
-{
-	m_isRest = false;
-	bool isRest = false;
-	if ((!m_isForceUpdate) && (!m_isForceRotation)){
-		const double restVel = 0.1;//èdóÕâ¡ë¨ìxÇ…ÇÊÇÈë¨ìxÇ™ëÂëÃ0.024Ç≠ÇÁÇ¢
-		const double vel = GetVelocity().LengthSq();//ÇQèÊÇ»ÇÃÇ≈íçà”
-		if (vel < restVel){
-			const double angVel = GetAngularVel().LengthSq();//ÇQèÊÇ»ÇÃÇ≈íçà”
-			const double restAngVel = 0.01;
-			if (angVel < restAngVel){
-				//m_isRest = true;
-				isRest = true;
-			}
-		}
-	}
-
-	if (isRest){
-		m_restTimer += GetDT();
-	}
-	else{
-		m_restTimer = 0;
-	}
-
-	if (0.5 < m_restTimer){
-		m_isRest = true;
-		m_physicsInfo.vel = DsVec3d::Zero();
-		m_physicsInfo.angVel = DsVec3d::Zero();
-		m_physicsInfo.exForce = DsVec3d::Zero();
-		m_physicsInfo.exTorque = DsVec3d::Zero();
-	}
-}
-
-void DsRigidMesh::_IntegralF()
-{
-	const double dt = GetDT();
-	{//ï¿êi
-		m_physicsInfo.vel = CalcVelocity(m_physicsInfo.exForce);
-		m_physicsInfo.exForce = DsVec3d::Zero();
-	}
-	{//âÒì]
-		m_physicsInfo.angVel = CalcAngularVel(m_physicsInfo.exTorque);
-		m_physicsInfo.exTorque = DsVec3d::Zero();
-	}
-}
-
-void DsRigidMesh::_IntegralVel()
-{
-	const double dt = GetDT();
-	{//ï¿êi
-		m_addPos += ((m_physicsInfo.vel + m_exVel) * dt);
-		m_physicsInfo.exForce = DsVec3d::Zero();
-	}
-	{//âÒì]
-		m_addRot = DsMat33d::RotateVec(m_physicsInfo.angVel*dt)*m_addRot;
-		m_physicsInfo.exTorque = DsVec3d::Zero();
-	}
-}
-
-//virtual 
-void DsRigidMesh::AddForce(const DsVec3d& force)
-{
-	if (!m_option.isStatic)
-	{
-		m_physicsInfo.exForce += force;
-		m_referenceF = m_physicsInfo.exForce;
-	}
-}
-
-//virtual 
-void DsRigidMesh::AddTorque(const DsVec3d& torque)
-{
-	if (!m_option.isStatic)
-	{
-		m_physicsInfo.exTorque += torque;
-		m_referenceT = m_physicsInfo.exTorque;
-	}
-}
-
-//virtual 
-DsVec3d DsRigidMesh::CalcVelocity(const DsVec3d& f) const
-{
-	if (m_option.isStatic)
-	{
-		return DsVec3d::Zero();
-	}
-	else
-	{
-		DsVec3d ret = m_physicsInfo.vel;
-		DsVec3d regist = m_physicsInfo.vel * 0.5;//îSê´íÔçR
-		ret += ((f / m_physicsInfo.mass.mass - regist) * GetDT());
-		return ret;
-	}
-}
-
-//virtual 
-DsVec3d DsRigidMesh::CalcAngularVel(const DsVec3d& t) const
-{
-	if (m_option.isStatic)
-	{
-		return DsVec3d::Zero();
-	}
-	else
-	{
-		DsVec3d ret = m_physicsInfo.angVel;
-		DsVec3d regist = m_physicsInfo.angVel * 0.5;
-		DsMat33d invInertia = DsMat33d::Inverse(m_physicsInfo.mass.inertia);
-		ret += ((invInertia*t) - regist) * GetDT();
-		return ret;
-	}
 }
 
 //virtual 
