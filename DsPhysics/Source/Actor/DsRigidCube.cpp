@@ -43,7 +43,6 @@ DsRigidCube::DsRigidCube(const DsActorId& id, const char* name )
 :DsActor(id)
 ,m_geomInfo()
 ,m_physicsInfo()
-,m_IsInit(false)
 ,m_addPos(DsVec3d::Zero())
 ,m_addRot(DsMat33d::Identity())
 ,m_initPos(DsVec3d::Zero())
@@ -195,7 +194,7 @@ void DsRigidCube::Create(const DsVec3d* pv, const double mass )
 	_Update(m_initPos, m_initRot);
 
 	m_pCollisionContext = new DsCollisionContext(m_geomInfo.vertex, DsRigidCubeGeometryInfo::VERTEX_NUM, m_geomInfo.face, DsRigidCubeGeometryInfo::FACE_NUM,
-		m_geomInfo.line, DsRigidCubeGeometryInfo::LINE_NUM, GetId(), m_physicsInfo.centerOfGravity, m_geomInfo.preVertex, m_sideSize, NULL, &m_aabb, GetRotation());
+		m_geomInfo.line, DsRigidCubeGeometryInfo::LINE_NUM, GetId(), m_physicsInfo.centerOfGravity, NULL, m_sideSize, NULL, &m_aabb, GetRotation());
 }
 
 

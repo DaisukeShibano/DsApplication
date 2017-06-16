@@ -23,11 +23,6 @@
 
 namespace DsPhysics
 {
-	class DsBoundingTreeAabb;
-}
-
-namespace DsPhysics
-{
 	struct DsRigidCubeGeometryInfo
 	{
 		enum
@@ -186,7 +181,6 @@ namespace DsPhysics
 	private:
 		DsRigidCubeGeometryInfo m_geomInfo;
 		DsRigidCubePhysicsInfo	m_physicsInfo;
-		bool m_IsInit;
 		DsVec3d m_addPos;
 		DsMat33d m_addRot;
 		DsVec3d m_initPos;

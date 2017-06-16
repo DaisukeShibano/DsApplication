@@ -187,6 +187,7 @@
     <ClInclude Include="Source\Actor\DsActorFixer.h" />
     <ClInclude Include="Source\Actor\DsActorMaterial.h" />
     <ClInclude Include="Source\Actor\DsRay.h" />
+    <ClInclude Include="Source\Actor\DsRigidBody.h" />
     <ClInclude Include="Source\Actor\DsRigidCube.h" />
     <ClInclude Include="Source\Actor\DsRigidCapsule.h" />
     <ClInclude Include="Source\Actor\DsRigidMesh.h" />
@@ -242,6 +243,7 @@
     <ClCompile Include="Source\Actor\DsActorFixer.cpp" />
     <ClCompile Include="Source\Actor\DsActorMaterial.cpp" />
     <ClCompile Include="Source\Actor\DsRay.cpp" />
+    <ClCompile Include="Source\Actor\DsRigidBody.cpp" />
     <ClCompile Include="Source\Actor\DsRigidCube.cpp" />
     <ClCompile Include="Source\Actor\DsRigidCapsule.cpp" />
     <ClCompile Include="Source\Actor\DsRigidMesh.cpp" />
