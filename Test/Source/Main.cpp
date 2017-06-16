@@ -56,23 +56,23 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 			m_joint = new DsHingeJoint(*pWorld);
 			m_joint2 = new DsHingeJoint(*pWorld);
 			if(0){//ƒWƒ‡ƒCƒ“ƒgƒeƒXƒg
-				DsRigidBodyCube::GetVertex(vertex, 0.5, 0.5, 0.5);
+				DsRigidCube::GetVertex(vertex, 0.5, 0.5, 0.5);
 				{//” ‚P
-					DsRigidBodyCube::DsRigidBodyFactory factory(vertex, 1.0, "” ‚P");
+					DsRigidCube::DsRigidBodyFactory factory(vertex, 1.0, "” ‚P");
 					factory.InitPos(DsVec3d(2.0, 1.0, 5.0));
 					factory.SetOption(option);
 					act1 = pWorld->CreateActor(factory);
 					act1.GetActor()->SetMaterial(DsActorMaterial::Aluminum());
 				}
 				{//” ‚Q
-					DsRigidBodyCube::DsRigidBodyFactory factory(vertex, 1.0, "” ‚Q");
+					DsRigidCube::DsRigidBodyFactory factory(vertex, 1.0, "” ‚Q");
 					factory.InitPos(DsVec3d(1.0, 1.0, 5.0));
 					factory.SetOption(option);
 					act2 = pWorld->CreateActor(factory);
 					act2.GetActor()->SetMaterial(DsActorMaterial::Aluminum());
 				}
 				{//” ‚R
-					DsRigidBodyCube::DsRigidBodyFactory factory(vertex, 1.0, "” ‚R");
+					DsRigidCube::DsRigidBodyFactory factory(vertex, 1.0, "” ‚R");
 					factory.InitPos(DsVec3d(0.0, 1.0, 5.0));
 					factory.SetOption(option);
 					act3 = pWorld->CreateActor(factory);
@@ -83,21 +83,21 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 			}
 
 			if(1){//Õ“ËƒeƒXƒg
-				DsRigidBodyCube::GetVertex(vertex, 1.5, 0.5, 1.5);
+				DsRigidCube::GetVertex(vertex, 1.5, 0.5, 1.5);
 				{
-					DsRigidBodyCube::DsRigidBodyFactory factory(vertex, 1.0, "” ‚P");
+					DsRigidCube::DsRigidBodyFactory factory(vertex, 1.0, "” ‚P");
 					factory.InitPos(DsVec3d(1.0, -0.5, 4.0));
 					factory.SetOption(option);
 					pWorld->CreateActor(factory).GetActor()->SetMaterial(DsActorMaterial::Aluminum());
 				}
 				{
-					DsRigidBodyCube::DsRigidBodyFactory factory(vertex, 1.0, "” ‚P");
+					DsRigidCube::DsRigidBodyFactory factory(vertex, 1.0, "” ‚P");
 					factory.InitPos(DsVec3d(1.0, 0.1, 4.0));
 					factory.SetOption(option);
 					pWorld->CreateActor(factory).GetActor()->SetMaterial(DsActorMaterial::Aluminum());
 				}
 				for(int i=0; i<30; ++i){
-					DsRigidBodyCube::DsRigidBodyFactory factory(vertex, 1.0, "” ‚P");
+					DsRigidCube::DsRigidBodyFactory factory(vertex, 1.0, "” ‚P");
 					factory.InitPos(DsVec3d(1.0, 0.6 + (0.6)*(double)i, 4.0));
 					factory.SetOption(option);
 					DsActorId actorId = pWorld->CreateActor(factory);

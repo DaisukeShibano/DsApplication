@@ -39,7 +39,7 @@ namespace
 
 
 
-DsRigidBodyCube::DsRigidBodyCube(const DsActorId& id, const char* name )
+DsRigidCube::DsRigidCube(const DsActorId& id, const char* name )
 :DsActor(id)
 ,m_geomInfo()
 ,m_physicsInfo()
@@ -64,12 +64,12 @@ DsRigidBodyCube::DsRigidBodyCube(const DsActorId& id, const char* name )
 {
 }
 
-DsRigidBodyCube::~DsRigidBodyCube()
+DsRigidCube::~DsRigidCube()
 {
 	delete m_pCollisionContext; m_pCollisionContext = NULL;
 }
 
-void DsRigidBodyCube::Update()
+void DsRigidCube::Update()
 {
 	_IntegralF();
 	_UpdateForRest();
@@ -84,7 +84,7 @@ void DsRigidBodyCube::Update()
 	m_isRestContagion = false;
 }
 
-void DsRigidBodyCube::Create(const DsVec3d* pv, const double mass )
+void DsRigidCube::Create(const DsVec3d* pv, const double mass )
 {
 	DS_ASSERT(!( 0.0 >= mass), "重さが0以下です");
 
@@ -199,7 +199,7 @@ void DsRigidBodyCube::Create(const DsVec3d* pv, const double mass )
 }
 
 
-void DsRigidBodyCube::_Update( const DsVec3d& deltaPos, const DsMat33d& deltaRot )
+void DsRigidCube::_Update( const DsVec3d& deltaPos, const DsMat33d& deltaRot )
 {
 	if (m_option.isStatic && (!m_isForceUpdate) && (!m_isForceRotation))
 	{
@@ -310,7 +310,7 @@ void DsRigidBodyCube::_Update( const DsVec3d& deltaPos, const DsMat33d& deltaRot
 	m_isForceRotation = false;
 }
 
-void DsRigidBodyCube::_UpdateForRest()
+void DsRigidCube::_UpdateForRest()
 {
 	m_isRest = false;
 	bool isRest = false;
@@ -343,7 +343,7 @@ void DsRigidBodyCube::_UpdateForRest()
 
 }
 
-void DsRigidBodyCube::_IntegralF()
+void DsRigidCube::_IntegralF()
 {
 	const double dt = GetDT();
 	{//並進
@@ -355,7 +355,7 @@ void DsRigidBodyCube::_IntegralF()
 		m_physicsInfo.exTorque = DsVec3d::Zero();
 	}
 }
-void DsRigidBodyCube::_IntegralVel()
+void DsRigidCube::_IntegralVel()
 {
 	const double dt = GetDT();
 	{//並進
@@ -372,7 +372,7 @@ void DsRigidBodyCube::_IntegralVel()
 	デバッグ用描画
 */
 //virtual
-void DsRigidBodyCube::Draw(DsDrawCommand& com)
+void DsRigidCube::Draw(DsDrawCommand& com)
 {
 	const DsVec3d* pVertex = GetVertex();
 	const int faceNum = GetFaceNum();
@@ -401,7 +401,7 @@ void DsRigidBodyCube::Draw(DsDrawCommand& com)
 }
 
 
-void DsRigidBodyCube::GetVertex( DsVec3d pv[DsRigidBodyGeometryInfo::VERTEX_NUM], double xl, double yl, double zl)
+void DsRigidCube::GetVertex( DsVec3d pv[DsRigidBodyGeometryInfo::VERTEX_NUM], double xl, double yl, double zl)
 {
 	pv[0].Set( -xl/2.0, yl/2.0, zl/2.0 );
 	pv[1].Set(  xl/2.0, yl/2.0, zl/2.0 );
@@ -414,7 +414,7 @@ void DsRigidBodyCube::GetVertex( DsVec3d pv[DsRigidBodyGeometryInfo::VERTEX_NUM]
 }
 
 //virtual 
-void DsRigidBodyCube::AddForce(const DsVec3d& force)
+void DsRigidCube::AddForce(const DsVec3d& force)
 {
 	if (!m_option.isStatic)
 	{
@@ -426,7 +426,7 @@ void DsRigidBodyCube::AddForce(const DsVec3d& force)
 }
 
 //virtual 
-void DsRigidBodyCube::AddTorque(const DsVec3d& torque )
+void DsRigidCube::AddTorque(const DsVec3d& torque )
 {
 	if (!m_option.isStatic)
 	{
@@ -438,14 +438,14 @@ void DsRigidBodyCube::AddTorque(const DsVec3d& torque )
 }
 
 //virtual 
-void DsRigidBodyCube::AddConstraintForce(const DsVec3d& f, const DsVec3d& t)
+void DsRigidCube::AddConstraintForce(const DsVec3d& f, const DsVec3d& t)
 {
 	m_constraintF += f;
 	m_constraintT += t;
 }
 
 //virtual 
-void DsRigidBodyCube::IntegrateConstraintForce()
+void DsRigidCube::IntegrateConstraintForce()
 {
 	const double dt = GetDT();
 	
@@ -463,7 +463,7 @@ void DsRigidBodyCube::IntegrateConstraintForce()
 }
 
 //virtual 
-DsVec3d DsRigidBodyCube::CalcVelocity(const DsVec3d& f) const
+DsVec3d DsRigidCube::CalcVelocity(const DsVec3d& f) const
 {
 	if (m_option.isStatic)
 	{
@@ -481,7 +481,7 @@ DsVec3d DsRigidBodyCube::CalcVelocity(const DsVec3d& f) const
 }
 
 //virtual 
-DsVec3d DsRigidBodyCube::CalcAngularVel(const DsVec3d& t) const
+DsVec3d DsRigidCube::CalcAngularVel(const DsVec3d& t) const
 {
 	if (m_option.isStatic)
 	{
@@ -501,9 +501,9 @@ DsVec3d DsRigidBodyCube::CalcAngularVel(const DsVec3d& t) const
 
 
 //////////////////////factory//////////////////////////
-DsActor* DsRigidBodyCube::DsRigidBodyFactory::CreateIns( const DsActorId& id ) const
+DsActor* DsRigidCube::DsRigidBodyFactory::CreateIns( const DsActorId& id ) const
 {
-	DsRigidBodyCube* pRet = new DsRigidBodyCube(id, m_name.c_str());
+	DsRigidCube* pRet = new DsRigidCube(id, m_name.c_str());
 	if(pRet)
 	{
 		pRet->m_option = m_initOption;

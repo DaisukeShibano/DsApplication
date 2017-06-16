@@ -33,7 +33,7 @@ void DsAnimRagdollModifier::ModifyAnim(double dt, DsAnimSkeleton& skeleton, cons
 
 		DsDbgSys::GetIns().RefDrawCom().DrawSphere(pos, 0.1);
 
-		//parts.pActor->SetPosition(pos);
+		parts.pActor->SetPosition(pos);
 		//parts.pActor->SetRotation(rot);
 	}
 

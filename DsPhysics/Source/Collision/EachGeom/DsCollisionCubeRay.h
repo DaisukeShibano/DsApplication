@@ -10,7 +10,7 @@
 
 namespace DsPhysics
 {
-	class DsRigidBodyCube;
+	class DsRigidCube;
 	class DsCollisionContext;
 	class DsPhysicsWorld;
 }

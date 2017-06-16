@@ -103,13 +103,13 @@ void DsFieldObj::Initialize(const InitInfo& initInfo)
 			//ヒットモデルがないので形状情報から作成
 			DsVec3d vertex[8];
 			const DsHitRes::Shape& shape = initInfo.pHitRes->RefSpahe();
-			DsRigidBodyCube::GetVertex(vertex, shape.sizeX, shape.sizeY, shape.sizeZ);
+			DsRigidCube::GetVertex(vertex, shape.sizeX, shape.sizeY, shape.sizeZ);
 			{
-				DsRigidBodyCube::DsRigidBodyFactory factory(vertex, shape.weight, m_name.c_str());
+				DsRigidCube::DsRigidBodyFactory factory(vertex, shape.weight, m_name.c_str());
 				//初期位置＋SetPosition分動いてしまうので、ここでは設定せず、↓でSetPositionしてる
 				//factory.InitPos(initInfo.pos);
 				//factory.InitRot(initInfo.rot);
-				DsRigidBodyCube::Option option = DsRigidBodyCube::Option::Default();
+				DsRigidCube::Option option = DsRigidCube::Option::Default();
 				switch (initInfo.physicsType)
 				{
 				case DS_MAP_OBJ_TYPE::STATIC:

@@ -66,8 +66,8 @@ void DsRagdoll::_ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActo
 			const DsVec3d rigidPos = (parentPos + childPos)*0.5;
 			const DsVec3d dist = childPos - parentPos;
 			DsVec3d vertex[8];
-			DsRigidBodyCube::GetVertex(vertex, 0.1, 0.1, dist.Length());//太さは後でパラメータ化する
-			DsRigidBodyCube::DsRigidBodyFactory factory(vertex, 1.0, pBone->name.c_str());
+			DsRigidCube::GetVertex(vertex, 0.1, 0.1, dist.Length());//太さは後でパラメータ化する
+			DsRigidCube::DsRigidBodyFactory factory(vertex, 1.0, pBone->name.c_str());
 			factory.InitPos(rigidPos);
 			factory.InitRot(pBone->initWorldPose.ToMat33());
 			factory.SetOption(DsActor::Option::Default());

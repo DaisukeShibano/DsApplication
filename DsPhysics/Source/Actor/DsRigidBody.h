@@ -67,7 +67,7 @@ namespace DsPhysics
 		{}
 	};
 
-	class DsRigidBodyCube : public DsActor
+	class DsRigidCube : public DsActor
 	{
 	public:
 		/////////////Factory////////////
@@ -112,9 +112,9 @@ namespace DsPhysics
 
 
 	public:
-		DsRigidBodyCube(const DsActorId& id, const char* name);
+		DsRigidCube(const DsActorId& id, const char* name);
 
-		virtual ~DsRigidBodyCube();
+		virtual ~DsRigidCube();
 
 	public:
 		virtual DsActor::ACTOR_TYPE GetType() const override{ return DsActor::RIGID_CUBE; }
