@@ -1,6 +1,6 @@
 #include "DsPhysicsPch.h"
-#ifndef __DS_RIGID_BODY__
-#include "Actor/DsRigidBody.h"
+#ifndef __DS_RIGID_CUBE__
+#include "Actor/DsRigidCube.h"
 #endif
 
 using namespace DsPhysics;
@@ -89,9 +89,9 @@ void DsRigidCube::Create(const DsVec3d* pv, const double mass )
 	DS_ASSERT(!( 0.0 >= mass), "重さが0以下です");
 
 	{
-		DsRigidBodyGeometryInfo& gi = m_geomInfo;
+		DsRigidCubeGeometryInfo& gi = m_geomInfo;
 
-		for(int vn=0; DsRigidBodyGeometryInfo::VERTEX_NUM > vn; ++vn )
+		for(int vn=0; DsRigidCubeGeometryInfo::VERTEX_NUM > vn; ++vn )
 		{
 			gi.vertex[ vn ] = pv[ vn ];
 			gi.vertexOriginal[vn] = pv[vn];
@@ -119,7 +119,7 @@ void DsRigidCube::Create(const DsVec3d* pv, const double mass )
 		gi.face[5].index[0] = 0;	gi.face[5].index[1] = 3;	gi.face[5].index[2] = 7;	gi.face[5].index[3] = 4;	//左面
 	
 		//法線
-		for(int fn=0; DsRigidBodyGeometryInfo::FACE_NUM > fn; ++fn)
+		for(int fn=0; DsRigidCubeGeometryInfo::FACE_NUM > fn; ++fn)
 		{
 			const DsVec3d normal = DsVec3d::Cross( pv[gi.face[fn].index[1]] - pv[gi.face[fn].index[0]], pv[gi.face[fn].index[3]] - pv[gi.face[fn].index[0]] );
 			gi.face[fn].normal = DsVec3d::Normalize(normal);
@@ -140,12 +140,12 @@ void DsRigidCube::Create(const DsVec3d* pv, const double mass )
 	}
 
 	{
-		DsRigidBodyPhysicsInfo& pi = m_physicsInfo;
+		DsRigidCubePhysicsInfo& pi = m_physicsInfo;
 
 		//mass
 		{
 			const double M = m_option.isStatic ? DsMathUtil::DS_INFINITY_D : mass;
-			const DsVec3d maxLength = _GetMaxVector(pv, DsRigidBodyGeometryInfo::VERTEX_NUM);
+			const DsVec3d maxLength = _GetMaxVector(pv, DsRigidCubeGeometryInfo::VERTEX_NUM);
 			const double bias = 1.0;
 			const double Ixx = M / 3.0 * (maxLength.y*maxLength.y + maxLength.z*maxLength.z) * bias;
 			const double Iyy = M / 3.0 * (maxLength.x*maxLength.x + maxLength.z*maxLength.z) * bias;
@@ -164,13 +164,13 @@ void DsRigidCube::Create(const DsVec3d* pv, const double mass )
 		pi.pos.Set( 0.0, 0.0, 0.0 );
 
 		//重心位置
-		DsRigidBodyGeometryInfo& gi = m_geomInfo;
-		//pi.centerOfGravity = _GetCenterOfGravity(gi.vertex, DsRigidBodyGeometryInfo::VERTEX_NUM);
+		DsRigidCubeGeometryInfo& gi = m_geomInfo;
+		//pi.centerOfGravity = _GetCenterOfGravity(gi.vertex, DsRigidCubeGeometryInfo::VERTEX_NUM);
 		pi.centerOfGravity = GetPosition();
 
 		//AABB
 		DsVec3d maxLen = DsVec3d::Zero();
-		for (int i = 0; i < DsRigidBodyGeometryInfo::VERTEX_NUM; ++i)
+		for (int i = 0; i < DsRigidCubeGeometryInfo::VERTEX_NUM; ++i)
 		{
 			const DsVec3d len = gi.vertex[i] - pi.centerOfGravity;
 			maxLen.x = max(maxLen.x, fabs(len.x));
@@ -183,7 +183,7 @@ void DsRigidCube::Create(const DsVec3d* pv, const double mass )
 		m_sideSize.z = maxLen.z;
 	}
 
-	for (int vn = 0; vn < DsRigidBodyGeometryInfo::VERTEX_NUM; ++vn)
+	for (int vn = 0; vn < DsRigidCubeGeometryInfo::VERTEX_NUM; ++vn)
 	{
 		m_geomInfo.preVertex[vn] = m_geomInfo.vertex[vn];
 	}
@@ -194,8 +194,8 @@ void DsRigidCube::Create(const DsVec3d* pv, const double mass )
 
 	_Update(m_initPos, m_initRot);
 
-	m_pCollisionContext = new DsCollisionContext(m_geomInfo.vertex, DsRigidBodyGeometryInfo::VERTEX_NUM, m_geomInfo.face, DsRigidBodyGeometryInfo::FACE_NUM,
-		m_geomInfo.line, DsRigidBodyGeometryInfo::LINE_NUM, GetId(), m_physicsInfo.centerOfGravity, m_geomInfo.preVertex, m_sideSize, NULL, &m_aabb, GetRotation());
+	m_pCollisionContext = new DsCollisionContext(m_geomInfo.vertex, DsRigidCubeGeometryInfo::VERTEX_NUM, m_geomInfo.face, DsRigidCubeGeometryInfo::FACE_NUM,
+		m_geomInfo.line, DsRigidCubeGeometryInfo::LINE_NUM, GetId(), m_physicsInfo.centerOfGravity, m_geomInfo.preVertex, m_sideSize, NULL, &m_aabb, GetRotation());
 }
 
 
@@ -206,11 +206,11 @@ void DsRigidCube::_Update( const DsVec3d& deltaPos, const DsMat33d& deltaRot )
 		return;
 	}
 
-	DsRigidBodyGeometryInfo& gi = m_geomInfo;
-	DsRigidBodyPhysicsInfo& pi = m_physicsInfo;
+	DsRigidCubeGeometryInfo& gi = m_geomInfo;
+	DsRigidCubePhysicsInfo& pi = m_physicsInfo;
 
 	//前回の頂点更新
-	for (int vn = 0; vn < DsRigidBodyGeometryInfo::VERTEX_NUM; ++vn)
+	for (int vn = 0; vn < DsRigidCubeGeometryInfo::VERTEX_NUM; ++vn)
 	{
 		m_geomInfo.preVertex[vn] = m_geomInfo.vertex[vn];
 	}
@@ -228,7 +228,7 @@ void DsRigidCube::_Update( const DsVec3d& deltaPos, const DsMat33d& deltaRot )
 	if (isChangeRot || m_isForceUpdate)
 	{
 		//頂点回転
-		for (int vn = 0; DsRigidBodyGeometryInfo::VERTEX_NUM > vn; ++vn)
+		for (int vn = 0; DsRigidCubeGeometryInfo::VERTEX_NUM > vn; ++vn)
 		{
 			gi.vertex[vn] = pi.rotation * gi.vertexOriginal[vn];
 		}
@@ -249,7 +249,7 @@ void DsRigidCube::_Update( const DsVec3d& deltaPos, const DsMat33d& deltaRot )
 		}
 
 		//法線更新
-		for (int fn = 0; DsRigidBodyGeometryInfo::FACE_NUM > fn; ++fn)
+		for (int fn = 0; DsRigidCubeGeometryInfo::FACE_NUM > fn; ++fn)
 		{
 			const DsVec3d rotN = deltaRot * gi.face[fn].normal;
 			gi.face[fn].normal = DsVec3d::Normalize(rotN);
@@ -261,7 +261,7 @@ void DsRigidCube::_Update( const DsVec3d& deltaPos, const DsMat33d& deltaRot )
 		}
 
 		//頂点移動
-		for (int vn = 0; DsRigidBodyGeometryInfo::VERTEX_NUM > vn; ++vn)
+		for (int vn = 0; DsRigidCubeGeometryInfo::VERTEX_NUM > vn; ++vn)
 		{
 			gi.vertex[vn] = pi.pos + gi.vertex[vn];
 		}
@@ -274,7 +274,7 @@ void DsRigidCube::_Update( const DsVec3d& deltaPos, const DsMat33d& deltaRot )
 		}
 
 		//頂点移動
-		for (int vn = 0; DsRigidBodyGeometryInfo::VERTEX_NUM > vn; ++vn)
+		for (int vn = 0; DsRigidCubeGeometryInfo::VERTEX_NUM > vn; ++vn)
 		{
 			gi.vertex[vn] += deltaPos;
 		}
@@ -283,7 +283,7 @@ void DsRigidCube::_Update( const DsVec3d& deltaPos, const DsMat33d& deltaRot )
 	
 
 	//重心更新
-	//pi.centerOfGravity = _GetCenterOfGravity(gi.vertex, DsRigidBodyGeometryInfo::VERTEX_NUM);
+	//pi.centerOfGravity = _GetCenterOfGravity(gi.vertex, DsRigidCubeGeometryInfo::VERTEX_NUM);
 	pi.centerOfGravity = GetPosition();//中心って決まってるし、計算の無駄だし、頂点数に依存してしまうので。
 
 	//AABB
@@ -291,7 +291,7 @@ void DsRigidCube::_Update( const DsVec3d& deltaPos, const DsMat33d& deltaRot )
 		if (isChangeRot)
 		{
 			DsVec3d maxLen = DsVec3d::Zero();
-			for (int i = 0; i < DsRigidBodyGeometryInfo::VERTEX_NUM; ++i)
+			for (int i = 0; i < DsRigidCubeGeometryInfo::VERTEX_NUM; ++i)
 			{
 				const DsVec3d len = gi.vertex[i] - pi.centerOfGravity;
 				maxLen.x = max(maxLen.x, fabs(len.x));
@@ -401,7 +401,7 @@ void DsRigidCube::Draw(DsDrawCommand& com)
 }
 
 
-void DsRigidCube::GetVertex( DsVec3d pv[DsRigidBodyGeometryInfo::VERTEX_NUM], double xl, double yl, double zl)
+void DsRigidCube::GetVertex( DsVec3d pv[DsRigidCubeGeometryInfo::VERTEX_NUM], double xl, double yl, double zl)
 {
 	pv[0].Set( -xl/2.0, yl/2.0, zl/2.0 );
 	pv[1].Set(  xl/2.0, yl/2.0, zl/2.0 );
@@ -501,7 +501,7 @@ DsVec3d DsRigidCube::CalcAngularVel(const DsVec3d& t) const
 
 
 //////////////////////factory//////////////////////////
-DsActor* DsRigidCube::DsRigidBodyFactory::CreateIns( const DsActorId& id ) const
+DsActor* DsRigidCube::DsRigidCubeFactory::CreateIns( const DsActorId& id ) const
 {
 	DsRigidCube* pRet = new DsRigidCube(id, m_name.c_str());
 	if(pRet)

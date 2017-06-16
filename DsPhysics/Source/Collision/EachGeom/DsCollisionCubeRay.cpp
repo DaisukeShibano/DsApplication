@@ -3,7 +3,7 @@
 #include "Collision/EachGeom/DsCollisionCubeRay.h"
 #endif
 
-#include "Actor/DsRigidBody.h"
+#include "Actor/DsRigidCube.h"
 #include "Collision/DsCollisionResult.h"
 #include "Collision/DsCollisionDetection.h"
 #include "Collision/DsCollisionContext.h"

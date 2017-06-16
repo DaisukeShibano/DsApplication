@@ -81,9 +81,6 @@
     <ClInclude Include="Source\Actor\DsRay.h">
       <Filter>Source\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Actor\DsRigidBody.h">
-      <Filter>Source\Actor</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Collision\DsCollisionDetection.h">
       <Filter>Source\Collision</Filter>
     </ClInclude>
@@ -216,6 +213,9 @@
     <ClInclude Include="Source\Collision\DsCollisionCallback.h">
       <Filter>Source\Collision</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Actor\DsRigidCube.h">
+      <Filter>Source\Actor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsPhysicsManager.cpp">
@@ -228,9 +228,6 @@
       <Filter>Source\Actor</Filter>
     </ClCompile>
     <ClCompile Include="Source\Actor\DsRay.cpp">
-      <Filter>Source\Actor</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Actor\DsRigidBody.cpp">
       <Filter>Source\Actor</Filter>
     </ClCompile>
     <ClCompile Include="Source\Actor\DsActor.cpp">
@@ -352,6 +349,9 @@
     </ClCompile>
     <ClCompile Include="Source\Res\Param\DsRagdollParam.cpp">
       <Filter>Source\Res\Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\DsRigidCube.cpp">
+      <Filter>Source\Actor</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -9,8 +9,8 @@
 #ifndef _DS_AMIM_SKELETON_
 #include "Animation/DsAnimSkeleton.h"
 #endif
-#ifndef __DS_RIGID_BODY__
-#include "Actor/DsRigidBody.h"
+#ifndef __DS_RIGID_CUBE__
+#include "Actor/DsRigidCube.h"
 #endif
 #ifndef __DS_PHYSICS_WORLD__
 #include "DsPhysicsWorld.h"
@@ -67,7 +67,7 @@ void DsRagdoll::_ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActo
 			const DsVec3d dist = childPos - parentPos;
 			DsVec3d vertex[8];
 			DsRigidCube::GetVertex(vertex, 0.1, 0.1, dist.Length());//‘¾‚³‚ÍŒã‚Åƒpƒ‰ƒ[ƒ^‰»‚·‚é
-			DsRigidCube::DsRigidBodyFactory factory(vertex, 1.0, pBone->name.c_str());
+			DsRigidCube::DsRigidCubeFactory factory(vertex, 1.0, pBone->name.c_str());
 			factory.InitPos(rigidPos);
 			factory.InitRot(pBone->initWorldPose.ToMat33());
 			factory.SetOption(DsActor::Option::Default());

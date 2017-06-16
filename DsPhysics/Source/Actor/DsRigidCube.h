@@ -1,5 +1,5 @@
-#ifndef __DS_RIGID_BODY__
-#define __DS_RIGID_BODY__
+#ifndef __DS_RIGID_CUBE__
+#define __DS_RIGID_CUBE__
 
 #ifndef __DS_ACTOR__
 #include "Actor/DsActor.h"
@@ -28,7 +28,7 @@ namespace DsPhysics
 
 namespace DsPhysics
 {
-	struct DsRigidBodyGeometryInfo
+	struct DsRigidCubeGeometryInfo
 	{
 		enum
 		{ 
@@ -45,7 +45,7 @@ namespace DsPhysics
 		DsVec3d preVertex[ VERTEX_NUM ];
 	};
 
-	struct DsRigidBodyPhysicsInfo
+	struct DsRigidCubePhysicsInfo
 	{
 		DsMass	mass;
 		double massInv[10];
@@ -58,7 +58,7 @@ namespace DsPhysics
 		DsVec3d angVel;
 		DsVec3d centerOfGravity;
 
-		DsRigidBodyPhysicsInfo()
+		DsRigidCubePhysicsInfo()
 		:exForce(DsVec3d::Zero())
 		,acc(DsVec3d::Zero())
 		,vel(DsVec3d::Zero())
@@ -71,10 +71,10 @@ namespace DsPhysics
 	{
 	public:
 		/////////////Factory////////////
-	class DsRigidBodyFactory : public DsActorFactory
+	class DsRigidCubeFactory : public DsActorFactory
 	{
 	public:
-		DsRigidBodyFactory( const DsVec3d* pv, const double mass, const char* name )
+		DsRigidCubeFactory( const DsVec3d* pv, const double mass, const char* name )
 			: m_pv()
 			, m_sizeVertex(NULL)
 			, m_mass(mass)
@@ -83,12 +83,12 @@ namespace DsPhysics
 			, m_initOption(Option::Default())
 			, m_name(name)
 		{
-			for (int i = 0; i < DsRigidBodyGeometryInfo::VERTEX_NUM; ++i) {
+			for (int i = 0; i < DsRigidCubeGeometryInfo::VERTEX_NUM; ++i) {
 				m_pv[i] = pv[i];
 			}
 		}
 
-		virtual ~DsRigidBodyFactory()
+		virtual ~DsRigidCubeFactory()
 		{
 		}
 
@@ -100,7 +100,7 @@ namespace DsPhysics
 		void SetOption(const Option& option){ m_initOption = option; }
 
 	private:
-		DsVec3d m_pv[DsRigidBodyGeometryInfo::VERTEX_NUM];
+		DsVec3d m_pv[DsRigidCubeGeometryInfo::VERTEX_NUM];
 		DsVec3d* m_sizeVertex;
 		const double m_mass;
 		DsVec3d m_initPos;
@@ -166,7 +166,7 @@ namespace DsPhysics
 		void Create( const DsVec3d* pv, const double mass );
 		
 	public: //•`‰æ‚Ì‚½‚ß‚Ìƒƒ\ƒbƒh
-		int GetFaceNum()const{ return DsRigidBodyGeometryInfo::FACE_NUM; }
+		int GetFaceNum()const{ return DsRigidCubeGeometryInfo::FACE_NUM; }
 		const DsQuad& GetFace(int fn)const{ return m_geomInfo.face[fn]; }
 		const DsVec3d* GetVertex()const{ return m_geomInfo.vertex; }
 		virtual void Draw(DsDrawCommand& com) override;
@@ -184,8 +184,8 @@ namespace DsPhysics
 		void _IntegralVel();
 
 	private:
-		DsRigidBodyGeometryInfo m_geomInfo;
-		DsRigidBodyPhysicsInfo	m_physicsInfo;
+		DsRigidCubeGeometryInfo m_geomInfo;
+		DsRigidCubePhysicsInfo	m_physicsInfo;
 		bool m_IsInit;
 		DsVec3d m_addPos;
 		DsMat33d m_addRot;

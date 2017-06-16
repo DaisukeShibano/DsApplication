@@ -41,13 +41,13 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 			//DsVec3d vertex[8];
 			//DsRigidCube::GetVertex(vertex, 0.5, 0.5, 0.5);
 			//{//” ‚P
-			//	DsRigidCube::DsRigidBodyFactory factory(vertex, 1.0, "” ‚P");
+			//	DsRigidCube::DsRigidCubeFactory factory(vertex, 1.0, "” ‚P");
 			//	factory.InitPos(DsVec3d(1.2, yOffset + 4.0, zOffset));
 			//	factory.InitRot(DsMat33d::RotateX(1.0));
 			//	pWorld->CreateActor(factory);
 			//}
 			//{//” ‚Q
-			//	DsRigidCube::DsRigidBodyFactory factory(vertex, 1.0, "” ‚Q");
+			//	DsRigidCube::DsRigidCubeFactory factory(vertex, 1.0, "” ‚Q");
 			//	factory.InitPos(DsVec3d(-1.2, yOffset + 3.0, zOffset));
 			//	factory.InitRot(DsMat33d::RotateX(1.0)*DsMat33d::RotateY(1.0));
 			//	pWorld->CreateActor(factory);
@@ -56,7 +56,7 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 			//{
 			//	DsVec3d v[8];
 			//	DsRigidCube::GetVertex(v, 0.5, 0.5, 0.5);
-			//	DsRigidCube::DsRigidBodyFactory factory(v, 1.0, "” ‚R’B");
+			//	DsRigidCube::DsRigidCubeFactory factory(v, 1.0, "” ‚R’B");
 			//	factory.InitPos(DsVec3d(-0.2, yOffset + 4.0 + (double)i*2.0, zOffset));
 			//	//factory.InitRot(DsMat33d::RotateX(0)*DsMat33d::RotateY(0));
 			//	pWorld->CreateActor(factory);
@@ -64,7 +64,7 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 			//{//’n–Ê
 			//	DsVec3d vertex[8];
 			//	DsRigidCube::GetVertex(vertex, 100.0, 0.5, 100.0);
-			//	DsRigidCube::DsRigidBodyFactory factory(vertex, 1.0, "ground");
+			//	DsRigidCube::DsRigidCubeFactory factory(vertex, 1.0, "ground");
 			//	factory.InitPos(DsVec3d(0.0, yOffset, zOffset));
 			//	factory.InitRot(DsMat33d::Identity());
 			//	DsActor::Option option = DsActor::Option::Static();

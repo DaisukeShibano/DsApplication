@@ -105,7 +105,7 @@ void DsFieldObj::Initialize(const InitInfo& initInfo)
 			const DsHitRes::Shape& shape = initInfo.pHitRes->RefSpahe();
 			DsRigidCube::GetVertex(vertex, shape.sizeX, shape.sizeY, shape.sizeZ);
 			{
-				DsRigidCube::DsRigidBodyFactory factory(vertex, shape.weight, m_name.c_str());
+				DsRigidCube::DsRigidCubeFactory factory(vertex, shape.weight, m_name.c_str());
 				//‰ŠúˆÊ’u{SetPosition•ª“®‚¢‚Ä‚µ‚Ü‚¤‚Ì‚ÅA‚±‚±‚Å‚Íİ’è‚¹‚¸A«‚ÅSetPosition‚µ‚Ä‚é
 				//factory.InitPos(initInfo.pos);
 				//factory.InitRot(initInfo.rot);
