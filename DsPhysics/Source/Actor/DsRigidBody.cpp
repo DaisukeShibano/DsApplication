@@ -106,17 +106,7 @@ void DsRigidBody::_Update( const DsVec3d& deltaPos, const DsMat33d& deltaRot )
 
 		//慣性テンソル更新
 		{
-			const DsMat33d invR = DsMat33d::Inverse(deltaRot);
-			const DsMat33d rotI = (deltaRot * pi.mass.inertia) * invR;
-			pi.mass.inertia = rotI;
-		}
-		//拘束用慣性テンソル逆行列
-		{
-			const DsMat33d&& invRI = DsMat33d::Inverse(pi.mass.inertia);
-			pi.massInv[0] = 1.0 / pi.mass.mass;
-			pi.massInv[1] = invRI[0]; pi.massInv[2] = invRI[1]; pi.massInv[3] = invRI[2];
-			pi.massInv[4] = invRI[3]; pi.massInv[5] = invRI[4]; pi.massInv[6] = invRI[5];
-			pi.massInv[7] = invRI[6]; pi.massInv[8] = invRI[7]; pi.massInv[9] = invRI[8];
+			_UpdateInertia(deltaRot);
 		}
 
 		//法線更新
@@ -151,8 +141,6 @@ void DsRigidBody::_Update( const DsVec3d& deltaPos, const DsMat33d& deltaRot )
 		}
 	}
 
-	
-
 	//重心更新
 	//pi.centerOfGravity = _GetCenterOfGravity(gi.vertex, DsRigidBodyGeometryInfo::VERTEX_NUM);
 	pi.centerOfGravity = GetPosition();
@@ -164,6 +152,27 @@ void DsRigidBody::_Update( const DsVec3d& deltaPos, const DsMat33d& deltaRot )
 
 	m_isForceUpdate = false;
 	m_isForceRotation = false;
+}
+
+//virtual 
+void DsRigidBody::_UpdateInertia(const DsMat33d& deltaRot)
+{
+	DsRigidPhysicsInfo& pi = m_physicsInfo;
+
+	//慣性テンソル更新
+	{
+		const DsMat33d invR = DsMat33d::Inverse(deltaRot);
+		const DsMat33d rotI = (deltaRot * pi.mass.inertia) * invR;
+		pi.mass.inertia = rotI;
+	}
+	//拘束用慣性テンソル逆行列
+	{
+		const DsMat33d&& invRI = DsMat33d::Inverse(pi.mass.inertia);
+		pi.massInv[0] = 1.0 / pi.mass.mass;
+		pi.massInv[1] = invRI[0]; pi.massInv[2] = invRI[1]; pi.massInv[3] = invRI[2];
+		pi.massInv[4] = invRI[3]; pi.massInv[5] = invRI[4]; pi.massInv[6] = invRI[5];
+		pi.massInv[7] = invRI[6]; pi.massInv[8] = invRI[7]; pi.massInv[9] = invRI[8];
+	}
 }
 
 //virtual 

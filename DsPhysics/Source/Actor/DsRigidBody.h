@@ -26,10 +26,10 @@ namespace DsPhysics
 	struct DsRigidGeometryInfo
 	{
 			DsRigidGeometryInfo()
-			: pVertex(0)
-			, pVertexOriginal(0)
-			, pFace(0)
-			, pLine(0)
+			: pVertex(NULL)
+			, pVertexOriginal(NULL)
+			, pFace(NULL)
+			, pLine(NULL)
 			, vn(0)
 			, fn(0)
 			, ln(0)
@@ -119,10 +119,12 @@ namespace DsPhysics
 	protected:
 		DsVec3d _GetMaxVector(const DsVec3d* pVec, const int vn) const;
 		DsVec3d _GetCenterOfGravity(const DsVec3d* v, const int vertexNum)const;
-		virtual void _UpdateAabb(bool isChangeRot);
+		
 
 	protected:
 		virtual void _Update(const DsVec3d& deltaPos, const DsMat33d& deltaRot);
+		virtual void _UpdateInertia(const DsMat33d& deltaRot);
+		virtual void _UpdateAabb(bool isChangeRot);
 		virtual void _UpdateForRest();
 		virtual void _IntegralF();
 		virtual void _IntegralVel();
