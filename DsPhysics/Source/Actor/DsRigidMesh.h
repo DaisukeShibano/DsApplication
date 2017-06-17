@@ -62,9 +62,6 @@ namespace DsPhysics
 		void Create(const DsAnimModel& animModel);
 
 	private:
-		virtual void _Update(const DsVec3d& deltaPos, const DsMat33d& deltaRot) override;
-
-	private:
 		DsBoundingTreeAabb* m_pAabbTree;
 
 	};

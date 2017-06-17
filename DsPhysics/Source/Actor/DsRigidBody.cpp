@@ -125,8 +125,8 @@ void DsRigidBody::_Update( const DsVec3d& deltaPos, const DsMat33d& deltaRot )
 		//法線更新
 		for (int fn = 0; fn < gi.fn; ++fn)
 		{
-			const DsVec3d rotN = deltaRot * gi.pFace[fn].normal;
-			gi.pFace[fn].normal = DsVec3d::Normalize(rotN);
+			const DsVec3d rotN = deltaRot * gi.pFace[fn].normal;//なんフレかに一回求め直したほうがいいかも。
+			gi.pFace[fn].normal = DsVec3d::Normalize(rotN);//正規化は毎フレやらなくても良い気がする
 		}
 
 		//位置更新
@@ -158,7 +158,7 @@ void DsRigidBody::_Update( const DsVec3d& deltaPos, const DsMat33d& deltaRot )
 
 	//重心更新
 	//pi.centerOfGravity = _GetCenterOfGravity(gi.vertex, DsRigidBodyGeometryInfo::VERTEX_NUM);
-	pi.centerOfGravity = GetPosition();//中心って決まってるし、計算の無駄だし、頂点数に依存してしまうので。
+	pi.centerOfGravity = GetPosition();
 
 	//AABB
 	{
@@ -176,6 +176,7 @@ void DsRigidBody::_Update( const DsVec3d& deltaPos, const DsMat33d& deltaRot )
 		}
 		else
 		{
+			//回転してないなら中心座標だけ更新
 			m_aabb.SetPos(pi.centerOfGravity);
 		}
 	}
