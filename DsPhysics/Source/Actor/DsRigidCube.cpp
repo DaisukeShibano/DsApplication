@@ -6,38 +6,6 @@
 using namespace DsPhysics;
 
 
-namespace
-{
-	DsVec3d _GetMaxVector(const DsVec3d* pVec, const int vn)
-	{
-		double maxX = 0.0;
-		double maxY = 0.0;
-		double maxZ = 0.0;
-
-		for(int i=0; vn > i; ++i)
-		{
-			maxX = ( maxX > fabs(pVec[i].x) ) ? maxX : fabs(pVec[i].x);
-			maxY = ( maxY > fabs(pVec[i].y) ) ? maxY : fabs(pVec[i].y);
-			maxZ = ( maxZ > fabs(pVec[i].z) ) ? maxZ : fabs(pVec[i].z);
-		}
-
-		const DsVec3d ret = {maxX*2.0, maxY*2.0, maxZ*2.0};
-		return ret;
-	}
-
-	DsVec3d _GetCenterOfGravity(const DsVec3d* v, const int vertexNum)
-	{
-		DsVec3d sum = {0.0, 0.0, 0.0};
-		for(int vn=0; vertexNum > vn; ++vn)
-		{
-			sum += v[vn];
-		}
-		const DsVec3d ave = {sum.x/vertexNum, sum.y/vertexNum, sum.z/vertexNum};
-		return ave;
-	}
-}
-
-
 
 DsRigidCube::DsRigidCube(const DsActorId& id, const char* name )
 :DsRigidBody(id, name)
@@ -175,11 +143,11 @@ void DsRigidCube::Create(const DsVec3d* pv, const double mass )
 //virtual
 void DsRigidCube::Draw(DsDrawCommand& com)
 {
-	const DsVec3d* pVertex = DsRigidBody::GetVertex();
-	const int faceNum = GetFaceNum();
+	const DsVec3d* pVertex = m_geomInfo.pVertex;
+	const int faceNum = m_geomInfo.fn;
 	for (int fIdx = 0; faceNum > fIdx; ++fIdx)
 	{
-		const DsQuad& face = GetFace(fIdx);
+		const DsQuad& face = m_geomInfo.pFace[fIdx];
 		//êFÇÕäOë§Ç≈åàÇﬂÇÈ
 		if (!RefOption().isDrawWireFrame)
 		{

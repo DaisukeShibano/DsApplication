@@ -117,9 +117,8 @@ namespace DsPhysics
 		virtual void SetExVelocity(const DsVec3d& v) override { m_exVel = v; }
 
 	protected:
-		int GetFaceNum()const { return m_geomInfo.fn; }
-		const DsQuad& GetFace(int fn)const { return m_geomInfo.pFace[fn]; }
-		const DsVec3d* GetVertex()const { return m_geomInfo.pVertex; }
+		DsVec3d _GetMaxVector(const DsVec3d* pVec, const int vn) const;
+		DsVec3d _GetCenterOfGravity(const DsVec3d* v, const int vertexNum)const;
 
 	protected:
 		virtual void _Update(const DsVec3d& deltaPos, const DsMat33d& deltaRot);

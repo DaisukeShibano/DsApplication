@@ -6,37 +6,6 @@
 using namespace DsPhysics;
 
 
-namespace
-{
-	DsVec3d _GetMaxVector(const DsVec3d* pVec, const int vn)
-	{
-		double maxX = 0.0;
-		double maxY = 0.0;
-		double maxZ = 0.0;
-
-		for(int i=0; vn > i; ++i)
-		{
-			maxX = ( maxX > fabs(pVec[i].x) ) ? maxX : fabs(pVec[i].x);
-			maxY = ( maxY > fabs(pVec[i].y) ) ? maxY : fabs(pVec[i].y);
-			maxZ = ( maxZ > fabs(pVec[i].z) ) ? maxZ : fabs(pVec[i].z);
-		}
-
-		const DsVec3d ret = {maxX*2.0, maxY*2.0, maxZ*2.0};
-		return ret;
-	}
-
-	DsVec3d _GetCenterOfGravity(const DsVec3d* v, const int vertexNum)
-	{
-		DsVec3d sum = {0.0, 0.0, 0.0};
-		for(int vn=0; vertexNum > vn; ++vn)
-		{
-			sum += v[vn];
-		}
-		const DsVec3d ave = {sum.x/vertexNum, sum.y/vertexNum, sum.z/vertexNum};
-		return ave;
-	}
-}
-
 DsRigidBody::DsRigidBody(const DsActorId& id, const char* name)
 : DsActor(id)
 , m_geomInfo()
@@ -75,6 +44,34 @@ void DsRigidBody::Update()
 	}
 
 	m_isRestContagion = false;
+}
+
+DsVec3d DsRigidBody::_GetMaxVector(const DsVec3d* pVec, const int vn) const
+{
+	double maxX = 0.0;
+	double maxY = 0.0;
+	double maxZ = 0.0;
+
+	for (int i = 0; vn > i; ++i)
+	{
+		maxX = (maxX > fabs(pVec[i].x)) ? maxX : fabs(pVec[i].x);
+		maxY = (maxY > fabs(pVec[i].y)) ? maxY : fabs(pVec[i].y);
+		maxZ = (maxZ > fabs(pVec[i].z)) ? maxZ : fabs(pVec[i].z);
+	}
+
+	const DsVec3d ret = { maxX*2.0, maxY*2.0, maxZ*2.0 };
+	return ret;
+}
+
+DsVec3d DsRigidBody::_GetCenterOfGravity(const DsVec3d* v, const int vertexNum) const
+{
+	DsVec3d sum = { 0.0, 0.0, 0.0 };
+	for (int vn = 0; vertexNum > vn; ++vn)
+	{
+		sum += v[vn];
+	}
+	const DsVec3d ave = { sum.x / vertexNum, sum.y / vertexNum, sum.z / vertexNum };
+	return ave;
 }
 
 //virtual
