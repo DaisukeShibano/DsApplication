@@ -119,6 +119,7 @@ namespace DsPhysics
 	protected:
 		DsVec3d _GetMaxVector(const DsVec3d* pVec, const int vn) const;
 		DsVec3d _GetCenterOfGravity(const DsVec3d* v, const int vertexNum)const;
+		virtual void _UpdateAabb(bool isChangeRot);
 
 	protected:
 		virtual void _Update(const DsVec3d& deltaPos, const DsMat33d& deltaRot);

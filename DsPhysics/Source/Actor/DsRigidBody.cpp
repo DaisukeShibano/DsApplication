@@ -159,27 +159,33 @@ void DsRigidBody::_Update( const DsVec3d& deltaPos, const DsMat33d& deltaRot )
 
 	//AABB
 	{
-		if (isChangeRot)
-		{
-			DsVec3d maxLen = DsVec3d::Zero();
-			for (int i = 0; i < gi.vn; ++i)
-			{
-				const DsVec3d len = gi.pVertex[i] - pi.centerOfGravity;
-				maxLen.x = max(maxLen.x, fabs(len.x));
-				maxLen.y = max(maxLen.y, fabs(len.y));
-				maxLen.z = max(maxLen.z, fabs(len.z));
-			}
-			m_aabb.Setup(maxLen.x, maxLen.y, maxLen.z, pi.centerOfGravity);
-		}
-		else
-		{
-			//回転してないなら中心座標だけ更新
-			m_aabb.SetPos(pi.centerOfGravity);
-		}
+		_UpdateAabb(isChangeRot);
 	}
 
 	m_isForceUpdate = false;
 	m_isForceRotation = false;
+}
+
+//virtual 
+void DsRigidBody::_UpdateAabb(bool isChangeRot)
+{
+	if (isChangeRot)
+	{
+		DsVec3d maxLen = DsVec3d::Zero();
+		for (int i = 0; i < m_geomInfo.vn; ++i)
+		{
+			const DsVec3d len = m_geomInfo.pVertex[i] - m_physicsInfo.centerOfGravity;
+			maxLen.x = max(maxLen.x, fabs(len.x));
+			maxLen.y = max(maxLen.y, fabs(len.y));
+			maxLen.z = max(maxLen.z, fabs(len.z));
+		}
+		m_aabb.Setup(maxLen.x, maxLen.y, maxLen.z, m_physicsInfo.centerOfGravity);
+	}
+	else
+	{
+		//回転してないなら中心座標だけ更新
+		m_aabb.SetPos(m_physicsInfo.centerOfGravity);
+	}
 }
 
 //virtual
