@@ -12,7 +12,6 @@ using namespace DsPhysics;
 
 DsRigidSphere::DsRigidSphere(const DsActorId& id, const char* name )
 :DsRigidBody(id, name)
-,m_radius(0)
 ,m_pCollisionGeometry(NULL)
 {
 }
@@ -26,10 +25,6 @@ DsRigidSphere::~DsRigidSphere()
 void DsRigidSphere::Create(const double r, const double mass )
 {
 	DS_ASSERT(!( 0.0 >= mass), "èdÇ≥Ç™0à»â∫Ç≈Ç∑");
-
-	{
-		m_radius = r;
-	}
 
 	{
 		DsRigidPhysicsInfo& pi = m_physicsInfo;
@@ -96,8 +91,7 @@ void DsRigidSphere::_UpdateAabb(bool isChangeRot)
 	DsRigidPhysicsInfo& pi = m_physicsInfo;
 	if (isChangeRot)
 	{
-		DsVec3d maxLen = DsVec3d(m_radius, m_radius, m_radius);
-		m_aabb.Setup(maxLen.x, maxLen.y, maxLen.z, pi.centerOfGravity);
+		m_aabb.Setup(m_sideSize.x, m_sideSize.y, m_sideSize.z, pi.centerOfGravity);
 	}
 	else
 	{
@@ -113,7 +107,7 @@ void DsRigidSphere::_UpdateAabb(bool isChangeRot)
 void DsRigidSphere::Draw(DsDrawCommand& com)
 {
 	com.SetColor(m_dbgColor);
-	com.DrawSphere(GetPosition(), m_radius);
+	com.DrawSphere(GetPosition(), m_sideSize.x);
 }
 
 

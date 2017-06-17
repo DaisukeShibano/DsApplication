@@ -71,7 +71,6 @@ namespace DsPhysics
 		virtual void _UpdateAabb(bool isChangeRot)override;
 
 	private:
-		double m_radius;
 		DsCollisionGeometry* m_pCollisionGeometry;
 
 	};
