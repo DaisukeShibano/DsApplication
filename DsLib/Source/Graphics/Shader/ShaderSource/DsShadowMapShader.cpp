@@ -32,7 +32,7 @@ namespace
 		void main(void)
 		{
 			float depth = v_position.z / v_position.w;
-			depth = depth * 0.5 + 0.5;			//Don't forget to move away from unit cube ([-1,1]) to [0,1] coordinate system
+			depth = depth * 0.5 + 0.5;			//Don't forget to move away from unit box ([-1,1]) to [0,1] coordinate system
 			
 			float moment1 = depth;
 			float moment2 = depth * depth;

@@ -1,7 +1,7 @@
 #include "DsPhysicsPch.h"
 
-#ifndef _DS_COLLISION_CUBE_MESH_H_
-#include "Collision/EachGeom/DsCollisionCubeMesh.h"
+#ifndef _DS_COLLISION_BOX_MESH_H_
+#include "Collision/EachGeom/DsCollisionBoxMesh.h"
 #endif
 #ifndef __DS_COLLISION_DETECTION__
 #include "Collision/DsCollisionDetection.h"
@@ -41,16 +41,16 @@ namespace
 
 	struct _BoxGeom
 	{
-		_BoxGeom(const DsCollisionGeometry* pCube)
-			: pContext(pCube)
-			, pos(pCube->GetBasePos())
+		_BoxGeom(const DsCollisionGeometry* pBox)
+			: pContext(pBox)
+			, pos(pBox->GetBasePos())
 		{
-			size[0] = pCube->GetSide().x;
-			size[1] = pCube->GetSide().y;
-			size[2] = pCube->GetSide().z;
-			rot[0] = pCube->RefOwnerId().GetActor()->GetRotation().GetAxisX();
-			rot[1] = pCube->RefOwnerId().GetActor()->GetRotation().GetAxisY();
-			rot[2] = pCube->RefOwnerId().GetActor()->GetRotation().GetAxisZ();
+			size[0] = pBox->GetSide().x;
+			size[1] = pBox->GetSide().y;
+			size[2] = pBox->GetSide().z;
+			rot[0] = pBox->RefOwnerId().GetActor()->GetRotation().GetAxisX();
+			rot[1] = pBox->RefOwnerId().GetActor()->GetRotation().GetAxisY();
+			rot[2] = pBox->RefOwnerId().GetActor()->GetRotation().GetAxisZ();
 		}
 		const DsCollisionGeometry* pContext;
 		DsVec3d pos;
@@ -671,20 +671,20 @@ namespace
 			}
 		}
 		else{
-			//DS_ASSERT(false, "CubeMesh で実装ミス spa.axisType = %d", spa.axisType);
+			//DS_ASSERT(false, "BoxMesh で実装ミス spa.axisType = %d", spa.axisType);
 			//衝突無し
 		}
 	}
 }
 
-DsCollisionResult& DsCollisionCubeMesh::Collide()
+DsCollisionResult& DsCollisionBoxMesh::Collide()
 {
 	//return m_info;
 	m_info.Clear();
 	if (_ColideAABB()){
 
 		if (m_world.GetCollisionCallback()) {
-			if (!m_world.GetCollisionCallback()->IsCollide(*m_pMesh->RefOwnerId().GetActor(), *m_pCube->RefOwnerId().GetActor())) {
+			if (!m_world.GetCollisionCallback()->IsCollide(*m_pMesh->RefOwnerId().GetActor(), *m_pBox->RefOwnerId().GetActor())) {
 				return m_info;
 			}
 		}
@@ -694,9 +694,9 @@ DsCollisionResult& DsCollisionCubeMesh::Collide()
 	return m_info;
 }
 
-DsCollisionResult& DsCollisionCubeMesh::_ColideFinal()
+DsCollisionResult& DsCollisionBoxMesh::_ColideFinal()
 {
-	_BoxGeom box(m_pCube);
+	_BoxGeom box(m_pBox);
 	const int faceNum = m_pMesh->GetFaceNum();
 	for (int fi = 0; fi < faceNum; ++fi){
 		_TriGeom tri(m_pMesh, fi);
@@ -709,10 +709,10 @@ DsCollisionResult& DsCollisionCubeMesh::_ColideFinal()
 	return m_info;
 }
 
-bool DsCollisionCubeMesh::_ColideAABB()
+bool DsCollisionBoxMesh::_ColideAABB()
 {
 	const DsBoundingTreeBase* pMTree = m_pMesh->GetBoungingTree();
-	const DsBoundingTreeBase* pBTree = m_pCube->GetBoungingTree();
+	const DsBoundingTreeBase* pBTree = m_pBox->GetBoungingTree();
 
 	if (pMTree && pBTree){
 		return pBTree->IsContain(*pMTree);

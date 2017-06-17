@@ -18,18 +18,18 @@ inline double _DsCD_PointFace( const DsVec3d& p, const DsQuad& f, const DsVec3d*
 	return dot;
 }
 
-bool DsPhysics::DsCD_PointFace( const DsCollisionGeometry* pCube1, const DsCollisionGeometry* pCube2, DsCollisionResult& info )
+bool DsPhysics::DsCD_PointFace( const DsCollisionGeometry* pBox1, const DsCollisionGeometry* pBox2, DsCollisionResult& info )
 {
 	bool ret = false;
 
-	const DsActorId& p1Id = pCube1->RefOwnerId();
-	const DsVec3d* p1 = pCube1->GetVertex();
-	const int p1VetexNum = pCube1->GetVertexNum();
-	const DsActorId& p2Id = pCube2->RefOwnerId();
-	const DsVec3d* p2 = pCube2->GetVertex();
-	const DsQuad* p2Face = pCube2->GetFace();
-	const int p2FaceNum = pCube2->GetFaceNum();
-	const DsVec3d toDist = pCube2->GetBasePos() - pCube1->GetBasePos();
+	const DsActorId& p1Id = pBox1->RefOwnerId();
+	const DsVec3d* p1 = pBox1->GetVertex();
+	const int p1VetexNum = pBox1->GetVertexNum();
+	const DsActorId& p2Id = pBox2->RefOwnerId();
+	const DsVec3d* p2 = pBox2->GetVertex();
+	const DsQuad* p2Face = pBox2->GetFace();
+	const int p2FaceNum = pBox2->GetFaceNum();
+	const DsVec3d toDist = pBox2->GetBasePos() - pBox1->GetBasePos();
 
 	if( p1 && p2 && p2Face )
 	{
@@ -80,14 +80,14 @@ bool DsPhysics::DsCD_PointFace( const DsCollisionGeometry* pCube1, const DsColli
 	return ret;
 }
 
-bool DsPhysics::DsCD_PointFace(const DsActorId& p1Id, const DsVec3d& p1, const DsCollisionGeometry* pCube2, DsCollisionResult& info)
+bool DsPhysics::DsCD_PointFace(const DsActorId& p1Id, const DsVec3d& p1, const DsCollisionGeometry* pBox2, DsCollisionResult& info)
 {
 	bool ret = false;
 
-	const DsActorId& p2Id = pCube2->RefOwnerId();
-	const DsVec3d* p2 = pCube2->GetVertex();
-	const DsQuad* p2Face = pCube2->GetFace();
-	const int p2FaceNum = pCube2->GetFaceNum();
+	const DsActorId& p2Id = pBox2->RefOwnerId();
+	const DsVec3d* p2 = pBox2->GetVertex();
+	const DsQuad* p2Face = pBox2->GetFace();
+	const int p2FaceNum = pBox2->GetFaceNum();
 	const DsVec3d toDist = DsVec3d::Zero();
 
 	if (p2 && p2Face)
@@ -261,19 +261,19 @@ inline bool _DsCD_LineFaceParallel(const DsActorId& p1Id, const DsVec3d& lineV0,
 
 }
 
-bool DsPhysics::DsCD_LineFace( const DsCollisionGeometry* pCube1, const DsCollisionGeometry* pCube2, DsCollisionResult& info )
+bool DsPhysics::DsCD_LineFace( const DsCollisionGeometry* pBox1, const DsCollisionGeometry* pBox2, DsCollisionResult& info )
 {
 	bool ret = false;
 
-	const DsActorId& p1Id = pCube1->RefOwnerId();
-	const DsVec3d* p1 = pCube1->GetVertex();
-	const DsLine* p1Line = pCube1->GetLine();
-	const int p1LineNum = pCube1->GetLineNum();
-	const DsActorId& p2Id = pCube2->RefOwnerId();
-	const DsVec3d* p2 = pCube2->GetVertex();
-	const DsQuad* p2Face = pCube2->GetFace();
-	const int p2FaceNum = pCube2->GetFaceNum();
-	const DsVec3d toDist = pCube2->GetBasePos() - pCube1->GetBasePos();
+	const DsActorId& p1Id = pBox1->RefOwnerId();
+	const DsVec3d* p1 = pBox1->GetVertex();
+	const DsLine* p1Line = pBox1->GetLine();
+	const int p1LineNum = pBox1->GetLineNum();
+	const DsActorId& p2Id = pBox2->RefOwnerId();
+	const DsVec3d* p2 = pBox2->GetVertex();
+	const DsQuad* p2Face = pBox2->GetFace();
+	const int p2FaceNum = pBox2->GetFaceNum();
+	const DsVec3d toDist = pBox2->GetBasePos() - pBox1->GetBasePos();
 
 	if( p1 && p1Line && p2 && p2Face )
 	{
@@ -290,19 +290,19 @@ bool DsPhysics::DsCD_LineFace( const DsCollisionGeometry* pCube1, const DsCollis
 }
 
 
-bool DsPhysics::DsCD_LineFaceVelocity(const DsCollisionGeometry* pCube1, const DsCollisionGeometry* pCube2, DsCollisionResult& info)
+bool DsPhysics::DsCD_LineFaceVelocity(const DsCollisionGeometry* pBox1, const DsCollisionGeometry* pBox2, DsCollisionResult& info)
 {
 	bool ret = false;
 
-	const DsActorId& p1Id = pCube1->RefOwnerId();
-	const DsVec3d* p1 = pCube1->GetVertex();
-	const DsVec3d* preP1 = pCube1->GetPreVertex();//１フレ前の頂点
-	const int p1Vn = pCube1->GetVertexNum();
-	const DsActorId& p2Id = pCube2->RefOwnerId();
-	const DsVec3d* p2 = pCube2->GetVertex();
-	const DsQuad* p2Face = pCube2->GetFace();
-	const int p2FaceNum = pCube2->GetFaceNum();
-	const DsVec3d toDist = pCube2->GetBasePos() - pCube1->GetBasePos();
+	const DsActorId& p1Id = pBox1->RefOwnerId();
+	const DsVec3d* p1 = pBox1->GetVertex();
+	const DsVec3d* preP1 = pBox1->GetPreVertex();//１フレ前の頂点
+	const int p1Vn = pBox1->GetVertexNum();
+	const DsActorId& p2Id = pBox2->RefOwnerId();
+	const DsVec3d* p2 = pBox2->GetVertex();
+	const DsQuad* p2Face = pBox2->GetFace();
+	const int p2FaceNum = pBox2->GetFaceNum();
+	const DsVec3d toDist = pBox2->GetBasePos() - pBox1->GetBasePos();
 
 	if (p1 && preP1 && p2 && p2Face)
 	{
@@ -475,16 +475,16 @@ inline bool _DsCD_TriangleFace(const DsActorId& meshActorId, const DsQuad& tri, 
 	return true;//三角形の中に面が完全に入っているときを検知したいので、三角形と面を入れ替えるためtrueを返す
 }
 
-bool DsPhysics::DsCD_TriangleFace(const DsCollisionGeometry* pMesh, const DsCollisionGeometry* pCube, DsCollisionResult& info)
+bool DsPhysics::DsCD_TriangleFace(const DsCollisionGeometry* pMesh, const DsCollisionGeometry* pBox, DsCollisionResult& info)
 {
 	bool ret = false;
 
 	const DsActorId& mesh = pMesh->RefOwnerId();
-	const DsActorId& cube = pCube->RefOwnerId();
+	const DsActorId& box = pBox->RefOwnerId();
 	const DsVec3d* meshV = pMesh->GetVertex();
-	const DsVec3d* faceV = pCube->GetVertex();
+	const DsVec3d* faceV = pBox->GetVertex();
 	const int triN = pMesh->GetFaceNum();
-	const int faceN = pCube->GetFaceNum();
+	const int faceN = pBox->GetFaceNum();
 
 	if (meshV && faceV)
 	{
@@ -492,7 +492,7 @@ bool DsPhysics::DsCD_TriangleFace(const DsCollisionGeometry* pMesh, const DsColl
 		{
 			for (int fi = 0; fi < faceN; ++fi)
 			{
-				const bool isHit = _DsCD_TriangleFace(mesh, pMesh->GetFace()[ti], meshV, cube, pCube->GetFace()[fi], faceV, info);
+				const bool isHit = _DsCD_TriangleFace(mesh, pMesh->GetFace()[ti], meshV, box, pBox->GetFace()[fi], faceV, info);
 				ret |= isHit;
 
 
@@ -500,32 +500,32 @@ bool DsPhysics::DsCD_TriangleFace(const DsCollisionGeometry* pMesh, const DsColl
 				if (isHit)
 				{
 					DsCollisionResult tmp;
-					if (pCube->GetFace()[fi].vn == 3)
+					if (pBox->GetFace()[fi].vn == 3)
 					{
-						//_DsCD_TriangleFace(mesh, pMesｔh->GetFace()[ti], meshV, cube, pCube->GetFace()[fi], faceV, info);引数が反転してるのが見やすいように比較
-						// _DsCD_TriangleFace(cube, pCube->GetFace()[fi], faceV, mesh, pMesh->GetFace()[ti], meshV, info);
-						   _DsCD_TriangleFace(mesh, pCube->GetFace()[fi], faceV, cube, pMesh->GetFace()[ti], meshV, tmp);
+						//_DsCD_TriangleFace(mesh, pMesｔh->GetFace()[ti], meshV, box, pBox->GetFace()[fi], faceV, info);引数が反転してるのが見やすいように比較
+						// _DsCD_TriangleFace(box, pBox->GetFace()[fi], faceV, mesh, pMesh->GetFace()[ti], meshV, info);
+						   _DsCD_TriangleFace(mesh, pBox->GetFace()[fi], faceV, box, pMesh->GetFace()[ti], meshV, tmp);
 						  //master側のオーナーはmeshに統一。拘束解くときに１actorの衝突計算でオーナーが入れ替わると合力計算のときのmaster側の座標がmasterではなくなるため
 					}
-					else //cubeは４角形で構成されてるので、三角形に分割
+					else //boxは４角形で構成されてるので、三角形に分割
 					{
 						DsQuad splitF1; 
 						splitF1.vn = 3;
-						splitF1.index[0] = pCube->GetFace()[fi].index[0];
-						splitF1.index[1] = pCube->GetFace()[fi].index[1];
-						splitF1.index[2] = pCube->GetFace()[fi].index[2];
-						splitF1.normal = pCube->GetFace()[fi].normal;
-						//_DsCD_TriangleFace(cube, splitF1, faceV, mesh, pMesh->GetFace()[ti], meshV, info);
-						  _DsCD_TriangleFace(mesh, splitF1, faceV, cube, pMesh->GetFace()[ti], meshV, tmp);//↑と同じ理由でオーナー入れ替え
+						splitF1.index[0] = pBox->GetFace()[fi].index[0];
+						splitF1.index[1] = pBox->GetFace()[fi].index[1];
+						splitF1.index[2] = pBox->GetFace()[fi].index[2];
+						splitF1.normal = pBox->GetFace()[fi].normal;
+						//_DsCD_TriangleFace(box, splitF1, faceV, mesh, pMesh->GetFace()[ti], meshV, info);
+						  _DsCD_TriangleFace(mesh, splitF1, faceV, box, pMesh->GetFace()[ti], meshV, tmp);//↑と同じ理由でオーナー入れ替え
 				
 						DsQuad splitF2;
 						splitF2.vn = 3;
-						splitF2.index[0] = pCube->GetFace()[fi].index[2];
-						splitF2.index[1] = pCube->GetFace()[fi].index[3];
-						splitF2.index[2] = pCube->GetFace()[fi].index[0];
-						splitF2.normal = pCube->GetFace()[fi].normal;
-						//_DsCD_TriangleFace(cube, splitF2, faceV, mesh, pMesh->GetFace()[ti], meshV, info);
-						  _DsCD_TriangleFace(mesh, splitF2, faceV, cube, pMesh->GetFace()[ti], meshV, tmp);
+						splitF2.index[0] = pBox->GetFace()[fi].index[2];
+						splitF2.index[1] = pBox->GetFace()[fi].index[3];
+						splitF2.index[2] = pBox->GetFace()[fi].index[0];
+						splitF2.normal = pBox->GetFace()[fi].normal;
+						//_DsCD_TriangleFace(box, splitF2, faceV, mesh, pMesh->GetFace()[ti], meshV, info);
+						  _DsCD_TriangleFace(mesh, splitF2, faceV, box, pMesh->GetFace()[ti], meshV, tmp);
 					}
 
 					//拘束を解く時、mesh側をマスターとして解くようにしているので、meshがmeshの法線方向にめり込み解決してしまう。

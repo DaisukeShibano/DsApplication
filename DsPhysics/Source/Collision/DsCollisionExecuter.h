@@ -1,14 +1,14 @@
 #ifndef __DS_COLLISION_EXECUTER__
 #define __DS_COLLISION_EXECUTER__
 
-#ifndef __DS_COLLISION_CUBE_CUBE__
-#include "Collision/EachGeom/DsCollisionCubeCube.h"
+#ifndef __DS_COLLISION_BOX_BOX__
+#include "Collision/EachGeom/DsCollisionBoxBox.h"
 #endif
-#ifndef _DS_COLLISION_CUBE_MESH_H_
-#include "Collision/EachGeom/DsCollisionCubeMesh.h"
+#ifndef _DS_COLLISION_BOX_MESH_H_
+#include "Collision/EachGeom/DsCollisionBoxMesh.h"
 #endif
-#ifndef __DS_COLLISION_CUBE_RAY__
-#include "Collision/EachGeom/DsCollisionCubeRay.h"
+#ifndef __DS_COLLISION_BOX_RAY__
+#include "Collision/EachGeom/DsCollisionBoxRay.h"
 #endif
 #ifndef __DS_COLLISION_MESH_RAY__
 #include "Collision/EachGeom/DsCollisionMeshRay.h"
@@ -16,8 +16,8 @@
 #ifndef _DS_COLLISION_SPHERE_MESH_H_
 #include "Collision/EachGeom/DsCollisionSphereMesh.h"
 #endif
-#ifndef _DS_COLLISION_SPHERE_CUBE_H_
-#include "Collision/EachGeom/DsCollisionSphereCube.h"
+#ifndef _DS_COLLISION_SPHERE_BOX_H_
+#include "Collision/EachGeom/DsCollisionSphereBox.h"
 #endif
 
 #ifndef __DS_ACTOR__
@@ -53,12 +53,12 @@ namespace DsPhysics
 
 	public:
 		DsCollisionExecuter(const DsPhysicsWorld& world)
-			: m_cubeCube(world)
-			, m_rayCube(world)
-			, m_cubeMesh(world)
+			: m_boxBox(world)
+			, m_rayBox(world)
+			, m_boxMesh(world)
 			, m_meshRay(world)
 			, m_sphereMesh(world)
-			, m_sphereCube(world)
+			, m_sphereBox(world)
 			, m_sphereSphere(world)
 			, m_capsuleMesh(world)
 		{}
@@ -70,34 +70,34 @@ namespace DsPhysics
 			//ここは１フレでかなり高頻度で呼ばれる場所
 
 			//キューブとキューブ
-			if ((actor1.GetType() == DsActor::RIGID_CUBE) && (actor2.GetType() == DsActor::RIGID_CUBE))
+			if ((actor1.GetType() == DsActor::RIGID_BOX) && (actor2.GetType() == DsActor::RIGID_BOX))
 			{
-				m_cubeCube.Initialize(actor1.GetCollisionGeometry(), actor2.GetCollisionGeometry());
-				return m_cubeCube.Collide();
+				m_boxBox.Initialize(actor1.GetCollisionGeometry(), actor2.GetCollisionGeometry());
+				return m_boxBox.Collide();
 			}
 
 			//キューブとレイ
-			else if ((actor1.GetType() == DsActor::RIGID_CUBE) && (actor2.GetType() == DsActor::RAY))
+			else if ((actor1.GetType() == DsActor::RIGID_BOX) && (actor2.GetType() == DsActor::RAY))
 			{
-				m_rayCube.Initialize(actor1.GetCollisionGeometry(), actor2.GetCollisionGeometry());
-				return m_rayCube.Collide();
+				m_rayBox.Initialize(actor1.GetCollisionGeometry(), actor2.GetCollisionGeometry());
+				return m_rayBox.Collide();
 			}
-			else if ((actor2.GetType() == DsActor::RIGID_CUBE) && (actor1.GetType() == DsActor::RAY))
+			else if ((actor2.GetType() == DsActor::RIGID_BOX) && (actor1.GetType() == DsActor::RAY))
 			{
-				m_rayCube.Initialize(actor1.GetCollisionGeometry(), actor2.GetCollisionGeometry());
-				return m_rayCube.Collide();
+				m_rayBox.Initialize(actor1.GetCollisionGeometry(), actor2.GetCollisionGeometry());
+				return m_rayBox.Collide();
 			}
 
 			//キューブとメッシュ
-			else if ((actor1.GetType() == DsActor::RIGID_CUBE) && (actor2.GetType() == DsActor::RIGID_MESH))
+			else if ((actor1.GetType() == DsActor::RIGID_BOX) && (actor2.GetType() == DsActor::RIGID_MESH))
 			{
-				m_cubeMesh.Initialize(actor1.GetCollisionGeometry(), actor2.GetCollisionGeometry());
-				return m_cubeMesh.Collide();
+				m_boxMesh.Initialize(actor1.GetCollisionGeometry(), actor2.GetCollisionGeometry());
+				return m_boxMesh.Collide();
 			}
-			else if ((actor2.GetType() == DsActor::RIGID_CUBE) && (actor1.GetType() == DsActor::RIGID_MESH))
+			else if ((actor2.GetType() == DsActor::RIGID_BOX) && (actor1.GetType() == DsActor::RIGID_MESH))
 			{
-				m_cubeMesh.Initialize(actor2.GetCollisionGeometry(), actor1.GetCollisionGeometry());
-				return m_cubeMesh.Collide();
+				m_boxMesh.Initialize(actor2.GetCollisionGeometry(), actor1.GetCollisionGeometry());
+				return m_boxMesh.Collide();
 			}
 
 			//メッシュとレイ
@@ -106,7 +106,7 @@ namespace DsPhysics
 				m_meshRay.Initialize(actor1.GetCollisionGeometry(), actor2.GetCollisionGeometry());
 				return m_meshRay.Collide();
 			}
-			else if ((actor2.GetType() == DsActor::RIGID_CUBE) && (actor1.GetType() == DsActor::RAY))
+			else if ((actor2.GetType() == DsActor::RIGID_BOX) && (actor1.GetType() == DsActor::RAY))
 			{
 				m_meshRay.Initialize(actor2.GetCollisionGeometry(), actor1.GetCollisionGeometry());
 				return m_meshRay.Collide();
@@ -131,15 +131,15 @@ namespace DsPhysics
 			}
 
 			//スフィアとキューブ
-			else if ((actor1.GetType() == DsActor::RIGID_SPHERE) && (actor2.GetType() == DsActor::RIGID_CUBE))
+			else if ((actor1.GetType() == DsActor::RIGID_SPHERE) && (actor2.GetType() == DsActor::RIGID_BOX))
 			{
-				m_sphereCube.Initialize(actor1.GetCollisionGeometry(), actor2.GetCollisionGeometry());
-				return m_sphereCube.Collide();
+				m_sphereBox.Initialize(actor1.GetCollisionGeometry(), actor2.GetCollisionGeometry());
+				return m_sphereBox.Collide();
 			}
-			else if ((actor1.GetType() == DsActor::RIGID_CUBE) && (actor2.GetType() == DsActor::RIGID_SPHERE))
+			else if ((actor1.GetType() == DsActor::RIGID_BOX) && (actor2.GetType() == DsActor::RIGID_SPHERE))
 			{
-				m_sphereCube.Initialize(actor2.GetCollisionGeometry(), actor1.GetCollisionGeometry());
-				return m_sphereCube.Collide();
+				m_sphereBox.Initialize(actor2.GetCollisionGeometry(), actor1.GetCollisionGeometry());
+				return m_sphereBox.Collide();
 			}
 
 
@@ -161,12 +161,12 @@ namespace DsPhysics
 
 	private:
 		//一時的なクラスとして使ってたがインスタンス生成に時間かかってたので、メンバで持っとく
-		DsCollisionCubeCube m_cubeCube;
-		DsCollisionCubeRay m_rayCube;
-		DsCollisionCubeMesh m_cubeMesh;
+		DsCollisionBoxBox m_boxBox;
+		DsCollisionBoxRay m_rayBox;
+		DsCollisionBoxMesh m_boxMesh;
 		DsCollisionMeshRay m_meshRay;
 		DsCollisionSphereMesh m_sphereMesh;
-		DsCollisionSphereCube m_sphereCube;
+		DsCollisionSphereBox m_sphereBox;
 		DsCollisionSphereSphere m_sphereSphere;
 		DsCollisionCapsuleMesh m_capsuleMesh;
 	};

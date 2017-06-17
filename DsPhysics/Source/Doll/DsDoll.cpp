@@ -1,6 +1,6 @@
 #include "DsPhysicsPch.h"
 #include "Doll/DsDoll.h"
-#include "Actor/DsRigidCube.h"
+#include "Actor/DsRigidBox.h"
 
 using namespace DsPhysics;
 

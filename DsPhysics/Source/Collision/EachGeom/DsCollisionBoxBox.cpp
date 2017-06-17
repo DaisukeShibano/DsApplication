@@ -1,9 +1,9 @@
 #include "DsPhysicsPch.h"
-#ifndef __DS_COLLISION_CUBE_CUBE__
-#include "Collision/EachGeom/DsCollisionCubeCube.h"
+#ifndef __DS_COLLISION_BOX_BOX__
+#include "Collision/EachGeom/DsCollisionBoxBox.h"
 #endif
 
-#include "Actor/DsRigidCube.h"
+#include "Actor/DsRigidBox.h"
 #ifndef __DS_COLLISION_DETECTION__
 #include "Collision/DsCollisionDetection.h"
 #endif
@@ -167,18 +167,18 @@ namespace
 
 
 
-DsCollisionResult& DsCollisionCubeCube::Collide()
+DsCollisionResult& DsCollisionBoxBox::Collide()
 {
 	//return m_info;
-	DS_ASSERT(m_pCube1, "衝突オーナー1がNULL");
-	DS_ASSERT(m_pCube2, "衝突オーナー2がNULL");
-	DS_ASSERT(m_pCube1 != m_pCube2, "同じ物体同士で当たり判定");
+	DS_ASSERT(m_pBox1, "衝突オーナー1がNULL");
+	DS_ASSERT(m_pBox2, "衝突オーナー2がNULL");
+	DS_ASSERT(m_pBox1 != m_pBox2, "同じ物体同士で当たり判定");
 	
 	m_info.Clear();
-	const bool isContain = DsAabb::IsContain(*m_pCube1->GetAabb(), *m_pCube2->GetAabb());
+	const bool isContain = DsAabb::IsContain(*m_pBox1->GetAabb(), *m_pBox2->GetAabb());
 	if (isContain){
 		if (m_world.GetCollisionCallback()) {
-			if (!m_world.GetCollisionCallback()->IsCollide(*m_pCube1->RefOwnerId().GetActor(), *m_pCube2->RefOwnerId().GetActor())) {
+			if (!m_world.GetCollisionCallback()->IsCollide(*m_pBox1->RefOwnerId().GetActor(), *m_pBox2->RefOwnerId().GetActor())) {
 				return m_info;
 			}
 		}
@@ -188,7 +188,7 @@ DsCollisionResult& DsCollisionCubeCube::Collide()
 	return m_info;
 }
 
-DsCollisionResult& DsCollisionCubeCube::_ColideFinal()
+DsCollisionResult& DsCollisionBoxBox::_ColideFinal()
 {
 	/*
 	//ODE(ちなみにbulletも同じ)を参考。
@@ -204,23 +204,23 @@ DsCollisionResult& DsCollisionCubeCube::_ColideFinal()
 	めり込み量は衝突点のめり込み量
 	方向は分離軸
 	*/
-	const DsVec3d sideA = m_pCube1->GetSide();
-	const DsVec3d sideB = m_pCube2->GetSide();
+	const DsVec3d sideA = m_pBox1->GetSide();
+	const DsVec3d sideB = m_pBox2->GetSide();
 	const DsVec3d Ra[3] = {
-		m_pCube1->GetRot().GetAxisX(),
-		m_pCube1->GetRot().GetAxisY(),
-		m_pCube1->GetRot().GetAxisZ(),
+		m_pBox1->GetRot().GetAxisX(),
+		m_pBox1->GetRot().GetAxisY(),
+		m_pBox1->GetRot().GetAxisZ(),
 	};
 	const DsVec3d Rb[3] = {
-		m_pCube2->GetRot().GetAxisX(),
-		m_pCube2->GetRot().GetAxisY(),
-		m_pCube2->GetRot().GetAxisZ(),
+		m_pBox2->GetRot().GetAxisX(),
+		m_pBox2->GetRot().GetAxisY(),
+		m_pBox2->GetRot().GetAxisZ(),
 	};
-	const DsVec3d posA = m_pCube1->GetBasePos();
-	const DsVec3d posB = m_pCube2->GetBasePos();
+	const DsVec3d posA = m_pBox1->GetBasePos();
+	const DsVec3d posB = m_pBox2->GetBasePos();
 	const DsVec3d AtoB = posB - posA;
-	const DsMat33d RaT = m_pCube1->GetRot().ToTransposition();
-	const DsMat33d RbT = m_pCube2->GetRot().ToTransposition();
+	const DsMat33d RaT = m_pBox1->GetRot().ToTransposition();
+	const DsMat33d RbT = m_pBox2->GetRot().ToTransposition();
 	const DsVec3d RaTAtoB = RaT*AtoB;
 	const DsVec3d RbTAtoB = RbT*AtoB;
 
@@ -284,7 +284,7 @@ DsCollisionResult& DsCollisionCubeCube::_ColideFinal()
 
 	//ねしれの分離軸が一番浅かった
 	if (_N_AXIS::CROSS < axType){
-		normal = m_pCube1->GetRot()*normal;
+		normal = m_pBox1->GetRot()*normal;
 		DsVec3d pa = posA;//交差した辺の始点を求めたい
 		for (int i = 0; i < 3; ++i){
 			const double _sign = (_Dot(normal, Ra[i]) > 0.0) ? (1.0) : (-1.0);
@@ -308,7 +308,7 @@ DsCollisionResult& DsCollisionCubeCube::_ColideFinal()
 		pb = pb + ub*beta;
 
 		const DsVec3d colPos = (pa + pb)*0.5;
-		m_info.AddInfo(colPos, -normal, -depth, m_pCube1->RefOwnerId(), m_pCube2->RefOwnerId());
+		m_info.AddInfo(colPos, -normal, -depth, m_pBox1->RefOwnerId(), m_pBox2->RefOwnerId());
 		//DsDbgSys::GetIns().RefDrawCom().SetColor(DsVec3d(0, 1, 0)).DrawSphere(colPos, 0.1);
 		//DsDbgSys::GetIns().RefDrawCom().SetColor(DsVec3d(0, 1, 1)).DrawLine(colPos, colPos +(normal*10.0));
 		return m_info;
@@ -458,7 +458,7 @@ DsCollisionResult& DsCollisionCubeCube::_ColideFinal()
 	double ret[16];
 	const int n = _intersectRectQuad(rect, quad, ret);//重なる領域
 	if (n < 1){
-		//DS_ASSERT(false, "cube cube の当たり判定で面と面の交差数が０");
+		//DS_ASSERT(false, "box box の当たり判定で面と面の交差数が０");
 		return m_info;		// OBBで判定済みなので、交差してないことなんてありえないはず。
 	}
 
@@ -494,7 +494,7 @@ DsCollisionResult& DsCollisionCubeCube::_ColideFinal()
 
 	for (int j = 0; j < cnum; j++) {
 		const DsVec3d colPos = point[j] + (*paa);
-		m_info.AddInfo(colPos, -normal, dep[j], m_pCube1->RefOwnerId(), m_pCube2->RefOwnerId());
+		m_info.AddInfo(colPos, -normal, dep[j], m_pBox1->RefOwnerId(), m_pBox2->RefOwnerId());
 		//DsDbgSys::GetIns().RefDrawCom().SetColor(DsVec3d(0, 0, 1)).DrawSphere(colPos, 0.1);
 	}
 

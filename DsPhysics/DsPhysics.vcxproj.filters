@@ -168,15 +168,6 @@
     <ClInclude Include="Source\Actor\DsRigidSphere.h">
       <Filter>Source\Actor</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Collision\EachGeom\DsCollisionCubeCube.h">
-      <Filter>Source\Collision\EachGeom</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Collision\EachGeom\DsCollisionCubeMesh.h">
-      <Filter>Source\Collision\EachGeom</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Collision\EachGeom\DsCollisionCubeRay.h">
-      <Filter>Source\Collision\EachGeom</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Collision\EachGeom\DsCollisionMeshRay.h">
       <Filter>Source\Collision\EachGeom</Filter>
     </ClInclude>
@@ -184,9 +175,6 @@
       <Filter>Source\Collision\EachGeom</Filter>
     </ClInclude>
     <ClInclude Include="Source\Collision\EachGeom\ICollisionGeom.h">
-      <Filter>Source\Collision\EachGeom</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Collision\EachGeom\DsCollisionSphereCube.h">
       <Filter>Source\Collision\EachGeom</Filter>
     </ClInclude>
     <ClInclude Include="Source\Collision\EachGeom\DsCollisionSphereSphere.h">
@@ -210,14 +198,26 @@
     <ClInclude Include="Source\Collision\DsCollisionCallback.h">
       <Filter>Source\Collision</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Actor\DsRigidCube.h">
-      <Filter>Source\Actor</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Actor\DsRigidBody.h">
       <Filter>Source\Actor</Filter>
     </ClInclude>
     <ClInclude Include="Source\Collision\DsCollisionGeometry.h">
       <Filter>Source\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\DsRigidBox.h">
+      <Filter>Source\Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionBoxBox.h">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionBoxMesh.h">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionBoxRay.h">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionSphereBox.h">
+      <Filter>Source\Collision\EachGeom</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -317,22 +317,10 @@
     <ClCompile Include="Source\Actor\DsRigidSphere.cpp">
       <Filter>Source\Actor</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Collision\EachGeom\DsCollisionCubeMesh.cpp">
-      <Filter>Source\Collision\EachGeom</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Collision\EachGeom\DsCollisionCubeRay.cpp">
-      <Filter>Source\Collision\EachGeom</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Collision\EachGeom\DsCollisionMeshRay.cpp">
       <Filter>Source\Collision\EachGeom</Filter>
     </ClCompile>
     <ClCompile Include="Source\Collision\EachGeom\DsCollisionSphereMesh.cpp">
-      <Filter>Source\Collision\EachGeom</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Collision\EachGeom\DsCollisionCubeCube.cpp">
-      <Filter>Source\Collision\EachGeom</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Collision\EachGeom\DsCollisionSphereCube.cpp">
       <Filter>Source\Collision\EachGeom</Filter>
     </ClCompile>
     <ClCompile Include="Source\Collision\EachGeom\DsCollisionSphereSphere.cpp">
@@ -353,11 +341,23 @@
     <ClCompile Include="Source\Res\Param\DsRagdollParam.cpp">
       <Filter>Source\Res\Param</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Actor\DsRigidCube.cpp">
-      <Filter>Source\Actor</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Actor\DsRigidBody.cpp">
       <Filter>Source\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Actor\DsRigidBox.cpp">
+      <Filter>Source\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionBoxBox.cpp">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionBoxMesh.cpp">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionBoxRay.cpp">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionSphereBox.cpp">
+      <Filter>Source\Collision\EachGeom</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,13 +1,13 @@
 #include "DsPhysicsPch.h"
-#ifndef __DS_RIGID_CUBE__
-#include "Actor/DsRigidCube.h"
+#ifndef __DS_RIGID_BOX__
+#include "Actor/DsRigidBox.h"
 #endif
 
 using namespace DsPhysics;
 
 
 
-DsRigidCube::DsRigidCube(const DsActorId& id, const char* name )
+DsRigidBox::DsRigidBox(const DsActorId& id, const char* name )
 :DsRigidBody(id, name)
 //, m_vertex()
 //, m_vertexOriginal()
@@ -16,12 +16,12 @@ DsRigidCube::DsRigidCube(const DsActorId& id, const char* name )
 {
 }
 
-DsRigidCube::~DsRigidCube()
+DsRigidBox::~DsRigidBox()
 {
 	delete m_pCollisionGeometry; m_pCollisionGeometry = NULL;
 }
 
-void DsRigidCube::Create(const DsVec3d* pv, const double mass )
+void DsRigidBox::Create(const DsVec3d* pv, const double mass )
 {
 	DS_ASSERT(!( 0.0 >= mass), "重さが0以下です");
 
@@ -109,7 +109,7 @@ void DsRigidCube::Create(const DsVec3d* pv, const double mass )
 
 		//重心位置
 		DsRigidGeometryInfo& gi = m_geomInfo;
-		//pi.centerOfGravity = _GetCenterOfGravity(gi.vertex, DsRigidCubeGeometryInfo::VERTEX_NUM);
+		//pi.centerOfGravity = _GetCenterOfGravity(gi.vertex, DsRigidBoxGeometryInfo::VERTEX_NUM);
 		pi.centerOfGravity = GetPosition();
 
 		//AABB
@@ -141,7 +141,7 @@ void DsRigidCube::Create(const DsVec3d* pv, const double mass )
 	デバッグ用描画
 */
 //virtual
-void DsRigidCube::Draw(DsDrawCommand& com)
+void DsRigidBox::Draw(DsDrawCommand& com)
 {
 	const DsVec3d* pVertex = m_geomInfo.pVertex;
 	const int faceNum = m_geomInfo.fn;
@@ -170,7 +170,7 @@ void DsRigidCube::Draw(DsDrawCommand& com)
 }
 
 
-void DsRigidCube::GetVertex( DsVec3d pv[VERTEX_NUM], double xl, double yl, double zl)
+void DsRigidBox::GetVertex( DsVec3d pv[VERTEX_NUM], double xl, double yl, double zl)
 {
 	pv[0].Set( -xl/2.0, yl/2.0, zl/2.0 );
 	pv[1].Set(  xl/2.0, yl/2.0, zl/2.0 );
@@ -184,9 +184,9 @@ void DsRigidCube::GetVertex( DsVec3d pv[VERTEX_NUM], double xl, double yl, doubl
 
 
 //////////////////////factory//////////////////////////
-DsActor* DsRigidCube::DsRigidCubeFactory::CreateIns( const DsActorId& id ) const
+DsActor* DsRigidBox::DsRigidBoxFactory::CreateIns( const DsActorId& id ) const
 {
-	DsRigidCube* pRet = new DsRigidCube(id, m_name.c_str());
+	DsRigidBox* pRet = new DsRigidBox(id, m_name.c_str());
 	if(pRet)
 	{
 		pRet->m_option = m_initOption;

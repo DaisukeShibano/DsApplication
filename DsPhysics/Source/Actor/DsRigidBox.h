@@ -1,5 +1,5 @@
-#ifndef __DS_RIGID_CUBE__
-#define __DS_RIGID_CUBE__
+#ifndef __DS_RIGID_BOX__
+#define __DS_RIGID_BOX__
 
 #ifndef __DS_RIGID_BODY__
 #include "Actor/DsRigidBody.h"
@@ -8,7 +8,7 @@
 
 namespace DsPhysics
 {
-	class DsRigidCube : public DsRigidBody
+	class DsRigidBox : public DsRigidBody
 	{
 	private:
 		enum {
@@ -19,10 +19,10 @@ namespace DsPhysics
 	
 	public:
 	/////////////Factory////////////
-	class DsRigidCubeFactory : public DsActorFactory
+	class DsRigidBoxFactory : public DsActorFactory
 	{
 	public:
-		DsRigidCubeFactory( const DsVec3d* pv, const double mass, const char* name )
+		DsRigidBoxFactory( const DsVec3d* pv, const double mass, const char* name )
 			: m_pv()
 			, m_sizeVertex(NULL)
 			, m_mass(mass)
@@ -36,7 +36,7 @@ namespace DsPhysics
 			}
 		}
 
-		virtual ~DsRigidCubeFactory()
+		virtual ~DsRigidBoxFactory()
 		{
 		}
 
@@ -60,12 +60,12 @@ namespace DsPhysics
 
 
 	public:
-		DsRigidCube(const DsActorId& id, const char* name);
+		DsRigidBox(const DsActorId& id, const char* name);
 
-		virtual ~DsRigidCube();
+		virtual ~DsRigidBox();
 
 	public:
-		virtual DsActor::ACTOR_TYPE GetType() const override{ return DsActor::RIGID_CUBE; }
+		virtual DsActor::ACTOR_TYPE GetType() const override{ return DsActor::RIGID_BOX; }
 
 	public:	
 		//vertexは引数を内部で持ってるメンバにコピー

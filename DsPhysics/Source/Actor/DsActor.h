@@ -52,7 +52,7 @@ namespace DsPhysics
 	public:
 		enum ACTOR_TYPE
 		{
-			RIGID_CUBE = 0,
+			RIGID_BOX = 0,
 			RIGID_MESH,
 			RIGID_SPHERE,
 			RIGID_CAPSULE,

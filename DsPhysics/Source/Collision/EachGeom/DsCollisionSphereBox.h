@@ -1,5 +1,5 @@
-#ifndef _DS_COLLISION_CUBE_MESH_H_
-#define _DS_COLLISION_CUBE_MESH_H_
+#ifndef _DS_COLLISION_SPHERE_BOX_H_
+#define _DS_COLLISION_SPHERE_BOX_H_
 
 #ifndef __DS_ICOLLISION_GEOM__
 #include "Collision/EachGeom/ICollisionGeom.h"
@@ -16,33 +16,32 @@ namespace DsPhysics
 
 namespace DsPhysics
 {
-	class DsCollisionCubeMesh : public ICollisionGeom
+	class DsCollisionSphereBox : public ICollisionGeom
 	{
 	public:
-		DsCollisionCubeMesh(const DsPhysicsWorld& world)
+		DsCollisionSphereBox(const DsPhysicsWorld& world)
 			: ICollisionGeom(world)
-			, m_pCube(NULL)
-			, m_pMesh(NULL)
+			, m_pSphere(NULL)
+			, m_pBox(NULL)
 			, m_info()
 		{}
-		void Initialize(const DsCollisionGeometry* pCube, const DsCollisionGeometry* pMesh)
+		void Initialize(const DsCollisionGeometry* pSphere, const DsCollisionGeometry* pBox)
 		{
-			m_pCube = pCube;
-			m_pMesh = pMesh;
+			m_pSphere = pSphere;
+			m_pBox = pBox;
 			m_info.Clear();
 		}
-		virtual ~DsCollisionCubeMesh(){}
+		virtual ~DsCollisionSphereBox(){}
 
 	public:
 		virtual DsCollisionResult& Collide() override;
 
 	private:
-		DsCollisionResult& _ColideFinal();
 		bool _ColideAABB();
 
 	private:
-		const DsCollisionGeometry* m_pCube;
-		const DsCollisionGeometry* m_pMesh;
+		const DsCollisionGeometry* m_pSphere;
+		const DsCollisionGeometry* m_pBox;
 		DsCollisionResult m_info;
 	};
 

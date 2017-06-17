@@ -3,7 +3,7 @@
 #include "Collision/EachGeom/DsCollisionMeshRay.h"
 #endif
 
-#include "Actor/DsRigidCube.h"
+#include "Actor/DsRigidBox.h"
 #include "Collision/DsCollisionResult.h"
 #include "Collision/DsCollisionDetection.h"
 #include "Collision/DsCollisionGeometry.h"

@@ -43,8 +43,8 @@ namespace DsLib
 		void Clear();
 
 	public:
-		DsDrawCommand& DrawCube(const DsVec3f& pos, const float size);
-		DsDrawCommand& DrawCube(const DsVec3d& pos, const double size){ return DrawCube(ToVec3f(pos), static_cast<float>(size)); }
+		DsDrawCommand& DrawBox(const DsVec3f& pos, const float size);
+		DsDrawCommand& DrawBox(const DsVec3d& pos, const double size){ return DrawBox(ToVec3f(pos), static_cast<float>(size)); }
 		DsDrawCommand& DrawSphere(const DsVec3f& pos, const float radius);
 		DsDrawCommand& DrawSphere(const DsVec3d& pos, const double radius){ return DrawSphere(ToVec3f(pos), static_cast<float>(radius)); }
 		DsDrawCommand& DrawLine(const DsVec3f& p1, const DsVec3f& p2);

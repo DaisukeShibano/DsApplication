@@ -22,7 +22,7 @@ using namespace DsLib;
 #include "DsPhysicsManager.h"
 #endif
 #ifndef _DS_RIGID_BODY__
-#include "Actor/DsRigidCube.h"
+#include "Actor/DsRigidBox.h"
 #endif
 #ifndef _DS_RIGID_MESH_H_
 #include "Actor/DsRigidMesh.h"

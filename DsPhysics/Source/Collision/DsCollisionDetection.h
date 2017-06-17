@@ -12,11 +12,11 @@ namespace DsPhysics
 
 namespace DsPhysics
 {
-	bool DsCD_PointFace( const DsCollisionGeometry* pCube1, const DsCollisionGeometry* pCube2, DsCollisionResult& info );
-	bool DsCD_PointFace( const DsActorId& p1Id, const DsVec3d& p1, const DsCollisionGeometry* pCube2, DsCollisionResult& info);
-	bool DsCD_LineFace( const DsCollisionGeometry* pCube1, const DsCollisionGeometry* pCube2, DsCollisionResult& info );
-	bool DsCD_LineFaceVelocity(const DsCollisionGeometry* pCube1, const DsCollisionGeometry* pCube2, DsCollisionResult& info);
-	bool DsCD_TriangleFace(const DsCollisionGeometry* pMesh, const DsCollisionGeometry* pCube, DsCollisionResult& info);
+	bool DsCD_PointFace( const DsCollisionGeometry* pBox1, const DsCollisionGeometry* pBox2, DsCollisionResult& info );
+	bool DsCD_PointFace( const DsActorId& p1Id, const DsVec3d& p1, const DsCollisionGeometry* pBox2, DsCollisionResult& info);
+	bool DsCD_LineFace( const DsCollisionGeometry* pBox1, const DsCollisionGeometry* pBox2, DsCollisionResult& info );
+	bool DsCD_LineFaceVelocity(const DsCollisionGeometry* pBox1, const DsCollisionGeometry* pBox2, DsCollisionResult& info);
+	bool DsCD_TriangleFace(const DsCollisionGeometry* pMesh, const DsCollisionGeometry* pBox, DsCollisionResult& info);
 
 	//à íup1ÇäÓèÄÇ∆ÇµÇƒpConvexÇÃnormalï˚å¸ÇÃàÍî‘ê[Ç¢ê[ìxÇãÅÇﬂÇÈ
 	double DsCD_NormalFaceDepthMax(const DsVec3d& p1, const DsVec3d& normal, const DsCollisionGeometry* pConvex);

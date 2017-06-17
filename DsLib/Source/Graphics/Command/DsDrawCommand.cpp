@@ -19,10 +19,10 @@ namespace
 	/****************************
 	@brief ƒLƒ…[ƒu
 	*****************************/
-	class _ComCube : public DsDrawComBase
+	class _ComBox : public DsDrawComBase
 	{
 	public:
-		_ComCube(const DsVec3f& pos, const float size )
+		_ComBox(const DsVec3f& pos, const float size )
 			:m_pos(pos)
 			,m_size(size)
 		{}
@@ -676,15 +676,15 @@ void DsDrawCommand::Clear()
 	m_useMemory = 0;
 }
 
-DsDrawCommand& DsDrawCommand::DrawCube(const DsVec3f& pos, const float size)
+DsDrawCommand& DsDrawCommand::DrawBox(const DsVec3f& pos, const float size)
 {
-	if (BUFFER_SIZE > (m_useMemory + sizeof(_ComCube)))
+	if (BUFFER_SIZE > (m_useMemory + sizeof(_ComBox)))
 	{
-		DsDrawComBase* com = new(m_pBuffer + m_useMemory) _ComCube(pos, size);
+		DsDrawComBase* com = new(m_pBuffer + m_useMemory) _ComBox(pos, size);
 		if (com)
 		{
 			m_coms.push_back(com);
-			m_useMemory += sizeof(_ComCube);
+			m_useMemory += sizeof(_ComBox);
 		}
 	}
 	return (*this);

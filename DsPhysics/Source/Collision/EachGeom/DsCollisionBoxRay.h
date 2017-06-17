@@ -1,5 +1,5 @@
-#ifndef __DS_COLLISION_CUBE_RAY__
-#define __DS_COLLISION_CUBE_RAY__
+#ifndef __DS_COLLISION_BOX_RAY__
+#define __DS_COLLISION_BOX_RAY__
 
 #ifndef __DS_ICOLLISION_GEOM__
 #include "Collision/EachGeom/ICollisionGeom.h"
@@ -10,36 +10,36 @@
 
 namespace DsPhysics
 {
-	class DsRigidCube;
+	class DsRigidBox;
 	class DsCollisionGeometry;
 	class DsPhysicsWorld;
 }
 
 namespace DsPhysics
 {
-	class DsCollisionCubeRay : public ICollisionGeom
+	class DsCollisionBoxRay : public ICollisionGeom
 	{
 	public:
-		DsCollisionCubeRay(const DsPhysicsWorld& world)
+		DsCollisionBoxRay(const DsPhysicsWorld& world)
 		:ICollisionGeom(world)
-		,m_pCube(NULL)
+		,m_pBox(NULL)
 		,m_pRay(NULL)
 		, m_info()
 		{}
 
-		void Initialize(const DsCollisionGeometry* pCube, const DsCollisionGeometry* pRay)
+		void Initialize(const DsCollisionGeometry* pBox, const DsCollisionGeometry* pRay)
 		{
-			m_pCube = pCube;
+			m_pBox = pBox;
 			m_pRay = pRay;
 			m_info.Clear();
 		}
 
-		virtual ~DsCollisionCubeRay(){}
+		virtual ~DsCollisionBoxRay(){}
 
 		virtual DsCollisionResult& Collide() override;
 
 	private:
-		const DsCollisionGeometry* m_pCube;
+		const DsCollisionGeometry* m_pBox;
 		const DsCollisionGeometry* m_pRay;
 		DsCollisionResult m_info;
 
