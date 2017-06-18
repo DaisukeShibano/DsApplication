@@ -32,7 +32,7 @@ void DsRigidSphere::Create(const double r, const double mass )
 		//mass
 		{
 			const double M = m_option.isStatic ? DsMathUtil::DS_INFINITY_D : mass;
-			const double bias = 1.0;
+			const double bias = 1.0 + m_biasInertia;
 			const double Ixx = M / 3.0 * (r*r + r*r) * bias;
 			const double Iyy = M / 3.0 * (r*r + r*r) * bias;
 			const double Izz = M / 3.0 * (r*r + r*r) * bias;

@@ -203,10 +203,23 @@ void DsCollisionConstraint::SetUp()
 		const DsVec3d& mT = (pMas->RefOption().isStatic) ? (DsVec3d::Zero()) : (pMas->GetTorque());
 		const DsVec3d& sF = (pSub->RefOption().isStatic) ? (DsVec3d::Zero()) : (pSub->GetForce());
 		const DsVec3d& sT = (pSub->RefOption().isStatic) ? (DsVec3d::Zero()) : (pSub->GetTorque());
-
 		_SetExForce(mF, mT, sF, sT);
 
 		m_isSetUp = true;
+	}
+}
+
+//virtual
+void DsCollisionConstraint::UpdateExForce()
+{
+	DsActor* pMas = m_world->GetActor(m_masterId);
+	DsActor* pSub = m_world->GetActor(m_subId);
+	if (pMas && pSub) {
+		const DsVec3d& mF = (pMas->RefOption().isStatic) ? (DsVec3d::Zero()) : (pMas->GetForce());
+		const DsVec3d& mT = (pMas->RefOption().isStatic) ? (DsVec3d::Zero()) : (pMas->GetTorque());
+		const DsVec3d& sF = (pSub->RefOption().isStatic) ? (DsVec3d::Zero()) : (pSub->GetForce());
+		const DsVec3d& sT = (pSub->RefOption().isStatic) ? (DsVec3d::Zero()) : (pSub->GetTorque());
+		_SetExForce(mF, mT, sF, sT);
 	}
 }
 

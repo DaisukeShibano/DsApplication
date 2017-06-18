@@ -9,9 +9,9 @@ using namespace DsPhysics;
 
 static DsRagdollParamST s_param[]=
 {
-	//mass		//animType
-	{1.0,		0 },
-	{ 1.0,		1 },
+	//mass		//animType		//damperV		//damperA
+	{ 1.0,		0,				10.0,			2.0},
+	{ 1.0,		1,				10.0,			2.0},
 };
 
 

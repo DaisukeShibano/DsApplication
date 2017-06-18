@@ -90,7 +90,7 @@ void DsRigidBox::Create(const DsVec3d* pv, const double mass )
 		{
 			const double M = m_option.isStatic ? DsMathUtil::DS_INFINITY_D : mass;
 			const DsVec3d maxLength = _GetMaxVector(pv, VERTEX_NUM);
-			const double bias = 1.0;
+			const double bias = 1.0 + m_biasInertia;
 			const double Ixx = M / 3.0 * (maxLength.y*maxLength.y + maxLength.z*maxLength.z) * bias;
 			const double Iyy = M / 3.0 * (maxLength.x*maxLength.x + maxLength.z*maxLength.z) * bias;
 			const double Izz = M / 3.0 * (maxLength.x*maxLength.x + maxLength.y*maxLength.y) * bias;
@@ -98,6 +98,7 @@ void DsRigidBox::Create(const DsVec3d* pv, const double mass )
 			pi.mass.inertia[0] = Ixx;
 			pi.mass.inertia[4] = Iyy;
 			pi.mass.inertia[8] = Izz;
+			pi.mass.inertiaOriginal = pi.mass.inertia;
 			pi.mass.mass = M;
 		}
 
@@ -189,6 +190,7 @@ DsActor* DsRigidBox::DsRigidBoxFactory::CreateIns( const DsActorId& id ) const
 	DsRigidBox* pRet = new DsRigidBox(id, m_name.c_str());
 	if(pRet)
 	{
+		pRet->SetInertiaBias(m_biasI);
 		pRet->m_option = m_initOption;
 		pRet->m_initPos = m_initPos;
 		pRet->m_initRot = m_initRot;

@@ -107,14 +107,12 @@ namespace DsPhysics
 		virtual void SetRotation(const DsMat33d& rot) override { m_physicsInfo.rotation = rot; m_isForceRotation = true; }
 		virtual void SetVelocity(const DsVec3d& v) override { m_physicsInfo.vel = v; }
 		virtual void SetAngularVelocity(const DsVec3d& v) override { m_physicsInfo.angVel = v; }
-		virtual void SetForce(const DsVec3d& f) override { m_physicsInfo.exForce = f; }
+		virtual void SetForce(const DsVec3d& f) override { m_physicsInfo.exForce = f; m_referenceF = f; }
 		virtual void SetMaterial(const DsActorMaterial& material) override { m_material = material; }
 		virtual void AddVelocity(const DsVec3d& v) override { m_physicsInfo.vel += v; }
 		virtual void AddAngularVelocity(const DsVec3d& v) override { m_physicsInfo.angVel += v; }
-
-
-	public:
-		virtual void SetExVelocity(const DsVec3d& v) override { m_exVel = v; }
+		virtual void SetDamper(double vel, double angVel) override { m_damperVel = vel; m_damperAngVel = angVel; }
+		virtual void SetInertiaBias(double bias) override { m_biasInertia = bias; }
 
 	protected:
 		DsVec3d _GetMaxVector(const DsVec3d* pVec, const int vn) const;
@@ -145,10 +143,14 @@ namespace DsPhysics
 		DsVec3d m_referenceT;
 		DsVec3d m_constraintF;
 		DsVec3d m_constraintT;
-		DsVec3d m_exVel;
 		DsAabb m_aabb;
 		DsVec3d m_sideSize;
 		double m_restTimer;
+		DsVec3d m_prePos;
+		DsMat33d m_preRot;
+		double m_damperVel;
+		double m_damperAngVel;
+		double m_biasInertia;
 
 	protected:
 		DsCollisionGeometry* m_pCollisionGeometry;

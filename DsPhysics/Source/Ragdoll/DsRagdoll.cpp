@@ -15,8 +15,8 @@
 #ifndef __DS_PHYSICS_WORLD__
 #include "DsPhysicsWorld.h"
 #endif
-#ifndef _DS_BALL_JOINT_H_
-#include "Joint/DsBallJoint.h"
+#ifndef _DS_HINGE2_JOINT_
+#include "Joint/DsHinge2Joint.h"
 #endif
 #ifndef _DS_AMIM_SKELETON_
 #include "Animation/DsAnimSkeleton.h"
@@ -73,17 +73,23 @@ void DsRagdoll::_ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActo
 			DsVec3d vertex[8];
 			DsRigidBox::GetVertex(vertex, 0.1, dist.Length(), 0.1);//Yがボーンの向きっぽい。//太さは後でパラメータ化する
 			DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, pBone->name.c_str());
-			factory.InitPos(rigidPos);
-			factory.InitRot(pBone->initWorldPose.ToMat33());
+			factory.SetBiasI(0.0);
+			//factory.InitPos(rigidPos);
+			//factory.InitRot(pBone->initWorldPose.ToMat33());
 			factory.SetOption(DsActor::Option::Default());
 			pActor = m_world.CreateActor(factory).GetActor();
 			if (pActor) {
 				pActor->SetMaterial(DsActorMaterial::Aluminum());
 				pActor->SetUserData(pUserData);
-				DsRagdollParts parts;
-				parts.ragdollParamId = it->second.ragdollParamId;
-				parts.skeletonBoneIdx = it->second.boneIndex;
-				parts.innerPartsIdx = static_cast<int>(m_parts.size());
+				pActor->SetPosition(rigidPos);
+				pActor->SetRotation(pBone->initWorldPose.ToMat33());
+				DsRagdollParts parts = {
+					it->second.boneIndex,
+					it->second.ragdollParamId,
+					static_cast<int>(m_parts.size()),
+					0,
+					0,
+				};
 				m_parts.push_back(parts);
 				InnerPartsInfo innerParts;
 				innerParts.pActor = pActor;
@@ -93,9 +99,9 @@ void DsRagdoll::_ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActo
 
 				if (pParentpActor) {
 					//一つ前の親剛体（アニメボーンは一つ前の親とは限らない）と今回の剛体をつなぐ
-					DsBallJoint* pJoint = static_cast<DsBallJoint*>( m_world.CreateJoint(DsBallJointFactory(m_world)) );
+					DsHinge2Joint* pJoint = static_cast<DsHinge2Joint*>( m_world.CreateJoint(DsHinge2JointFactory(m_world)) );
 					if (pJoint) {
-						pJoint->AttachJoint(pParentpActor->GetId(), pActor->GetId(), attachPos);
+						pJoint->AttachJoint(pParentpActor->GetId(), pActor->GetId(), attachPos, DsVec3d::GetX(), DsVec3d::GetZ());
 						m_joints.push_back(pJoint);
 						innerParts.pJoint = pJoint;
 						innerParts.jointAttachPos = attachPos;
@@ -114,7 +120,7 @@ void DsRagdoll::_ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActo
 }
 
 //リジッドをboneに合わせる
-void DsRagdoll::FixToKeyframeAnim(const std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts)
+void DsRagdoll::FixToKeyframeAnim(double dt, const std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts)
 {
 	const InnerPartsInfo& innerParts = m_innerParts[parts.innerPartsIdx];
 	const DsMat44d mat = bones[parts.skeletonBoneIdx]->worldPose;
@@ -125,16 +131,19 @@ void DsRagdoll::FixToKeyframeAnim(const std::vector<DsAnimBone*>& bones, const D
 	//DsDbgSys::GetIns().RefDrawCom().DrawSphere(pos, 0.1);
 	//DsDbgSys::GetIns().RefDrawCom().DrawAxis(mat);
 	innerParts.pActor->RefOption().isStatic = true;
+	
 	innerParts.pActor->SetPosition(pos);
 	innerParts.pActor->SetRotation(rot);
+	innerParts.pActor->SetDamper(parts.damperV, parts.damperA);
 }
 
 //boneをリジッドに合わせる
-void DsRagdoll::FixToPhysics(std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts)
+void DsRagdoll::FixToPhysics(double dt, std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts)
 {
 	const InnerPartsInfo& innerParts = m_innerParts[parts.innerPartsIdx];
-	const DsActor* pActor = innerParts.pActor;
 	innerParts.pActor->RefOption().isStatic = false;
+	innerParts.pActor->SetDamper(parts.damperV, parts.damperA);
+	const DsActor* pActor = innerParts.pActor;
 	const DsMat33d rot = pActor->GetRotation();
 	const DsVec3d offset = rot*innerParts.offset;
 	const DsVec3d pos = pActor->GetPosition() - offset;
@@ -142,8 +151,8 @@ void DsRagdoll::FixToPhysics(std::vector<DsAnimBone*>& bones, const DsRagdollPar
 	DsAnimBone* oBone = bones[parts.skeletonBoneIdx];
 	oBone->worldPose = DsMat44d::Get(rot, pos);
 
-	DsDbgSys::GetIns().RefDrawCom().DrawSphere(pos, 0.1);
-	DsDbgSys::GetIns().RefDrawCom().DrawAxis(DsMat44d::Get(rot, pos));
+	//DsDbgSys::GetIns().RefDrawCom().DrawSphere(pos, 0.1);
+	//DsDbgSys::GetIns().RefDrawCom().DrawAxis(DsMat44d::Get(rot, pos));
 }
 
 DsRagdoll::~DsRagdoll()
@@ -152,7 +161,7 @@ DsRagdoll::~DsRagdoll()
 		m_world.DeleteActor(parts.pActor->GetId());
 	}
 	m_parts.clear();
-	for (DsBallJoint* pJoint : m_joints) {
+	for (DsHinge2Joint* pJoint : m_joints) {
 		m_world.DeleteJoint(pJoint);
 	}
 	m_joints.clear();

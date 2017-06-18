@@ -19,6 +19,8 @@ namespace DsPhysics
 	{
 		double mass;
 		int animType;
+		double damperV;
+		double damperA;
 	};
 
 	class DsRagdollParam
@@ -28,7 +30,11 @@ namespace DsPhysics
 
 	public:
 		double GetMass() const { return (m_pParam) ? (m_pParam->mass) : (0.0); }
+		
 		DS_RAGDOLL_PARAM_ANIM_TYPE GetAnimType() const { return static_cast<DS_RAGDOLL_PARAM_ANIM_TYPE>( (m_pParam) ? (m_pParam->animType) : (0) );  }
+
+		double GetDamperV() const { return (m_pParam) ? (m_pParam->damperV) : (0.0); }
+		double GetDamperA() const { return (m_pParam) ? (m_pParam->damperA) : (0.0); }
 
 	private:
 		DsRagdollParamST* m_pParam;

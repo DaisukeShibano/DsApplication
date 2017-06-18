@@ -5,6 +5,7 @@
 
 using namespace DsPhysics;
 
+static const double AIR_DAMPER = 0.000018;
 
 DsRigidBody::DsRigidBody(const DsActorId& id, const char* name)
 : DsActor(id)
@@ -20,12 +21,16 @@ DsRigidBody::DsRigidBody(const DsActorId& id, const char* name)
 , m_name(name)
 , m_referenceF(m_physicsInfo.exForce)
 , m_referenceT(m_physicsInfo.exTorque)
-, m_exVel(DsVec3d::Zero())
 , m_constraintF(DsVec3d::Zero())
 , m_constraintT(DsVec3d::Zero())
 , m_aabb()
 , m_sideSize(DsVec3d::Zero())
 , m_restTimer(0)
+, m_prePos(DsVec3d::Zero())
+, m_preRot(DsMat33d::Identity())
+, m_damperVel(0)
+, m_damperAngVel(0)
+, m_biasInertia(0)
 , m_pCollisionGeometry(NULL)
 {}
 
@@ -250,12 +255,23 @@ void DsRigidBody::_IntegralVel()
 {
 	const double dt = GetDT();
 	{//ï¿êi
-		m_addPos += ((m_physicsInfo.vel+m_exVel) * dt);
+		m_addPos += ((m_physicsInfo.vel) * dt);
 		m_physicsInfo.exForce = DsVec3d::Zero();
 	}
 	{//âÒì]
 		m_addRot = DsMat33d::RotateVec(m_physicsInfo.angVel*dt)*m_addRot;
 		m_physicsInfo.exTorque = DsVec3d::Zero();
+	}
+
+	//çSë©ópÇ…ê√ìIÇ»Ç‡ÇÃÇ≈Ç‡ë¨ìxÇê›íË(Ç±Ç±Ç≈ê›íËÇµÇΩë¨ìxÇÕ_IntegralFÇ≈ÇOÇ…Ç»ÇÈÇÃÇ≈à íuÇ…îΩâfÇ≥ÇÍÇ»Ç¢)
+	if (RefOption().isStatic) {
+		const DsVec3d vel = (m_physicsInfo.pos - m_prePos)/dt;
+		m_physicsInfo.vel = vel;
+		m_prePos = m_physicsInfo.pos;
+
+		//âÒì]ÇÕÇÊÇ≠ï™Ç©ÇÁÇÒ
+		//const DsMat33d dr = m_preRot.ToTransposition()*m_physicsInfo.rotation;
+		//m_preRot = m_physicsInfo.rotation;
 	}
 }
 
@@ -319,7 +335,7 @@ DsVec3d DsRigidBody::CalcVelocity(const DsVec3d& f) const
 	else
 	{
 		DsVec3d ret = m_physicsInfo.vel;
-		DsVec3d regist = m_physicsInfo.vel * 0.000018;//îSê´íÔçR
+		DsVec3d regist = m_physicsInfo.vel * (AIR_DAMPER + m_damperVel);//îSê´íÔçR
 		ret += (( (f / m_physicsInfo.mass.mass) - regist) * GetDT());
 		//const double max = 10;
 		//ret = DsVec3d(Clamp(ret.x, -max, max), Clamp(ret.y, -max, max), Clamp(ret.z, -max, max));
@@ -337,7 +353,7 @@ DsVec3d DsRigidBody::CalcAngularVel(const DsVec3d& t) const
 	else
 	{
 		DsVec3d ret = m_physicsInfo.angVel;
-		DsVec3d regist = m_physicsInfo.angVel * 0.000018;
+		DsVec3d regist = m_physicsInfo.angVel * (AIR_DAMPER+m_damperAngVel);
 		DsMat33d invInertia = DsMat33d::Inverse(m_physicsInfo.mass.inertia);
 		ret += ((invInertia*t) - regist) * GetDT();
 		//const double max = 10;

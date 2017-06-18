@@ -76,6 +76,7 @@ namespace DsPhysics
 		virtual void CalclateConstraintForce() override;
 		virtual void ApplyConstraintForce() override;
 		virtual void SetUp() override;
+		virtual void UpdateExForce() override;
 		virtual DsActorId GetMasterActorId() const override{ return m_masterId; }
 		virtual DsActorId GetSubActorId() const override { return m_subId; }
 		virtual DsConstraintEquation& RefEq(){ static DsConstraintEquation dummy(this); return dummy; }

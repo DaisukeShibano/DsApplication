@@ -210,6 +210,12 @@
     <ClInclude Include="Source\Collision\EachGeom\DsCollisionSphereBox.h">
       <Filter>Source\Collision\EachGeom</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Constraint\DsHinge2Constraint.h">
+      <Filter>Source\Constraint</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Joint\DsHinge2Joint.h">
+      <Filter>Source\Joint</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsPhysicsManager.cpp">
@@ -346,6 +352,12 @@
     </ClCompile>
     <ClCompile Include="Source\Collision\EachGeom\DsCollisionSphereBox.cpp">
       <Filter>Source\Collision\EachGeom</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Constraint\DsHinge2Constraint.cpp">
+      <Filter>Source\Constraint</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Joint\DsHinge2Joint.cpp">
+      <Filter>Source\Joint</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

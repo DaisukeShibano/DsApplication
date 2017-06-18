@@ -46,6 +46,7 @@ namespace DsPhysics
 			virtual void CalclateConstraintForce() = 0;
 			virtual void ApplyConstraintForce() = 0;
 			virtual void SetUp() =0;
+			virtual void UpdateExForce() = 0;
 			virtual DsActorId GetMasterActorId() const = 0;
 			virtual DsActorId GetSubActorId() const = 0;
 			virtual DsConstraintEquation& RefEq() = 0;

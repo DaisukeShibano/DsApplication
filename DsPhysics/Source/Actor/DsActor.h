@@ -164,9 +164,8 @@ namespace DsPhysics
 		virtual void AddAngularVelocity(const DsVec3d& v){};//あんまり使わない想定。AddTorqueで
 		virtual void SetForce(const DsVec3d& f){};//あんまり使わない想定。AddForceで。
 		virtual void SetMaterial(const DsActorMaterial& material){}
-
-	public:
-		virtual void SetExVelocity(const DsVec3d& v) {}
+		virtual void SetDamper(double vel, double angVel) {};
+		virtual void SetInertiaBias(double bias) {};
 
 	public:
 		const DsActorId& GetId() const{ return m_id;}

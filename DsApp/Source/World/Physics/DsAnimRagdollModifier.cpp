@@ -32,11 +32,15 @@ void DsAnimRagdollModifier::ModifyAnim(double dt, DsAnimSkeleton& skeleton, cons
 	std::vector<DsAnimBone*>& bones = skeleton.RefBoneArray();
 	for (DsRagdollParts& parts : m_ragdoll.RefParts()) {
 		DsRagdollParam param(parts.ragdollParamId);
+		parts.damperV = param.GetDamperV();
+		parts.damperA = param.GetDamperA();
+		parts.mass = param.GetMass();
+
 		if (param.GetAnimType() == DS_RAGDOLL_PARAM_ANIM_TYPE::KEYFRAME) {
-			m_ragdoll.FixToKeyframeAnim(bones, parts);
+			m_ragdoll.FixToKeyframeAnim(dt, bones, parts);
 		}
 		else {
-			m_ragdoll.FixToPhysics(bones, parts);
+			m_ragdoll.FixToPhysics(dt, bones, parts);
 		}
 	}
 

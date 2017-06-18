@@ -130,7 +130,7 @@ void DsRigidMesh::Create(const DsAnimModel& animModel)
 			const double density = 2700.0;//ƒAƒ‹ƒ~‚ª2.7Mg/m~3 ‚ç‚µ‚¢
 			const DsVec3d maxLength = _GetMaxVector(m_geomInfo.pVertex, m_geomInfo.vn);
 			const double mass = density*maxLength.x*maxLength.y*maxLength.z;
-			const double bias = 1.0;
+			const double bias = 1.0 + m_biasInertia;
 			const double M = m_option.isStatic ? DsMathUtil::DS_INFINITY_D : mass;
 			const double Ixx = M / 3.0 * (maxLength.y*maxLength.y + maxLength.z*maxLength.z) * bias;
 			const double Iyy = M / 3.0 * (maxLength.x*maxLength.x + maxLength.z*maxLength.z) * bias;

@@ -12,7 +12,7 @@ namespace DsPhysics
 {
 	class DsActor;
 	class DsJoint;
-	class DsBallJoint;
+	class DsHinge2Joint;
 	class DsPhysicsWorld;
 }
 
@@ -20,9 +20,12 @@ namespace DsPhysics
 {
 	struct DsRagdollParts
 	{
-		int skeletonBoneIdx;//このアクターに紐づく剛体
-		int ragdollParamId;
-		int innerPartsIdx;
+		const int skeletonBoneIdx;//このアクターに紐づく剛体
+		const int ragdollParamId;
+		const int innerPartsIdx;
+		double damperV;
+		double damperA;
+		double mass;
 	};
 
 	class DsRagdoll
@@ -45,10 +48,10 @@ namespace DsPhysics
 		std::vector<DsRagdollParts>& RefParts() { return m_parts; }
 
 		//リジッドをboneに合わせる
-		void FixToKeyframeAnim(const std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts);
+		void FixToKeyframeAnim(double dt, const std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts);
 
 		//boneをリジッドに合わせる
-		void FixToPhysics(std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts);
+		void FixToPhysics(double dt, std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts);
 
 	private:
 		void _ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActor, const DsVec3d attachPos, const std::map<int, DsAnimRagdollParamId>& params, void* pUserData);
@@ -58,7 +61,7 @@ namespace DsPhysics
 		DsPhysicsWorld& m_world;
 		std::vector<DsRagdollParts> m_parts;
 		std::vector<InnerPartsInfo> m_innerParts;
-		std::vector<DsBallJoint*> m_joints;
+		std::vector<DsHinge2Joint*> m_joints;
 	};
 }
 
