@@ -47,6 +47,9 @@ namespace DsPhysics
 		//リジッドをboneに合わせる
 		void FixToKeyframeAnim(const std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts);
 
+		//boneをリジッドに合わせる
+		void FixToPhysics(std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts);
+
 	private:
 		void _ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActor, const DsVec3d attachPos, const std::map<int, DsAnimRagdollParamId>& params, void* pUserData);
 

@@ -38,12 +38,6 @@ namespace
 
 	void _Mapping(const DsAnimBone* bone, const DsMat33d& bRot, const DsVec3d& bPos, DsVec4d* vertex, const DsVec4d* srcVertex)
 	{
-		{//テスト更新
-			DsAnimBone* pTest = (DsAnimBone*)bone;
-			pTest->worldPose = DsMat44d::Get(bRot, bPos);
-		}
-
-
 		for (int idx = 0; idx < bone->vIndexNum; ++idx)
 		{	
 			const DsVec3d srcV = srcVertex[bone->pIndex[idx]];
@@ -71,16 +65,11 @@ namespace
 			vertex[dstIdx] += DsVec4d(transVW.x, transVW.y, transVW.z, 0);
 		}
 
-		for each(const DsAnimBone* child in bone->child)
-		{
-			//位置は親の座標から見た位置っぽい
-			DsVec3d bonePos = bRot*(child->localPose.GetPos() );
-			bonePos = bonePos + bPos;
-
-			//座標は親からの累積
-			const DsMat33d&& boneRot = bRot*child->localPose.ToMat33();
-			_Mapping(child, boneRot, bonePos, vertex, srcVertex);
-		}
+		//再起版
+		//for each(const DsAnimBone* child in bone->child)
+		//{
+		//	_Mapping(child, child->worldPose.ToMat33(), child->worldPose.GetPos(), vertex, srcVertex);
+		//}
 	}
 }
 
@@ -117,21 +106,17 @@ void DsSkinMesh::ApplySkeleton(const DsAnimSkeleton& skeleton)
 	}
 
 	
-	for each(const DsAnimBone* root in roots)
+	const std::vector<DsAnimBone*>& boneArray = skeleton.RefBoneArray();
+	for each(const DsAnimBone* pBone in boneArray)
 	{
-		//FBX変換かかってなさげなのでここで掛ける(そのうち出力ツール側でやりたい)
-		//const DsMat33d fbxR = DsMat33d::RotateX(-M_PI_2);
-		//intWorldはFbx変換かかってる。localPoseはかかってない。Fbx変換成分だけを抜き出す。ただし、localPoseの姿勢がキーフレームで変わってるとダメ
-		const DsMat33d fbxR = root->initWorldPose.ToMat33()*root->localPose.ToMat33().ToTransposition();
-
-		const DsMat33d m = skeleton.GetRootRot()*fbxR*root->localPose.ToMat33();	//マスターの姿勢は変えられなかったから考慮しなくてOK
-		//localPoseはエクスポート時のFbx座標変換がかかってない
-		//localPoseを打ち消したら考慮した座標と一致した。とりあえずこれで行く
-		const DsVec3d offset = (fbxR*root->localPose.GetPos());
-		const DsVec3d p = offset + skeleton.GetRootPos() + root->initWorldPose.GetPos();
-
-		_Mapping(root, m, p, m_pModel->GetVertex(), m_srcModel.GetVertex());
+		_Mapping(pBone, pBone->worldPose.ToMat33(), pBone->worldPose.GetPos(), m_pModel->GetVertex(), m_srcModel.GetVertex());
 	}
+
+	//再起版
+	//for each(const DsAnimBone* root in roots)
+	//{
+	//	_Mapping(root, root->worldPose.ToMat33(), root->worldPose.GetPos(), m_pModel->GetVertex(), m_srcModel.GetVertex());
+	//}
 
 	//アニメで変形した面の法線更新
 	m_pModel->UpdateNormal();

@@ -110,6 +110,8 @@ void DsAnimation::Update(double dt)
 			blendRate = 1.0 - pPre->GetBlendRate();
 		}
 		const DsKeyframeAnim& blend = m_blend.Blend(m_animSM.GetActiveClip(), pPre, blendRate);
+		m_pSkeleton->UpdateWorldPose();
+
 		if (m_animModifier) {
 			m_animModifier->ModifyAnim(dt, *m_pSkeleton, blend);
 		}

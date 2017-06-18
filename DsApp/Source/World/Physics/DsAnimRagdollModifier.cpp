@@ -29,14 +29,14 @@ void DsAnimRagdollModifier::ModifyAnim(double dt, DsAnimSkeleton& skeleton, cons
 	UtilKeyframeAnim(dt, skeleton, anim);
 
 	//スケルトンでラグドールを動かす
-	const std::vector<DsAnimBone*>& bones = skeleton.RefBoneArray();
+	std::vector<DsAnimBone*>& bones = skeleton.RefBoneArray();
 	for (DsRagdollParts& parts : m_ragdoll.RefParts()) {
 		DsRagdollParam param(parts.ragdollParamId);
 		if (param.GetAnimType() == DS_RAGDOLL_PARAM_ANIM_TYPE::KEYFRAME) {
 			m_ragdoll.FixToKeyframeAnim(bones, parts);
 		}
 		else {
-			//parts.pActor->RefOption().isStatic = false;
+			m_ragdoll.FixToPhysics(bones, parts);
 		}
 	}
 

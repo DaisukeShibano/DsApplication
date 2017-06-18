@@ -18,6 +18,9 @@
 #ifndef _DS_BALL_JOINT_H_
 #include "Joint/DsBallJoint.h"
 #endif
+#ifndef _DS_AMIM_SKELETON_
+#include "Animation/DsAnimSkeleton.h"
+#endif
 
 using namespace DsLib;
 using namespace DsPhysics;
@@ -124,6 +127,23 @@ void DsRagdoll::FixToKeyframeAnim(const std::vector<DsAnimBone*>& bones, const D
 	innerParts.pActor->RefOption().isStatic = true;
 	innerParts.pActor->SetPosition(pos);
 	innerParts.pActor->SetRotation(rot);
+}
+
+//boneÇÉäÉWÉbÉhÇ…çáÇÌÇπÇÈ
+void DsRagdoll::FixToPhysics(std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts)
+{
+	const InnerPartsInfo& innerParts = m_innerParts[parts.innerPartsIdx];
+	const DsActor* pActor = innerParts.pActor;
+	innerParts.pActor->RefOption().isStatic = false;
+	const DsMat33d rot = pActor->GetRotation();
+	const DsVec3d offset = rot*innerParts.offset;
+	const DsVec3d pos = pActor->GetPosition() - offset;
+
+	DsAnimBone* oBone = bones[parts.skeletonBoneIdx];
+	oBone->worldPose = DsMat44d::Get(rot, pos);
+
+	DsDbgSys::GetIns().RefDrawCom().DrawSphere(pos, 0.1);
+	DsDbgSys::GetIns().RefDrawCom().DrawAxis(DsMat44d::Get(rot, pos));
 }
 
 DsRagdoll::~DsRagdoll()

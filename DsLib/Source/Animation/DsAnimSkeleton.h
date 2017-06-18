@@ -51,8 +51,13 @@ namespace DsLib
 		virtual ~DsAnimSkeleton();
 
 	public:
+		void UpdateWorldPose();
+
+	public:
+		std::vector<DsAnimBone*>& RefRootBone() { return  m_pRootBone; }
 		const std::vector<DsAnimBone*>& RefRootBone() const{ return  m_pRootBone; }
 		std::vector<DsAnimBone*>& RefBoneArray() { return  m_boneArray; }
+		const std::vector<DsAnimBone*>& RefBoneArray() const { return  m_boneArray; }
 		const DsVec3d& GetRootPos() const { return m_rootPos; }
 		void SetRootPos(const DsVec3d& p){ m_rootPos = p; }
 		const DsMat33d& GetRootRot() const { return m_rootRot; }
