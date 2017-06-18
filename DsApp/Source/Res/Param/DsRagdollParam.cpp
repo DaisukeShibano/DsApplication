@@ -1,4 +1,4 @@
-#include "DsPhysicsPch.h"
+#include "DsAppPch.h"
 #ifndef _DS_RES_PARAM_DS_RAGDOLL_PARAM_
 #include "Res/Param/DsRagdollParam.h"
 #endif
@@ -9,7 +9,9 @@ using namespace DsPhysics;
 
 static DsRagdollParamST s_param[]=
 {
-	{1.0},
+	//mass		//animType
+	{1.0,		0 },
+	{ 1.0,		1 },
 };
 
 

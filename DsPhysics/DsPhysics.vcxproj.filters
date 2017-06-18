@@ -46,12 +46,6 @@
     <Filter Include="Source\Ragdoll">
       <UniqueIdentifier>{fb3ed74b-f053-4cc9-ba6b-c8bcfb485c19}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Res">
-      <UniqueIdentifier>{0e0dadc3-a1f4-4ca5-8f17-b4b9f0384203}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Res\Param">
-      <UniqueIdentifier>{81e55090-3ad7-4c07-a610-4ed1311430a9}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsMass.h">
@@ -191,9 +185,6 @@
     </ClInclude>
     <ClInclude Include="Source\Ragdoll\DsRagdoll.h">
       <Filter>Source\Ragdoll</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Res\Param\DsRagdollParam.h">
-      <Filter>Source\Res\Param</Filter>
     </ClInclude>
     <ClInclude Include="Source\Collision\DsCollisionCallback.h">
       <Filter>Source\Collision</Filter>
@@ -337,9 +328,6 @@
     </ClCompile>
     <ClCompile Include="Source\Ragdoll\DsRagdoll.cpp">
       <Filter>Source\Ragdoll</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Res\Param\DsRagdollParam.cpp">
-      <Filter>Source\Res\Param</Filter>
     </ClCompile>
     <ClCompile Include="Source\Actor\DsRigidBody.cpp">
       <Filter>Source\Actor</Filter>

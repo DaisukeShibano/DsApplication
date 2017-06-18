@@ -24,10 +24,11 @@ using namespace DsPhysics;
 
 
 
-DsRagdoll::DsRagdoll(const std::vector<DsAnimRagdollParamId>& ragdollParamIds, DsAnimSkeleton& skeleton, DsPhysicsWorld& world)
+DsRagdoll::DsRagdoll(const std::vector<DsAnimRagdollParamId>& ragdollParamIds, DsAnimSkeleton& skeleton, DsPhysicsWorld& world, void* pUserData)
 	: m_animSkeleton(skeleton)
 	, m_world(world)
 	, m_parts()
+	, m_innerParts()
 	, m_joints()
 {
 	//子→親 の長さで１つのリジッドを作る。終端のボーンはダミー。 最低でも2階層ないと成り立たない
@@ -39,6 +40,7 @@ DsRagdoll::DsRagdoll(const std::vector<DsAnimRagdollParamId>& ragdollParamIds, D
 	//親がいないリジッドはどこかに固定しておく必要がある？
 	const size_t ragNum = ragdollParamIds.size();
 	m_parts.reserve(ragNum);
+	m_innerParts.reserve(ragNum);
 	m_joints.reserve(ragNum);
 
 	std::map<int, DsAnimRagdollParamId> tmpParams;
@@ -48,11 +50,11 @@ DsRagdoll::DsRagdoll(const std::vector<DsAnimRagdollParamId>& ragdollParamIds, D
 
 	const std::vector<DsAnimBone*>& bones = skeleton.RefRootBone();
 	for (const DsAnimBone* pBone : bones){
-		_ConstractRagdoll(pBone, NULL, DsVec3d::Zero(), tmpParams);
+		_ConstractRagdoll(pBone, NULL, DsVec3d::Zero(), tmpParams, pUserData);
 	}
 }
 
-void DsRagdoll::_ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActor, const DsVec3d attachPos, const std::map<int, DsAnimRagdollParamId>& params)
+void DsRagdoll::_ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActor, const DsVec3d attachPos, const std::map<int, DsAnimRagdollParamId>& params, void* pUserData)
 {
 	if (!pBone->child.empty()) {
 		DsActor* pActor = pParentpActor;
@@ -66,7 +68,7 @@ void DsRagdoll::_ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActo
 			const DsVec3d rigidPos = (parentPos + childPos)*0.5;
 			const DsVec3d dist = childPos - parentPos;
 			DsVec3d vertex[8];
-			DsRigidBox::GetVertex(vertex, 0.1, 0.1, dist.Length());//太さは後でパラメータ化する
+			DsRigidBox::GetVertex(vertex, 0.1, dist.Length(), 0.1);//Yがボーンの向きっぽい。//太さは後でパラメータ化する
 			DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, pBone->name.c_str());
 			factory.InitPos(rigidPos);
 			factory.InitRot(pBone->initWorldPose.ToMat33());
@@ -74,25 +76,33 @@ void DsRagdoll::_ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActo
 			pActor = m_world.CreateActor(factory).GetActor();
 			if (pActor) {
 				pActor->SetMaterial(DsActorMaterial::Aluminum());
+				pActor->SetUserData(pUserData);
 				DsRagdollParts parts;
-				parts.pActor = pActor;
 				parts.ragdollParamId = it->second.ragdollParamId;
 				parts.skeletonBoneIdx = it->second.boneIndex;
+				parts.innerPartsIdx = static_cast<int>(m_parts.size());
 				m_parts.push_back(parts);
+				InnerPartsInfo innerParts;
+				innerParts.pActor = pActor;
+				innerParts.offset = DsVec3d(0, (rigidPos - parentPos).Length(), 0);
+				innerParts.pJoint = NULL;
+				m_innerParts.push_back(innerParts);
 
 				if (pParentpActor) {
 					//一つ前の親剛体（アニメボーンは一つ前の親とは限らない）と今回の剛体をつなぐ
 					DsBallJoint* pJoint = static_cast<DsBallJoint*>( m_world.CreateJoint(DsBallJointFactory(m_world)) );
 					if (pJoint) {
-						//pJoint->AttachJoint(pParentpActor->GetId(), pActor->GetId(), attachPos);
-						//m_joints.push_back(pJoint);
+						pJoint->AttachJoint(pParentpActor->GetId(), pActor->GetId(), attachPos);
+						m_joints.push_back(pJoint);
+						innerParts.pJoint = pJoint;
+						innerParts.jointAttachPos = attachPos;
 					}
 				}
 				nextAttachPos = childPos;//次のリジッドとのアタッチ位置更新
 			}
 		}
 		for (const DsAnimBone* pChild : pBone->child) {
-			_ConstractRagdoll(pChild, pActor, nextAttachPos, params);
+			_ConstractRagdoll(pChild, pActor, nextAttachPos, params, pUserData);
 		}
 	}
 	else {
@@ -100,9 +110,25 @@ void DsRagdoll::_ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActo
 	}
 }
 
+//リジッドをboneに合わせる
+void DsRagdoll::FixToKeyframeAnim(const std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts)
+{
+	const InnerPartsInfo& innerParts = m_innerParts[parts.innerPartsIdx];
+	const DsMat44d mat = bones[parts.skeletonBoneIdx]->worldPose;
+	const DsMat33d rot = mat.ToMat33();
+	const DsVec3d offset = rot*innerParts.offset;
+	const DsVec3d pos = mat.GetPos() + offset;
+
+	//DsDbgSys::GetIns().RefDrawCom().DrawSphere(pos, 0.1);
+	//DsDbgSys::GetIns().RefDrawCom().DrawAxis(mat);
+	innerParts.pActor->RefOption().isStatic = true;
+	innerParts.pActor->SetPosition(pos);
+	innerParts.pActor->SetRotation(rot);
+}
+
 DsRagdoll::~DsRagdoll()
 {
-	for (DsRagdollParts parts : m_parts) {
+	for (InnerPartsInfo parts : m_innerParts) {
 		m_world.DeleteActor(parts.pActor->GetId());
 	}
 	m_parts.clear();

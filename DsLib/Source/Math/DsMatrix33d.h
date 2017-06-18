@@ -350,7 +350,16 @@ namespace DsLib
 			};
 			return dst;
 		}
-
+		static DsMat33d ToMat33(const double mat33[6][6])
+		{
+			const DsMat33d dst =
+			{
+				mat33[0][0], mat33[0][1], mat33[0][2],
+				mat33[1][0], mat33[1][1], mat33[1][2],
+				mat33[2][0], mat33[2][1], mat33[2][2],
+			};
+			return dst;
+		}
 		static void ToMat16(const DsMat33d& src, double dst[16])
 		{
 			dst[0] = src.m00; dst[1] = src.m01; dst[2] = src.m02;

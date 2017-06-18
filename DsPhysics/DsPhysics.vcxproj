@@ -235,7 +235,6 @@
     <ClInclude Include="Source\Joint\DsJoint.h" />
     <ClInclude Include="Source\PhysicsUtil\DsPhysicsUtil.h" />
     <ClInclude Include="Source\Ragdoll\DsRagdoll.h" />
-    <ClInclude Include="Source\Res\Param\DsRagdollParam.h" />
     <ClInclude Include="Source\Tool\DsActorSelector.h" />
   </ItemGroup>
   <ItemGroup>
@@ -288,7 +287,6 @@
     <ClCompile Include="Source\Joint\DsJoint.cpp" />
     <ClCompile Include="Source\PhysicsUtil\DsPhysicsUtil.cpp" />
     <ClCompile Include="Source\Ragdoll\DsRagdoll.cpp" />
-    <ClCompile Include="Source\Res\Param\DsRagdollParam.cpp" />
     <ClCompile Include="Source\Tool\DsActorSelector.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

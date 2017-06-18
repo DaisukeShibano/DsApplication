@@ -62,12 +62,8 @@ void DsFieldPlayer::Initialize(const InitInfo& initInfo)
 	const DsAnimCustomProperty* pProperty = m_pAnimation->GetCustomProperty();
 	DsAnimSkeleton* pSkeleton = m_pAnimation->GetSkeleton();
 	if (pProperty && pSkeleton) {
-		m_pRagdoll = new DsRagdoll(pProperty->ragdollParamIds, *pSkeleton, m_world);
+		m_pRagdoll = new DsRagdoll(pProperty->ragdollParamIds, *pSkeleton, m_world, this);
 		DS_ASSERT(m_pRagdoll, "ƒƒ‚ƒŠŠm•Û¸”s");
-		std::vector<DsRagdollParts>& partsVec = m_pRagdoll->RefParts();
-		for (DsRagdollParts& parts : partsVec){
-			parts.pActor->SetUserData(this);
-		}
 
 		m_pAnimRagdollModifier = new DsAnimRagdollModifier(*m_pRagdoll);
 		DS_ASSERT(m_pAnimRagdollModifier, "ƒƒ‚ƒŠŠm•Û¸”s");

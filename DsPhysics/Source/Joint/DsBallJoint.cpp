@@ -88,6 +88,7 @@ void DsBallJoint::Update(double dt)
 		const DsVec3d pos = pMas->GetPosition() + m_distance;
 		const DsVec3d posSub = pSub->GetPosition() + m_distanceSub;
 		const DsVec3d error = posSub - pos;
+		//ボールジョイントはposだけ合ってれば、軸は適当で大丈夫なはず
 		m_pConstarint->RequestAttach(m_masterId, m_subId, pos, m_rot.GetAxisX(), m_rot.GetAxisY(), m_rot.GetAxisZ(), m_world.GetDt(), error);
 	}	
 }

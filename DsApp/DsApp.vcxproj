@@ -193,6 +193,7 @@
     <ClInclude Include="Source\Evolve\Gene\DsGene.h" />
     <ClInclude Include="Source\NeuralNetwork\DsNeuron.h" />
     <ClInclude Include="Source\NeuralNetwork\DsNeuronCtrl.h" />
+    <ClInclude Include="Source\Res\Param\DsRagdollParam.h" />
     <ClInclude Include="Source\World\Physics\DsAnimRagdollModifier.h" />
     <ClInclude Include="Source\World\Physics\DsAppCollisionCallback.h" />
     <ClInclude Include="Source\World\Population\Controller\DsChrController.h" />
@@ -217,6 +218,7 @@
     <ClCompile Include="Source\Evolve\Gene\DsGene.cpp" />
     <ClCompile Include="Source\NeuralNetwork\DsNeuron.cpp" />
     <ClCompile Include="Source\NeuralNetwork\DsNeuronCtrl.cpp" />
+    <ClCompile Include="Source\Res\Param\DsRagdollParam.cpp" />
     <ClCompile Include="Source\World\Physics\DsAnimRagdollModifier.cpp" />
     <ClCompile Include="Source\World\Physics\DsAppCollisionCallback.cpp" />
     <ClCompile Include="Source\World\Population\Controller\DsChrController.cpp" />

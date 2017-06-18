@@ -31,6 +31,12 @@
     <Filter Include="Source\World\Physics">
       <UniqueIdentifier>{fca3da02-3bb2-4a34-a85b-ab94cf9248f2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Res">
+      <UniqueIdentifier>{8ecb8d6f-c405-49ed-ac6c-acebe2279f37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Res\Param">
+      <UniqueIdentifier>{f3b39564-5566-44ef-9fc7-e15b63d573f7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\World\Population\Creator\DsPopulationCreator.h">
@@ -87,6 +93,9 @@
     <ClInclude Include="Source\World\Physics\DsAnimRagdollModifier.h">
       <Filter>Source\World\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Res\Param\DsRagdollParam.h">
+      <Filter>Source\Res\Param</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\World\Population\Creator\DsPopulationCreator.cpp">
@@ -139,6 +148,9 @@
     </ClCompile>
     <ClCompile Include="Source\World\Physics\DsAppCollisionCallback.cpp">
       <Filter>Source\World\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Res\Param\DsRagdollParam.cpp">
+      <Filter>Source\Res\Param</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

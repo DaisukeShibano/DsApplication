@@ -72,6 +72,9 @@ namespace DsPhysics
 
 		void RequestAttach(const DsActorId masterId, const DsActorId subId, const DsVec3d& pos, const DsVec3d& ex, const DsVec3d& ey, const DsVec3d& ez, const double dt, const DsVec3d& errorP);
 
+	public:
+		virtual void SetUp() override;
+
 	protected:
 		virtual void _SetEquation( const double w[6]) override;
 

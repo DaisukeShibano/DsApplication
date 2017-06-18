@@ -13,6 +13,10 @@
 #include "Ragdoll/DsRagdoll.h"
 #endif
 
+#ifndef _DS_RES_PARAM_DS_RAGDOLL_PARAM_
+#include "Res/Param/DsRagdollParam.h"
+#endif
+
 using namespace DsLib;
 using namespace DsPhysics;
 using namespace DsApp;
@@ -27,14 +31,13 @@ void DsAnimRagdollModifier::ModifyAnim(double dt, DsAnimSkeleton& skeleton, cons
 	//スケルトンでラグドールを動かす
 	const std::vector<DsAnimBone*>& bones = skeleton.RefBoneArray();
 	for (DsRagdollParts& parts : m_ragdoll.RefParts()) {
-		const DsMat44d mat = bones[parts.skeletonBoneIdx]->worldPose;
-		const DsVec3d pos = mat.GetPos();
-		const DsMat33d rot = mat.ToMat33();
-
-		DsDbgSys::GetIns().RefDrawCom().DrawSphere(pos, 0.1);
-
-		parts.pActor->SetPosition(pos);
-		//parts.pActor->SetRotation(rot);
+		DsRagdollParam param(parts.ragdollParamId);
+		if (param.GetAnimType() == DS_RAGDOLL_PARAM_ANIM_TYPE::KEYFRAME) {
+			m_ragdoll.FixToKeyframeAnim(bones, parts);
+		}
+		else {
+			//parts.pActor->RefOption().isStatic = false;
+		}
 	}
 
 }

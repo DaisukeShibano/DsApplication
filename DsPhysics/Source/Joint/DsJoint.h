@@ -20,8 +20,11 @@ namespace DsPhysics
 		virtual ~DsJoint(){}
 		DsPhysicsWorld& m_world;
 
+
 	public:
 		virtual void DbgDraw(DsDrawCommand& com) const{};
+
+
 	};
 
 	class DsJointFactory

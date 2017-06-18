@@ -101,10 +101,6 @@ void DsHingeConstraint::ApplyConstraintForce()
 
 	if (pMas && pSub)
 	{
-		//for (int i = 0; i < 6; ++i){
-		//	RefEq().lambda[i] = Clamp(RefEq().lambda[i], -10.0, 10.0);
-		//}
-
 		double Fc[12];
 		DsMathUtil::MultiVec<12, 6>(Fc, m_Jt, RefEq().lambda);
 
@@ -114,13 +110,14 @@ void DsHingeConstraint::ApplyConstraintForce()
 		m_masterT.x = Fc[3];
 		m_masterT.y = Fc[4];
 		m_masterT.z = Fc[5];
-		m_subF.x = Fc[6];
-		m_subF.y = Fc[7];
-		m_subF.z = Fc[8];
-		m_subT.x = Fc[9];
-		m_subT.y = Fc[10];
-		m_subT.z = Fc[11];
+		m_subF.x =    Fc[6];
+		m_subF.y =    Fc[7];
+		m_subF.z =    Fc[8];
+		m_subT.x =    Fc[9];
+		m_subT.y =    Fc[10];
+		m_subT.z =    Fc[11];
 
+		//ClampConstraintでテストで使っている。それ以外は基底と同じ
 		for (int i = 0; i < 6; ++i){
 			m_lambda[i] += RefEq().lambda[i];
 		}

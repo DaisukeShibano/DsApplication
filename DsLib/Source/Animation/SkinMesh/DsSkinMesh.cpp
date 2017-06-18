@@ -38,8 +38,11 @@ namespace
 
 	void _Mapping(const DsAnimBone* bone, const DsMat33d& bRot, const DsVec3d& bPos, DsVec4d* vertex, const DsVec4d* srcVertex)
 	{
-		DsAnimBone* pTest = (DsAnimBone*)bone;
-		pTest->worldPose = DsMat44d::Get(bRot, bPos);
+		{//テスト更新
+			DsAnimBone* pTest = (DsAnimBone*)bone;
+			pTest->worldPose = DsMat44d::Get(bRot, bPos);
+		}
+
 
 		for (int idx = 0; idx < bone->vIndexNum; ++idx)
 		{	

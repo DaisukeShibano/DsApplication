@@ -24,8 +24,8 @@ public:
 private:
 	DsPopulationCreator* m_pCreator;
 	DsResource m_resource;
-	DsHingeJoint* m_joint;
-	DsHingeJoint* m_joint2;
+	DsBallJoint* m_joint;
+	DsBallJoint* m_joint2;
 	DsAppCollisionCallback m_callback;
 
 	DsCamera m_cam;
@@ -53,9 +53,9 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 			DsActor::Option option = DsActor::Option::Default();
 			//option.isGravity = false;
 
-			m_joint = new DsHingeJoint(*pWorld);
-			m_joint2 = new DsHingeJoint(*pWorld);
-			if(0){//ジョイントテスト
+			m_joint = new DsBallJoint(*pWorld);
+			m_joint2 = new DsBallJoint(*pWorld);
+			if(1){//ジョイントテスト
 				DsRigidBox::GetVertex(vertex, 0.5, 0.5, 0.5);
 				{//箱１
 					DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, "箱１");
@@ -78,11 +78,11 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 					act3 = pWorld->CreateActor(factory);
 					act3.GetActor()->SetMaterial(DsActorMaterial::Aluminum());
 				}
-				m_joint->AttachJoint(act1, act2, act1.GetActor()->GetPosition() + DsVec3d(-0.5, 0, 0), DsVec3d::GetZ());
-				m_joint2->AttachJoint(act2, act3, act2.GetActor()->GetPosition() + DsVec3d(-0.5, 0, 0), DsVec3d::GetZ());
+				m_joint->AttachJoint(act1, act2, act1.GetActor()->GetPosition() + DsVec3d(-0.5, 0, 0));
+				m_joint2->AttachJoint(act2, act3, act2.GetActor()->GetPosition() + DsVec3d(-0.5, 0, 0));
 			}
 
-			if(1){//衝突テスト
+			if(0){//衝突テスト
 				DsRigidBox::GetVertex(vertex, 1.5, 0.5, 1.5);
 				{
 					DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, "箱１");
