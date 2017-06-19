@@ -112,7 +112,7 @@ namespace DsPhysics
 		virtual void AddVelocity(const DsVec3d& v) override { m_physicsInfo.vel += v; }
 		virtual void AddAngularVelocity(const DsVec3d& v) override { m_physicsInfo.angVel += v; }
 		virtual void SetDamper(double vel, double angVel) override { m_damperVel = vel; m_damperAngVel = angVel; }
-		virtual void SetInertiaBias(double bias) override { m_biasInertia = bias; }
+		virtual void SetInertiaBias(const DsVec3d& bias) override { m_biasInertia = bias; }
 
 	protected:
 		DsVec3d _GetMaxVector(const DsVec3d* pVec, const int vn) const;
@@ -150,7 +150,7 @@ namespace DsPhysics
 		DsMat33d m_preRot;
 		double m_damperVel;
 		double m_damperAngVel;
-		double m_biasInertia;
+		DsVec3d m_biasInertia;
 
 	protected:
 		DsCollisionGeometry* m_pCollisionGeometry;

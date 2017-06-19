@@ -30,7 +30,7 @@ namespace DsPhysics
 			, m_initRot(DsMat33d::Identity())
 			, m_initOption(Option::Default())
 			, m_name(name)
-			, m_biasI(0)
+			, m_biasI(DsVec3d::Zero())
 		{
 			for (int i = 0; i < VERTEX_NUM; ++i) {
 				m_pv[i] = pv[i];
@@ -47,7 +47,7 @@ namespace DsPhysics
 		void InitPos(const DsVec3d& pos){m_initPos = pos;}
 		void InitRot(const DsMat33d& rot){m_initRot = rot;}
 		void SetOption(const Option& option){ m_initOption = option; }
-		void SetBiasI(double bias) { m_biasI = bias; }
+		void SetBiasI(const DsVec3d& bias) { m_biasI = bias; }
 
 	private:
 		DsVec3d m_pv[VERTEX_NUM];
@@ -57,7 +57,7 @@ namespace DsPhysics
 		DsMat33d m_initRot;
 		Option m_initOption;
 		std::string m_name;
-		double m_biasI;
+		DsVec3d m_biasI;
 	};
 	/////////////Factory‚±‚±‚Ü‚Å////////////
 

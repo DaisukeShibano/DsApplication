@@ -30,7 +30,7 @@ DsRigidBody::DsRigidBody(const DsActorId& id, const char* name)
 , m_preRot(DsMat33d::Identity())
 , m_damperVel(0)
 , m_damperAngVel(0)
-, m_biasInertia(0)
+, m_biasInertia(DsVec3d::Zero())
 , m_pCollisionGeometry(NULL)
 {}
 

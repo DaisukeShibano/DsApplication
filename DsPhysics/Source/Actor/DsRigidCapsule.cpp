@@ -30,10 +30,10 @@ void DsRigidCapsule::Create(const double r, const double halfLen, const double m
 			const double h = halfLen*2.0;
 			const double m1 = 3.0*h/(4.0*r+3.0*h)*(1.0/12.0)*M;
 			const double m2 = 4.0*r / (4.0*r + 3.0*h)*(1.0 / 20.0)*M;
-			const double bias = 1.0 + m_biasInertia;
-			const double Ixx = (m1*(3.0*r*r + h*h) + m2*(8.0*r*r + 5.0*h*h)) * bias;;
-			const double Iyy = (m1*(0.5*r*r) + m2*(8.0*r*r)) * bias;;
-			const double Izz = (m1*(3.0*r*r + h*h) + m2*(8.0*r*r + 5.0*h*h)) * bias;;
+			const DsVec3d bias = DsVec3d(1.0, 1.0, 1.0) + m_biasInertia;
+			const double Ixx = (m1*(3.0*r*r + h*h) + m2*(8.0*r*r + 5.0*h*h)) * bias.x;
+			const double Iyy = (m1*(0.5*r*r) + m2*(8.0*r*r)) * bias.y;
+			const double Izz = (m1*(3.0*r*r + h*h) + m2*(8.0*r*r + 5.0*h*h)) * bias.z;
 			pi.mass.inertia = DsMat33d::Identity();
 			pi.mass.inertia[0] = Ixx;
 			pi.mass.inertia[4] = Iyy;
