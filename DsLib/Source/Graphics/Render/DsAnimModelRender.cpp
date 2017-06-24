@@ -181,7 +181,7 @@ void DsAnimModelRender::Render() const
 					const int vn = pFace->vn;
 					for (int vi = 0; vi < vn; ++vi)
 					{
-						DS_ASSERT(uvIdx < pTex[ti].uvNum, "uv座標のインデックオーバー");
+						DS_ASSERT(uvIdx < pTex->uvNum, "uv座標のインデックオーバー");
 						const DsAnimModel::Material::Texture::UV& uv = pUV[uvIdx];
 						const int vIdx = uv.vertexIdx;
 						if (isUseVertexNormal)
