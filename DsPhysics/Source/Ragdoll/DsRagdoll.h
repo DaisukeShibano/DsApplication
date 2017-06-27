@@ -14,6 +14,7 @@ namespace DsPhysics
 	class DsJoint;
 	class DsHinge2Joint;
 	class DsPhysicsWorld;
+	typedef unsigned long long DsCollisionFilter;
 }
 
 namespace DsPhysics
@@ -26,6 +27,7 @@ namespace DsPhysics
 		double damperV;
 		double damperA;
 		double mass;
+		DsCollisionFilter collisionFilter;
 	};
 
 	class DsRagdoll
@@ -46,6 +48,8 @@ namespace DsPhysics
 	public:
 		const std::vector<DsRagdollParts>& RefParts() const { return m_parts; }
 		std::vector<DsRagdollParts>& RefParts() { return m_parts; }
+
+		void SetParam(const DsRagdollParts& parts);
 
 		//ÉäÉWÉbÉhÇboneÇ…çáÇÌÇπÇÈ
 		void FixToKeyframeAnim(double dt, const std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts);

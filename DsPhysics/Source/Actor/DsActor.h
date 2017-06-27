@@ -17,6 +17,8 @@ namespace DsPhysics
 
 namespace DsPhysics
 {
+	typedef unsigned long long DsCollisionFilter;
+
 
 	class DsActorId
 	{
@@ -44,8 +46,6 @@ namespace DsPhysics
 	private:
 		DsActor* m_pActor;
 	};
-
-
 
 	class DsActor
 	{
@@ -107,6 +107,7 @@ namespace DsPhysics
 			,m_lifeTime(1)
 			,m_dt(0.0)
 			,m_pUserData(NULL)
+			, m_collisionFilter(0)
 			,m_pOctreeNodeActorNext(NULL)
 
 			,m_dbgColor(DsVec4d::Zero())
@@ -186,6 +187,9 @@ namespace DsPhysics
 		const void* GetUserData() const { return m_pUserData; }
 		void SetUserData(void *pData) { m_pUserData = pData; }
 
+		DsCollisionFilter GetCollisionFilter() const { return m_collisionFilter; }
+		void SetCollisionFilter(DsCollisionFilter filter) { m_collisionFilter = filter; }
+
 	public://ãÛä‘ï™äÑóp
 		void SetOctreeNodeNext(const DsActor* pActor){ m_pOctreeNodeActorNext = pActor; }
 		const DsActor* GetOctreeNodeNext() const { return m_pOctreeNodeActorNext; }
@@ -208,6 +212,7 @@ namespace DsPhysics
 		long int m_lifeTime;
 		double m_dt;
 		void* m_pUserData;
+		DsCollisionFilter m_collisionFilter;
 
 	private://ãÛä‘ï™äÑópÅBactorÇ…éùÇ¬ÇÃÇÕî˜ñ≠ÇæÇØÇ«
 		const DsActor* m_pOctreeNodeActorNext;

@@ -196,6 +196,7 @@
     <ClInclude Include="Source\Res\Param\DsRagdollParam.h" />
     <ClInclude Include="Source\World\Physics\DsAnimRagdollModifier.h" />
     <ClInclude Include="Source\World\Physics\DsAppCollisionCallback.h" />
+    <ClInclude Include="Source\World\Physics\DsAppCollisionFilter.h" />
     <ClInclude Include="Source\World\Population\Controller\DsChrController.h" />
     <ClInclude Include="Source\World\Population\Controller\DsGpController.h" />
     <ClInclude Include="Source\World\Population\Creator\DsPopulationCreator.h" />
@@ -221,6 +222,7 @@
     <ClCompile Include="Source\Res\Param\DsRagdollParam.cpp" />
     <ClCompile Include="Source\World\Physics\DsAnimRagdollModifier.cpp" />
     <ClCompile Include="Source\World\Physics\DsAppCollisionCallback.cpp" />
+    <ClCompile Include="Source\World\Physics\DsAppCollisionFilter.cpp" />
     <ClCompile Include="Source\World\Population\Controller\DsChrController.cpp" />
     <ClCompile Include="Source\World\Population\Controller\DsGpController.cpp" />
     <ClCompile Include="Source\World\Population\Creator\DsPopulationCreator.cpp" />

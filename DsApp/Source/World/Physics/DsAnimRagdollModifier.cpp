@@ -32,10 +32,6 @@ void DsAnimRagdollModifier::ModifyAnim(double dt, DsAnimSkeleton& skeleton, cons
 	std::vector<DsAnimBone*>& bones = skeleton.RefBoneArray();
 	for (DsRagdollParts& parts : m_ragdoll.RefParts()) {
 		DsRagdollParam param(parts.ragdollParamId);
-		parts.damperV = param.GetDamperV();
-		parts.damperA = param.GetDamperA();
-		parts.mass = param.GetMass();
-
 		if (param.GetAnimType() == DS_RAGDOLL_PARAM_ANIM_TYPE::KEYFRAME) {
 			//スケルトンでラグドールを動かす
 			m_ragdoll.FixToKeyframeAnim(dt, bones, parts);

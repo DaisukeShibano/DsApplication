@@ -2,11 +2,12 @@
 #define _DS_RES_PARAM_DS_RAGDOLL_PARAM_
 
 
-namespace DsPhysics
+namespace DsApp
 {
+	enum class INSIDE_COLLISION_GROUP : unsigned int;
 }
 
-namespace DsPhysics
+namespace DsApp
 {
 	enum DS_RAGDOLL_PARAM_ANIM_TYPE : int
 	{
@@ -21,6 +22,7 @@ namespace DsPhysics
 		int animType;
 		double damperV;
 		double damperA;
+		unsigned int collisionGroup;
 	};
 
 	class DsRagdollParam
@@ -35,6 +37,7 @@ namespace DsPhysics
 
 		double GetDamperV() const { return (m_pParam) ? (m_pParam->damperV) : (0.0); }
 		double GetDamperA() const { return (m_pParam) ? (m_pParam->damperA) : (0.0); }
+		INSIDE_COLLISION_GROUP GetCollisionGroup() const { return  static_cast<INSIDE_COLLISION_GROUP>( (m_pParam) ? (m_pParam->collisionGroup) : (0) ); }
 
 	private:
 		DsRagdollParamST* m_pParam;

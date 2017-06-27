@@ -9,7 +9,7 @@
 
 using namespace DsLib;
 
-static const double BLEND_TIME = 0.4;
+static const double BLEND_TIME = 0.2;
 
 
 DsAnimClip::DsAnimClip(DsKeyframeAnim& anim)

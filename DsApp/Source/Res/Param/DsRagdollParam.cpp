@@ -5,13 +5,13 @@
 
 using namespace std;
 using namespace DsPhysics;
-
+using namespace DsApp;
 
 static DsRagdollParamST s_param[]=
 {
-	//mass		//animType		//damperV		//damperA
-	{ 1.0,		0,				10.0,			2.0},
-	{ 1.0,		1,				10.0,			2.0},
+	//mass		//animType		//damperV		//damperA		//ColGroup
+	{ 1.0,		0,				10.0,			2.0,			0},
+	{ 1.0,		1,				10.0,			2.0,			0},
 };
 
 

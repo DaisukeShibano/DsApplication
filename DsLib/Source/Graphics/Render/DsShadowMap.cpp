@@ -13,7 +13,7 @@ using namespace DsLib;
 
 namespace
 {
-	static const int s_shadowSize = 512;
+	static const int s_shadowSize = 1024;
 	static const double BLUR_COEF = 1.0;
 
 	class DsShadowMapImp : public DsShadowMap

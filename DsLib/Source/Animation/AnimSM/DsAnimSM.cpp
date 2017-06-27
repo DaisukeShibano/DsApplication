@@ -136,8 +136,13 @@ void DsAnimSM::_Idle(double dt)
 	if (isMove)
 	{
 		_SetActiveState(RUN);
-		m_pClips[IDLE]->Deactivate(dt);
-		m_pClips[RUN]->Activate(dt);
+		if (m_pClips[IDLE]) {
+			m_pClips[IDLE]->Deactivate(dt);
+		}
+		if (m_pClips[RUN]) {
+			m_pClips[RUN]->Activate(dt);
+		}
+		
 	}
 }
 
@@ -152,7 +157,11 @@ void DsAnimSM::_Run(double dt)
 	if (!isMove)
 	{
 		_SetActiveState(IDLE);
-		m_pClips[RUN]->Deactivate(dt);
-		m_pClips[IDLE]->Activate(dt);
+		if (m_pClips[RUN]) {
+			m_pClips[RUN]->Deactivate(dt);
+		}
+		if (m_pClips[IDLE]) {
+			m_pClips[IDLE]->Activate(dt);
+		}
 	}
 }

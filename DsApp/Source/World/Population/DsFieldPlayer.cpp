@@ -29,6 +29,12 @@
 #ifndef _DS_ANIM_RAGDOLL_MODIFIER_
 #include "World/Physics/DsAnimRagdollModifier.h"
 #endif
+#ifndef _DS_RES_PARAM_DS_RAGDOLL_PARAM_
+#include "Res/Param/DsRagdollParam.h"
+#endif
+#ifndef __DS_APP_COLLISION_FILTER__
+#include "World/Physics/DsAppCollisionFilter.h"
+#endif
 
 using namespace DsLib;
 using namespace DsPhysics;
@@ -64,6 +70,16 @@ void DsFieldPlayer::Initialize(const InitInfo& initInfo)
 	if (pProperty && pSkeleton) {
 		m_pRagdoll = new DsRagdoll(pProperty->ragdollParamIds, *pSkeleton, m_world, this);
 		DS_ASSERT(m_pRagdoll, "ƒƒ‚ƒŠŠm•Û¸”s");
+
+		for (DsRagdollParts& parts : m_pRagdoll->RefParts()) {
+			DsRagdollParam param(parts.ragdollParamId);
+			parts.damperA = param.GetDamperA();
+			parts.damperV = param.GetDamperV();
+			parts.mass = param.GetMass();
+			parts.collisionFilter = DsAppCollisionFilter::CalcFilterInside(param.GetCollisionGroup());
+			m_pRagdoll->SetParam(parts);
+		}
+
 
 		m_pAnimRagdollModifier = new DsAnimRagdollModifier(*m_pRagdoll);
 		DS_ASSERT(m_pAnimRagdollModifier, "ƒƒ‚ƒŠŠm•Û¸”s");

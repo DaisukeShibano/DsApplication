@@ -96,6 +96,9 @@
     <ClInclude Include="Source\Res\Param\DsRagdollParam.h">
       <Filter>Source\Res\Param</Filter>
     </ClInclude>
+    <ClInclude Include="Source\World\Physics\DsAppCollisionFilter.h">
+      <Filter>Source\World\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\World\Population\Creator\DsPopulationCreator.cpp">
@@ -151,6 +154,9 @@
     </ClCompile>
     <ClCompile Include="Source\Res\Param\DsRagdollParam.cpp">
       <Filter>Source\Res\Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Physics\DsAppCollisionFilter.cpp">
+      <Filter>Source\World\Physics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

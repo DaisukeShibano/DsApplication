@@ -89,6 +89,7 @@ void DsRagdoll::_ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActo
 					static_cast<int>(m_parts.size()),
 					0,
 					0,
+					0,
 				};
 				m_parts.push_back(parts);
 				InnerPartsInfo innerParts;
@@ -119,6 +120,14 @@ void DsRagdoll::_ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActo
 	}
 }
 
+void DsRagdoll::SetParam(const DsRagdollParts& parts)
+{
+	const InnerPartsInfo& innerParts = m_innerParts[parts.innerPartsIdx];
+	innerParts.pActor->SetDamper(parts.damperV, parts.damperA);
+	//innerParts.pActor->GetMass(parts.mass);//重さを変えられる仕組みがない
+	innerParts.pActor->SetCollisionFilter(parts.collisionFilter);
+}
+
 //リジッドをboneに合わせる
 void DsRagdoll::FixToKeyframeAnim(double dt, const std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts)
 {
@@ -142,7 +151,6 @@ void DsRagdoll::FixToPhysics(double dt, std::vector<DsAnimBone*>& bones, const D
 {
 	const InnerPartsInfo& innerParts = m_innerParts[parts.innerPartsIdx];
 	innerParts.pActor->RefOption().isStatic = false;
-	innerParts.pActor->SetDamper(parts.damperV, parts.damperA);
 	const DsActor* pActor = innerParts.pActor;
 	const DsMat33d rot = pActor->GetRotation();
 	const DsVec3d offset = rot*innerParts.offset;
