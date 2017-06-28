@@ -31,26 +31,26 @@ namespace DsApp
 		static DsPhysics::DsCollisionFilter CalcFilter(COLLISION_GROUP group, INSIDE_COLLISION_GROUP inside)
 		{
 			//32bit内部グループ | 32bitグループ
-			return ((1 << 0xFFFFFFFF) << static_cast<unsigned int>(inside)) | (1<<static_cast<unsigned int>(group));
+			return ((1ULL << 32ULL ) << static_cast<unsigned int>(inside)) | (1ULL <<static_cast<unsigned int>(group));
 		}
 
 		//内部グループのみ設定。グループは全てに当たる設定
 		static DsPhysics::DsCollisionFilter CalcFilterInside(INSIDE_COLLISION_GROUP inside)
 		{
 			//32bit内部グループ | 32bitグループ
-			return (1 << 0xFFFFFFFF) >> static_cast<unsigned int>(inside);
+			return (1ULL << 32ULL ) << static_cast<unsigned int>(inside);
 		}
 
 		//グループが当たる関係か
 		static bool IsGroupCollision(DsPhysics::DsCollisionFilter filter1, DsPhysics::DsCollisionFilter filter2)
 		{
-			return static_cast<bool>( ! ((filter1 & 0xFFFFFFFF) & (filter2 & 0xFFFFFFFF)) );
+			return static_cast<bool>( ! ((filter1 & 0xFFFFFFFFULL) & (filter2 & 0xFFFFFFFFULL)) );
 		}
 
 		//内部グループが当たる関係か
 		static bool IsInsideGroupCollision(DsPhysics::DsCollisionFilter filter1, DsPhysics::DsCollisionFilter filter2)
 		{
-			return static_cast<bool>( ! (((filter1 >> 32) & 0xFFFFFFFF) & ((filter2 >> 32) & 0xFFFFFFFF)) );
+			return static_cast<bool>( ! (((filter1 >> 32ULL ) & 0xFFFFFFFFULL) & ((filter2 >> 32ULL ) & 0xFFFFFFFFULL)) );
 		}
 
 	};
