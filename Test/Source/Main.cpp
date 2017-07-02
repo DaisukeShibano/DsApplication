@@ -121,14 +121,14 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 		}
 	}
 
-	const DsCamera& sysCam = args.sys.RefCam();
-	m_cam = sysCam;
-	m_pImage = DsRenderCamCaptureImage::Create(m_cam, 128, 128);
-	args.sys.RefRender().RegisterCaptureImage(m_pImage);
-
-	m_cam2 = sysCam;
-	m_pImage2 = DsRenderCamCaptureImage::Create(m_cam2, 128, 128);
-	args.sys.RefRender().RegisterCaptureImage(m_pImage2);
+	//const DsCamera& sysCam = args.sys.RefCam();
+	//m_cam = sysCam;
+	//m_pImage = DsRenderCamCaptureImage::Create(m_cam, 128, 128);
+	//args.sys.RefRender().RegisterCaptureImage(m_pImage);
+	//
+	//m_cam2 = sysCam;
+	//m_pImage2 = DsRenderCamCaptureImage::Create(m_cam2, 128, 128);
+	//args.sys.RefRender().RegisterCaptureImage(m_pImage2);
 }
 
 void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
@@ -166,6 +166,8 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 
 	}
 
+	m_pCreator->Update(args.dt);
+
 	for each(DsFieldHit* obj in m_pCreator->RefHits())
 	{
 		obj->Update(args.dt);
@@ -180,40 +182,40 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 	}
 
 
-	const DsCamera& sysCam = args.sys.RefCam();
-	m_cam = sysCam;
-	m_cam.SetRot(DsMat33d::RotateY(RadToDeg(10))*sysCam.GetRot());
-	m_cam2 = sysCam;
-	m_cam2.SetRot(DsMat33d::RotateY(RadToDeg(-10))*sysCam.GetRot());
-
-	DsVec3d poly[] =
-	{
-		{ 1+3,-1,0},
-		{ -1+3,-1,0 },
-		{ -1+3,1,0 },
-		{ 1+3,1,0 },
-	};
-	DsVec3d poly2[] =
-	{
-		{ 1-1,-1,0 },
-		{ -1-1,-1,0 },
-		{ -1-1,1,0 },
-		{ 1-1,1,0 },
-	};
-	DsVec2d tex[] =
-	{
-		{ 0,0},
-		{ 1,0},
-		{ 1,1},
-		{ 0,1},
-	};
-
-	args.drawCom.DrawTexQuad(poly[0], poly[1], poly[2], poly[3], 
-		tex[0], tex[1], tex[2], tex[3],
-		m_pImage->GetImage(), m_pImage->GetWidth(), m_pImage->GetHeight());
-	args.drawCom.DrawTexQuad(poly2[0], poly2[1], poly2[2], poly2[3],
-		tex[0], tex[1], tex[2], tex[3],
-		m_pImage2->GetImage(), m_pImage2->GetWidth(), m_pImage2->GetHeight());
+	//const DsCamera& sysCam = args.sys.RefCam();
+	//m_cam = sysCam;
+	//m_cam.SetRot(DsMat33d::RotateY(RadToDeg(10))*sysCam.GetRot());
+	//m_cam2 = sysCam;
+	//m_cam2.SetRot(DsMat33d::RotateY(RadToDeg(-10))*sysCam.GetRot());
+	//
+	//DsVec3d poly[] =
+	//{
+	//	{ 1+3,-1,0},
+	//	{ -1+3,-1,0 },
+	//	{ -1+3,1,0 },
+	//	{ 1+3,1,0 },
+	//};
+	//DsVec3d poly2[] =
+	//{
+	//	{ 1-1,-1,0 },
+	//	{ -1-1,-1,0 },
+	//	{ -1-1,1,0 },
+	//	{ 1-1,1,0 },
+	//};
+	//DsVec2d tex[] =
+	//{
+	//	{ 0,0},
+	//	{ 1,0},
+	//	{ 1,1},
+	//	{ 0,1},
+	//};
+	//
+	//args.drawCom.DrawTexQuad(poly[0], poly[1], poly[2], poly[3], 
+	//	tex[0], tex[1], tex[2], tex[3],
+	//	m_pImage->GetImage(), m_pImage->GetWidth(), m_pImage->GetHeight());
+	//args.drawCom.DrawTexQuad(poly2[0], poly2[1], poly2[2], poly2[3],
+	//	tex[0], tex[1], tex[2], tex[3],
+	//	m_pImage2->GetImage(), m_pImage2->GetWidth(), m_pImage2->GetHeight());
 }
 
 int main(int argc, char **argv)

@@ -99,6 +99,9 @@
     <ClInclude Include="Source\World\Physics\DsAppCollisionFilter.h">
       <Filter>Source\World\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\World\Population\DsFieldInitInfo.h">
+      <Filter>Source\World\Population</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\World\Population\Creator\DsPopulationCreator.cpp">
@@ -157,6 +160,9 @@
     </ClCompile>
     <ClCompile Include="Source\World\Physics\DsAppCollisionFilter.cpp">
       <Filter>Source\World\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Population\DsFieldInitInfo.cpp">
+      <Filter>Source\World\Population</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

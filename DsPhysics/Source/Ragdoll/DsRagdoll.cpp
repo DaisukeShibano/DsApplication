@@ -74,8 +74,8 @@ void DsRagdoll::_ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActo
 			DsRigidBox::GetVertex(vertex, 0.1, dist.Length(), 0.1);//Yがボーンの向きっぽい。//太さは後でパラメータ化する
 			DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, pBone->name.c_str());
 			factory.SetBiasI(DsVec3d(0.0, 4.0, 0.0));
-			//factory.InitPos(rigidPos);
-			//factory.InitRot(pBone->initWorldPose.ToMat33());
+			factory.InitPos(rigidPos);
+			factory.InitRot(pBone->initWorldPose.ToMat33());
 			factory.SetOption(DsActor::Option::Default());
 			pActor = m_world.CreateActor(factory).GetActor();
 			if (pActor) {

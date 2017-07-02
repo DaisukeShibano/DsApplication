@@ -12,6 +12,9 @@
 #ifndef _DS_ANIM_MODEL_
 #include "Animation/DsAnimModel.h"
 #endif
+#ifndef __DS_APP_COLLISION_FILTER__
+#include "World/Physics/DsAppCollisionFilter.h"
+#endif
 
 using namespace DsLib;
 using namespace DsPhysics;
@@ -28,9 +31,12 @@ DsFieldHit::~DsFieldHit()
 }
 
 //virtual
-void DsFieldHit::Initialize(const InitInfo& initInfo)
+void DsFieldHit::Initialize(const DsFieldInitInfo& initInfo)
 {
 	DsFieldObj::Initialize(initInfo);
+
+	//’nŒ`‚ ‚½‚è‚Í“à•”‚Ì‚à‚Ì‚Í‘S‚Ä“–‚½‚ç‚È‚¢
+	m_actorId.GetActor()->SetCollisionFilter(DsAppCollisionFilter::CalcFilterGroup(COLLISION_GROUP::HIT));
 }
 
 //virtual 

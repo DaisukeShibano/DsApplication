@@ -1,6 +1,10 @@
 #ifndef _DS_POPULATION_CREATOR_H_
 #define _DS_POPULATION_CREATOR_H_
 
+#ifndef _DS_FIELD_INIT_INFO_H_
+#include "World/Population/DsFieldInitInfo.h"
+#endif
+
 namespace DsLib
 {
 	class DsResource;
@@ -22,12 +26,20 @@ namespace DsApp
 {
 	class DsPopulationCreator
 	{
+	private:
+		struct _InitInfo
+		{
+			DsFieldInitInfo initInfo;
+			DsFieldObj* pObj;
+		};
+
 	public:
 		DsPopulationCreator(DsLib::DsSys& sys);
 		virtual ~DsPopulationCreator();
 
 	public:
 		void Create(const char* resPath, DsLib::DsResource& res, DsPhysics::DsPhysicsWorld& world);
+		void Update(double dt);
 		void Destoroy();
 
 	public:
@@ -40,6 +52,10 @@ namespace DsApp
 		std::vector<DsFieldHit*> m_hits;
 		std::vector<DsFieldObj*> m_objs;
 		std::vector<DsFieldChr*> m_chrs;
+
+		std::vector<_InitInfo> m_requestHits;
+		std::vector<_InitInfo> m_requestObjs;
+		std::vector<_InitInfo> m_requestChrs;
 	};
 }
 

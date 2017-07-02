@@ -217,9 +217,10 @@ DsActor*  DsPhysicsWorld::RayCast_CollectNear(const DsVec3d& startPos, const DsV
 {
 	typedef std::vector<DsCollisionResult> resultVec;
 	
-	const DsActorId dummyId;
+	DsActorId dummyId;
 	DsRay ray(dummyId);
 	ray.Create(startPos, endPos);
+	dummyId = DsActorId(&ray);
 
 	resultVec results;
 	m_pListener->Cast(ray, m_group, results);

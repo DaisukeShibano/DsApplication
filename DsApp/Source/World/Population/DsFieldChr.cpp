@@ -32,7 +32,7 @@ DsFieldChr::~DsFieldChr()
 }
 
 //virtual
-void DsFieldChr::Initialize(const InitInfo& initInfo)
+void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 {
 	DsFieldObj::Initialize(initInfo);
 

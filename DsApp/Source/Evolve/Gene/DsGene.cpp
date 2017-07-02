@@ -55,7 +55,7 @@ void DsGene::Initialize(DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& world, DsL
 	shape.boundCoef=0.2;
 	DsHitRes hitRes(shape);
 
-	DsFieldObj::InitInfo initInfo;
+	DsFieldInitInfo initInfo;
 	initInfo.name = "GPƒLƒƒƒ‰";
 	initInfo.pos = DsVec3d::Zero();
 	initInfo.rot = DsMat33d::Identity();

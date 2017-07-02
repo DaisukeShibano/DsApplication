@@ -249,7 +249,6 @@ namespace SimuEditor {
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->menuStrip1);
 			this->KeyPreview = true;
-			this->Location = System::Drawing::Point(-1900, 0);
 			this->Name = L"MainForm";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::Manual;
 			this->Text = L"MainForm";

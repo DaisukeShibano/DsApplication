@@ -33,6 +33,7 @@ namespace DsLib
 			: x(setX)
 			, y(setY)
 			, z(setZ)
+			, ___w___(0)
 		{}
 		DsVec3d(){}
 

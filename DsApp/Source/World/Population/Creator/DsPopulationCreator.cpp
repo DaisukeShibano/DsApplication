@@ -29,6 +29,9 @@ DsPopulationCreator::DsPopulationCreator(DsSys& sys)
 	, m_hits()
 	, m_objs()
 	, m_chrs()
+	, m_requestHits()
+	, m_requestObjs()
+	, m_requestChrs()
 {
 
 }
@@ -51,45 +54,50 @@ void DsPopulationCreator::Create(const char* resPath, DsResource& res, DsPhysics
 
 		if (pAnimRes && pHitRes)
 		{
-			DsFieldObj::InitInfo initInfo;
-			initInfo.name = mapInfo.pName;
-			initInfo.pos = mapInfo.pos;
-			initInfo.rot = mapInfo.rot;
-			initInfo.pHitRes = pHitRes;
-			initInfo.pAnimRes = pAnimRes;
-			initInfo.physicsType = mapInfo.objType;
+			DsFieldInitInfo reqInitInfo;
+			reqInitInfo.name = mapInfo.pName;
+			reqInitInfo.pos = mapInfo.pos;
+			reqInitInfo.rot = mapInfo.rot;
+			reqInitInfo.pHitRes = pHitRes;
+			reqInitInfo.pAnimRes = pAnimRes;
+			reqInitInfo.physicsType = mapInfo.objType;
+
+			_InitInfo info;
+			info.initInfo = reqInitInfo;
 
 			switch (mapInfo.fieldObjType)
 			{
 			case DS_MAP_FIELD_OBJ_TYPE::CHR:
 				{
 					DsFieldChr* pChr = new DsFieldChr(m_sys, world);
-					pChr->Initialize(initInfo);
-					m_chrs.push_back(pChr);
+					info.pObj = pChr;
+					m_requestChrs.push_back(info);
+					
 				}
 				break;
 
 			case DS_MAP_FIELD_OBJ_TYPE::OBJ:
 				{
 					DsFieldObj* pObj = new DsFieldObj(m_sys, world);
-					pObj->Initialize(initInfo);
 					m_objs.push_back(pObj);
+					info.pObj = pObj;
+					m_requestObjs.push_back(info);
 				}
 				break;
 
 			case DS_MAP_FIELD_OBJ_TYPE::HIT:
 				{
 					DsFieldHit* pHit = new DsFieldHit(m_sys, world);
-					pHit->Initialize(initInfo);
-					m_hits.push_back(pHit);
+					info.pObj = pHit;
+					m_requestHits.push_back(info);
 				}
 				break;
 
 			case DS_MAP_FIELD_OBJ_TYPE::PLAYER:
 			{
 				DsFieldPlayer* pChr = new DsFieldPlayer(m_sys, world);
-				pChr->Initialize(initInfo);
-				m_chrs.push_back(pChr);
+				info.pObj = pChr;
+				m_requestChrs.push_back(info);
 			}
 			break;
 
@@ -103,6 +111,51 @@ void DsPopulationCreator::Create(const char* resPath, DsResource& res, DsPhysics
 			DS_LOG("DsPopulationCreatorでAnimResorHitResがなかった %s %s", mapInfo.pAnimPath, mapInfo.pHitPath);
 		}
 	}
+}
+
+void DsPopulationCreator::Update(double dt)
+{
+	bool isHitOk = true;
+	for (_InitInfo& iniInfo : m_requestHits) {
+		if ( !iniInfo.pObj->IsRequestInit()) {
+			iniInfo.pObj->Initialize(iniInfo.initInfo);
+			m_hits.push_back( static_cast<DsFieldHit*>(iniInfo.pObj));
+			
+		}
+	}
+	for (DsFieldObj* pObj : m_hits) {
+		if ( !pObj->IsCompleteInit() ) {
+			isHitOk = false;
+		}
+	}
+
+	//ヒットが準備終わってから配置物
+	bool isObjOk = true;
+	if (isHitOk) {
+		for (_InitInfo& iniInfo : m_requestObjs) {
+			if (!iniInfo.pObj->IsRequestInit()) {
+				iniInfo.pObj->Initialize(iniInfo.initInfo);
+				m_objs.push_back(static_cast<DsFieldObj*>(iniInfo.pObj));
+			}
+		}
+	}
+	for (DsFieldObj* pObj : m_objs) {
+		if (!pObj->IsCompleteInit() ) {
+			isObjOk = false;
+		}
+	}
+
+	//オブジェが準備終わってから配置物
+	if (isObjOk) {
+		for (_InitInfo& iniInfo : m_requestChrs) {
+			if (!iniInfo.pObj->IsRequestInit()) {
+				iniInfo.pObj->Initialize(iniInfo.initInfo);
+				m_chrs.push_back(static_cast<DsFieldChr*>(iniInfo.pObj));
+			}
+		}
+	}
+
+
 }
 
 void DsPopulationCreator::Destoroy()

@@ -202,6 +202,7 @@
     <ClInclude Include="Source\World\Population\Creator\DsPopulationCreator.h" />
     <ClInclude Include="Source\World\Population\DsFieldChr.h" />
     <ClInclude Include="Source\World\Population\DsFieldHit.h" />
+    <ClInclude Include="Source\World\Population\DsFieldInitInfo.h" />
     <ClInclude Include="Source\World\Population\DsFieldObj.h" />
     <ClInclude Include="Source\World\Population\DsFieldPlayer.h" />
   </ItemGroup>
@@ -228,6 +229,7 @@
     <ClCompile Include="Source\World\Population\Creator\DsPopulationCreator.cpp" />
     <ClCompile Include="Source\World\Population\DsFieldChr.cpp" />
     <ClCompile Include="Source\World\Population\DsFieldHit.cpp" />
+    <ClCompile Include="Source\World\Population\DsFieldInitInfo.cpp" />
     <ClCompile Include="Source\World\Population\DsFieldObj.cpp" />
     <ClCompile Include="Source\World\Population\DsFieldPlayer.cpp" />
   </ItemGroup>

@@ -309,7 +309,7 @@ DsCollisionResult& DsCollisionBoxBox::_ColideFinal()
 
 		const DsVec3d colPos = (pa + pb)*0.5;
 		m_info.AddInfo(colPos, -normal, -depth, m_pBox1->RefOwnerId(), m_pBox2->RefOwnerId());
-		//DsDbgSys::GetIns().RefDrawCom().SetColor(DsVec3d(0, 1, 0)).DrawSphere(colPos, 0.1);
+		//DsDbgSys::GetIns().RefDrawCom().SetColor(DsVec3d(0, 1, 0)).DrawSphere(colPos, 0.05);
 		//DsDbgSys::GetIns().RefDrawCom().SetColor(DsVec3d(0, 1, 1)).DrawLine(colPos, colPos +(normal*10.0));
 		return m_info;
 	}
@@ -389,7 +389,7 @@ DsCollisionResult& DsCollisionBoxBox::_ColideFinal()
 	
 	//const_cast<DsActor*>(pActorA)->SetLineColor(DsVec4d(1, 0, 0, 1));
 	//const_cast<DsActor*>(pActorB)->SetLineColor(DsVec4d(0, 0, 1, 1));
-	//DsDbgSys::GetIns().RefDrawCom().SetColor(DsVec3d(0, 1, 1)).DrawSphere(center+(*paa), 0.1);
+	//DsDbgSys::GetIns().RefDrawCom().SetColor(DsVec3d(0, 1, 1)).DrawSphere(center+(*paa), 0.05);
 	//DsDbgSys::GetIns().RefDrawCom().SetColor(DsVec3d(0, 1, 1)).DrawLine(center + (*paa), center + (*paa)+(normal2*10.0));
 
 	//ç°ìxÇÕRaaë§ÇÃè’ìÀñ ï˚å¸Ç∆êÇíºï˚å¸ÇãÅÇﬂÇÈ
@@ -495,7 +495,7 @@ DsCollisionResult& DsCollisionBoxBox::_ColideFinal()
 	for (int j = 0; j < cnum; j++) {
 		const DsVec3d colPos = point[j] + (*paa);
 		m_info.AddInfo(colPos, -normal, dep[j], m_pBox1->RefOwnerId(), m_pBox2->RefOwnerId());
-		//DsDbgSys::GetIns().RefDrawCom().SetColor(DsVec3d(0, 0, 1)).DrawSphere(colPos, 0.1);
+		//DsDbgSys::GetIns().RefDrawCom().SetColor(DsVec3d(0, 0, 1)).DrawSphere(colPos, 0.05);
 	}
 
 	return m_info;

@@ -15,7 +15,7 @@ namespace DsApp
 
 	public:
 		virtual void Update(double dt) override;
-		virtual void Initialize(const InitInfo& initInfo) override;
+		virtual void Initialize(const DsFieldInitInfo& initInfo) override;
 		virtual void SetPosition(const DsVec3d& pos);
 		virtual void SetRotation(const DsMat33d& rot);
 		virtual DsVec3d GetPosition() const;

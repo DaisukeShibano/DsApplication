@@ -24,7 +24,7 @@ namespace DsApp
 		virtual ~DsFieldPlayer();
 
 	public:
-		virtual void Initialize(const InitInfo& initInfo);
+		virtual void Initialize(const DsFieldInitInfo& initInfo);
 		virtual void Update(double dt);
 
 	private:

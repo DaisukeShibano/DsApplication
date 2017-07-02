@@ -27,6 +27,8 @@ DsFieldObj::DsFieldObj(DsSys& sys, DsPhysicsWorld& world)
 	, m_pAnimation(NULL)
 	, m_actorId()
 	, m_world(world)
+	, m_reqestIsInit(false)
+	, m_isCompleteInit(false)
 {
 	
 }
@@ -38,7 +40,7 @@ DsFieldObj::~DsFieldObj()
 }
 
 //virtual
-void DsFieldObj::Initialize(const InitInfo& initInfo)
+void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 {
 	m_name = initInfo.name;
 
@@ -153,6 +155,9 @@ void DsFieldObj::Initialize(const InitInfo& initInfo)
 	{
 		m_pAnimation->RegisterDraw();
 	}
+
+	m_reqestIsInit = true;
+	m_isCompleteInit = true;
 }
 
 //virtual 
