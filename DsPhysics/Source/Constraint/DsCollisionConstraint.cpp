@@ -380,12 +380,19 @@ void DsCollisionConstraint::_CalcConatraintForce()
 	}
 	
 	{//–€ŽC
-		const bool isDown = (JinvMFe[2] < 0.0);//’¾‚Þ•ûŒü‚É—Í‚ª‰Á‚í‚Á‚Ä‚é
+		//z‚ªÕ“Ë•ûŒü‚ÅA‚’¼R—Í•ûŒü‚È‚Ì‚Å’ˆÓ
+
+		m_cEq.min_wplus1[0] = 0; m_cEq.min_wplus1[1] = 0;
+		m_cEq.max_wplus1[0] = 0; m_cEq.max_wplus1[1] = 0;
+
+		double JFe[3];
+		DsMathUtil::MultiVec<3, 12>(JFe, m_J, invMFe);
+		const bool isDown = (JFe[2] < 0.0);//’¾‚Þ•ûŒü‚É—Í‚ª‰Á‚í‚Á‚Ä‚é
 		if (isDown){
-			const double Fxy = (JinvMFe[0] * JinvMFe[0] + JinvMFe[1] * JinvMFe[1]);
+			const double Fxy = (JFe[0] * JFe[0] + JFe[1] * JFe[1]);
 			const double Vxy = (b[0] * b[0] + b[1] * b[1]);
 			const bool isStop = ( Vxy < (0.01));
-			const double nFs = fabs(JinvMFe[2] * m_sFric);
+			const double nFs = fabs(JFe[2] * m_sFric);
 			if (isStop || (Fxy < nFs*nFs) ){//ÃŽ~–€ŽC
 				m_cEq.isStaticByFric[0] = true;//‚’¼R—Í*–€ŽCŒW”‚æ‚è’á‚¢—Í‚µ‚©‚©‚©‚Á‚Ä‚È‚¢‚Ì‚ÅÃŽ~‚³‚¹‚é
 				m_cEq.isStaticByFric[1] = true;
@@ -398,11 +405,16 @@ void DsCollisionConstraint::_CalcConatraintForce()
 				m_cEq.isStaticByFric[1] = false;
 
 				const double VxySp = sqrt(Vxy);
-				const double nFk = fabs(JinvMFe[2] * m_kFric);
+				const double nFk = fabs(JFe[2] * m_kFric);
 				DsVec2d fricF = -DsVec2d(b[0] / VxySp, b[1] / VxySp);//‘¬“x‚Æ”½‘Î•ûŒü‚É‚©‚¯‚é
 
 				//Œ»Ý‚Ì‘¬“x‚ð’´‚¦‚È‚¢‚æ‚¤‚É
-				const double clampF = min(nFk * m_dt, VxySp) / m_dt;
+				double m = fabs(JFe[2] / JinvMFe[2]);
+				double clampF = min(nFk, (VxySp/m_dt)*m);
+				//•½–Ê‚Ì—Í‚ð’´‚¦‚È‚¢‚æ‚¤‚É
+				clampF = min(clampF, sqrt(Fxy));
+				//Å‘å’l//‚ ‚Î‚ê‚é‚Ì‚Å–³Œø‰»
+				//clampF = min(clampF, 10);//‘½•ªd—Ê·‚ª‚ ‚é‚Æ”ò‚Ô
 				fricF = fricF*clampF;
 
 				m_cEq.fricLambda[0] = fricF.x;
@@ -420,8 +432,8 @@ void DsCollisionConstraint::_CalcConatraintForce()
 
 	//memcpy(m_cEq.A, m_JinvMJt, sizeof(double) * 9);//ƒZƒbƒgƒAƒbƒvˆÈ~•Ï‚í‚ç‚È‚¢‚Ì‚ÅB
 	memcpy(m_cEq.b, b, sizeof(double) * 3);
-	m_cEq.min_wplus1[0] = 0; m_cEq.min_wplus1[1] = 0; m_cEq.min_wplus1[2] = 0;
-	m_cEq.max_wplus1[0] = 0; m_cEq.max_wplus1[1] = 0; m_cEq.max_wplus1[2] = requestVel;
+	m_cEq.min_wplus1[2] = 0;
+	m_cEq.max_wplus1[2] = requestVel;
 	m_cEq.lambda[0] = 0; m_cEq.lambda[1] = 0; m_cEq.lambda[2] = 0;
 
 }
@@ -549,7 +561,8 @@ void DsCollisionConstraintSolver::Solve(DsCollisionConstraint& c, const int iter
 			//‚Ps‚ ‚½‚è3*3‚ ‚é‚Ì‚Å‚»‚ê‚ð‰ð‚¢‚Ä‚¢‚­BA‚Ì’†‚Ìsƒ‹[ƒv
 			for (int row = 0; row < 3; ++row){
 				//ŒvŽZ‚·‚éS‘©‚ÌŽ²‚ð”»’è‚·‚éB2(z)‚ÍÕ“Ë•ûŒü‚È‚Ì‚Åâ‘ÎB1,2‚ÍÃŽ~–€ŽC‚ðã‰ñ‚Á‚½ŠO—Í‚ª‰Á‚í‚Á‚½‚©‚ÅŒvŽZ‚Ì—L–³Œˆ‚ß‚é
-				if ((row == 2) || (eq.isStaticByFric[row])){
+				if ((row == 2) || (eq.isStaticByFric[row]))
+				{
 					//Õ“Ë—Í
 					if (0.0000001 < fabs(eq.A[row][row])){
 						double forward = 0;//XVÏ‚ÝK+1

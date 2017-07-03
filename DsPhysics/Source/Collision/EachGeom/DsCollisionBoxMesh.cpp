@@ -706,6 +706,10 @@ DsCollisionResult& DsCollisionBoxMesh::_ColideFinal()
 		}
 	}
 	
+	//for (int i = 0; i < m_info.GetColNum(); ++i) {
+	//	DsDbgSys::GetIns().RefDrawCom().SetColor(DsVec3d(1, 0, 0)).DrawSphere(m_info.m_colPos[i], 0.05);
+	//}
+
 	return m_info;
 }
 

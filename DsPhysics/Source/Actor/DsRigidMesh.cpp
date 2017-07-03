@@ -131,17 +131,16 @@ void DsRigidMesh::Create(const DsAnimModel& animModel)
 			const DsVec3d maxLength = _GetMaxVector(m_geomInfo.pVertex, m_geomInfo.vn);
 			const double mass = density*maxLength.x*maxLength.y*maxLength.z;
 			const DsVec3d bias = DsVec3d(1.0, 1.0, 1.0) + m_biasInertia;
-			const double M = m_option.isStatic ? DsMathUtil::DS_INFINITY_D : mass;
-			const double Ixx = M / 3.0 * (maxLength.y*maxLength.y + maxLength.z*maxLength.z) * bias.x;
-			const double Iyy = M / 3.0 * (maxLength.x*maxLength.x + maxLength.z*maxLength.z) * bias.y;
-			const double Izz = M / 3.0 * (maxLength.x*maxLength.x + maxLength.y*maxLength.y) * bias.z;
+			const double M = m_option.isStatic ? DsMathUtil::DS_MAX_MASS : mass;
+			const double Ixx = min(M / 3.0 * (maxLength.y*maxLength.y + maxLength.z*maxLength.z) * bias.x, DsMathUtil::DS_MAX_MASS);
+			const double Iyy = min(M / 3.0 * (maxLength.x*maxLength.x + maxLength.z*maxLength.z) * bias.y, DsMathUtil::DS_MAX_MASS);
+			const double Izz = min(M / 3.0 * (maxLength.x*maxLength.x + maxLength.y*maxLength.y) * bias.z, DsMathUtil::DS_MAX_MASS);
 			
-			const double maxMass = 1000;
 			pi.mass.inertia = DsMat33d::Identity();
-			pi.mass.inertia[0] = min(Ixx, maxMass);
-			pi.mass.inertia[4] = min(Iyy, maxMass);
-			pi.mass.inertia[8] = min(Izz, maxMass);
-			pi.mass.mass = min(M, maxMass);
+			pi.mass.inertia[0] = min(Ixx, DsMathUtil::DS_MAX_MASS);
+			pi.mass.inertia[4] = min(Iyy, DsMathUtil::DS_MAX_MASS);
+			pi.mass.inertia[8] = min(Izz, DsMathUtil::DS_MAX_MASS);
+			pi.mass.mass = min(M, DsMathUtil::DS_MAX_MASS);
 		}
 
 		//èâä˙épê®
