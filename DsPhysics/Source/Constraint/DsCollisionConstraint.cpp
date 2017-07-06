@@ -363,7 +363,7 @@ void DsCollisionConstraint::_CalcConatraintForce()
 
 	double requestVel = 0;	
 	const double vel = fabs(m_w[2]);
-	requestVel = ((20.0 * m_error) - (0.05*m_w[2]));//めり込み解消速度
+	requestVel = ((20.0 * m_error) - (0.05*m_w[2]));//めり込み解消速度。バネダンパ
 	if (requestVel < 0.0){
 		requestVel = 0.0;
 	}
@@ -400,25 +400,31 @@ void DsCollisionConstraint::_CalcConatraintForce()
 				m_cEq.min_wplus1[0] = 0; m_cEq.min_wplus1[1] = 0;
 				m_cEq.max_wplus1[0] = 0; m_cEq.max_wplus1[1] = 0;
 			}
-			else if ( DBL_EPSILON < Vxy){//動摩擦
+			else if ( ( DBL_EPSILON < Vxy)){//動摩擦
+				//吹っ飛ぶので無効化
+				//m_cEq.isStaticByFric[0] = false;
+				//m_cEq.isStaticByFric[1] = false;
+				//
+				//const double VxySp = sqrt(Vxy);
+				//const double nFk = fabs(JFe[2] * m_kFric);
+				//DsVec2d fricF = -DsVec2d(b[0] / VxySp, b[1] / VxySp);//速度と反対方向にかける
+				//
+				////現在の速度を超えないように
+				//double m = fabs(JFe[2] / JinvMFe[2]);
+				//double clampF = min(nFk, (VxySp/m_dt)*m);
+				////平面の力を超えないように
+				//clampF = min(clampF, sqrt(Fxy));
+				////最大値//あばれるので無効化
+				////clampF = min(clampF, 10);//多分重量差があると飛ぶ
+				//fricF = fricF*clampF;
+				//
+				//m_cEq.fricLambda[0] = fricF.x;
+				//m_cEq.fricLambda[1] = fricF.y;
+
 				m_cEq.isStaticByFric[0] = false;
 				m_cEq.isStaticByFric[1] = false;
-
-				const double VxySp = sqrt(Vxy);
-				const double nFk = fabs(JFe[2] * m_kFric);
-				DsVec2d fricF = -DsVec2d(b[0] / VxySp, b[1] / VxySp);//速度と反対方向にかける
-
-				//現在の速度を超えないように
-				double m = fabs(JFe[2] / JinvMFe[2]);
-				double clampF = min(nFk, (VxySp/m_dt)*m);
-				//平面の力を超えないように
-				clampF = min(clampF, sqrt(Fxy));
-				//最大値//あばれるので無効化
-				//clampF = min(clampF, 10);//多分重量差があると飛ぶ
-				fricF = fricF*clampF;
-
-				m_cEq.fricLambda[0] = fricF.x;
-				m_cEq.fricLambda[1] = fricF.y;
+				m_cEq.fricLambda[0] = 0;
+				m_cEq.fricLambda[1] = 0;
 			}
 		}
 		else{
@@ -454,7 +460,12 @@ void DsCollisionConstraint::ApplyConstraintForce()
 	{
 		double Fc[12];
 		//DsMathUtil::MultiVec<12, 3>(Fc, m_Jt, RefEquation().lambda);
-		const double* lambda = RefEquation().lambda;
+		const double lambda[3] = {
+			RefEquation().lambda[0],
+			RefEquation().lambda[1],
+			RefEquation().lambda[2],
+		};
+
 #ifndef DS_SYS_USE_SIMD_
 		Fc[0] = m_Jt[0][0] * lambda[0] + m_Jt[0][1] * lambda[1] + m_Jt[0][2] * lambda[2];
 		Fc[1] = m_Jt[1][0] * lambda[0] + m_Jt[1][1] * lambda[1] + m_Jt[1][2] * lambda[2];

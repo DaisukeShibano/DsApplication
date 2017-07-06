@@ -7,6 +7,10 @@
 
 using namespace DsLib;
 
+#ifndef _DS_PHYSICS_DEFINE_H_
+#include "DsPhysicsDefine.h"
+#endif
+
 #ifndef __DS_FACE__
 #include "DsFace.h"
 #endif

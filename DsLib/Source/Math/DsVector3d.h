@@ -19,13 +19,13 @@ namespace DsLib
 			__m256d m256d;
 			//__m256 m256;
 #endif
-			double v[4];
+			double v[3];
 			struct
 			{
 				double x;
 				double y;
 				double z;
-				double ___w___;
+				//double ___w___;
 			};
 		};
 
@@ -33,7 +33,7 @@ namespace DsLib
 			: x(setX)
 			, y(setY)
 			, z(setZ)
-			, ___w___(0)
+			//, ___w___(0)
 		{}
 		DsVec3d(){}
 

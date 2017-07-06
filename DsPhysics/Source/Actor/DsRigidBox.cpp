@@ -88,7 +88,7 @@ void DsRigidBox::Create(const DsVec3d* pv, const double mass )
 
 		//mass
 		{
-			const double M = m_option.isStatic ? DsMathUtil::DS_INFINITY_D : mass;
+			const double M = m_option.isStatic ? DS_MAX_MASS : mass;
 			const DsVec3d maxLength = _GetMaxVector(pv, VERTEX_NUM);
 			const DsVec3d bias = DsVec3d(1.0, 1.0, 1.0) + m_biasInertia;
 			const double Ixx = M / 3.0 * (maxLength.y*maxLength.y + maxLength.z*maxLength.z) * bias.x;

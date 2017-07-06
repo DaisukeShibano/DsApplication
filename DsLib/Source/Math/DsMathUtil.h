@@ -19,7 +19,6 @@ namespace DsLib
 	namespace DsMathUtil
 	{
 		extern double DS_INFINITY_D;
-		extern double DS_MAX_MASS;
 
 		template<typename TYPE>
 		DsQuaternion<TYPE> ToQuaternion(const DsMat33d& mat)

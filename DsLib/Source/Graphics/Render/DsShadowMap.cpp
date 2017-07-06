@@ -60,7 +60,7 @@ namespace
 
 		m_fDepthSize[0] = static_cast<GLsizei>(s_shadowSize);
 		m_fDepthSize[1] = static_cast<GLsizei>(s_shadowSize);
-	
+
 		// デプス値テクスチャ
 		//glActiveTexture(GL_TEXTURE7);
 		glGenTextures(1, &m_iTexDepth);

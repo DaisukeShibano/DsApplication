@@ -31,7 +31,7 @@ void DsRigidSphere::Create(const double r, const double mass )
 
 		//mass
 		{
-			const double M = m_option.isStatic ? DsMathUtil::DS_INFINITY_D : mass;
+			const double M = m_option.isStatic ? DS_MAX_MASS : mass;
 			const DsVec3d bias = DsVec3d(1.0, 1.0, 1.0) + m_biasInertia;
 			const double Ixx = M / 3.0 * (r*r + r*r) * bias.x;
 			const double Iyy = M / 3.0 * (r*r + r*r) * bias.y;

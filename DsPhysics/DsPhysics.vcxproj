@@ -228,6 +228,7 @@
     <ClInclude Include="Source\DsLine.h" />
     <ClInclude Include="Source\DsMass.h" />
     <ClInclude Include="Source\DsPhysics.h" />
+    <ClInclude Include="Source\DsPhysicsDefine.h" />
     <ClInclude Include="Source\DsPhysicsManager.h" />
     <ClInclude Include="Source\DsPhysicsPch.h" />
     <ClInclude Include="Source\DsPhysicsWorld.h" />
@@ -277,6 +278,7 @@
     <ClCompile Include="Source\Doll\DsDoll.cpp" />
     <ClCompile Include="Source\Doll\DsDollJoint.cpp" />
     <ClCompile Include="Source\Doll\DsDollJointChain.cpp" />
+    <ClCompile Include="Source\DsPhysicsDefine.cpp" />
     <ClCompile Include="Source\DsPhysicsManager.cpp" />
     <ClCompile Include="Source\DsPhysicsPch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -26,7 +26,7 @@ void DsRigidCapsule::Create(const double r, const double halfLen, const double m
 
 		//mass
 		{
-			const double M = m_option.isStatic ? DsMathUtil::DS_INFINITY_D : mass;
+			const double M = m_option.isStatic ? DS_MAX_MASS : mass;
 			const double h = halfLen*2.0;
 			const double m1 = 3.0*h/(4.0*r+3.0*h)*(1.0/12.0)*M;
 			const double m2 = 4.0*r / (4.0*r + 3.0*h)*(1.0 / 20.0)*M;

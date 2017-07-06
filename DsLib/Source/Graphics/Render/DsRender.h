@@ -37,15 +37,15 @@ namespace DsLib
 		void RendPolygon() const;
 
 		//í èÌï`âÊ
-		void Render( const float dt );
+		void Render( const double dt );
 
 	public:
 		const DsCamera& RefCam() const { return m_cam; }
 		DsCamera& RefCam() { return m_cam; }
 		DsDrawCommand& RefDrawCom() { return *m_pDrawCom; }
 		const DsLight& RefLight() const { return m_light; }
-		float GetWidth() const;
-		float GetHeight() const;
+		double GetWidth() const;
+		double GetHeight() const;
 		DsAnimModelRender& RefAnimRender() { return m_animRender; }
 
 	public:

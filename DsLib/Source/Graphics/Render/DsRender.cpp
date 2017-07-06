@@ -95,27 +95,27 @@ void DsRender::RendPolygon() const
 	m_pDrawCom->Exe();
 }
 
-void DsRender::Render( const float dt )
+void DsRender::Render( const double dt )
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 
-	const DsVec3f camPos = m_cam.GetPos();
-	const DsVec3f camLook = camPos + m_cam.GetRot().GetAxisZ();
-	const DsVec3f camUp = m_cam.GetUp();
+	const DsVec3d camPos = m_cam.GetPos();
+	const DsVec3d camLook = camPos + m_cam.GetRot().GetAxisZ();
+	const DsVec3d camUp = m_cam.GetUp();
 	gluLookAt(camPos.x, camPos.y, camPos.z,
 		camLook.x, camLook.y, camLook.z,
 		camUp.x, camUp.y, camUp.z);
 
+	//‰e•`‰æ
+	m_pShadow->DrawShadow();
+
 	//‰_•`‰æ
 	GetRenderTool().RefCloud().Update(dt);
 	
-	//‰e•`‰æ
-	m_pShadow->DrawShadow();
-	
 	//ƒV[ƒ“•`‰æ
 	m_pShader->EnableShader(SHADER_TYPE::DEFAULT);
-
+	
 	_RenderModel();
 	//ŠO•”‚ÅŽg‚¤—p‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒO‰æ‘œ‚Ì•Û‘¶
 	for (DsRenderCamCaptureImage* pImage : m_renderImages) {
@@ -133,18 +133,18 @@ void DsRender::Render( const float dt )
 void DsRender::Update( const double dt )
 {
 	DsLightMan::GetIns().Update();
-	Render(static_cast<float>(dt));
+	Render(dt);
 	m_pDrawCom->Clear();
 }
 
-float DsRender::GetWidth() const
+double DsRender::GetWidth() const
 {
-	return static_cast<float>(m_sys.RefWindow().GetCurrentWindowW());
+	return static_cast<double>(m_sys.RefWindow().GetCurrentWindowW());
 }
 
-float DsRender::GetHeight() const
+double DsRender::GetHeight() const
 {
-	return static_cast<float>(m_sys.RefWindow().GetCurrentWindowH());
+	return static_cast<double>(m_sys.RefWindow().GetCurrentWindowH());
 }
 
 void DsRender::SetEnableTexture(bool isEnable)
