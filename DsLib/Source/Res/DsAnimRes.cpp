@@ -466,6 +466,7 @@ namespace
 	{
 		OutputRes& res= *(new OutputRes());
 
+		//一気にがつっとメモリに読んできて、そこから構造体に当てはめていくようにしたい。余裕があれば
 		std::ifstream  fs(path, std::ios::out | std::ios::binary);
 		if (!fs)
 		{

@@ -22,7 +22,7 @@ public:
 	virtual void BeforeWindowUpdate(DsMainLoopArgs& args) override;
 
 private:
-	DsPopulationCreator* m_pCreator;
+	DsFieldObjectCreator* m_pCreator;
 	DsResource m_resource;
 	DsHinge2Joint* m_joint;
 	DsHinge2Joint* m_joint2;
@@ -116,7 +116,7 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 			}
 
 			const char* dataPath = "C:\\work\\data\\build\\map\\testmap.dmap";
-			m_pCreator = new DsPopulationCreator(args.sys);
+			m_pCreator = new DsFieldObjectCreator(args.sys);
 			m_pCreator->Create(dataPath, m_resource, *pWorld);
 		}
 	}

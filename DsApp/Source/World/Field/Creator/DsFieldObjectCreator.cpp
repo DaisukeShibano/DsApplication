@@ -1,6 +1,6 @@
 #include "DsAppPch.h"
-#ifndef _DS_POPULATION_CREATOR_H_
-#include "World/Population/Creator/DsPopulationCreator.h"
+#ifndef _DS_FIELD_OBJECT_CREATOR_H_
+#include "World/Field/Creator/DsFieldObjectCreator.h"
 #endif
 
 #ifndef _DS_RESOURCE_
@@ -24,7 +24,7 @@ using namespace DsPhysics;
 using namespace DsApp;
 
 
-DsPopulationCreator::DsPopulationCreator(DsSys& sys)
+DsFieldObjectCreator::DsFieldObjectCreator(DsSys& sys)
 	: m_sys(sys)
 	, m_hits()
 	, m_objs()
@@ -36,12 +36,12 @@ DsPopulationCreator::DsPopulationCreator(DsSys& sys)
 
 }
 
-DsPopulationCreator::~DsPopulationCreator()
+DsFieldObjectCreator::~DsFieldObjectCreator()
 {
 	Destoroy();
 }
 
-void DsPopulationCreator::Create(const char* resPath, DsResource& res, DsPhysicsWorld& world)
+void DsFieldObjectCreator::Create(const char* resPath, DsResource& res, DsPhysicsWorld& world)
 {
 	const DsMapRes* pMapRes = res.RegisterMapRes(resPath);
 	if (NULL == pMapRes) return;
@@ -108,12 +108,12 @@ void DsPopulationCreator::Create(const char* resPath, DsResource& res, DsPhysics
 		}
 		else
 		{
-			DS_LOG("DsPopulationCreator‚ÅAnimResorHitRes‚ª‚È‚©‚Á‚½ %s %s", mapInfo.pAnimPath, mapInfo.pHitPath);
+			DS_LOG("DsFieldObjectCreator‚ÅAnimResorHitRes‚ª‚È‚©‚Á‚½ %s %s", mapInfo.pAnimPath, mapInfo.pHitPath);
 		}
 	}
 }
 
-void DsPopulationCreator::Update(double dt)
+void DsFieldObjectCreator::Update(double dt)
 {
 	bool isHitOk = true;
 	for (_InitInfo& iniInfo : m_requestHits) {
@@ -158,7 +158,7 @@ void DsPopulationCreator::Update(double dt)
 
 }
 
-void DsPopulationCreator::Destoroy()
+void DsFieldObjectCreator::Destoroy()
 {
 	for each(DsFieldHit* pHit in m_hits)
 	{

@@ -10,7 +10,7 @@
 #include "Evolve/Gene/DsDecisionTreeOperator.h"
 #endif
 #ifndef _DS_FIELD_CHR_H_
-#include "World/Population/DsFieldChr.h"
+#include "World/Field/DsFieldChr.h"
 #endif
 #ifndef _DS_MAP_RES_H_
 #include "Res/DsMapRes.h"

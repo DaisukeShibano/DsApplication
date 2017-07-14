@@ -15,20 +15,20 @@
 #include "DsPhysics.h"
 #endif
 
-#ifndef _DS_POPULATION_H_
-#include "World/Population/DsFieldObj.h"
+#ifndef _DS_FIELD_OBJ_H_
+#include "World/Field/DsFieldObj.h"
 #endif
-#ifndef _DS_POPULATION_H_
-#include "World/Population/DsFieldHit.h"
+#ifndef _DS_FIELD_HIT_H_
+#include "World/Field/DsFieldHit.h"
 #endif
 #ifndef _DS_FIELD_CHR_H_
-#include "World/Population/DsFieldChr.h"
+#include "World/Field/DsFieldChr.h"
 #endif
 #ifndef _DS_FIELD_PLAYER_H_
-#include "World/Population/DsFieldPlayer.h"
+#include "World/Field/DsFieldPlayer.h"
 #endif
-#ifndef _DS_POPULATION_CREATOR_H_
-#include "World/Population/Creator/DsPopulationCreator.h"
+#ifndef _DS_FIELD_OBJECT_CREATOR_H_
+#include "World/Field/Creator/DsFieldObjectCreator.h"
 #endif
 #ifndef __DS_APP_COLLISION_CALLBACK__
 #include "World/Physics/DsAppCollisionCallback.h"

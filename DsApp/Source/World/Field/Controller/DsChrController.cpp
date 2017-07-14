@@ -1,6 +1,6 @@
 #include "DsAppPch.h"
 #ifndef _DS_CHR_CONTROLLER_H_
-#include "World/Population/Controller/DsChrController.h"
+#include "World/Field/Controller/DsChrController.h"
 #endif
 
 using namespace DsApp;

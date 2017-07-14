@@ -1,6 +1,6 @@
 #include "DsAppPch.h"
 #ifndef _DS_GP_CONTROLLER_H_
-#include "World/Population/Controller/DsGpController.h"
+#include "World/Field/Controller/DsGpController.h"
 #endif
 
 #ifndef _DS_DECISION_TREE_NODE_H_

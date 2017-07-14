@@ -1,6 +1,6 @@
 #include "DsAppPch.h"
 #ifndef _DS_FIELD_HIT_H_
-#include "World/Population/DsFieldHit.h"
+#include "World/Field/DsFieldHit.h"
 #endif
 
 #ifndef _DS_ANIM_RES_

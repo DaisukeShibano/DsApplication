@@ -2,7 +2,7 @@
 #define _DS_FIELD_PLAYER_H_
 
 #ifndef _DS_FIELD_CHR_H_
-#include "World/Population/DsFieldChr.h"
+#include "World/Field/DsFieldChr.h"
 #endif
 
 namespace DsPhysics

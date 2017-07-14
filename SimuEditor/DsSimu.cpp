@@ -305,7 +305,7 @@ DsFieldObj* DsSimu::RegisterObj(const char* drawModelPath, const char* hitModelP
 		break;
 	}
 	
-	DsFieldObj::InitInfo info;
+	DsFieldInitInfo info;
 	info.name = drawModelPath;
 	info.pos = DsVec3d(px, py, pz);
 	info.rot = DsMat33d::RotateZ(DegToRad(rz))*DsMat33d::RotateY(DegToRad(ry))*DsMat33d::RotateX(DegToRad(rx));

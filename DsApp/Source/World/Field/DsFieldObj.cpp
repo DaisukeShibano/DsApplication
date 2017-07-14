@@ -1,6 +1,6 @@
 #include "DsAppPch.h"
 #ifndef _DS_FIELD_OBJ_H_
-#include "World/Population/DsFieldObj.h"
+#include "World/Field/DsFieldObj.h"
 #endif
 #ifndef _DS_ANIM_RES_
 #include "Res/DsAnimRes.h"

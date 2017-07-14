@@ -2,7 +2,7 @@
 #define _DS_FIELD_OBJ_H_
 
 #ifndef _DS_FIELD_INIT_INFO_H_
-#include "World/Population/DsFieldInitInfo.h"
+#include "World/Field/DsFieldInitInfo.h"
 #endif
 
 namespace DsLib

@@ -1,8 +1,8 @@
-#ifndef _DS_POPULATION_CREATOR_H_
-#define _DS_POPULATION_CREATOR_H_
+#ifndef _DS_FIELD_OBJECT_CREATOR_H_
+#define _DS_FIELD_OBJECT_CREATOR_H_
 
 #ifndef _DS_FIELD_INIT_INFO_H_
-#include "World/Population/DsFieldInitInfo.h"
+#include "World/Field/DsFieldInitInfo.h"
 #endif
 
 namespace DsLib
@@ -24,7 +24,7 @@ namespace DsApp
 
 namespace DsApp
 {
-	class DsPopulationCreator
+	class DsFieldObjectCreator
 	{
 	private:
 		struct _InitInfo
@@ -34,8 +34,8 @@ namespace DsApp
 		};
 
 	public:
-		DsPopulationCreator(DsLib::DsSys& sys);
-		virtual ~DsPopulationCreator();
+		DsFieldObjectCreator(DsLib::DsSys& sys);
+		virtual ~DsFieldObjectCreator();
 
 	public:
 		void Create(const char* resPath, DsLib::DsResource& res, DsPhysics::DsPhysicsWorld& world);
