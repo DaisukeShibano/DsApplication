@@ -127,7 +127,7 @@ namespace
 		//中央クリックでドラッグで視点移動
 		if (mouse.GetClickState() == DsMouseClickState::DS_CENTER_CLICK)
 		{
-			const float moveVel = 100.0f;
+			const float moveVel = -600.0f;
 			const DsVec3d x = cam.GetRot().GetAxisX() * drag3.x * moveVel;
 			const DsVec3d y = cam.GetRot().GetAxisY() * drag3.y * moveVel;
 			const DsVec3d pos = cam.GetPos() + x + y;
@@ -149,7 +149,7 @@ namespace
 		//右クリックで回転
 		if (mouse.GetClickState() == DsMouseClickState::DS_RIGHT_CLICK)
 		{
-			const double moveVel = 10.0f;
+			const double moveVel = 30.0f;
 			DsMat33d mat = cam.GetRot();
 			const DsVec3d rotAxisX = mat.GetAxisX();
 			const DsVec3d rotAxisY = mat.GetAxisY();
@@ -239,15 +239,16 @@ DsSimu::DsSimu()
 
 DsSimu::~DsSimu()
 {
-	delete m_pSys;
-	m_pSys = NULL;
-	delete m_pLoop;
-	m_pLoop = NULL;
 	for each(DsFieldObj* obj in m_fieldObjs)
 	{
 		delete obj;
 	}
 	m_fieldObjs.clear();
+	delete m_pLoop;
+	m_pLoop = NULL;
+	delete m_pSys;
+	m_pSys = NULL;
+
 }
 
 

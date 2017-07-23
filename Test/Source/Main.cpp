@@ -82,7 +82,7 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 				m_joint2->AttachJoint(act2, act3, act2.GetActor()->GetPosition() + DsVec3d(-0.5, 0, 0), DsVec3d(0, 0, 1), DsVec3d(1, 0, 0));
 			}
 
-			if(1){//衝突テスト
+			if(0){//衝突テスト
 				DsRigidBox::GetVertex(vertex, 1.5, 0.5, 1.5);
 				{
 					DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, "箱１");

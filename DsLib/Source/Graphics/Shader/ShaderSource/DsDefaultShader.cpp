@@ -95,8 +95,13 @@ namespace
 		*/
 		float ChebyshevUpperBound(vec4 shadow_coord, vec4 depth_tex_coord)
 		{
-			float distance = shadow_coord.z;
+			float distance = shadow_coord.z;//これが描画座標
 			//distance = distance * 0.5 + 0.5; This is done via a bias matrix in main.c
+			//*0.5+0.5のバイアス行列かけてあるので0-1になってる
+
+			//distanceが描画しようとするピクセルの光源視点からの深度
+			//moments.xがシャドウマップの深度
+			//distanceの方が小さい(=光源に距離が近い)場合は日向 
 
 
 			// We retrive the two moments previously stored (depth and depth*depth)
@@ -113,7 +118,7 @@ namespace
 			variance = min(max(variance, 0.000002), 1.0);
 
 			float d = distance - moments.x;//日向と日陰の距離が近いほど１（日向）に近づく 影に遠いと日向に近づいて欲しいんだけど・・・
-			float p_max = variance / (variance + d*d);//variance(エッジ)が大きければ大きいほど１(日向)に近づく
+			float p_max = variance / (variance + d*d);//variance(エッジ)が大きければ大きいほどdの支配は少なくなる。
 
 			return p_max;//影になる確率？逆？
 		}
@@ -145,7 +150,7 @@ namespace
 			vec4 light_col = PhongShading(texColor);	// 表面反射色
 
 			// 光源座標における物体の位置
-			vec4 shadow_coord = vShadowCoord / vShadowCoord.w;
+			vec4 shadow_coord = vShadowCoord / vShadowCoord.w;//これが描画しようとしている座標
 			// 光源座標における物体の位置に相当する影テクスチャの値
 			vec4 depth_tex_coord = texture2D(depth_tex, shadow_coord.xy);
 			vec4 depth_tex_coord2 = texture2D(depth_tex2, shadow_coord.xy);//ぼかし要素が入ってる影テクスチャ

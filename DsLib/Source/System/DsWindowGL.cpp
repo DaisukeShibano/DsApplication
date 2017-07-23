@@ -83,7 +83,7 @@ void DsWindowGL::Display()
 	m_pSys->Update();
 	m_pLoop->AfterWindowUpdate();
 	SwapBuffers((HDC)m_hDC);
-	wglMakeCurrent((HDC)m_hDC, 0);
+	//wglMakeCurrent((HDC)m_hDC, 0);//このコールバックの外でglGenTextures()すると失敗するのでコメントアウト
 }
 
 void DsWindowGL::Timer(int value)
@@ -112,7 +112,7 @@ void DsWindowGL::Reshape()
 	m_windowW = w;
 	m_windowH = h;
 	m_pCam->SetAspect(static_cast<float>(w) / static_cast<float>(h));
-	wglMakeCurrent((HDC)m_hDC, 0);
+	//wglMakeCurrent((HDC)m_hDC, 0);
 }
 
 void DsWindowGL::Drag(int x, int y)
