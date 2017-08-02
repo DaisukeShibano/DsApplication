@@ -19,13 +19,13 @@
       <Filter>Library\dll</Filter>
     </None>
     <None Include="Library\dll\x64\freeglutd.dll">
-      <Filter>Library\dll\x64</Filter>
+      <Filter>Library\dll\x64p</Filter>
     </None>
     <None Include="Library\dll\x64\glew32.dll">
-      <Filter>Library\dll\x64</Filter>
+      <Filter>Library\dll\x64p</Filter>
     </None>
     <None Include="Library\dll\x64\freeglut.dll">
-      <Filter>Library\dll\x64</Filter>
+      <Filter>Library\dll\x64p</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -104,9 +104,6 @@
     <Filter Include="Library\dll">
       <UniqueIdentifier>{c4b09994-607a-452a-a407-a4467acacb97}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Library\dll\x64">
-      <UniqueIdentifier>{f0c33525-6b78-422d-8a20-7f279790dcc2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Library\Include">
       <UniqueIdentifier>{ac793626-4fa0-4b6e-bea9-5835eded4438}</UniqueIdentifier>
     </Filter>
@@ -118,6 +115,9 @@
     </Filter>
     <Filter Include="Library\Lib\x64">
       <UniqueIdentifier>{9edd5505-0aec-403a-9c9b-18fa44635d93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\dll\x64p">
+      <UniqueIdentifier>{f0c33525-6b78-422d-8a20-7f279790dcc2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
