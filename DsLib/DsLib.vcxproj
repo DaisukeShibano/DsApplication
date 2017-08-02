@@ -230,6 +230,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Source\DsUtil.cpp" />
     <ClCompile Include="Source\Error\DsError.cpp" />
     <ClCompile Include="Source\Graphics\Camera\DsCamera.cpp" />
     <ClCompile Include="Source\Graphics\Command\DsDrawCommand.cpp" />
@@ -295,6 +296,7 @@
     <ClInclude Include="Source\Config\DsConf.h" />
     <ClInclude Include="Source\DsLib.h" />
     <ClInclude Include="Source\DsPch.h" />
+    <ClInclude Include="Source\DsUtil.h" />
     <ClInclude Include="Source\Error\DsError.h" />
     <ClInclude Include="Source\Graphics\Camera\DsCamera.h" />
     <ClInclude Include="Source\Graphics\Command\DsDrawCommand.h" />

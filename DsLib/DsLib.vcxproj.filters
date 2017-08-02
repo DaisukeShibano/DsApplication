@@ -283,6 +283,9 @@
     <ClCompile Include="Source\Animation\DsKeyframeAnimSet.cpp">
       <Filter>Source\Animation</Filter>
     </ClCompile>
+    <ClCompile Include="Source\DsUtil.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsPch.h">
@@ -527,6 +530,9 @@
     </ClInclude>
     <ClInclude Include="Library\Include\gl\eglew.h">
       <Filter>Library\Include\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DsUtil.h">
+      <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -30,6 +30,9 @@
 #ifndef _DS_ERROR_H_
 #include "Error/DsError.h"
 #endif
+#ifndef _DS_UTIL_
+#include "DsUtil.h"
+#endif // !_DS_UTIL_
 #ifndef _DS_MATH_H_
 #include "Math/DsMath.h"
 #endif

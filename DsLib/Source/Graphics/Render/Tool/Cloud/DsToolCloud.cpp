@@ -67,6 +67,7 @@ namespace
 		auto pos = m_texPath.find("DsToolCloud.cpp");
 		m_texPath = m_texPath.erase(pos);
 		m_texPath.append("..\\Cloud\\Texture\\cloud.bmp");
+
 		_LoadBmp();
 		glGenTextures(1, &m_texId);
 		glBindTexture(GL_TEXTURE_2D, m_texId);
