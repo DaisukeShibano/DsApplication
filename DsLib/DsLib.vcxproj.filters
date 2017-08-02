@@ -277,6 +277,12 @@
     <ClCompile Include="Source\DsUtil.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Library\Lib\x64\dummy.cpp">
+      <Filter>Library\Lib\x64</Filter>
+    </ClCompile>
+    <ClCompile Include="Library\dll\x64\dummy.cpp">
+      <Filter>Library\dll\x64</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsPch.h">

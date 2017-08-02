@@ -197,6 +197,8 @@
     <None Include="Source\Graphics\Shader\ShaderSource\Vertex.shader" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Library\dll\x64\dummy.cpp" />
+    <ClCompile Include="Library\Lib\x64\dummy.cpp" />
     <ClCompile Include="Source\Animation\ActionRequest\DsActReq.cpp" />
     <ClCompile Include="Source\Animation\ActionRequest\DsAnimController.cpp" />
     <ClCompile Include="Source\Animation\AnimSM\DsAnimSM.cpp" />
