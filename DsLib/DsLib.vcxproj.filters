@@ -9,6 +9,15 @@
       <Filter>Source\Graphics\Shader\ShaderSource</Filter>
     </None>
     <None Include="..\..\DsApp\DsApp.vcxproj" />
+    <None Include="Library\dll\x64\freeglutd.dll">
+      <Filter>Library\dll\x64</Filter>
+    </None>
+    <None Include="Library\dll\x64\glew32.dll">
+      <Filter>Library\dll\x64</Filter>
+    </None>
+    <None Include="Library\dll\x64\freeglut.dll">
+      <Filter>Library\dll\x64</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source">
@@ -81,7 +90,25 @@
       <UniqueIdentifier>{11b3c97b-9f85-44d8-a63d-529c7e3481b6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Library">
-      <UniqueIdentifier>{5fcd568c-0c13-4aaf-99be-4cee3cbef50c}</UniqueIdentifier>
+      <UniqueIdentifier>{2d7ba736-d309-4a7f-b630-1ffadfc4a402}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\dll">
+      <UniqueIdentifier>{c1487ead-33b6-43b8-9656-2b06499c221c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Include">
+      <UniqueIdentifier>{2d0200c9-6a57-4625-bc9d-a7bc603de2f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Lib">
+      <UniqueIdentifier>{93766ab9-d486-4dfd-ab1b-be739da49d81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Include\gl">
+      <UniqueIdentifier>{6c938d4e-7aab-4b0e-bc79-a4973a545b3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\Lib\x64">
+      <UniqueIdentifier>{596c698e-ba96-4337-8868-d20c2bf7309c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\dll\x64">
+      <UniqueIdentifier>{ac0d1165-1924-40ed-b498-f1b82a166810}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -474,5 +501,49 @@
     <ClInclude Include="Source\DsUtil.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Library\Include\gl\freeglut_ext.h">
+      <Filter>Library\Include\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\Include\gl\freeglut_std.h">
+      <Filter>Library\Include\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\Include\gl\glew.h">
+      <Filter>Library\Include\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\Include\gl\glut.h">
+      <Filter>Library\Include\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\Include\gl\glxew.h">
+      <Filter>Library\Include\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\Include\gl\wglew.h">
+      <Filter>Library\Include\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\Include\gl\eglew.h">
+      <Filter>Library\Include\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="Library\Include\gl\freeglut.h">
+      <Filter>Library\Include\gl</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="Library\Lib\x64\freeglut_staticd.lib">
+      <Filter>Library\Lib\x64</Filter>
+    </Library>
+    <Library Include="Library\Lib\x64\freeglutd.lib">
+      <Filter>Library\Lib\x64</Filter>
+    </Library>
+    <Library Include="Library\Lib\x64\glew32.lib">
+      <Filter>Library\Lib\x64</Filter>
+    </Library>
+    <Library Include="Library\Lib\x64\glew32s.lib">
+      <Filter>Library\Lib\x64</Filter>
+    </Library>
+    <Library Include="Library\Lib\x64\freeglut.lib">
+      <Filter>Library\Lib\x64</Filter>
+    </Library>
+    <Library Include="Library\Lib\x64\freeglut_static.lib">
+      <Filter>Library\Lib\x64</Filter>
+    </Library>
   </ItemGroup>
 </Project>
