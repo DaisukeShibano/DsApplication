@@ -46,6 +46,9 @@ void DsAnimModelRender::RenderPolygon() const
 {
 	for each(const DsAnimModel* pModel in m_drawList)
 	{
+		//座標
+		const DsMat44d modelMat = DsMat44d::GetTranspose(pModel->GetRotation(), pModel->GetPosition());
+
 		const int fn = pModel->GetFaceNum();
 		const DsVec4d* pVertex = pModel->GetVertex();
 		const DsAnimModel::Face* pFace = pModel->GetFace();
@@ -54,6 +57,9 @@ void DsAnimModelRender::RenderPolygon() const
 		{
 			const DsVec3d& normal = pFace->normal;
 			glNormal3f(static_cast<float>(normal.x), static_cast<float>(normal.y), static_cast<float>(normal.z));
+
+			glPushMatrix();
+			glMultMatrixd(modelMat.mat);
 			glBegin(GL_POLYGON);
 			const int* pIndex = pFace->pIndex;
 			const int vn = pFace->vn;
@@ -62,6 +68,7 @@ void DsAnimModelRender::RenderPolygon() const
 				glVertex3dv(pVertex[(*pIndex)].v);
 			}
 			glEnd();
+			glPopMatrix();
 		}
 	}
 }
@@ -70,6 +77,9 @@ void DsAnimModelRender::RenderNonMaterial() const
 {
 	for each(const DsAnimModel* pModel in m_drawList)
 	{
+		//座標
+		const DsMat44d modelMat = DsMat44d::GetTranspose(pModel->GetRotation(), pModel->GetPosition());
+
 		bool isUseTexture = false;
 		{
 			const int mn = pModel->GetMaterialNum();
@@ -110,6 +120,8 @@ void DsAnimModelRender::RenderNonMaterial() const
 				{
 					glNormal3dv(pFace->normal.v);
 				}
+				glPushMatrix();
+				glMultMatrixd(modelMat.mat);
 				glBegin(GL_POLYGON);
 				const int vn = pFace->vn;
 				const int* pIndex = pFace->pIndex;
@@ -124,6 +136,7 @@ void DsAnimModelRender::RenderNonMaterial() const
 					glVertex3dv(pVertex[vIndex].v);
 				}
 				glEnd();
+				glPopMatrix();
 			}
 		}
 	}
@@ -137,6 +150,9 @@ void DsAnimModelRender::Render() const
 	
 	for each(const DsAnimModel* pModel in m_drawList) 
 	{
+		//座標
+		const DsMat44d modelMat = DsMat44d::GetTranspose(pModel->GetRotation(), pModel->GetPosition());
+
 		//頂点法線
 		const bool isUseVertexNormal = pModel->IsCreateVertexNormal();
 		const DsVec3f* pVertexNormals = pModel->GetVertexNormals();
@@ -177,6 +193,9 @@ void DsAnimModelRender::Render() const
 					{
 						glNormal3dv(pFace->normal.v);
 					}
+
+					glPushMatrix();
+					glMultMatrixd(modelMat.mat);
 					glBegin(GL_POLYGON);
 					const int vn = pFace->vn;
 					for (int vi = 0; vi < vn; ++vi)
@@ -194,6 +213,7 @@ void DsAnimModelRender::Render() const
 						++uvIdx;
 					}
 					glEnd();
+					glPopMatrix();
 				}
 
 				glBindTexture(GL_TEXTURE_2D, 0);

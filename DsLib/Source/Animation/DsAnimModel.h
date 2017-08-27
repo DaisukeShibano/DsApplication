@@ -94,6 +94,12 @@ namespace DsLib
 		void UpdateNormal();
 		const DsVec3f* GetVertexNormals() const { return m_pVertexNormals; }
 
+	public:
+		void SetPosition(const DsVec3d& pos) { m_pos = pos; }
+		DsVec3d GetPosition() const { return m_pos; }
+		void SetRotation(const DsMat33d& rot) { m_rot = rot; }
+		DsMat33d GetRotation()const { return m_rot; }
+
 	private:
 		DsVec4d* m_pVertex;
 		int m_vn;
@@ -101,6 +107,10 @@ namespace DsLib
 		int m_fn;
 		Material* m_pMaterial;
 		int m_mn;
+
+	private:
+		DsVec3d m_pos;
+		DsMat33d m_rot;
 
 	private:
 		//１つの頂点に隣接している面のインデックス

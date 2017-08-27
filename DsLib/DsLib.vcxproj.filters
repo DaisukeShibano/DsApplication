@@ -292,6 +292,9 @@
     <ClCompile Include="Source\DsUtil.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\System\DsPath.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsPch.h">
@@ -539,6 +542,9 @@
     </ClInclude>
     <ClInclude Include="Library\Include\gl\freeglut.h">
       <Filter>Library\Include\gl</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\DsPath.h">
+      <Filter>Source\System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

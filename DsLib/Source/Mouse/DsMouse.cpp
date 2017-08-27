@@ -22,15 +22,14 @@ DsMouse::~DsMouse()
 
 void DsMouse::Update(double dt)
 {
-	m_dragMove = DsVec2i::Zero();
+	m_dragMove = m_dragPos - m_dragPrePos;
+	m_dragPrePos = m_dragPos;
 	m_wheelMove = 0;
 }
 
 void DsMouse::OnDrag(const DsVec2i& pos)
 {
-	m_dragPrePos = m_dragPos;
 	m_dragPos = pos;
-	m_dragMove = m_dragPos - m_dragPrePos;
 }
 
 void DsMouse::OnClick(DsMouseClickState button, DsMouseUpDown state, int x, int y)
@@ -39,7 +38,7 @@ void DsMouse::OnClick(DsMouseClickState button, DsMouseUpDown state, int x, int 
 	{
 		m_pos =DsVec2i(x, y);
 		m_clickState = button;
-		//次にドラッグしたときに差分が出ないように。
+		//ドラッグ位置が飛ばないよう更新
 		m_dragPos = m_pos;
 		m_dragPrePos = m_pos;
 	}

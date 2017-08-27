@@ -118,7 +118,7 @@
       <EntryPointSymbol>main</EntryPointSymbol>
       <NoEntryPoint>false</NoEntryPoint>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>..\x64\Debug;..\DsLib\Library\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\x64\Debug;..\DsLib\Library\Lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <Profile>true</Profile>
     </Link>
     <PostBuildEvent>
@@ -156,7 +156,7 @@
       <AdditionalDependencies>DsApp.lib</AdditionalDependencies>
       <EntryPointSymbol>main</EntryPointSymbol>
       <SubSystem>Windows</SubSystem>
-      <AdditionalLibraryDirectories>..\x64\Release;..\DsLib\Library\Lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\x64\Release;..\DsLib\Library\Lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
       <Command>

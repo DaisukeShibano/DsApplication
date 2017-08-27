@@ -81,17 +81,24 @@ namespace
 	void _MoveActor(DsActor& actor, double depth, DsMainLoopArgs& args)
 	{
 		const DsCamera& cam = args.sys.RefCam();
-		const DsVec2i drag2i = args.sys.RefMouse().GetDragMove();
-		DsVec3d drag3d = args.sys.RefWindow().GetNormalizeScreenCoord(DsVec2i::ToVec2(-drag2i.x, -drag2i.y));//正面を向いてると仮定して右手系になるように。
-		//カメラの目の前に移動量を持ってくる
-		drag3d = (cam.GetRot()*drag3d);
+		const DsVec2i drag2i = -args.sys.RefMouse().GetDragMove();//正面を向いてると仮定して右手系になるように。
+		
+		const double nearFaceSizeX = cam.GetNear()*tan(DegToRad(cam.GetFovy()))*2.0;//Near面のシミュレーション内座標の大きさ
+		const double nearFaceSizeY = cam.GetNear()*tan(DegToRad(cam.GetFovy()))*2.0/cam.GetAspect();
+		const double wDragX = ( static_cast<double>(drag2i.x) / static_cast<double>(args.sys.RefWindow().GetCurrentWindowW()) ) * nearFaceSizeX;//Near面でのドラッグしたシミュレーション内座標の長さ
+		const double wDragY = ( static_cast<double>(drag2i.y) / static_cast<double>(args.sys.RefWindow().GetCurrentWindowH()) ) * nearFaceSizeY;
+		const double dPersAngX = atan2(static_cast<double>(wDragX), cam.GetNear());//ドラッグしたカメラ正面からの角度
+		const double dPersAngY = atan2(static_cast<double>(wDragY), cam.GetNear());
+		const double simuDragX = (drag2i.x!=0) ? (depth * tan(dPersAngX)) : (0);//ドラッグしたシミュレーション内座標の長さ
+		const double simuDragY = (drag2i.y!=0) ? (depth * tan(dPersAngY)) : (0);
+		DsVec3d simuDrag3d = cam.GetRot()*DsVec3d(simuDragX, simuDragY, 0);
 
-		//actorのxyz軸に投影して、一番移動量の多かったものを採用
-		const double moveVel = static_cast<double>(tan(DegToRad(cam.GetFovy()))*depth);
-		const double xdot = DsVec3d::Dot(actor.GetRotation().GetAxisX(), drag3d)*moveVel;
-		const double ydot = DsVec3d::Dot(actor.GetRotation().GetAxisY(), drag3d)*moveVel;
-		const double zdot = DsVec3d::Dot(actor.GetRotation().GetAxisZ(), drag3d)*moveVel;
+		const DsVec3d moveVel = simuDrag3d;
+		const double xdot = DsVec3d::Dot(actor.GetRotation().GetAxisX(), moveVel);
+		const double ydot = DsVec3d::Dot(actor.GetRotation().GetAxisY(), moveVel);
+		const double zdot = DsVec3d::Dot(actor.GetRotation().GetAxisZ(), moveVel);
 		DsVec3d moveVec = DsVec3d::Zero();
+		//actorのxyz軸に投影して、一番移動量の多かったものを採用
 		if (fabs(xdot) > fabs(ydot))
 		{
 			if (fabs(xdot) > fabs(zdot))

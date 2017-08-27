@@ -12,6 +12,8 @@ DsAnimModel::DsAnimModel()
 	, m_fn(0)
 	, m_pMaterial(0)
 	, m_mn(0)
+	, m_pos(DsVec3d::Zero())
+	, m_rot(DsMat33d::Identity())
 	, m_pVertexNormalIdxs(NULL)
 	, m_pVertexNormals(NULL)
 {

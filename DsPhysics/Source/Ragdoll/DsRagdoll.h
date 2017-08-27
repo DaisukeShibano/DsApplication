@@ -52,10 +52,10 @@ namespace DsPhysics
 		void SetParam(const DsRagdollParts& parts);
 
 		//リジッドをboneに合わせる
-		void FixToKeyframeAnim(double dt, const std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts);
+		void FixToKeyframeAnim(double dt, const std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts, DsVec3d worldPos, DsMat33d worldRot);
 
 		//boneをリジッドに合わせる
-		void FixToPhysics(double dt, std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts);
+		void FixToPhysics(double dt, std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts, DsVec3d worldPos, DsMat33d worldRot);
 
 	private:
 		void _ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActor, const DsVec3d attachPos, const std::map<int, DsAnimRagdollParamId>& params, void* pUserData);

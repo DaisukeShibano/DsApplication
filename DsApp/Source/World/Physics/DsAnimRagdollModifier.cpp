@@ -23,22 +23,21 @@ using namespace DsApp;
 
 
 //virtual
-void DsAnimRagdollModifier::ModifyAnim(double dt, DsAnimSkeleton& skeleton, const DsKeyframeAnim& anim)
+void DsAnimRagdollModifier::ModifyAnim(double dt, DsAnimSkeleton& skeleton, const DsKeyframeAnim& anim, DsVec3d worldPos, DsMat33d worldRot)
 {
 	//キーフレームアニメでスケルトンを変更
 	UtilKeyframeAnim(dt, skeleton, anim);
-
 	
 	std::vector<DsAnimBone*>& bones = skeleton.RefBoneArray();
 	for (DsRagdollParts& parts : m_ragdoll.RefParts()) {
 		DsRagdollParam param(parts.ragdollParamId);
 		if (param.GetAnimType() == DS_RAGDOLL_PARAM_ANIM_TYPE::KEYFRAME) {
 			//スケルトンでラグドールを動かす
-			m_ragdoll.FixToKeyframeAnim(dt, bones, parts);
+			m_ragdoll.FixToKeyframeAnim(dt, bones, parts, worldPos, worldRot);
 		}
 		else {
 			//ラグドールでスケルトンを動かす
-			m_ragdoll.FixToPhysics(dt, bones, parts);
+			m_ragdoll.FixToPhysics(dt, bones, parts, worldPos, worldRot);
 		}
 	}
 

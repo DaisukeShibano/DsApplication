@@ -315,6 +315,17 @@ namespace DsLib
 			return dst;
 		}
 
+		static DsMat44<TYPE> GetTranspose(const DsMat33<TYPE>& rot, const DsVec3<TYPE>& pos)
+		{
+			const DsMat44<TYPE> dst =
+			{
+				rot.m00, rot.m10, rot.m20, 0,
+				rot.m01, rot.m11, rot.m21, 0,
+				rot.m02, rot.m12, rot.m22, 0,
+				pos.x, pos.y, pos.z, 1,
+			};
+			return dst;
+		}
 	};
 
 	inline DsMat44f ToMat44f(const DsMat44d& src)

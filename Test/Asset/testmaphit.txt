@@ -1,5 +1,0 @@
-sizeX:1
-sizeY:1
-sizeZ:1
-weight:10
-boundCoef:0.5

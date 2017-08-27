@@ -312,6 +312,18 @@ namespace DsLib
 			return dst;
 		}
 
+		static DsMat44d GetTranspose(const DsMat33d& rot, const DsVec3d& pos)
+		{
+			const DsMat44d dst =
+			{
+				rot.m00, rot.m10, rot.m20, 0,
+				rot.m01, rot.m11, rot.m21, 0,
+				rot.m02, rot.m12, rot.m22, 0,
+				pos.x, pos.y, pos.z, 1,
+			};
+			return dst;
+		}
+
 	};
 }
 

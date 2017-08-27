@@ -76,40 +76,20 @@ namespace
 //頂点データをスケルトンの姿勢に合わせる
 void DsSkinMesh::ApplySkeleton(const DsAnimSkeleton& skeleton)
 {
-	//for (int i = 0; i < S_WEI_NUM; ++i)
-	//{
-	//	s_weigth[i] = 0.0;//デバッグ用
-	//}
 	
-	const std::vector<DsAnimBone*>& roots = skeleton.RefRootBone();
-	if (roots.empty())
+	//変形する前に初期姿勢でリセット
+	const int vn = m_pModel->GetVertexNum();
+	DsVec4d* pVertex = m_pModel->GetVertex();
+	const DsVec4d* pSrcVertex = m_srcModel.GetVertex();
+	for (int vIdx = 0; vIdx < vn; ++vIdx)
 	{
-		//骨がない場合はRootが適用されないので別途処理
-		const int vn = m_pModel->GetVertexNum();
-		DsVec4d* pVertex = m_pModel->GetVertex();
-		const DsVec4d* pSrcVertex = m_srcModel.GetVertex();
-		for (int vIdx = 0; vIdx < vn; ++vIdx)
-		{
-			pVertex[vIdx] = (skeleton.GetRootRot()*pSrcVertex[vIdx]) + skeleton.GetRootPos();
-		}
+		pVertex[vIdx] = pSrcVertex[vIdx];
 	}
-	else
-	{
-		//変形する前に初期姿勢でリセット
-		const int vn = m_pModel->GetVertexNum();
-		DsVec4d* pVertex = m_pModel->GetVertex();
-		const DsVec4d* pSrcVertex = m_srcModel.GetVertex();
-		for (int vIdx = 0; vIdx < vn; ++vIdx)
-		{
-			pVertex[vIdx] = pSrcVertex[vIdx];
-		}
-	}
-
 	
 	const std::vector<DsAnimBone*>& boneArray = skeleton.RefBoneArray();
 	for each(const DsAnimBone* pBone in boneArray)
 	{
-		_Mapping(pBone, pBone->worldPose.ToMat33(), pBone->worldPose.GetPos(), m_pModel->GetVertex(), m_srcModel.GetVertex());
+		_Mapping(pBone, pBone->modelPose.ToMat33(), pBone->modelPose.GetPos(), m_pModel->GetVertex(), m_srcModel.GetVertex());
 	}
 
 	//再起版

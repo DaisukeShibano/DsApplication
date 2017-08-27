@@ -129,13 +129,13 @@ void DsRagdoll::SetParam(const DsRagdollParts& parts)
 }
 
 //リジッドをboneに合わせる
-void DsRagdoll::FixToKeyframeAnim(double dt, const std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts)
+void DsRagdoll::FixToKeyframeAnim(double dt, const std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts, DsVec3d worldPos, DsMat33d worldRot)
 {
 	const InnerPartsInfo& innerParts = m_innerParts[parts.innerPartsIdx];
-	const DsMat44d mat = bones[parts.skeletonBoneIdx]->worldPose;
-	const DsMat33d rot = mat.ToMat33();
+	const DsMat44d mat = bones[parts.skeletonBoneIdx]->modelPose;
+	const DsMat33d rot = worldRot * mat.ToMat33();
 	const DsVec3d offset = rot*innerParts.offset;
-	const DsVec3d pos = mat.GetPos() + offset;
+	const DsVec3d pos = worldPos + mat.GetPos() + offset;
 
 	//DsDbgSys::GetIns().RefDrawCom().DrawSphere(pos, 0.1);
 	//DsDbgSys::GetIns().RefDrawCom().DrawAxis(mat);
@@ -147,17 +147,17 @@ void DsRagdoll::FixToKeyframeAnim(double dt, const std::vector<DsAnimBone*>& bon
 }
 
 //boneをリジッドに合わせる
-void DsRagdoll::FixToPhysics(double dt, std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts)
+void DsRagdoll::FixToPhysics(double dt, std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts, DsVec3d worldPos, DsMat33d worldRot)
 {
 	const InnerPartsInfo& innerParts = m_innerParts[parts.innerPartsIdx];
 	innerParts.pActor->RefOption().isStatic = false;
 	const DsActor* pActor = innerParts.pActor;
-	const DsMat33d rot = pActor->GetRotation();
+	const DsMat33d rot = worldRot.ToTransposition() * pActor->GetRotation();
 	const DsVec3d offset = rot*innerParts.offset;
-	const DsVec3d pos = pActor->GetPosition() - offset;
+	const DsVec3d pos = pActor->GetPosition() - offset - worldPos;
 
 	DsAnimBone* oBone = bones[parts.skeletonBoneIdx];
-	oBone->worldPose = DsMat44d::Get(rot, pos);
+	oBone->modelPose = DsMat44d::Get(rot, pos);
 
 	//DsDbgSys::GetIns().RefDrawCom().DrawSphere(pos, 0.1);
 	//DsDbgSys::GetIns().RefDrawCom().DrawAxis(DsMat44d::Get(rot, pos));

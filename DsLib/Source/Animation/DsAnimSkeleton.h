@@ -10,7 +10,7 @@ namespace DsLib
 			, child()
 			, name()
 			, localPose({ 0 })
-			, worldPose({ 0 })
+			, modelPose({ 0 })
 			, initWorldPose({ 0 })
 			, initParentToChildPose({ 0 })
 			, arrayIdx(-1)
@@ -33,7 +33,7 @@ namespace DsLib
 		std::vector<DsAnimBone*> child;
 		std::string name;
 		DsMat44d localPose;
-		DsMat44d worldPose;
+		DsMat44d modelPose;
 		DsMat44d initParentToChildPose;//êeÅ®é©ï™Ç÷ÇÃïœä∑çsóÒ
 		DsMat44d initWorldPose;
 		int arrayIdx;
@@ -51,18 +51,14 @@ namespace DsLib
 		virtual ~DsAnimSkeleton();
 
 	public:
-		void UpdateWorldPose();
+		void UpdatePose();
 
 	public:
 		std::vector<DsAnimBone*>& RefRootBone() { return  m_pRootBone; }
 		const std::vector<DsAnimBone*>& RefRootBone() const{ return  m_pRootBone; }
 		std::vector<DsAnimBone*>& RefBoneArray() { return  m_boneArray; }
 		const std::vector<DsAnimBone*>& RefBoneArray() const { return  m_boneArray; }
-		const DsVec3d& GetRootPos() const { return m_rootPos; }
-		void SetRootPos(const DsVec3d& p){ m_rootPos = p; }
-		const DsMat33d& GetRootRot() const { return m_rootRot; }
-		void SetRootRot(const DsMat33d& r){ m_rootRot = r; }
-
+	
 		template<typename FUNC>
 		void GetAllBone(FUNC func)
 		{

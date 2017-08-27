@@ -334,6 +334,7 @@ namespace SimuEditor {
 			// 
 			// OpenFileDrawModelPathButton
 			// 
+			this->OpenFileDrawModelPathButton->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
 			this->OpenFileDrawModelPathButton->Font = (gcnew System::Drawing::Font(L"MS UI Gothic", 9));
 			this->OpenFileDrawModelPathButton->Location = System::Drawing::Point(487, 7);
 			this->OpenFileDrawModelPathButton->Name = L"OpenFileDrawModelPathButton";
@@ -363,6 +364,7 @@ namespace SimuEditor {
 			// 
 			// OpenFileHitModelPathButton
 			// 
+			this->OpenFileHitModelPathButton->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
 			this->OpenFileHitModelPathButton->Font = (gcnew System::Drawing::Font(L"MS UI Gothic", 9));
 			this->OpenFileHitModelPathButton->Location = System::Drawing::Point(487, 28);
 			this->OpenFileHitModelPathButton->Name = L"OpenFileHitModelPathButton";

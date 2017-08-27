@@ -110,10 +110,10 @@ void DsAnimation::Update(double dt)
 			blendRate = 1.0 - pPre->GetBlendRate();
 		}
 		const DsKeyframeAnim& blend = m_blend.Blend(m_animSM.GetActiveClip(), pPre, blendRate);
-		m_pSkeleton->UpdateWorldPose();
+		m_pSkeleton->UpdatePose();
 
 		if (m_animModifier) {
-			m_animModifier->ModifyAnim(dt, *m_pSkeleton, blend);
+			m_animModifier->ModifyAnim(dt, *m_pSkeleton, blend, m_pos, m_rot);
 		}
 		else {
 			DsAnimSkeletonModifier::UtilKeyframeAnim(dt, *m_pSkeleton, blend);
@@ -125,29 +125,29 @@ void DsAnimation::Update(double dt)
 	{
 		m_pSkinMesh->ApplySkeleton(*m_pSkeleton);
 	}
+
+	//モデルの座標を更新
+	DsAnimModel* pModel = _GetAnimModel();
+	if (pModel) {
+		pModel->SetPosition(m_pos);
+		pModel->SetRotation(m_rot);
+	}
 }
 
 void DsAnimation::SetRootMatrix(const DsVec3d& p, const DsMat33d& r)
 {
-	if (m_pSkeleton) {
-		m_pSkeleton->SetRootPos(p);
-		m_pSkeleton->SetRootRot(r);
-	}
-	else {
-		//スケルトンを持ってなかった場合
-		m_pos = p;
-		m_rot = r;
-	}
+	m_pos = p;
+	m_rot = r;
 }
 
 const DsVec3d& DsAnimation::GetPosition() const
 {
-	return (m_pSkeleton) ? (m_pSkeleton->GetRootPos()) : (m_pos);
+	return m_pos;
 }
 
 const DsMat33d& DsAnimation::GetRotation() const
 {
-	return (m_pSkeleton) ? (m_pSkeleton->GetRootRot()) : (m_rot);
+	return m_rot;
 }
 
 DsAnimModel* DsAnimation::_GetAnimModel()

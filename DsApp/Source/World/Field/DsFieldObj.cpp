@@ -167,10 +167,7 @@ void DsFieldObj::Update(double dt)
 	{
 		m_pAnimation->Update(dt);
 		const DsActor* pActor = m_world.GetActor(m_actorId);
-		if (pActor)
-		{
-			m_pAnimation->SetRootMatrix(GetPosition(), pActor->GetRotation());
-		}
+		m_pAnimation->SetRootMatrix(GetPosition(), GetRotation());
 	}
 }
 

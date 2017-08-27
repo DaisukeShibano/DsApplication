@@ -10,8 +10,8 @@
 #endif
 
 
-#define RadToDeg(a)(a*static_cast<double>(180.0f / M_PI))
-#define DegToRad(a)(a*static_cast<double>(M_PI / 180.0f))
+#define RadToDeg(a)(a*static_cast<double>(180.0 / M_PI))
+#define DegToRad(a)(a*static_cast<double>(M_PI / 180.0))
 #define Clamp(val, _min, _max)( min(max(_min, val), _max) )
 
 namespace DsLib
