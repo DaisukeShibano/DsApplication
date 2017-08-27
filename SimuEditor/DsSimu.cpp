@@ -134,7 +134,7 @@ namespace
 		//中央クリックでドラッグで視点移動
 		if (mouse.GetClickState() == DsMouseClickState::DS_CENTER_CLICK)
 		{
-			const float moveVel = -600.0f;
+			const float moveVel = -100.0f;
 			const DsVec3d x = cam.GetRot().GetAxisX() * drag3.x * moveVel;
 			const DsVec3d y = cam.GetRot().GetAxisY() * drag3.y * moveVel;
 			const DsVec3d pos = cam.GetPos() + x + y;
@@ -146,7 +146,7 @@ namespace
 			const int wheel = mouse.GetWheelMove();
 			if (wheel != 0)
 			{
-				const float moveVel = 3.0f * static_cast<float>(wheel);
+				const float moveVel = 2.0f * static_cast<float>(wheel);
 				const DsVec3d z = cam.GetRot().GetAxisZ() * moveVel;
 				const DsVec3d pos = cam.GetPos() + z;
 				cam.SetPos(pos);
@@ -156,7 +156,7 @@ namespace
 		//右クリックで回転
 		if (mouse.GetClickState() == DsMouseClickState::DS_RIGHT_CLICK)
 		{
-			const double moveVel = 30.0f;
+			const double moveVel = 3.0f;
 			DsMat33d mat = cam.GetRot();
 			const DsVec3d rotAxisX = mat.GetAxisX();
 			const DsVec3d rotAxisY = mat.GetAxisY();
