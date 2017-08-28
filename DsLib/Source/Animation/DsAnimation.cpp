@@ -136,6 +136,10 @@ void DsAnimation::Update(double dt)
 
 void DsAnimation::SetRootMatrix(const DsVec3d& p, const DsMat33d& r)
 {
+	if (m_pSkeleton) {//íœ—\’è
+		m_pSkeleton->SetRootPos(p);
+		m_pSkeleton->SetRootRot(r);
+	}
 	m_pos = p;
 	m_rot = r;
 }

@@ -54,12 +54,12 @@ void DsAnimSkeleton::UpdatePose()
 		//const DsMat33d fbxR = DsMat33d::RotateX(-M_PI_2);
 		//intWorldはFbx変換かかってる。localPoseはかかってない。Fbx変換成分だけを抜き出す。ただし、localPoseの姿勢がキーフレームで変わってるとダメ
 		const DsMat33d fbxR = root->initWorldPose.ToMat33()*root->localPose.ToMat33().ToTransposition();
-		//const DsMat33d m = worldRot*fbxR*root->localPose.ToMat33();	//マスターの姿勢は変えられなかったから考慮しなくてOK
+		//const DsMat33d m = m_rootRot*fbxR*root->localPose.ToMat33();	//マスターの姿勢は変えられなかったから考慮しなくてOK
 		const DsMat33d m = fbxR*root->localPose.ToMat33();	//マスターの姿勢は変えられなかったから考慮しなくてOK
 		//localPoseはエクスポート時のFbx座標変換がかかってない
 		//localPoseを打ち消したら考慮した座標と一致した。とりあえずこれで行く
 		const DsVec3d offset = (fbxR*root->localPose.GetPos());
-		//const DsVec3d p = offset + worldPos + root->initWorldPose.GetPos();
+		//const DsVec3d p = offset + m_rootPos + root->initWorldPose.GetPos();
 		const DsVec3d p = offset + root->initWorldPose.GetPos();
 		_UpdatePose(root, m, p);
 	}

@@ -58,7 +58,13 @@ namespace DsLib
 		const std::vector<DsAnimBone*>& RefRootBone() const{ return  m_pRootBone; }
 		std::vector<DsAnimBone*>& RefBoneArray() { return  m_boneArray; }
 		const std::vector<DsAnimBone*>& RefBoneArray() const { return  m_boneArray; }
-	
+		
+	public://çÌèúó\íË
+		DsVec3d GetRootPos()const { return m_rootPos; }
+		void SetRootPos(DsVec3d pos) { m_rootPos = pos; }
+		DsMat33d GetRootRot()const { return m_rootRot; }
+		void SetRootRot(DsMat33d rot) { m_rootRot = rot; }
+
 		template<typename FUNC>
 		void GetAllBone(FUNC func)
 		{
