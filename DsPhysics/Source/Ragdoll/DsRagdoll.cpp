@@ -131,26 +131,50 @@ void DsRagdoll::SetParam(const DsRagdollParts& parts)
 //リジッドをboneに合わせる
 void DsRagdoll::FixToKeyframeAnim(double dt, const std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts, DsVec3d worldPos, DsMat33d worldRot)
 {
+#ifndef		USE_OLD_MODEL_COOD
+	const InnerPartsInfo& innerParts = m_innerParts[parts.innerPartsIdx];
+	const DsMat44d mat = bones[parts.skeletonBoneIdx]->modelPose;
+	const DsMat33d rot = mat.ToMat33();
+	const DsVec3d offset = rot*innerParts.offset;
+	const DsVec3d pos = worldRot*(mat.GetPos() + offset ) + worldPos;
+
+	innerParts.pActor->RefOption().isStatic = true;
+	
+	innerParts.pActor->SetPosition(pos);
+	innerParts.pActor->SetRotation(worldRot*rot);
+	innerParts.pActor->SetDamper(parts.damperV, parts.damperA);
+#else
 	const InnerPartsInfo& innerParts = m_innerParts[parts.innerPartsIdx];
 	const DsMat44d mat = bones[parts.skeletonBoneIdx]->modelPose;
 	const DsMat33d rot = mat.ToMat33();
 	const DsVec3d offset = rot*innerParts.offset;
 	const DsVec3d pos = mat.GetPos() + offset;
 
+	innerParts.pActor->RefOption().isStatic = true;
+
+	innerParts.pActor->SetPosition(pos);
+	innerParts.pActor->SetRotation(rot);
+	innerParts.pActor->SetDamper(parts.damperV, parts.damperA);
+#endif
 	//DsDbgSys::GetIns().RefDrawCom().DrawSphere(pos, 0.1);
 	//DsDbgSys::GetIns().RefDrawCom().DrawAxis(mat);
-	innerParts.pActor->RefOption().isStatic = true;
-	
-	innerParts.pActor->SetPosition(pos+worldPos);
-	innerParts.pActor->SetRotation(worldRot*rot);
-	innerParts.pActor->SetDamper(parts.damperV, parts.damperA);
-
-	innerParts.pActor->Draw(DsDbgSys::GetIns().RefDrawCom());
+	//innerParts.pActor->Draw(DsDbgSys::GetIns().RefDrawCom());
 }
 
 //boneをリジッドに合わせる
 void DsRagdoll::FixToPhysics(double dt, std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts, DsVec3d worldPos, DsMat33d worldRot)
 {
+#ifndef		USE_OLD_MODEL_COOD
+	const InnerPartsInfo& innerParts = m_innerParts[parts.innerPartsIdx];
+	innerParts.pActor->RefOption().isStatic = false;
+	const DsActor* pActor = innerParts.pActor;
+	const DsMat33d rot = pActor->GetRotation();
+	const DsVec3d offset = rot*innerParts.offset;
+	const DsVec3d pos = worldRot.ToTransposition()*( pActor->GetPosition() - offset - worldPos );
+
+	DsAnimBone* oBone = bones[parts.skeletonBoneIdx];
+	oBone->modelPose = DsMat44d::Get(worldRot.ToTransposition()*rot, pos);
+#else
 	const InnerPartsInfo& innerParts = m_innerParts[parts.innerPartsIdx];
 	innerParts.pActor->RefOption().isStatic = false;
 	const DsActor* pActor = innerParts.pActor;
@@ -159,12 +183,12 @@ void DsRagdoll::FixToPhysics(double dt, std::vector<DsAnimBone*>& bones, const D
 	const DsVec3d pos = pActor->GetPosition() - offset;
 
 	DsAnimBone* oBone = bones[parts.skeletonBoneIdx];
-	oBone->modelPose = DsMat44d::Get(worldRot.ToTransposition()*rot, pos - worldPos);
+	oBone->modelPose = DsMat44d::Get(rot, pos);
+#endif
 
 	//DsDbgSys::GetIns().RefDrawCom().DrawSphere(pos, 0.1);
 	//DsDbgSys::GetIns().RefDrawCom().DrawAxis(DsMat44d::Get(rot, pos));
-
-	innerParts.pActor->Draw(DsDbgSys::GetIns().RefDrawCom());
+	//innerParts.pActor->Draw(DsDbgSys::GetIns().RefDrawCom());
 }
 
 DsRagdoll::~DsRagdoll()

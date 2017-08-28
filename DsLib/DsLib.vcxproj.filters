@@ -546,6 +546,9 @@
     <ClInclude Include="Source\System\DsPath.h">
       <Filter>Source\System</Filter>
     </ClInclude>
+    <ClInclude Include="Source\DsDefine.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="Library\Lib\x64\freeglut_staticd.lib">

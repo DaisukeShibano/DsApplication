@@ -295,6 +295,7 @@
     <ClInclude Include="Source\Animation\DsKeyframeInterpolate.h" />
     <ClInclude Include="Source\Animation\SkinMesh\DsSkinMesh.h" />
     <ClInclude Include="Source\Config\DsConf.h" />
+    <ClInclude Include="Source\DsDefine.h" />
     <ClInclude Include="Source\DsLib.h" />
     <ClInclude Include="Source\DsPch.h" />
     <ClInclude Include="Source\DsUtil.h" />

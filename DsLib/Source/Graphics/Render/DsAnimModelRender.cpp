@@ -59,7 +59,9 @@ void DsAnimModelRender::RenderPolygon() const
 			glNormal3f(static_cast<float>(normal.x), static_cast<float>(normal.y), static_cast<float>(normal.z));
 
 			glPushMatrix();
+#ifndef		USE_OLD_MODEL_COOD
 			glMultMatrixd(modelMat.mat);
+#endif
 			glBegin(GL_POLYGON);
 			const int* pIndex = pFace->pIndex;
 			const int vn = pFace->vn;
@@ -121,7 +123,9 @@ void DsAnimModelRender::RenderNonMaterial() const
 					glNormal3dv(pFace->normal.v);
 				}
 				glPushMatrix();
+#ifndef		USE_OLD_MODEL_COOD
 				glMultMatrixd(modelMat.mat);
+#endif
 				glBegin(GL_POLYGON);
 				const int vn = pFace->vn;
 				const int* pIndex = pFace->pIndex;
@@ -195,7 +199,9 @@ void DsAnimModelRender::Render() const
 					}
 
 					glPushMatrix();
+#ifndef		USE_OLD_MODEL_COOD
 					glMultMatrixd(modelMat.mat);
+#endif
 					glBegin(GL_POLYGON);
 					const int vn = pFace->vn;
 					for (int vi = 0; vi < vn; ++vi)

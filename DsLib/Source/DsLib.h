@@ -17,6 +17,9 @@
 #include <Windows.h>
 #endif
 
+#ifndef _DS_DEFINE_
+#include "DsDefine.h"
+#endif
 #ifndef _DS_SYS_DEFINE_H_
 #include "System/DsSysDefine.h"
 #endif

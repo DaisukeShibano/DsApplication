@@ -45,6 +45,10 @@
 #ifndef _DS_PERF_H_
 #include "System/DsPerf.h"
 #endif
+#ifndef _DS_DEFINE_
+#include "DsDefine.h"
+#endif
+
 
 #define WIN32_LEAN_AND_MEAN             // Windows ヘッダーから使用されていない部分を除外します。
 
