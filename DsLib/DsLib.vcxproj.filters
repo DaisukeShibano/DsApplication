@@ -295,6 +295,9 @@
     <ClCompile Include="Source\System\DsPath.cpp">
       <Filter>Source\System</Filter>
     </ClCompile>
+    <ClCompile Include="Source\System\DsFile.cpp">
+      <Filter>Source\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsPch.h">
@@ -548,6 +551,9 @@
     </ClInclude>
     <ClInclude Include="Source\DsDefine.h">
       <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System\DsFile.h">
+      <Filter>Source\System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -80,6 +80,11 @@
 #ifndef _DS_PERF_H_
 #include "System/DsPerf.h"
 #endif
-
+#ifndef _DS_PATH_
+#include "System/DsPath.h"
+#endif
+#ifndef _DS_FILE_
+#include "System/DsFile.h"
+#endif
 
 #endif

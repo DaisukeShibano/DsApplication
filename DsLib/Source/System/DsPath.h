@@ -11,6 +11,16 @@ namespace DsLib
 
 		static
 		std::wstring GetAssetPath();
+
+		static
+		std::wstring GetCurrentPath();
+
+		static
+		std::wstring GetFileName(std::wstring path);
+
+		static
+		std::wstring ConvAssetPath(std::wstring path);
+
 	};
 }
 
