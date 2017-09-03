@@ -84,23 +84,23 @@ namespace
 
 	void DsToolCloudImp::_LoadTga()
 	{
-		ifstream  ifs(m_texPath.c_str(), ios::in | ios::binary);
-		if (ifs.fail())return;
+		DsFile  ifs(m_texPath.c_str(), ios::in | ios::binary);
+		if (ifs.IsFail())return;
 
 		//画像サイズの取得
 		unsigned short w;
 		unsigned short h;
-		ifs.seekg(12, std::ios::beg);
-		ifs.read((char*)&w, 2);
-		ifs.read((char*)&h, 2);
+		ifs.Seekg(12, DsFile::SEEK_TYPE::BEG);
+		ifs.Read((char*)&w, 2);
+		ifs.Read((char*)&h, 2);
 
 		const int size = w*h * 4;
 		unsigned char* imgData = new unsigned char[size];
 		if (NULL == imgData)return;
 
 		//画像データの取得(32bit圧縮なし)
-		ifs.seekg(18, std::ios::beg);
-		ifs.read((char*)imgData, size);
+		ifs.Seekg(18, DsFile::SEEK_TYPE::BEG);
+		ifs.Read((char*)imgData, size);
 
 		//BGRAなので、RGBAに変換する
 		for (int i = 0; size > i; i += 4)
@@ -113,8 +113,6 @@ namespace
 			imgData[i + 3] = static_cast<unsigned char>(alpha);
 		}
 
-		ifs.close();
-
 		m_pTexture = imgData;
 		m_texWidth = w;
 		m_texHeight = h;
@@ -122,20 +120,20 @@ namespace
 
 	void DsToolCloudImp::_LoadBmp()
 	{
-		ifstream  ifs(m_texPath.c_str(), ios::in | ios::binary);
-		if (ifs.fail()) return;
+		DsFile ifs(m_texPath.c_str(), ios::in | ios::binary);
+		if (ifs.IsFail()) return;
 
 		//画像サイズの取得
 		int width = 0;
 		int height=0;
-		ifs.seekg(18, std::ios::beg);
-		ifs.read((char*)&width, 4);
-		ifs.read((char*)&height, 4);
+		ifs.Seekg(18, DsFile::SEEK_TYPE::BEG);
+		ifs.Read((char*)&width, 4);
+		ifs.Read((char*)&height, 4);
 
 		//ビットカウント
 		unsigned short bitCount;
-		ifs.seekg(28, std::ios::beg);
-		ifs.read((char*)&bitCount, 2);
+		ifs.Seekg(28, DsFile::SEEK_TYPE::BEG);
+		ifs.Read((char*)&bitCount, 2);
 
 		//カラーテーブルには対応しない
 		if (bitCount <= 8) return;
@@ -153,8 +151,8 @@ namespace
 		}
 
 		//画像データの取得
-		ifs.seekg(54, std::ios::beg);
-		ifs.read((char*)imgData, fileSize);
+		ifs.Seekg(54, DsFile::SEEK_TYPE::BEG);
+		ifs.Read((char*)imgData, fileSize);
 
 		for (int i = 0, pix = 0; i<loadSize; i += 4, ++pix)
 		{
@@ -166,8 +164,6 @@ namespace
 			m_pTexture[i + 3] = alpha;
 		}
 
-		ifs.close();
-		
 		m_texWidth = width;
 		m_texHeight = height;
 		

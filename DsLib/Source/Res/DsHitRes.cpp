@@ -32,14 +32,14 @@ namespace
 	DsHitRes::Shape _LoadRes(const char* path)
 	{
 		DsHitRes::Shape ret;
-		std::ifstream  fs(path);
-		if (!fs)
+		DsFile fs(path);
+		if (fs.IsFail())
 		{
 			DS_ASSERT(false, "ファイルオープンに失敗");
 			return ret;
 		}
 
-		for (string str; getline(fs, str);)
+		for (string str; fs.GetLine(str);)
 		{
 			//スペース削除
 			{

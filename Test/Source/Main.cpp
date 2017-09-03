@@ -220,6 +220,7 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 
 int main(int argc, char **argv)
 {
+	DsPath::SetAssetPath(DsPath::GetCurrentPath() + L"\\Asset");
 	DsSys sys;
 	TestMainLoop loop;
 	DsSysArgs args;

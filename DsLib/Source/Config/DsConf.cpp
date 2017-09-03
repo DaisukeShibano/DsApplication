@@ -23,17 +23,14 @@ DsConf::~DsConf()
 
 void DsConf::Initialize( const char* path )
 {
-	std::ifstream ifs(path);
-    if (ifs.fail())
+	DsFile ifs(path);
+    if (ifs.IsFail())
     {
 		printf("DsLibİ’èƒtƒ@ƒCƒ‹“Ç‚İ‚İ¸”s %s\n", path);
         return;
     }
-    istreambuf_iterator<char> it(ifs);
-    istreambuf_iterator<char> last;
-
 	
-	for ( string str; getline(ifs, str); )
+	for ( string str; ifs.GetLine(str); )
 	{
 		auto pos = str.find(" ");
 		if( string::npos != pos )

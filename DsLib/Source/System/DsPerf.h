@@ -80,6 +80,7 @@ namespace DsLib
 		}
 		~DsPerfScope(){
 			DsPerf::RefPerfDefault().DsPerf::End();
+			DsPerf::RefPerfDefault().DbgPrintPerf();
 		}
 	};
 }

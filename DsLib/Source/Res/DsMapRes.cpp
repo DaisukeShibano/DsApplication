@@ -55,8 +55,8 @@ namespace
 	{
 		OutputRes* pRes = new OutputRes();
 
-		std::ifstream  fs(path, std::ios::out | std::ios::binary);
-		if (!fs)
+		DsFile fs(path, std::ios::out | std::ios::binary);
+		if (fs.IsFail())
 		{
 			DS_ASSERT(false, "ファイルオープンに失敗");
 			return pRes;
@@ -64,13 +64,13 @@ namespace
 
 		{//version
 			long ver;
-			fs.read((char*)(&ver), sizeof(long));
+			fs.Read((char*)(&ver), sizeof(long));
 			pRes->version = ver;
 		}
 
 		int objNum = 0;
 		{//objNum
-			fs.read((char*)(&objNum), sizeof(int));
+			fs.Read((char*)(&objNum), sizeof(int));
 		}
 
 		for (int oi = 0; oi < objNum; ++oi)
@@ -80,36 +80,36 @@ namespace
 			int tmpCharNum = 0;
 			char* tmpChar = 0;
 
-			fs.read((char*)(&tmpCharNum), sizeof(int));
+			fs.Read((char*)(&tmpCharNum), sizeof(int));
 			tmpChar = new char[tmpCharNum+1];
-			fs.read(tmpChar, tmpCharNum);
+			fs.Read(tmpChar, tmpCharNum);
 			tmpChar[tmpCharNum] = '\0';
 			obj->objInsName = tmpChar;
 			delete[] tmpChar;
 
-			fs.read((char*)(&tmpCharNum), sizeof(int));
+			fs.Read((char*)(&tmpCharNum), sizeof(int));
 			tmpChar = new char[tmpCharNum+1];
-			fs.read(tmpChar, tmpCharNum);
+			fs.Read(tmpChar, tmpCharNum);
 			tmpChar[tmpCharNum] = '\0';
 			obj->drawModelPath = tmpChar;
 			delete[] tmpChar;
 
-			fs.read((char*)(&tmpCharNum), sizeof(int));
+			fs.Read((char*)(&tmpCharNum), sizeof(int));
 			tmpChar = new char[tmpCharNum+1];
-			fs.read(tmpChar, tmpCharNum);
+			fs.Read(tmpChar, tmpCharNum);
 			tmpChar[tmpCharNum] = '\0';
 			obj->hitModelPath = tmpChar;
 			delete[] tmpChar;
 
-			fs.read((char*)(&obj->posX), sizeof(double));
-			fs.read((char*)(&obj->posY), sizeof(double));
-			fs.read((char*)(&obj->posZ), sizeof(double));
-			fs.read((char*)(&obj->angX), sizeof(double));
-			fs.read((char*)(&obj->angY), sizeof(double));
-			fs.read((char*)(&obj->angZ), sizeof(double));
+			fs.Read((char*)(&obj->posX), sizeof(double));
+			fs.Read((char*)(&obj->posY), sizeof(double));
+			fs.Read((char*)(&obj->posZ), sizeof(double));
+			fs.Read((char*)(&obj->angX), sizeof(double));
+			fs.Read((char*)(&obj->angY), sizeof(double));
+			fs.Read((char*)(&obj->angZ), sizeof(double));
 
-			fs.read((char*)(&obj->objType), sizeof(int));
-			fs.read((char*)(&obj->fieldObjType), sizeof(int));
+			fs.Read((char*)(&obj->objType), sizeof(int));
+			fs.Read((char*)(&obj->fieldObjType), sizeof(int));
 			
 			pRes->objs.push_back(obj);
 		}
