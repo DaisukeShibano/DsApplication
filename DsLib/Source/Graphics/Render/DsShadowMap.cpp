@@ -181,9 +181,9 @@ namespace
 	
 		// 光源を視点として設定
 		//glMatrixMode(GL_PROJECTION);
-		//glLoadMatrixf(light_proj);
+		//glLoadMatrixd(light_proj);
 		//glMatrixMode(GL_MODELVIEW);
-		//glLoadMatrixf(light_modelview);//意味ない気がするのでコメントアウト
+		//glLoadMatrixd(light_modelview);//もう既になってて意味ない気がするのでコメントアウト
 	
 		// デプス値以外の色のレンダリングを無効にする
 		//glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);//rgをぼかしの計算で使う
@@ -252,7 +252,6 @@ namespace
 		// デプステクスチャを貼り付け
 		glEnable(GL_TEXTURE_2D);
 		glActiveTexture(GL_TEXTURE7);
-		// texture2D(7 に ↓のテクスチャを割り当てる
 		glBindTexture(GL_TEXTURE_2D, m_iTexDepth);
 		glActiveTexture(GL_TEXTURE6);
 		glBindTexture(GL_TEXTURE_2D, m_colorTextureId);

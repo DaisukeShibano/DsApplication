@@ -1,4 +1,5 @@
 #include "DsPch.h"
+#include "gl/glew.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #ifndef _DS_ANIM_MODEL_RENDER_H_
@@ -46,9 +47,11 @@ void DsAnimModelRender::RenderPolygon() const
 {
 	for each(const DsAnimModel* pModel in m_drawList)
 	{
-		//座標
+#ifndef		USE_OLD_MODEL_COOD
 		const DsMat44d modelMat = DsMat44d::GetTranspose(pModel->GetRotation(), pModel->GetPosition());
-
+		glPushMatrix();
+		glMultMatrixd(modelMat.mat);
+#endif
 		const int fn = pModel->GetFaceNum();
 		const DsVec4d* pVertex = pModel->GetVertex();
 		const DsAnimModel::Face* pFace = pModel->GetFace();
@@ -57,11 +60,6 @@ void DsAnimModelRender::RenderPolygon() const
 		{
 			const DsVec3d& normal = pFace->normal;
 			glNormal3f(static_cast<float>(normal.x), static_cast<float>(normal.y), static_cast<float>(normal.z));
-
-			glPushMatrix();
-#ifndef		USE_OLD_MODEL_COOD
-			glMultMatrixd(modelMat.mat);
-#endif
 			glBegin(GL_POLYGON);
 			const int* pIndex = pFace->pIndex;
 			const int vn = pFace->vn;
@@ -70,8 +68,11 @@ void DsAnimModelRender::RenderPolygon() const
 				glVertex3dv(pVertex[(*pIndex)].v);
 			}
 			glEnd();
-			glPopMatrix();
 		}
+
+#ifndef		USE_OLD_MODEL_COOD
+		glPopMatrix();
+#endif
 	}
 }
 
@@ -79,8 +80,12 @@ void DsAnimModelRender::RenderNonMaterial() const
 {
 	for each(const DsAnimModel* pModel in m_drawList)
 	{
+#ifndef		USE_OLD_MODEL_COOD
 		//座標
 		const DsMat44d modelMat = DsMat44d::GetTranspose(pModel->GetRotation(), pModel->GetPosition());
+		glPushMatrix();
+		glMultMatrixd(modelMat.mat);
+#endif
 
 		bool isUseTexture = false;
 		{
@@ -122,10 +127,6 @@ void DsAnimModelRender::RenderNonMaterial() const
 				{
 					glNormal3dv(pFace->normal.v);
 				}
-				glPushMatrix();
-#ifndef		USE_OLD_MODEL_COOD
-				glMultMatrixd(modelMat.mat);
-#endif
 				glBegin(GL_POLYGON);
 				const int vn = pFace->vn;
 				const int* pIndex = pFace->pIndex;
@@ -140,9 +141,12 @@ void DsAnimModelRender::RenderNonMaterial() const
 					glVertex3dv(pVertex[vIndex].v);
 				}
 				glEnd();
-				glPopMatrix();
 			}
 		}
+
+#ifndef		USE_OLD_MODEL_COOD
+		glPopMatrix();
+#endif
 	}
 }
 
@@ -154,8 +158,19 @@ void DsAnimModelRender::Render() const
 	
 	for each(const DsAnimModel* pModel in m_drawList) 
 	{
+#ifndef		USE_OLD_MODEL_COOD
 		//座標
 		const DsMat44d modelMat = DsMat44d::GetTranspose(pModel->GetRotation(), pModel->GetPosition());
+		glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
+		//glMultMatrixd(modelMat.mat);
+
+		//glActiveTexture(GL_TEXTURE7);
+		//glMatrixMode(GL_TEXTURE);
+		//glPushMatrix();
+		//glMultMatrixd(modelMat.mat);
+#endif
+
 
 		//頂点法線
 		const bool isUseVertexNormal = pModel->IsCreateVertexNormal();
@@ -198,10 +213,6 @@ void DsAnimModelRender::Render() const
 						glNormal3dv(pFace->normal.v);
 					}
 
-					glPushMatrix();
-#ifndef		USE_OLD_MODEL_COOD
-					glMultMatrixd(modelMat.mat);
-#endif
 					glBegin(GL_POLYGON);
 					const int vn = pFace->vn;
 					for (int vi = 0; vi < vn; ++vi)
@@ -214,17 +225,25 @@ void DsAnimModelRender::Render() const
 							glNormal3fv(pVertexNormals[vIdx].v);
 						}
 						glTexCoord2f(uv.x, uv.y);
-						glVertex3dv(pVertex[vIdx].v);
+						DsVec3d tmp = pModel->GetRotation()*pVertex[vIdx] + pModel->GetPosition();//glMultMatrixdを使えるようにせねば
+						glVertex3dv(tmp.v);
 
 						++uvIdx;
 					}
 					glEnd();
-					glPopMatrix();
 				}
 
 				glBindTexture(GL_TEXTURE_2D, 0);
 			}
 		}
+#ifndef		USE_OLD_MODEL_COOD
+		//glMatrixMode(GL_TEXTURE);
+		//glPopMatrix();
+		//glActiveTexture(GL_TEXTURE0);
+
+		glMatrixMode(GL_MODELVIEW);
+		glPopMatrix();
+#endif
 	}
 
 	glDisable(GL_TEXTURE_2D);

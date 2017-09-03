@@ -151,18 +151,18 @@ namespace
 
 			// 光源座標における物体の位置
 			vec4 shadow_coord = vShadowCoord / vShadowCoord.w;//これが描画しようとしている座標
-			// 光源座標における物体の位置に相当する影テクスチャの値
-			vec4 depth_tex_coord = texture2D(depth_tex, shadow_coord.xy);
-			vec4 depth_tex_coord2 = texture2D(depth_tex2, shadow_coord.xy);//ぼかし要素が入ってる影テクスチャ
 
-			//影ぼやかし
-			float shadow_blurry = ChebyshevUpperBound(shadow_coord, depth_tex_coord2);
-			// 影影響係数
-			float shadow_coef = ShadowCoef(shadow_coord, depth_tex_coord)*shadow_blurry;
-
-			// 出力
+			//// 光源座標における物体の位置に相当する影テクスチャの値
+			//vec4 depth_tex_coord = texture2D(depth_tex, shadow_coord.xy);
+			//// 影影響係数
+			//float shadow_coef = ShadowCoef(shadow_coord, depth_tex_coord);
 			//gl_FragColor = (1.0-shadow_ambient)*shadow_coef*light_col
 			//				+ (shadow_ambient) * light_col;//日陰の部分も色が出るように
+			//gl_FragColor.w = texColor.w;//アルファ値は演算の対象外
+
+			//影ぼやかし
+			vec4 depth_tex_coord2 = texture2D(depth_tex2, shadow_coord.xy);//ぼかし要素が入ってる影テクスチャ
+			float shadow_blurry = ChebyshevUpperBound(shadow_coord, depth_tex_coord2);
 			float shadow_blurry_modify = min(shadow_ambient + shadow_blurry, 1.0);
 			gl_FragColor = vec4(shadow_blurry_modify)*light_col;
 			gl_FragColor.w = texColor.w;//アルファ値は演算の対象外
