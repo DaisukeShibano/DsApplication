@@ -96,7 +96,7 @@ namespace
 		float ChebyshevUpperBound(vec4 shadow_coord, vec4 depth_tex_coord)
 		{
 			float distance = shadow_coord.z;//これが描画座標
-			//distance = distance * 0.5 + 0.5; This is done via a bias matrix in main.c
+			//distance = distance * 0.5 + 0.5;// This is done via a bias matrix in main.c
 			//*0.5+0.5のバイアス行列かけてあるので0-1になってる
 
 			//distanceが描画しようとするピクセルの光源視点からの深度
@@ -109,6 +109,10 @@ namespace
 
 			// Surface is fully lit. as the current fragment is before the light occluder
 			if (distance <= moments.x) {
+				return 1.0;
+			}
+
+			if (vShadowCoord.w <= 0.0) {
 				return 1.0;
 			}
 
@@ -150,7 +154,7 @@ namespace
 			vec4 light_col = PhongShading(texColor);	// 表面反射色
 
 			// 光源座標における物体の位置
-			vec4 shadow_coord = vShadowCoord / vShadowCoord.w;//これが描画しようとしている座標
+			vec4 shadow_coord = vShadowCoord / vShadowCoord.w;//これが描画しようとしている座標			
 
 			//// 光源座標における物体の位置に相当する影テクスチャの値
 			//vec4 depth_tex_coord = texture2D(depth_tex, shadow_coord.xy);

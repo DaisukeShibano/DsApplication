@@ -30,6 +30,6 @@ void DsSunLight::SetDir(const DsVec3f& dir)
 
 void DsSunLight::Update()
 {
-	SetPos(DsVec3f(10, 15, 10));
-	SetDir(DsVec3f(-1, -1, -1));
+	SetPos(DsVec3f(10, 10, 0));
+	SetDir(DsVec3f(-1, -1, 0));
 }
