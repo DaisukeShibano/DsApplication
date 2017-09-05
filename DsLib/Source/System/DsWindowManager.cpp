@@ -221,7 +221,7 @@ bool DsWindowManager::MainWindowLoop(ds_uint64 _hwnd, DsSys& sys)
 	s_pSys = &sys;
 
 	LARGE_INTEGER freq;
-	bool isEnableTimer = QueryPerformanceFrequency(&freq);
+	BOOL isEnableTimer = QueryPerformanceFrequency(&freq);
 
 	while (1) {
 		HWND hwnd = (HWND)_hwnd;
