@@ -292,7 +292,7 @@ namespace SimuEditor {
 	private: System::Void MainForm_Load(System::Object^  sender, System::EventArgs^  e) {
 		if (DsSimu::GetIns())
 		{
-			DsSimu::GetIns()->Setup(pictureBox1->Handle.ToInt32());
+			DsSimu::GetIns()->Setup(pictureBox1->Handle.ToInt64());
 		}
 	}
 	private: System::Void MainForm_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {

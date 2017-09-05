@@ -31,7 +31,7 @@ namespace DsLib
 		char* pConfPath;
 		char* pResourcePath;
 		int windowType;
-		int windowHandle;
+		ds_uint64 windowHandle;
 	};
 
 	class DsSys

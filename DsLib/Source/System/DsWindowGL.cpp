@@ -148,7 +148,7 @@ void DsWindowGL::KeyboardSp(int key, int x, int y)
 	m_pKeyboard->OnKey(key, true);
 }
 
-void DsWindowGL::_SetHandle(int handle)
+void DsWindowGL::_SetHandle(ds_uint64 handle)
 {
 	if (m_hDC != 0)
 	{
@@ -156,7 +156,7 @@ void DsWindowGL::_SetHandle(int handle)
 	}
 
 	m_hWnd = handle;
-	m_hDC = (int)GetDC((HWND)m_hWnd);
+	m_hDC = (ds_uint64)GetDC((HWND)m_hWnd);
 
 	static const PIXELFORMATDESCRIPTOR pfd = {
 		sizeof(PIXELFORMATDESCRIPTOR),     // 構造体のサイズ
@@ -182,7 +182,7 @@ void DsWindowGL::_SetHandle(int handle)
 	int pixelformat;
 	pixelformat = ChoosePixelFormat(hdc, &pfd);
 	SetPixelFormat(hdc, pixelformat, &pfd);
-	m_hGLRC = (int)wglCreateContext(hdc);
+	m_hGLRC = (ds_uint64)wglCreateContext(hdc);
 
 	//カレントを設定しておかないとDsRenderの初期化のgl系の初期化がうまくいかない
 	wglMakeCurrent((HDC)m_hDC, (HGLRC)m_hGLRC);

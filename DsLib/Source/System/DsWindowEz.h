@@ -6,6 +6,8 @@
 #endif
 
 
+#if 0 //îpé~
+
 namespace DsLib
 {
 	class DsCamera;
@@ -42,5 +44,7 @@ namespace DsLib
 		static void _KeyboardSp(int key, int x, int y);
 	};
 }
+
+#endif
 
 #endif

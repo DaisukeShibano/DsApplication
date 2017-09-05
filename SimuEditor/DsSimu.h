@@ -29,7 +29,7 @@ public:
 	~DsSimu();
 
 public:
-	void Setup(int handle);
+	void Setup(ds_uint64 handle);
 	DsWindowGL& RefWindow();
 	bool IsInit() const { return m_isInit; }
 	void Update(double dt);

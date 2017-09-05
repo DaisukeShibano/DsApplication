@@ -33,23 +33,23 @@ namespace DsLib
 		virtual DsMat33d GetPerspective() const override;
 
 	public:
-		void Display();
-		void Timer(int value);
-		void Reshape();
-		void Drag(int x, int y);
-		void Click(int button, int state, int x, int y);
-		void Wheel(int wheel, int x, int y);
-		void Keyboard(unsigned char key, int x, int y);
-		void KeyboardUp(unsigned char key, int x, int y);
-		void KeyboardSp(int key, int x, int y);
+		virtual void Display() override;
+		virtual void Timer(int value) override;
+		virtual void Reshape() override;
+		virtual void Drag(int x, int y) override;
+		virtual void Click(int button, int state, int x, int y) override;
+		virtual void Wheel(int wheel, int x, int y) override;
+		virtual void Keyboard(unsigned char key, int x, int y) override;
+		virtual void KeyboardUp(unsigned char key, int x, int y) override;
+		virtual void KeyboardSp(int key, int x, int y) override;
 
 	private:
-		void _SetHandle(int handle);
+		void _SetHandle(ds_uint64 handle);
 
 	private:
-		int m_hWnd;
-		int m_hDC;
-		int m_hGLRC;
+		ds_uint64 m_hWnd;
+		ds_uint64 m_hDC;
+		ds_uint64 m_hGLRC;
 	};
 }
 

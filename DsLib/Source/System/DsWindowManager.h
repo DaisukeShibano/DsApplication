@@ -21,6 +21,15 @@ namespace DsLib
 		virtual ~DsWindowManager();
 
 	public:
+		/*
+		return 作成したウィンドウハンドル(HWND)
+		*/
+		static ds_uint64 MainWindowCreate(ds_uint64 _hInstance, char* lpCmdLine, int nCmdShow);
+		/*
+		return 終了したか
+		*/
+		static bool MainWindowLoop(ds_uint64 _hwnd, DsSys& sys);
+		
 		static DsWindow* Create( DS_WINDOW_SYSTEM_TYPE type );
 	};	
 }

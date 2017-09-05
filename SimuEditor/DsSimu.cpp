@@ -259,7 +259,7 @@ DsSimu::~DsSimu()
 }
 
 
-void DsSimu::Setup(int handle)
+void DsSimu::Setup(ds_uint64 handle)
 {
 	m_pSys = new DsSys();
 	m_pLoop = new TestMainLoop();

@@ -111,7 +111,7 @@ void DsRender::Render( const double dt )
 	m_pShadow->DrawShadow();
 
 	//‰_•`‰æ
-	GetRenderTool().RefCloud().Update(dt);
+	GetRenderTool().RefCloud().Update(static_cast<float>(dt));
 	
 	//ƒV[ƒ“•`‰æ
 	m_pShader->EnableShader(SHADER_TYPE::DEFAULT);

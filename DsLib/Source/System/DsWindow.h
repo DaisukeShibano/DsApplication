@@ -30,10 +30,10 @@ namespace DsLib
 			DsCamera* pCam;
 			DsMainLoop* pLoop;
 			DsSys* pSys;
-			int handle;
+			ds_uint64 handle;
 		};
 
-	protected:
+	public:
 		enum
 		{
 			INIT_WINDOW_W = 640,
@@ -56,6 +56,17 @@ namespace DsLib
 		virtual int GetCurrentWindowW() const { return m_windowW; }
 		virtual int GetCurrentWindowH() const { return m_windowH; }
 		virtual DsMat33d GetPerspective() const { return DsMat33d::Identity(); }
+
+	public:
+		virtual void Display() {};
+		virtual void Timer(int value) {};
+		virtual void Reshape() {};
+		virtual void Drag(int x, int y) {};
+		virtual void Click(int button, int state, int x, int y) {};
+		virtual void Wheel(int wheel, int x, int y) {};
+		virtual void Keyboard(unsigned char key, int x, int y) {};
+		virtual void KeyboardUp(unsigned char key, int x, int y) {};
+		virtual void KeyboardSp(int key, int x, int y) {};
 
 	public:
 		int GetWindowW() const { return m_windowW; }

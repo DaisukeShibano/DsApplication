@@ -1,4 +1,7 @@
 #include "DsPch.h"
+
+
+#if 0 //îpé~
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #include "gl/freeglut.h"
@@ -185,3 +188,5 @@ DsMat33d  DsWindowEz::GetPerspective() const
 	glGetDoublev(GL_PROJECTION_MATRIX, tmp);
 	return DsMat33d::ToMat33(tmp);
 }
+
+#endif

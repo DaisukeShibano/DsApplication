@@ -1,4 +1,10 @@
 #include "TestPch.h"
+#ifndef _DS_WINDOW_MANAGER_H_
+#include "System/DsWindowManager.h"
+#endif
+
+#include<windows.h>
+
 
 class TestMainLoop : public DsMainLoop
 {
@@ -218,15 +224,30 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 	//	m_pImage2->GetImage(), m_pImage2->GetWidth(), m_pImage2->GetHeight());
 }
 
-int main(int argc, char **argv)
+int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, int nCmdShow)
 {
+	ds_uint64 hwnd = DsWindowManager::MainWindowCreate((ds_uint64)hInstance, lpCmdLine, nCmdShow);
+	if (0 == hwnd) {
+		return 0;
+	}
+
 	DsPath::SetAssetPath(DsPath::GetCurrentPath() + L"\\Asset");
-	DsSys sys;
-	TestMainLoop loop;
+	DsSys* pSys = new DsSys();
+	DS_ASSERT(pSys, "ƒƒ‚ƒŠŠm•ÛŽ¸”s");
+	TestMainLoop* pLoop = new TestMainLoop();
+	DS_ASSERT(pLoop, "ƒƒ‚ƒŠŠm•ÛŽ¸”s");
 	DsSysArgs args;
-	args.argc = argc;
-	args.argv = argv;
-	args.pLoop = &loop;
+	args.argc = 0;
+	args.argv = &lpCmdLine;
+	args.pLoop = pLoop;
 	args.pConfPath = "config.txt";
-	sys.Setup(args);
+	args.windowType = DS_WINDOW_SYSTEM_TYPE_GL;
+	args.windowHandle = hwnd;
+	pSys->Setup(args);
+
+	DsWindowManager::MainWindowLoop(hwnd, *pSys);
+	
+	delete pLoop;
+	delete pSys;
+	return 0;
 }
