@@ -245,7 +245,7 @@ int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine
 	args.windowHandle = hwnd;
 	pSys->Setup(args);
 
-	DsWindowManager::MainWindowLoop(hwnd, *pSys);
+	while(DsWindowManager::MainWindowUpdate(hwnd, *pSys));
 	
 	delete pLoop;
 	delete pSys;

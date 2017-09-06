@@ -36,6 +36,7 @@ namespace
 {
 	static DsSys* s_pSys = NULL;
 	static bool s_isOneFrame = true;
+	static bool s_exit = false;
 
 	int _GetDsMouseState(UINT msg)
 	{
@@ -149,7 +150,7 @@ namespace
 			case WM_DESTROY:
 			{
 				PostQuitMessage(0);
-				exit(0);
+				s_exit = true;
 			}
 			break;
 
@@ -163,6 +164,7 @@ namespace
 }
 
 /*
+@par ウィンドウ作成。中身はWIN32のテンプレで面倒くさい時用。別に必ず叩く必要は無い
 return 作成したウィンドウハンドル(HWND)
 */
 //static 
@@ -213,38 +215,42 @@ ds_uint64 DsWindowManager::MainWindowCreate(ds_uint64 _hInstance, char* lpCmdLin
 }
 
 /*
+@par メッセージループ。中身はWIN32のテンプレで面倒くさい時用。
+	DsWindowManager::MainWindowCreateを使った時はこの関数を使う必要がある
 return 終了したか
 */
 //static
-bool DsWindowManager::MainWindowLoop(ds_uint64 _hwnd, DsSys& sys)
+bool DsWindowManager::MainWindowUpdate(ds_uint64 _hwnd, DsSys& sys)
 {
+	if (s_exit) {
+		return false;
+	}
+
 	s_pSys = &sys;
 
 	LARGE_INTEGER freq;
 	BOOL isEnableTimer = QueryPerformanceFrequency(&freq);
 
-	while (1) {
-		HWND hwnd = (HWND)_hwnd;
+	HWND hwnd = (HWND)_hwnd;
 
-		LARGE_INTEGER start;
-		if (isEnableTimer && QueryPerformanceCounter(&start) ) {
-			LONGLONG curTimeMs = static_cast<LONGLONG>((static_cast<double>(start.QuadPart) / static_cast<double>(freq.QuadPart))*1000.0);
-			if ( (curTimeMs % 16) == 0) {
-				s_isOneFrame = true;
-				InvalidateRect(hwnd, 0, false);
-			}
+	LARGE_INTEGER start;
+	if (isEnableTimer && QueryPerformanceCounter(&start) ) {
+		LONGLONG curTimeMs = static_cast<LONGLONG>((static_cast<double>(start.QuadPart) / static_cast<double>(freq.QuadPart))*1000.0);
+		if ( (curTimeMs % 16) == 0) {
+			s_isOneFrame = true;
+			InvalidateRect(hwnd, 0, false);
 		}
+	}
 		
-		MSG msg;
-		if (PeekMessage(&msg, hwnd, 0, 0, PM_NOREMOVE)) {
-			int mesRet = GetMessage(&msg, hwnd, 0, 0);
-			if (mesRet != 0) {
-				TranslateMessage(&msg);
-				DispatchMessage(&msg);
-			}
-			else {
-				break;
-			}
+	MSG msg;
+	if (PeekMessage(&msg, hwnd, 0, 0, PM_NOREMOVE)) {
+		int mesRet = GetMessage(&msg, hwnd, 0, 0);
+		if (mesRet != 0) {
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+		else {
+			return false;
 		}
 	}
 	return true;
