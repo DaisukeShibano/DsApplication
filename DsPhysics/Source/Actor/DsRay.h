@@ -20,7 +20,8 @@ namespace DsPhysics
 	class DsRay : public DsActor
 	{
 	public:
-		DsRay( const DsActorId& id );
+		explicit DsRay( const DsActorId& id );
+		DsRay();
 		virtual ~DsRay();
 
 	public:
@@ -41,6 +42,7 @@ namespace DsPhysics
 	private:
 		DsVec3d m_vertex[2];
 		DsLine m_line;
+		DsAabb m_aabb;
 		DsCollisionGeometry* m_pCollisionGeometry;
 	};
 

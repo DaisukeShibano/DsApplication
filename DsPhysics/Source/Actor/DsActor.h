@@ -17,7 +17,7 @@ namespace DsPhysics
 
 namespace DsPhysics
 {
-	typedef unsigned long long DsCollisionFilter;
+	typedef unsigned long long int DsCollisionFilter;
 
 
 	class DsActorId
@@ -107,7 +107,7 @@ namespace DsPhysics
 			,m_lifeTime(1)
 			,m_dt(0.0)
 			,m_pUserData(NULL)
-			, m_collisionFilter(0)
+			,m_collisionFilter(0)
 			,m_pOctreeNodeActorNext(NULL)
 
 			,m_dbgColor(DsVec4d::Zero())
@@ -188,7 +188,7 @@ namespace DsPhysics
 		void SetUserData(void *pData) { m_pUserData = pData; }
 
 		DsCollisionFilter GetCollisionFilter() const { return m_collisionFilter; }
-		void SetCollisionFilter(DsCollisionFilter filter) { m_collisionFilter = filter; }
+		void SetCollisionFilter(DsCollisionFilter filter) {	m_collisionFilter = filter; }
 
 	public://‹óŠÔ•ªŠ„—p
 		void SetOctreeNodeNext(const DsActor* pActor){ m_pOctreeNodeActorNext = pActor; }

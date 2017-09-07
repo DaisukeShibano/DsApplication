@@ -22,7 +22,7 @@ DsCollisionResult& DsCollisionMeshRay::Collide()
 	if (m_pMesh && m_pRay)
 	{
 		if (m_world.GetCollisionCallback()) {
-			if (!m_world.GetCollisionCallback()->IsCollide(*m_pMesh->RefOwnerId().GetActor(), *m_pMesh->RefOwnerId().GetActor())) {
+			if (!m_world.GetCollisionCallback()->IsCollide(*m_pMesh->RefOwnerId().GetActor(), *m_pRay->RefOwnerId().GetActor())) {
 				return m_info;
 			}
 		}

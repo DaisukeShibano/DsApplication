@@ -53,7 +53,7 @@ DsAnimation::DsAnimation(const DsAnimController& animController, const DsAnimRes
 	m_pAnimModel = anim.CreateAnimModel();
 	m_pCustomProperty = anim.CustomProperty();
 
-	//アニメ再生クラスがアニメ遷移制御を呼び出すんじゃなく、アニメ遷移制御がアニメ再生クラスを呼び出す形にしたい。
+	//m_animSMは仮のアニメ遷移制御
 	if (m_pKeyframeAnim && m_pSkeleton && m_pAnimModel)
 	{
 		m_animSM.Initialize(m_pKeyframeAnim->GetKeyframeAnims(), m_pKeyframeAnim->GetKeyframeAnimNum());

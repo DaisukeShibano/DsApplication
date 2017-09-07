@@ -213,14 +213,19 @@ DsActor* DsPhysicsWorld::GetActor(const DsActorId& id) const
 /*
 	@param[out] depth çÃópÇµÇΩè’ìÀì_Ç‹Ç≈ÇÃãóó£
 */
-DsActor*  DsPhysicsWorld::RayCast_CollectNear(const DsVec3d& startPos, const DsVec3d& endPos, double* depth/* = NULL*/) const
+DsActor*  DsPhysicsWorld::RayCast_CollectNear(const DsVec3d& startPos, const DsVec3d& endPos, double* depth/* = NULL*/, DsVec3d* hitPos/* = NULL*/) const
+{
+	DsRay ray;
+	ray.Create(startPos, endPos);
+	return RayCast_CollectNear(ray, depth, hitPos);
+}
+
+DsActor*  DsPhysicsWorld::RayCast_CollectNear(DsRay& ray, double* depth/* = NULL*/, DsVec3d* hitPos/* = NULL*/) const
 {
 	typedef std::vector<DsCollisionResult> resultVec;
 	
-	DsActorId dummyId;
-	DsRay ray(dummyId);
-	ray.Create(startPos, endPos);
-	dummyId = DsActorId(&ray);
+	DsActorId dummyId = DsActorId(&ray);
+	const DsVec3d startPos = ray.GetCollisionGeometry()->GetVertex()[0];
 
 	resultVec results;
 	m_pListener->Cast(ray, m_group, results);
@@ -242,7 +247,7 @@ DsActor*  DsPhysicsWorld::RayCast_CollectNear(const DsVec3d& startPos, const DsV
 			const bool isExitNear = (*it).GetNearColPoint(startPos, nearPos);
 			if( isExitNear )
 			{
-				const double len = fabs(startPos.Length()-nearPos.Length());
+				const double len = (startPos-nearPos).Length();
 				//RayÇ∂Ç·Ç»Ç¢ï˚ÇÃActorIdéÊìæ
 				const DsActorId nearId = ( (*it).GetHitActorId_1() != dummyId ) ? (*it).GetHitActorId_1() : (*it).GetHitActorId_2();
 
@@ -252,6 +257,7 @@ DsActor*  DsPhysicsWorld::RayCast_CollectNear(const DsVec3d& startPos, const DsV
 					retId = nearId;
 					retNearPos = nearPos;
 					if (depth) *depth = len;
+					if (hitPos) *hitPos = retNearPos;
 				}
 			}
 		}

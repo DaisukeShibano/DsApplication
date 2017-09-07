@@ -29,7 +29,7 @@ namespace DsLib
 	public:
 		static inline bool IsContain(const DsAabb& a, const DsAabb& b)
 		{
-#ifdef DS_SYS_USE_SIMD_aaaaaaaaaaaaaaaaaaaaaaa//多分インライン展開されてなくて重い
+#ifdef DS_SYS_USE_SIMD_aaaaaaaaaaaaaaaaaaaaaaa
 			const __m256d dist = _mm256_andnot_pd(_mm256_set1_pd(-0.0), _mm256_sub_pd(*(__m256d*)(a.m_pos.v), *(__m256d*)(b.m_pos.v)) );//最上位ビットだけクリアして絶対値とる
 			const __m256d max = _mm256_add_pd(*(__m256d*)(a.m_maxV), *(__m256d*)(b.m_maxV));
 			const __m256d mask = _mm256_cmp_pd(dist, max, _CMP_LT_OS);
