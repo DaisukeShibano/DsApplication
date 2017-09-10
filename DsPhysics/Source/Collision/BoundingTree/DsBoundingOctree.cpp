@@ -222,6 +222,8 @@ actorを含む空間に所属する全てのactorを取得
 */
 void DsBoundingOctree::GetContainAreaActors(const DsActor& actor, std::vector<const DsActor*>& outActors) const
 {
+	//actorが一つもないと最初のUpdateでm_allActorMaxPosあたりが想定外の値がくるので直す
+
 	//actorが完全に含まれる空間を求め、その空間に所属する全てのactroをoutActorsとして返す
 
 	const DsVec3d gridSize = DsVec3d::Abs(m_allActorMaxPos - m_allActorMinPos) / static_cast<double>(m_resolution);
