@@ -48,12 +48,22 @@ namespace DsPhysics
 		const DsBdOctreeNode* GetRootNode() const { return m_pRoot; }
 		const int GetResolutionNum() const{ return m_resolution; }
 
+	public:
+		/*
+		actor‚ğŠÜ‚Ş‹óŠÔ‚ÉŠ‘®‚·‚é‘S‚Ä‚Ìactor‚ğæ“¾
+		*/
+		void GetContainAreaActors(const DsActor& actor, std::vector<const DsActor*>& outActors ) const;
+
 	private:
 		DsBdOctreeNode* m_pRoot;
 		DsBdOctreeNode* m_pTerminal;
 		DsBdOctreeNode** m_pAllNode;
 		int m_allNodeNum;
 		int m_resolution;
+
+	private:
+		DsVec3d m_allActorMaxPos;
+		DsVec3d m_allActorMinPos;
 	};
 }
 

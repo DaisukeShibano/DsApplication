@@ -141,6 +141,7 @@ void DsRigidMesh::Create(const DsAnimModel& animModel)
 			pi.mass.inertia[4] = min(Iyy, DS_MAX_MASS);
 			pi.mass.inertia[8] = min(Izz, DS_MAX_MASS);
 			pi.mass.mass = min(M, DS_MAX_MASS);
+			pi.mass.inertiaOriginal = pi.mass.inertia;
 		}
 
 		//初期姿勢
@@ -153,42 +154,61 @@ void DsRigidMesh::Create(const DsAnimModel& animModel)
 		DsRigidGeometryInfo& gi = m_geomInfo;
 		//pi.centerOfGravity = _GetCenterOfGravity(m_geomInfo.pVertex, m_geomInfo.vn);
 		pi.centerOfGravity = GetPosition();
-
-		//AABB
-		DsVec3d maxLen = DsVec3d::Zero();
-		for (int i = 0; i < m_geomInfo.vn; ++i)
-		{
-			const DsVec3d len = gi.pVertex[i] - pi.centerOfGravity;
-			maxLen.x = max(maxLen.x, fabs(len.x));
-			maxLen.y = max(maxLen.y, fabs(len.y));
-			maxLen.z = max(maxLen.z, fabs(len.z));
-		}
-		m_aabb.Setup(maxLen.x, maxLen.y, maxLen.z, pi.centerOfGravity);
-		m_sideSize.x = maxLen.x;
-		m_sideSize.y = maxLen.y;
-		m_sideSize.z = maxLen.z;
-	}
-
-	{//AABBツリー生成。
-		std::vector<int> faceIdx;
-		for (int i = 0; i < m_geomInfo.fn; ++i){
-			faceIdx.push_back(i);
-		}
-		const int depth = (m_option.isStatic) ? (DsBoundingTreeAabb::DEFAULT_DEPTH) : (0);//分割が動くものに対応してない
-		m_pAabbTree = new DsBoundingTreeAabb(*this, m_physicsInfo.pos, m_sideSize, m_geomInfo.pFace, m_geomInfo.fn, m_geomInfo.pVertex, m_geomInfo.vn, faceIdx, depth);
-		m_pAabbTree->ConstructTree();
 	}
 
 	//静的オブジェでも最初の一回だけUpdateしないと初期姿勢が反映されない
 	m_isForceUpdate = true;
 	m_isForceRotation = true;
 
-	_Update(m_initPos, m_initRot);
+	SetPosition(GetPosition() + m_initPos);
+	SetRotation(GetRotation() * m_initRot);
+	_Update(DsVec3d::Zero(), DsMat33d::Identity());
 
 	m_pCollisionGeometry = new DsCollisionGeometry(m_geomInfo.pVertex, m_geomInfo.vn, m_geomInfo.pFace, m_geomInfo.fn,
 		m_geomInfo.pLine, m_geomInfo.ln, GetId(), m_physicsInfo.centerOfGravity, NULL, //1フレ前頂点はパフォーマンスのためやらない。
 		m_sideSize, m_pAabbTree, &m_aabb, GetRotation());
 }
+
+//virtual 
+void DsRigidMesh::_Update(const DsVec3d& deltaPos, const DsMat33d& deltaRot)
+{
+	bool isCreate = false;
+	if (m_option.isRotation || m_isForceRotation){
+		isCreate = true;
+	}
+
+	DsRigidBody::_Update(deltaPos, deltaRot);
+
+	//座標の更新があったらツリー作り直し。動くものは頻繁に変わるので非対応
+	if (isCreate && m_option.isStatic)
+	{
+		{//サイズ
+			DsVec3d maxLen = DsVec3d::Zero();
+			for (int i = 0; i < m_geomInfo.vn; ++i)
+			{
+				const DsVec3d len = m_geomInfo.pVertex[i] - m_physicsInfo.centerOfGravity;
+				maxLen.x = max(maxLen.x, fabs(len.x));
+				maxLen.y = max(maxLen.y, fabs(len.y));
+				maxLen.z = max(maxLen.z, fabs(len.z));
+			}
+			m_sideSize.x = maxLen.x;
+			m_sideSize.y = maxLen.y;
+			m_sideSize.z = maxLen.z;
+		}
+		{
+			//AABBツリー生成。
+			delete m_pAabbTree;
+			std::vector<int> faceIdx;
+			for (int i = 0; i < m_geomInfo.fn; ++i) {
+				faceIdx.push_back(i);
+			}
+			const int depth = DsBoundingTreeAabb::DEFAULT_DEPTH;
+			m_pAabbTree = new DsBoundingTreeAabb(*this, m_physicsInfo.centerOfGravity, m_sideSize, m_geomInfo.pFace, m_geomInfo.fn, m_geomInfo.pVertex, m_geomInfo.vn, faceIdx, depth);
+			m_pAabbTree->ConstructTree();
+		}
+	}
+}
+
 
 //virtual 
 void DsRigidMesh::Draw(DsDrawCommand& com)
@@ -210,6 +230,7 @@ void DsRigidMesh::Draw(DsDrawCommand& com)
 		}
 	}
 }
+
 
 //////////////////////factory//////////////////////////
 DsActor* DsRigidMesh::DsRigidMeshFactory::CreateIns(const DsActorId& id) const

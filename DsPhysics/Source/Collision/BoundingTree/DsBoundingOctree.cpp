@@ -21,6 +21,9 @@ DsBoundingOctree::DsBoundingOctree()
 	, m_pAllNode(NULL)
 	, m_allNodeNum(0)
 	, m_resolution(0)
+	, m_allActorMaxPos(DsVec3d::Zero())
+	, m_allActorMinPos(DsVec3d::Zero())
+
 {
 }
 
@@ -158,6 +161,9 @@ allActorMaxPos 全てのアクターのもっとも大きいAABBの端座標
 */
 void DsBoundingOctree::Update(DsActor** pActors, const int actNum, const DsVec3d& allActorMinPos, const DsVec3d& allActorMaxPos)
 {
+	m_allActorMaxPos = allActorMaxPos;
+	m_allActorMinPos = allActorMinPos;
+
 	//所属actorクリア
 	DsBdOctreeNode** tmp = m_pAllNode;
 	for (int i = 0; i < m_allNodeNum; ++i, ++tmp) {
@@ -171,8 +177,8 @@ void DsBoundingOctree::Update(DsActor** pActors, const int actNum, const DsVec3d
 
 		//pActorが完全に内包される分割空間のノードを求める。
 
-		const DsVec3d& pos = pActor->GetPosition();
-		const DsAabb& aabb = pActor->RefAabb();
+		const DsVec3d pos = pActor->GetPosition();
+		const DsAabb aabb = pActor->RefAabb();
 		const DsVec3d maxPos = pos + aabb.GetMax();
 		const DsVec3d minPos = pos - aabb.GetMax();
 		//各成分の座標が何番目の格子に相当するのか。
@@ -208,5 +214,92 @@ void DsBoundingOctree::Update(DsActor** pActors, const int actNum, const DsVec3d
 		 //所属空間が分かったのでここに登録
 		pActor->SetOctreeNodeNext(pMaxParent->actor);//一番最初はNULL
 		pMaxParent->actor = pActor;//後から追加した方が先頭になる
+	}
+}
+
+/*
+actorを含む空間に所属する全てのactorを取得
+*/
+void DsBoundingOctree::GetContainAreaActors(const DsActor& actor, std::vector<const DsActor*>& outActors) const
+{
+	//actorが完全に含まれる空間を求め、その空間に所属する全てのactroをoutActorsとして返す
+
+	const DsVec3d gridSize = DsVec3d::Abs(m_allActorMaxPos - m_allActorMinPos) / static_cast<double>(m_resolution);
+	const DsVec3d pos = DsVec3d::Clamp3(actor.GetPosition(), m_allActorMinPos, m_allActorMaxPos);//新規actorかもしれないので最大座標でクランプ
+	const DsAabb aabb = actor.RefAabb();
+	const DsVec3d maxPos = pos + aabb.GetMax();
+	const DsVec3d minPos = pos - aabb.GetMax();
+	//各成分の座標が何番目の格子に相当するのか。
+	//一番大きい座標の格子番号
+	const DsVec3d maxGridPos = DsVec3d::Div(maxPos - m_allActorMinPos, gridSize) - DsVec3d(FLT_EPSILON, FLT_EPSILON, FLT_EPSILON);//ぴったりMaxだと１つ分はみ出ることになるので-FLT_EPSILON。
+	const int maxGridNum[3] = {
+		static_cast<int>(maxGridPos.x),
+		static_cast<int>(maxGridPos.y),
+		static_cast<int>(maxGridPos.z),
+	};
+	//一番小さい座標の格子番号
+	const DsVec3d minGridPos = DsVec3d::Div(minPos - m_allActorMinPos, gridSize);
+	const int minGridNum[3] = {
+		static_cast<int>(minGridPos.x),
+		static_cast<int>(minGridPos.y),
+		static_cast<int>(minGridPos.z),
+	};
+	//この時点でマイナスにはならないはず。
+
+	const int resolution2 = m_resolution*m_resolution;
+	const int maxIdx = maxGridNum[0] * resolution2 + maxGridNum[1] * m_resolution + maxGridNum[2];//一番大きな座標の所属する格子のノードへのインデックス
+	const int minIdx = minGridNum[0] * resolution2 + minGridNum[1] * m_resolution + minGridNum[2];//一番小さな座標の所属する格子のノードへのインデックス
+
+	//最大座標と最小座標のグリッドの親をさかのぼっていって、同じになれば両方が含まれる空間＝そのactorを完全に含む空間
+	const DsBdOctreeNode* pMaxParent = m_pTerminal[maxIdx].parent;
+	const DsBdOctreeNode* pMinParent = m_pTerminal[minIdx].parent;
+	while (pMaxParent != pMinParent) {
+		pMaxParent = pMaxParent->parent;
+		pMinParent = pMinParent->parent;
+	}//少なくともルート空間で必ず一致するはず。NULLなら実装ミス
+	DS_ASSERT(pMaxParent && pMinParent, "DsBoundingOctreeで所属空間が見つからないactorがいる %s", pActor->GetName());
+
+
+	bool isBack = false;
+	const DsBdOctreeNode* pSearch = pMaxParent->child;//兄弟も含む探索なので子から
+
+	//pSearch以下の子ノードを探索
+	while (pSearch){
+		if (!isBack) {//階層を新しく降りたときだけ。isBackがtureということは既に巡回済み
+			const DsActor* pOutActor = pSearch->actor;
+			while (pOutActor) {
+				outActors.push_back(pOutActor);
+				pOutActor = pOutActor->GetOctreeNodeNext();
+			}
+		}
+
+		//深さ優先でツリーを辿る
+		if (pSearch->child && (!isBack)) {
+			pSearch = pSearch->child;
+		}
+		else if (pSearch->brother) {
+			pSearch = pSearch->brother;
+			isBack = false;
+		}
+		else {
+			pSearch = pSearch->parent;
+			isBack = true;
+		}
+
+		if (pSearch == pMaxParent) {
+			//戻ってきたので終わり
+			break;
+		}
+	}
+
+	pSearch = pMaxParent;
+	//pSearch以上はpSearchを完全に含むので必ず衝突候補
+	while (pSearch) {
+		const DsActor* pOutActor = pSearch->actor;
+		while (pOutActor) {
+			outActors.push_back(pOutActor);
+			pOutActor = pOutActor->GetOctreeNodeNext();
+		}
+		pSearch = pSearch->parent;
 	}
 }

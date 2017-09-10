@@ -41,6 +41,7 @@ void DsRigidSphere::Create(const double r, const double mass )
 			pi.mass.inertia[4] = Iyy;
 			pi.mass.inertia[8] = Izz;
 			pi.mass.mass = M;
+			pi.mass.inertiaOriginal = pi.mass.inertia;
 
 			//拘束用慣性テンソル逆行列
 			{
@@ -73,8 +74,10 @@ void DsRigidSphere::Create(const double r, const double mass )
 	m_isForceUpdate = true;
 	m_isForceRotation = true;
 
-	_Update(m_initPos, m_initRot);
-
+	SetPosition(GetPosition() + m_initPos);
+	SetRotation(GetRotation() * m_initRot);
+	_Update(DsVec3d::Zero(), DsMat33d::Identity());
+	
 	m_pCollisionGeometry = new DsCollisionGeometry(NULL, 0, NULL, 0,
 		NULL, 0, GetId(), m_physicsInfo.centerOfGravity, NULL, m_sideSize, NULL, &m_aabb, GetRotation());
 }

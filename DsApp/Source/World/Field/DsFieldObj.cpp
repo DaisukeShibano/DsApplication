@@ -58,9 +58,8 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 			if (pHitModel)
 			{
 				DsRigidMesh::DsRigidMeshFactory factory(*pHitModel, m_name.c_str());
-				//初期位置＋SetPosition分動いてしまうので、ここでは設定せず、↓でSetPositionしてる
-				//factory.InitPos(initInfo.pos);
-				//factory.InitRot(initInfo.rot);
+				factory.InitPos(initInfo.pos);
+				factory.InitRot(initInfo.rot);
 				DsActor::Option option = DsActor::Option::Default();
 				switch (initInfo.physicsType)
 				{
@@ -80,10 +79,7 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 					break;
 				}
 				factory.SetOption(option);
-
 				m_actorId = m_world.CreateActor(factory);
-				SetPosition(initInfo.pos);
-				SetRotation(initInfo.rot);
 				DsActor* pActor = m_world.GetActor(m_actorId);
 				if (pActor)
 				{
@@ -108,9 +104,8 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 			DsRigidBox::GetVertex(vertex, shape.sizeX, shape.sizeY, shape.sizeZ);
 			{
 				DsRigidBox::DsRigidBoxFactory factory(vertex, shape.weight, m_name.c_str());
-				//初期位置＋SetPosition分動いてしまうので、ここでは設定せず、↓でSetPositionしてる
-				//factory.InitPos(initInfo.pos);
-				//factory.InitRot(initInfo.rot);
+				factory.InitPos(initInfo.pos);
+				factory.InitRot(initInfo.rot);
 				DsRigidBox::Option option = DsRigidBox::Option::Default();
 				switch (initInfo.physicsType)
 				{
@@ -132,8 +127,6 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 				factory.SetOption(option);
 				
 				m_actorId = m_world.CreateActor(factory);
-				SetPosition(initInfo.pos);
-				SetRotation(initInfo.rot);
 				DsActor* pActor = m_world.GetActor(m_actorId);
 				if (pActor)
 				{

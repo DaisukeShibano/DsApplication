@@ -34,9 +34,16 @@ DsRay::~DsRay()
 	delete m_pCollisionGeometry; m_pCollisionGeometry = NULL;
 }
 
+//virtual
 void DsRay::Update()
 {
 
+}
+
+//virtual 
+const DsVec3d& DsRay::GetPosition() const
+{
+	return m_aabb.GetPos();
 }
 
 void DsRay::Create( const DsVec3d& start, const DsVec3d& end )

@@ -3,6 +3,9 @@
 #include "Collision/EachGeom/DsCollisionMeshRay.h"
 #endif
 
+#ifndef __DS_BOUNDING_TREE_BASE__
+#include "Collision/BoundingTree/DsBoundingTreeBase.h"
+#endif
 #include "Actor/DsRigidBox.h"
 #include "Collision/DsCollisionResult.h"
 #include "Collision/DsCollisionDetection.h"
@@ -31,4 +34,17 @@ DsCollisionResult& DsCollisionMeshRay::Collide()
 	}
 
 	return m_info;
+}
+
+bool DsCollisionMeshRay::_ColideAABB() const
+{
+	const DsBoundingTreeBase* pMTree = m_pMesh->GetBoungingTree();
+	const DsAabb* pAabb = m_pRay->GetAabb();
+	
+	if (pMTree && pAabb) {
+		return pMTree->IsContain(*pAabb);
+	}
+	else {
+		return true;
+	}
 }

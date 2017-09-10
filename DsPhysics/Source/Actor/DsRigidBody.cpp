@@ -166,8 +166,10 @@ void DsRigidBody::_UpdateInertia(const DsMat33d& deltaRot)
 
 	//慣性テンソル更新
 	{
-		const DsMat33d invR = DsMat33d::Inverse(deltaRot);
-		const DsMat33d rotI = (deltaRot * pi.mass.inertia) * invR;
+		const DsMat33d invR = DsMat33d::Inverse(m_physicsInfo.rotation);
+		const DsMat33d rotI = (m_physicsInfo.rotation * pi.mass.inertiaOriginal) * invR;
+		//const DsMat33d invR = DsMat33d::Inverse(deltaRot);
+		//const DsMat33d rotI = (deltaRot * pi.mass.inertia) * invR;
 		pi.mass.inertia = rotI;
 	}
 	//拘束用慣性テンソル逆行列

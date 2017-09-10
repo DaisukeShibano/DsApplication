@@ -571,10 +571,10 @@ DsCollisionResult& DsCollisionCapsuleMesh::Collide()
 bool DsCollisionCapsuleMesh::_ColideAABB()
 {
 	const DsBoundingTreeBase* pMTree = m_pMesh->GetBoungingTree();
-	const DsBoundingTreeBase* pBTree = m_pCapsule->GetBoungingTree();
+	const DsAabb* pAabb = m_pCapsule->GetAabb();
 
-	if (pMTree && pBTree){
-		return pBTree->IsContain(*pMTree);
+	if (pMTree && pAabb){
+		return pMTree->IsContain(*pAabb);
 	}
 	else{
 		return true;

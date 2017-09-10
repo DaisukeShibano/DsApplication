@@ -30,7 +30,9 @@ namespace DsPhysics
 		virtual const DsCollisionGeometry* GetCollisionGeometry() const override{ return m_pCollisionGeometry; }
 
 		virtual void Update() override;
-	
+		virtual const DsVec3d& GetPosition() const override;
+		virtual const DsAabb& RefAabb() const override { return m_aabb; }
+
 	public:
 		void Create( const DsVec3d& start, const DsVec3d& end );
 

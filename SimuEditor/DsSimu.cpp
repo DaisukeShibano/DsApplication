@@ -261,6 +261,7 @@ DsSimu::~DsSimu()
 
 void DsSimu::Setup(ds_uint64 handle)
 {
+	DsPath::SetAssetPath(DsPath::GetCurrentPath() + L"\\..\\Test\\Asset");
 	m_pSys = new DsSys();
 	m_pLoop = new TestMainLoop();
 	DsSysArgs args;

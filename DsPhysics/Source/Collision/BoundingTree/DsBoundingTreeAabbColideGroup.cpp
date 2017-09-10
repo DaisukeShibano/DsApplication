@@ -112,7 +112,7 @@ int DsBoundingTreeAabbColideGroup::GetTotalBoxNum() const
 }
 
 //virtual 
-void DsBoundingTreeAabbColideGroup::Draw(DsDrawCommand& com)
+void DsBoundingTreeAabbColideGroup::Draw(DsDrawCommand& com) const
 {
 	m_aabb.Draw(com);
 	for each(DsBoundingTreeAabbColideGroup* pChild in m_child){

@@ -132,8 +132,10 @@ void DsRigidBox::Create(const DsVec3d* pv, const double mass )
 	m_isForceUpdate = true;
 	m_isForceRotation = true;
 
-	_Update(m_initPos, m_initRot);
-
+	SetPosition(GetPosition() + m_initPos);
+	SetRotation(GetRotation() * m_initRot);
+	_Update(DsVec3d::Zero(), DsMat33d::Identity());
+	
 	m_pCollisionGeometry = new DsCollisionGeometry(m_geomInfo.pVertex, VERTEX_NUM, m_geomInfo.pFace, FACE_NUM,
 		m_geomInfo.pLine, LINE_NUM, GetId(), m_physicsInfo.centerOfGravity, NULL, m_sideSize, NULL, &m_aabb, GetRotation());
 }

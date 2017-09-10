@@ -27,7 +27,9 @@ DsCollisionListener::DsCollisionListener( DsPhysicsWorld& world )
 ,m_pBoundingTree(NULL)
 {
 	m_pColExecuter = new DsCollisionExecuter(world);
+	DS_ASSERT(m_pColExecuter, "メモリ確保失敗");
 	m_pBoundingTree = new DsBoundingOctree();
+	DS_ASSERT(m_pBoundingTree, "メモリ確保失敗");
 	m_pBoundingTree->CreateTree(64);
 }
 
@@ -44,7 +46,8 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 	DsActor** pActors = group.GetActors();
 	DsConstraintSolver* pSolver = m_world.GetConstraintSolver();
 
-	if (_IsUseBoundingGroup(totalActTNum))
+	//m_pBoundingTreeが更新されないケースを考えなきゃいけなくなるのが面倒なので必ず使う
+	//if (_IsUseBoundingGroup(totalActTNum) || true)
 	{
 		DsVec3d minPos = DsVec3d(DBL_MAX, DBL_MAX, DBL_MAX);
 		DsVec3d maxPos = DsVec3d(-DBL_MAX, -DBL_MAX, -DBL_MAX);
@@ -58,13 +61,11 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 			maxPos.y = max(maxPos.y, tmpPos.y + tmpLen.y);
 			maxPos.z = max(maxPos.z, tmpPos.z + tmpLen.z);
 		}
-
 		//actorの所属空間更新
 		m_pBoundingTree->Update(pActors, totalActTNum, minPos, maxPos);
 
-		//ツリーを巡って当たり判定
+		//分かりやすい解説
 		//http://marupeke296.com/COL_2D_No8_QuadTree.html
-		//まったく同じではない。でも概念は同じ
 		std::vector < const DsActor* > colideStack;
 		colideStack.reserve(totalActTNum);
 
@@ -144,44 +145,40 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 			}
 		}
 	}
-	else{//空間分割を使わない総当り判定。数が少ないときは所属空間の割り振り・探索しない分こちらの方が速い（それくらいだったらもう無視してもいいのかも）
-		for (int actIdx_1 = 0; actIdx_1 < totalActTNum - 1; ++actIdx_1)
-		{
-			for (int actIdx_2 = actIdx_1 + 1; actIdx_2 < totalActTNum; ++actIdx_2)
-			{
-				bool isSkip = (((pActors[actIdx_1]->IsRest()) && (pActors[actIdx_2]->IsRest())) ||
-					((pActors[actIdx_1]->IsRest()) && (pActors[actIdx_2]->RefOption().isStatic)) ||
-					((pActors[actIdx_1]->RefOption().isStatic) && (pActors[actIdx_2]->IsRest())) ||
-					((pActors[actIdx_1]->RefOption().isStatic) && (pActors[actIdx_2]->RefOption().isStatic))
-					);
-
-				if (!isSkip)
-				{
-					{
-						const DsCollisionResult& result = m_pColExecuter->Exe(*pActors[actIdx_1], *pActors[actIdx_2]);
-						if (0 < result.GetColNum()){
-							pSolver->AddCollision(result);
-						}
-					}
-				}
-			}
-		}
-	}
+	//else{//空間分割を使わない総当り判定。数が少ないときは所属空間の割り振り・探索しない分こちらの方が速い（それくらいだったらもう無視してもいいのかも）
+	//	for (int actIdx_1 = 0; actIdx_1 < totalActTNum - 1; ++actIdx_1)
+	//	{
+	//		for (int actIdx_2 = actIdx_1 + 1; actIdx_2 < totalActTNum; ++actIdx_2)
+	//		{
+	//			bool isSkip = (((pActors[actIdx_1]->IsRest()) && (pActors[actIdx_2]->IsRest())) ||
+	//				((pActors[actIdx_1]->IsRest()) && (pActors[actIdx_2]->RefOption().isStatic)) ||
+	//				((pActors[actIdx_1]->RefOption().isStatic) && (pActors[actIdx_2]->IsRest())) ||
+	//				((pActors[actIdx_1]->RefOption().isStatic) && (pActors[actIdx_2]->RefOption().isStatic))
+	//				);
+	//
+	//			if (!isSkip)
+	//			{
+	//				{
+	//					const DsCollisionResult& result = m_pColExecuter->Exe(*pActors[actIdx_1], *pActors[actIdx_2]);
+	//					if (0 < result.GetColNum()){
+	//						pSolver->AddCollision(result);
+	//					}
+	//				}
+	//			}
+	//		}
+	//	}
+	//}
 }
 
 //拘束に登録せずその場で判定して結果を即返す
 void DsCollisionListener::Cast( const DsActor& actor, const DsCollisionGroup& group, std::vector<DsCollisionResult>& resultVec ) const
 {
-	const int actNum = group.GetActorNumber();
-	const DsActor*const* pActors = group.GetActors();
-
-	for(int actIdx = 0; actNum > actIdx; ++actIdx)
-	{
-		DsCollisionExecuter executor(m_world);
-		const DsCollisionResult& result =  executor.Exe( *pActors[actIdx], actor );
-
-		if( result.GetColNum() > 0 )
-		{
+	std::vector < const DsActor* > targetActors;
+	m_pBoundingTree->GetContainAreaActors(actor, targetActors);
+	for (const DsActor* pActor : targetActors) {
+		//((DsActor*)(pActor))->Draw(DsDbgSys::GetIns().RefDrawCom());
+		const DsCollisionResult& result = m_pColExecuter->Exe(*pActor, actor);
+		if (result.GetColNum() > 0){
 			resultVec.push_back(result);
 		}
 	}

@@ -37,13 +37,16 @@ namespace DsPhysics
 		virtual bool IsContain(const DsBoundingTreeAabb& cmp) const override{ return true; }
 		virtual bool IsContain(const DsBoundingTreeAabbColideGroup& cmp) const override;
 
+	private:
+		virtual bool IsContain(const DsLib::DsAabb& cmp) const override { return true; }
+
 	public:
 		void Update(const DsActor*const* pActors, int actorNum);
 		int GetTotalBoxNum() const;
 		const GroupMap& RefGroupMap() const { return m_groupMap; }
 
 	public:
-		virtual void Draw(DsDrawCommand& com)override;
+		virtual void Draw(DsDrawCommand& com) const override;
 
 	private:
 		DsAabb m_aabb;

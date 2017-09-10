@@ -5,6 +5,11 @@
 ///#include "Collision/BoundingTree/DsBoundingTreeBase.h"
 ///#endif
 
+namespace DsLib
+{
+	class DsAabb;
+}
+
 namespace DsPhysics
 {
 	class DsBoundingTreeAabb;
@@ -19,11 +24,14 @@ namespace DsPhysics
 		virtual void ConstructTree()=0;
 		virtual bool IsContain(const DsBoundingTreeBase& cmp) const = 0;
 		virtual bool IsContain(const DsBoundingTreeAabb& cmp) const = 0;
-		virtual bool IsContain(const DsBoundingTreeAabbColideGroup& cmp) const = 0;
-		//virtual const MY_CLASS& GetMyself() const = 0;
+		virtual bool IsContain(const DsBoundingTreeAabbColideGroup& cmp) const = 0;//Œ‹‹ÇŽg‚Á‚Ä‚È‚¢
 
 	public:
-		virtual void Draw(DsDrawCommand& com){};
+		virtual bool IsContain(const DsLib::DsAabb& cmp) const = 0;
+
+
+	public:
+		virtual void Draw(DsDrawCommand& com)const{};
 	};
 }
 

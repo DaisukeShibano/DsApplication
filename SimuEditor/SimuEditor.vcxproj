@@ -76,6 +76,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+    <EnableManagedIncrementalBuild>false</EnableManagedIncrementalBuild>
+    <IgnoreImportLibrary>true</IgnoreImportLibrary>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -111,10 +113,12 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\DsLib\Source;..\DsPhysics\Source;..\DsApp\Source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <CallingConvention>
+      </CallingConvention>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>DsApp.lib</AdditionalDependencies>
+      <AdditionalDependencies>DsApp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>main</EntryPointSymbol>
       <NoEntryPoint>false</NoEntryPoint>
       <SubSystem>Windows</SubSystem>
@@ -153,7 +157,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>DsApp.lib</AdditionalDependencies>
+      <AdditionalDependencies>DsApp.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <EntryPointSymbol>main</EntryPointSymbol>
       <SubSystem>Windows</SubSystem>
       <AdditionalLibraryDirectories>..\x64\Release;..\DsLib\Library\Lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

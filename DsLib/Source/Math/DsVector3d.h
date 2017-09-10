@@ -232,9 +232,18 @@ namespace DsLib
 #endif
 		}
 
-		static DsVec3d Clamp3(const DsVec3d& v, double min, double max)
+		static DsVec3d Clamp3(const DsVec3d& v, double _min, double _max)
 		{
-			return DsVec3d(min(max(min, v.x), max), min(max(min, v.y), max), min(max(min, v.z), max));
+			return DsVec3d(min(max(_min, v.x), _max), min(max(_min, v.y), _max), min(max(_min, v.z), _max));
+		}
+
+		static DsVec3d Clamp3(const DsVec3d& v, const DsVec3d& _min, const DsVec3d& _max)
+		{
+			return DsVec3d(
+				min(max(_min.x, v.x), _max.x),
+				min(max(_min.y, v.y), _max.y),
+				min(max(_min.z, v.z), _max.z)
+			);
 		}
 
 		static DsVec3d Normalize(const DsVec3d& src)

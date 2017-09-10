@@ -20,7 +20,7 @@ namespace DsPhysics
 		enum {DEFAULT_DEPTH=4};
 
 	public:
-		DsBoundingTreeAabb(const DsActor& actor, const DsVec3d& pos, const DsVec3d& boxSize, const DsQuad* pFaces, int faceNum, const DsVec3d* pVertex, int vertexNum, const std::vector<int>& containFaceIdxs, int maxDepth);
+		DsBoundingTreeAabb(const DsActor& actor, const DsVec3d& pos, const DsVec3d& boxSize, const DsQuad* pFaces, int faceNum, const DsVec3d* pVertex, int vertexNum, const std::vector<int>& containFaceIdxs, int maxDepth);	
 		virtual ~DsBoundingTreeAabb();
 
 	public:
@@ -35,10 +35,11 @@ namespace DsPhysics
 		virtual bool IsContain(const DsBoundingTreeAabb& cmp) const override;
 		virtual bool IsContain(const DsBoundingTreeAabbColideGroup& cmp) const override{ return true; }
 
-		//virtual const DsBoundingTreeAabb& GetMyself() const override{ return *this; }
+	public:
+		virtual bool IsContain(const DsLib::DsAabb& cmp) const;
 
 	public:
-		virtual void Draw(DsDrawCommand& com)override;
+		virtual void Draw(DsDrawCommand& com) const override;
 
 	private:
 		DsVec3d m_pos;

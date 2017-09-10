@@ -78,7 +78,7 @@ void DsBoundingTreeAabb::_ConstructTree(int depth)
 	else{
 		//分割空間
 		const DsVec3d halfSize = m_boxSize*0.5;
-		const DsVec3d offsetPos[] =
+		const DsVec3d offsetPos[] =	//子ノードの基準位置
 		{
 			m_pos + DsVec3d(halfSize.x, halfSize.y, halfSize.z),
 			m_pos + DsVec3d(halfSize.x, halfSize.y, -halfSize.z),
@@ -133,14 +133,11 @@ void DsBoundingTreeAabb::_ConstructTree(int depth)
 //virtual 
 bool DsBoundingTreeAabb::IsContain(const DsBoundingTreeAabb& cmp) const
 {
-	const DsVec3d& ownerPosA = m_owner.GetPosition();
-	const DsVec3d& ownerPosB = cmp.m_owner.GetPosition();
-
 	DsAabb a;
-	a.Setup(m_boxSize.x, m_boxSize.y, m_boxSize.z, m_pos + ownerPosA);
+	a.Setup(m_boxSize.x, m_boxSize.y, m_boxSize.z, m_pos);
 
 	DsAabb b;
-	b.Setup(cmp.m_boxSize.x, cmp.m_boxSize.y, cmp.m_boxSize.z, cmp.m_pos + ownerPosB);
+	b.Setup(cmp.m_boxSize.x, cmp.m_boxSize.y, cmp.m_boxSize.z, cmp.m_pos);
 
 	//まずは自分にcmpが含まれているか検査
 	const bool isContain = DsAabb::IsContain(a, b);
@@ -155,12 +152,33 @@ bool DsBoundingTreeAabb::IsContain(const DsBoundingTreeAabb& cmp) const
 	return isContain;
 }
 
-//virtual 
-void DsBoundingTreeAabb::Draw(DsDrawCommand& com)
+
+//virtual
+bool DsBoundingTreeAabb::IsContain(const DsAabb& cmp) const
 {
 	DsAabb a;
-	const DsVec3d& ownerPosA = m_owner.GetPosition();
-	a.Setup(m_boxSize.x, m_boxSize.y, m_boxSize.z, m_pos + ownerPosA);
+	a.Setup(m_boxSize.x, m_boxSize.y, m_boxSize.z, m_pos);
+
+	DsAabb b = cmp;
+	
+	//まずは自分にcmpが含まれているか検査
+	const bool isContain = DsAabb::IsContain(a, b);
+	if (isContain) {//含まれてたのでさらに内部の子を検索
+		for each(const DsBoundingTreeAabb* pChild in m_child) {
+			if (pChild->IsContain(cmp)) {
+				return true;
+			}
+		}
+	}
+
+	return isContain;
+}
+
+//virtual 
+void DsBoundingTreeAabb::Draw(DsDrawCommand& com) const
+{
+	DsAabb a;
+	a.Setup(m_boxSize.x, m_boxSize.y, m_boxSize.z, m_pos);
 	a.Draw(com);
 
 	for each(DsBoundingTreeAabb* pChild in m_child){

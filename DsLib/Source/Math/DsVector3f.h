@@ -149,9 +149,18 @@ namespace DsLib
 			return DsVec3f(fabs(a.x), fabs(a.y), fabs(a.z));
 		}
 
-		static DsVec3f Clamp3(const DsVec3f& v, float min, float max)
+		static DsVec3f Clamp3(const DsVec3f& v, float _min, float _max)
 		{
-			return DsVec3f(min(max(min, v.x), max), min(max(min, v.y), max), min(max(min, v.z), max));
+			return DsVec3f(min(max(_min, v.x), _max), min(max(_min, v.y), _max), min(max(_min, v.z),_max));
+		}
+
+		static DsVec3f Clamp3(const DsVec3f& v, const DsVec3f& _min, const DsVec3f& _max)
+		{
+			return DsVec3f(
+				min(max(_min.x, v.x), _max.x),
+				min(max(_min.y, v.y), _max.y),
+				min(max(_min.z, v.z), _max.z)
+				);
 		}
 
 		static DsVec3f Normalize(const DsVec3f& src)

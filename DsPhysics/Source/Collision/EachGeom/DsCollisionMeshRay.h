@@ -37,6 +37,9 @@ namespace DsPhysics
 		virtual DsCollisionResult& Collide() override;
 
 	private:
+		bool _ColideAABB() const;
+
+	private:
 		const DsCollisionGeometry* m_pMesh;
 		const DsCollisionGeometry* m_pRay;
 		DsCollisionResult m_info;

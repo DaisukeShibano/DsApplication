@@ -57,7 +57,7 @@ void DsFieldChr::Update(double dt)
 		const DsMat33d rot = DsMat33d::RotateY(m_ang.y)*DsMat33d::RotateX(m_ang.x);
 		m_vel = rot*m_vel;
 
-		const double velGain = 500.0f;//‰Á‘¬ƒQƒCƒ“
+		const double velGain = 600.0f;//‰Á‘¬ƒQƒCƒ“
 		const DsVec3d targetVelF = (m_vel - pActor->GetVelocity())*velGain;
 		pActor->AddForce(DsVec3d(targetVelF.x, 0, targetVelF.z));
 

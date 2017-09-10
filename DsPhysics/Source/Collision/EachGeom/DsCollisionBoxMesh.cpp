@@ -716,10 +716,10 @@ DsCollisionResult& DsCollisionBoxMesh::_ColideFinal()
 bool DsCollisionBoxMesh::_ColideAABB()
 {
 	const DsBoundingTreeBase* pMTree = m_pMesh->GetBoungingTree();
-	const DsBoundingTreeBase* pBTree = m_pBox->GetBoungingTree();
+	const DsAabb* pAabb = m_pBox->GetAabb();
 
-	if (pMTree && pBTree){
-		return pBTree->IsContain(*pMTree);
+	if (pMTree && pAabb){
+		return pMTree->IsContain(*pAabb);
 	}
 	else{
 		return true;

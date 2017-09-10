@@ -196,6 +196,21 @@ namespace DsLib
 			}
 		}
 
+		static DsVec4f Clamp4(const DsVec4f& v, double _min, double _max)
+		{
+			return DsVec4f(min(max(_min, v.x), _max), min(max(_min, v.y), _max), min(max(_min, v.z), _max), min(max(_min, v.w), _max));
+		}
+
+		static DsVec4f Clamp4(const DsVec4f& v, const DsVec4f& _min, const DsVec4f& _max)
+		{
+			return DsVec4f(
+				min(max(_min.x, v.x), _max.x),
+				min(max(_min.y, v.y), _max.y),
+				min(max(_min.z, v.z), _max.z),
+				min(max(_min.w, v.w), _max.w)
+				);
+		}
+
 		static DsVec4f ToVec4(float x, float y, float z, float w)
 		{
 			const DsVec4f dst = { x, y, z, w };

@@ -222,6 +222,21 @@ namespace DsLib
 			}
 		}
 
+		static DsVec4<TYPE> Clamp4(const DsVec4<TYPE>& v, double _min, double _max)
+		{
+			return DsVec4<TYPE>(min(max(_min, v.x), _max), min(max(_min, v.y), _max), min(max(_min, v.z), _max), min(max(_min, v.w), _max));
+		}
+
+		static DsVec4<TYPE> Clamp4(const DsVec4<TYPE>& v, const DsVec4<TYPE>& _min, const DsVec4<TYPE>& _max)
+		{
+			return DsVec4<TYPE>(
+				min(max(_min.x, v.x), _max.x),
+				min(max(_min.y, v.y), _max.y),
+				min(max(_min.z, v.z), _max.z),
+				min(max(_min.w, v.w), _max.w)
+				);
+		}
+
 		static DsVec4<TYPE> ToVec4(TYPE x, TYPE y, TYPE z, TYPE w)
 		{
 			const DsVec4<TYPE> dst = { x, y, z, w };

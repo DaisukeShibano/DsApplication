@@ -177,9 +177,18 @@ namespace DsLib
 			return DsVec3<TYPE>( fabs(a.x), fabs(a.y), fabs(a.z) );
 		}
 
-		static DsVec3<TYPE> Clamp3(const DsVec3<TYPE>& v, double min, double max)
+		static DsVec3<TYPE> Clamp3(const DsVec3<TYPE>& v, double _min, double _max)
 		{
-			return DsVec3<TYPE>(min(max(min, v.x), max), min(max(min, v.y), max), min(max(min, v.z), max));
+			return DsVec3<TYPE>(min(max(_min, v.x), _max), min(max(_min, v.y), _max), min(max(_min, v.z), _max));
+		}
+
+		static DsVec3<TYPE> Clamp3(const DsVec3<TYPE>& v, const DsVec3<TYPE>& _min, const DsVec3<TYPE>& _max)
+		{
+			return DsVec3<TYPE>(
+				min(max(_min.x, v.x), _max.x),
+				min(max(_min.y, v.y), _max.y),
+				min(max(_min.z, v.z), _max.z)
+				);
 		}
 
 		static DsVec3<TYPE> Normalize(const DsVec3<TYPE>& src)
