@@ -1,5 +1,4 @@
 #include "DsPch.h"
-#include "gl/glew.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #ifndef _DS_RENDER_H_
