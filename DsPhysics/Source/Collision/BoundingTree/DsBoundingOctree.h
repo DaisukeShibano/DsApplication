@@ -64,6 +64,9 @@ namespace DsPhysics
 	private:
 		DsVec3d m_allActorMaxPos;
 		DsVec3d m_allActorMinPos;
+
+	private:
+		bool m_isExistActor;
 	};
 }
 

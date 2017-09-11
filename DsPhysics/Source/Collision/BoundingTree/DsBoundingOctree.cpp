@@ -23,7 +23,7 @@ DsBoundingOctree::DsBoundingOctree()
 	, m_resolution(0)
 	, m_allActorMaxPos(DsVec3d::Zero())
 	, m_allActorMinPos(DsVec3d::Zero())
-
+	, m_isExistActor(false)
 {
 }
 
@@ -163,6 +163,7 @@ void DsBoundingOctree::Update(DsActor** pActors, const int actNum, const DsVec3d
 {
 	m_allActorMaxPos = allActorMaxPos;
 	m_allActorMinPos = allActorMinPos;
+	m_isExistActor = 0 < actNum;
 
 	//所属actorクリア
 	DsBdOctreeNode** tmp = m_pAllNode;
@@ -222,15 +223,17 @@ actorを含む空間に所属する全てのactorを取得
 */
 void DsBoundingOctree::GetContainAreaActors(const DsActor& actor, std::vector<const DsActor*>& outActors) const
 {
-	//actorが一つもないと最初のUpdateでm_allActorMaxPosあたりが想定外の値がくるので直す
+	if (!m_isExistActor) {
+		return;
+	}
 
 	//actorが完全に含まれる空間を求め、その空間に所属する全てのactroをoutActorsとして返す
 
 	const DsVec3d gridSize = DsVec3d::Abs(m_allActorMaxPos - m_allActorMinPos) / static_cast<double>(m_resolution);
-	const DsVec3d pos = DsVec3d::Clamp3(actor.GetPosition(), m_allActorMinPos, m_allActorMaxPos);//新規actorかもしれないので最大座標でクランプ
+	const DsVec3d pos = actor.GetPosition();
 	const DsAabb aabb = actor.RefAabb();
-	const DsVec3d maxPos = pos + aabb.GetMax();
-	const DsVec3d minPos = pos - aabb.GetMax();
+	const DsVec3d maxPos = DsVec3d::Clamp3(pos + aabb.GetMax(), m_allActorMinPos, m_allActorMaxPos);//新規actorかもしれないので最大座標でクランプ
+	const DsVec3d minPos = DsVec3d::Clamp3(pos - aabb.GetMax(), m_allActorMinPos, m_allActorMaxPos);
 	//各成分の座標が何番目の格子に相当するのか。
 	//一番大きい座標の格子番号
 	const DsVec3d maxGridPos = DsVec3d::Div(maxPos - m_allActorMinPos, gridSize) - DsVec3d(FLT_EPSILON, FLT_EPSILON, FLT_EPSILON);//ぴったりMaxだと１つ分はみ出ることになるので-FLT_EPSILON。
