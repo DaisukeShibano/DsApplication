@@ -7,7 +7,6 @@
 
 #include "gl/glew.h"
 #include <gl/GL.h>
-#include <fstream>
 
 using namespace DsLib;
 static const float s_shadowCoef = 0.3f;//‰e‚Ìˆê”Ô‚­‚ç‚¢‚Æ‚±B0‚Å^‚Á•

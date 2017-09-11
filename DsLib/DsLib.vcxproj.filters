@@ -125,6 +125,9 @@
     <Filter Include="Library\Lib\x86">
       <UniqueIdentifier>{8a5d07cc-1dd7-4aaa-9d2a-ba50d38a0652}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Graphics\GL">
+      <UniqueIdentifier>{a057a54b-0cce-48cf-bc73-5d7d25a42d9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsPch.cpp">
@@ -297,6 +300,9 @@
     </ClCompile>
     <ClCompile Include="Source\System\DsFile.cpp">
       <Filter>Source\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\GL\DsGLFunc.cpp">
+      <Filter>Source\Graphics\GL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -554,6 +560,9 @@
     </ClInclude>
     <ClInclude Include="Source\System\DsFile.h">
       <Filter>Source\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\GL\DsGLFunc.h">
+      <Filter>Source\Graphics\GL</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

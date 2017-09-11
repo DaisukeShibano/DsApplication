@@ -8,6 +8,10 @@
 #include "Graphics/Light/DsLight.h"
 #include "Graphics/Light/DsLightMan.h"
 #include "Math/DsInverseMatrix.h"
+#ifndef _DS_GL_FUNC_
+#include "Graphics/GL/DsGLFunc.h"
+#endif
+
 
 using namespace DsLib;
 
@@ -51,6 +55,7 @@ namespace
 	,m_blurFboId(0)
 	,m_blurFboIdColorTextureId(0)
 	{
+		DsInitGLFunc();
 		glewInit();
 		if(!glewIsSupported("GL_ARB_depth_texture GL_ARB_shadow ") )
 		{

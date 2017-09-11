@@ -234,6 +234,7 @@
     <ClCompile Include="Source\Error\DsError.cpp" />
     <ClCompile Include="Source\Graphics\Camera\DsCamera.cpp" />
     <ClCompile Include="Source\Graphics\Command\DsDrawCommand.cpp" />
+    <ClCompile Include="Source\Graphics\GL\DsGLFunc.cpp" />
     <ClCompile Include="Source\Graphics\Image\DsImage.cpp" />
     <ClCompile Include="Source\Graphics\Light\DsLight.cpp" />
     <ClCompile Include="Source\Graphics\Light\DsLightMan.cpp" />
@@ -303,6 +304,7 @@
     <ClInclude Include="Source\Error\DsError.h" />
     <ClInclude Include="Source\Graphics\Camera\DsCamera.h" />
     <ClInclude Include="Source\Graphics\Command\DsDrawCommand.h" />
+    <ClInclude Include="Source\Graphics\GL\DsGLFunc.h" />
     <ClInclude Include="Source\Graphics\Image\DsImage.h" />
     <ClInclude Include="Source\Graphics\Light\DsLight.h" />
     <ClInclude Include="Source\Graphics\Light\DsLightMan.h" />
