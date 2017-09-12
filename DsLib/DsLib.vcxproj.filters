@@ -9,24 +9,6 @@
       <Filter>Source\Graphics\Shader\ShaderSource</Filter>
     </None>
     <None Include="..\..\DsApp\DsApp.vcxproj" />
-    <None Include="Library\dll\x64\freeglutd.dll">
-      <Filter>Library\dll\x64</Filter>
-    </None>
-    <None Include="Library\dll\x64\glew32.dll">
-      <Filter>Library\dll\x64</Filter>
-    </None>
-    <None Include="Library\dll\x64\freeglut.dll">
-      <Filter>Library\dll\x64</Filter>
-    </None>
-    <None Include="Library\dll\x86\freeglutd.dll">
-      <Filter>Library\dll\x86</Filter>
-    </None>
-    <None Include="Library\dll\x86\glew32.dll">
-      <Filter>Library\dll\x86</Filter>
-    </None>
-    <None Include="Library\dll\x86\freeglut.dll">
-      <Filter>Library\dll\x86</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source">
@@ -528,30 +510,6 @@
     <ClInclude Include="Source\DsUtil.h">
       <Filter>Source</Filter>
     </ClInclude>
-    <ClInclude Include="Library\Include\gl\freeglut_ext.h">
-      <Filter>Library\Include\gl</Filter>
-    </ClInclude>
-    <ClInclude Include="Library\Include\gl\freeglut_std.h">
-      <Filter>Library\Include\gl</Filter>
-    </ClInclude>
-    <ClInclude Include="Library\Include\gl\glew.h">
-      <Filter>Library\Include\gl</Filter>
-    </ClInclude>
-    <ClInclude Include="Library\Include\gl\glut.h">
-      <Filter>Library\Include\gl</Filter>
-    </ClInclude>
-    <ClInclude Include="Library\Include\gl\glxew.h">
-      <Filter>Library\Include\gl</Filter>
-    </ClInclude>
-    <ClInclude Include="Library\Include\gl\wglew.h">
-      <Filter>Library\Include\gl</Filter>
-    </ClInclude>
-    <ClInclude Include="Library\Include\gl\eglew.h">
-      <Filter>Library\Include\gl</Filter>
-    </ClInclude>
-    <ClInclude Include="Library\Include\gl\freeglut.h">
-      <Filter>Library\Include\gl</Filter>
-    </ClInclude>
     <ClInclude Include="Source\System\DsPath.h">
       <Filter>Source\System</Filter>
     </ClInclude>
@@ -564,46 +522,5 @@
     <ClInclude Include="Source\Graphics\GL\DsGLFunc.h">
       <Filter>Source\Graphics\GL</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="Library\Lib\x64\freeglut_staticd.lib">
-      <Filter>Library\Lib\x64</Filter>
-    </Library>
-    <Library Include="Library\Lib\x64\freeglutd.lib">
-      <Filter>Library\Lib\x64</Filter>
-    </Library>
-    <Library Include="Library\Lib\x64\glew32.lib">
-      <Filter>Library\Lib\x64</Filter>
-    </Library>
-    <Library Include="Library\Lib\x64\glew32s.lib">
-      <Filter>Library\Lib\x64</Filter>
-    </Library>
-    <Library Include="Library\Lib\x64\freeglut.lib">
-      <Filter>Library\Lib\x64</Filter>
-    </Library>
-    <Library Include="Library\Lib\x64\freeglut_static.lib">
-      <Filter>Library\Lib\x64</Filter>
-    </Library>
-    <Library Include="Library\Lib\x86\freeglut.lib">
-      <Filter>Library\Lib\x86</Filter>
-    </Library>
-    <Library Include="Library\Lib\x86\freeglut_static.lib">
-      <Filter>Library\Lib\x86</Filter>
-    </Library>
-    <Library Include="Library\Lib\x86\freeglut_staticd.lib">
-      <Filter>Library\Lib\x86</Filter>
-    </Library>
-    <Library Include="Library\Lib\x86\freeglutd.lib">
-      <Filter>Library\Lib\x86</Filter>
-    </Library>
-    <Library Include="Library\Lib\x86\glew32.lib">
-      <Filter>Library\Lib\x86</Filter>
-    </Library>
-    <Library Include="Library\Lib\x86\glew32s.lib">
-      <Filter>Library\Lib\x86</Filter>
-    </Library>
-    <Library Include="Library\Lib\x86\glut32.lib">
-      <Filter>Library\Lib\x86</Filter>
-    </Library>
   </ItemGroup>
 </Project>

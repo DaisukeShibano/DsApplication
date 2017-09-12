@@ -16,11 +16,13 @@ namespace
 
 	typedef void   (* DS_PFNGLGETSHADERIVPROC) (GLuint shader, GLenum pname, GLint* param);
 	typedef void   (* DS_PFNGLGETSHADERINFOLOGPROC) (GLuint shader, GLsizei bufSize, GLsizei* length, GLchar* infoLog);
+	typedef void   (* DS_PFNGLGETPROGRAMINFOLOGPROC) (GLuint program, GLsizei bufSize, GLsizei* length, GLchar* infoLog);
 	typedef void   (* DS_PFNGLGETPROGRAMIVPROC) (GLuint program, GLenum pname, GLint* param);
 	typedef void   (* DS_PFNGLSHADERSOURCEPROC) (GLuint shader, GLsizei count, const GLchar *const* string, const GLint* length);
 	typedef void   (* DS_PFNGLCOMPILESHADERPROC) (GLuint shader);
 	typedef void   (* DS_PFNGLDELETESHADERPROC) (GLuint shader);
 	typedef GLuint (* DS_PFNGLCREATESHADERPROC) (GLenum type);
+	typedef GLuint (* DS_PFNGLCREATEPROGRAMPROC) (void);
 	typedef void   (* DS_PFNGLATTACHSHADERPROC) (GLuint program, GLuint shader);
 	typedef void   (* DS_PFNGLLINKPROGRAMPROC) (GLuint program);
 	typedef void   (* DS_PFNGLUSEPROGRAMPROC) (GLuint program);
@@ -29,14 +31,28 @@ namespace
 	typedef void   (* DS_PFNGLUNIFORM1FPROC) (GLint location, GLfloat v0);
 	typedef void   (* DS_PFNGLUNIFORM2IPROC) (GLint location, GLint v0, GLint v1);
 	typedef void   (* DS_PFNGLUNIFORM2FPROC) (GLint location, GLfloat v0, GLfloat v1);
+	typedef void   (* DS_PFNGLACTIVETEXTUREPROC) (GLenum texture);
+	typedef void   (* DS_PFNGLGENERATEMIPMAPEXTPROC) (GLenum target);
+	typedef void   (* DS_PFNGLGENFRAMEBUFFERSEXTPROC) (GLsizei n, GLuint* framebuffers);
+	typedef void   (* DS_PFNGLBINDFRAMEBUFFEREXTPROC) (GLenum target, GLuint framebuffer);
+	typedef void   (* DS_PFNGLFRAMEBUFFERTEXTURE2DEXTPROC) (GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level);
+	typedef GLenum (* DS_PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC) (GLenum target);
+	typedef void   (* DS_PFNGLGENRENDERBUFFERSEXTPROC) (GLsizei n, GLuint* renderbuffers);
+	typedef void   (* DS_PFNGLBINDRENDERBUFFEREXTPROC) (GLenum target, GLuint renderbuffer);
+	typedef void   (* DS_PFNGLRENDERBUFFERSTORAGEEXTPROC) (GLenum target, GLenum internalformat, GLsizei width, GLsizei height);
+	typedef void   (* DS_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC) (GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
+	typedef void   (* DS_PFNGLDELETEFRAMEBUFFERSEXTPROC) (GLsizei n, const GLuint* framebuffers);
+	typedef void   (* DS_PFNGLDELETERENDERBUFFERSEXTPROC) (GLsizei n, const GLuint* renderbuffers);
 
 	DS_PFNGLGETSHADERIVPROC s_glGetShaderiv;
 	DS_PFNGLGETSHADERINFOLOGPROC s_glGetShaderInfoLog;
+	DS_PFNGLGETPROGRAMINFOLOGPROC s_glGetProgramInfoLog;
 	DS_PFNGLGETPROGRAMIVPROC s_glGetProgramiv;
 	DS_PFNGLSHADERSOURCEPROC s_glShaderSource;
 	DS_PFNGLCOMPILESHADERPROC s_glCompileShader;
 	DS_PFNGLDELETESHADERPROC s_glDeleteShader;
 	DS_PFNGLCREATESHADERPROC s_glCreateShader;
+	DS_PFNGLCREATEPROGRAMPROC s_glCreateProgram;
 	DS_PFNGLATTACHSHADERPROC s_glAttachShader;
 	DS_PFNGLLINKPROGRAMPROC s_glLinkProgram;
 	DS_PFNGLUSEPROGRAMPROC s_glUseProgram;
@@ -45,6 +61,18 @@ namespace
 	DS_PFNGLUNIFORM1FPROC s_glUniform1f;
 	DS_PFNGLUNIFORM2IPROC s_glUniform2i;
 	DS_PFNGLUNIFORM2FPROC s_glUniform2f;
+	DS_PFNGLACTIVETEXTUREPROC s_glActiveTexture;
+	DS_PFNGLGENERATEMIPMAPEXTPROC s_glGenerateMipmap;
+	DS_PFNGLGENFRAMEBUFFERSEXTPROC s_glGenFramebuffers;
+	DS_PFNGLBINDFRAMEBUFFEREXTPROC s_glBindFramebuffer;
+	DS_PFNGLFRAMEBUFFERTEXTURE2DEXTPROC s_glFramebufferTexture2D;
+	DS_PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC s_glCheckFramebufferStatus;
+	DS_PFNGLGENRENDERBUFFERSEXTPROC s_glGenRenderbuffers;
+	DS_PFNGLBINDRENDERBUFFEREXTPROC s_glBindRenderbuffer;
+	DS_PFNGLRENDERBUFFERSTORAGEEXTPROC s_glRenderbufferStorage;
+	DS_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC s_glFramebufferRenderbuffer;
+	DS_PFNGLDELETEFRAMEBUFFERSEXTPROC s_glDeleteFramebuffers;
+	DS_PFNGLDELETERENDERBUFFERSEXTPROC s_glDeleteRenderbuffers;
 }
 
 bool DsLib::DsInitGLFunc()
@@ -55,6 +83,10 @@ bool DsLib::DsInitGLFunc()
 	}
 	s_glGetShaderInfoLog = (DS_PFNGLGETSHADERINFOLOGPROC)wglGetProcAddress("glGetShaderInfoLog");
 	if (!s_glGetShaderInfoLog) {
+		return false;
+	}
+	s_glGetProgramInfoLog = (DS_PFNGLGETPROGRAMINFOLOGPROC)wglGetProcAddress("glGetProgramInfoLog");
+	if (!s_glGetProgramInfoLog) {
 		return false;
 	}
 	s_glGetProgramiv = (DS_PFNGLGETPROGRAMIVPROC)wglGetProcAddress("glGetProgramiv");
@@ -75,6 +107,10 @@ bool DsLib::DsInitGLFunc()
 	}
 	s_glCreateShader = (DS_PFNGLCREATESHADERPROC)wglGetProcAddress("glCreateShader");
 	if (!s_glCreateShader) {
+		return false;
+	}
+	s_glCreateProgram = (DS_PFNGLCREATEPROGRAMPROC)wglGetProcAddress("glCreateProgram");
+	if (!s_glCreateProgram) {
 		return false;
 	}
 	s_glAttachShader = (DS_PFNGLATTACHSHADERPROC)wglGetProcAddress("glAttachShader");
@@ -109,6 +145,54 @@ bool DsLib::DsInitGLFunc()
 	if (!s_glUniform2f) {
 		return false;
 	}
+	s_glActiveTexture = (DS_PFNGLACTIVETEXTUREPROC)wglGetProcAddress("glActiveTexture");
+	if (!s_glActiveTexture) {
+		return false;
+	}
+	s_glGenerateMipmap = (DS_PFNGLGENERATEMIPMAPEXTPROC)wglGetProcAddress("glGenerateMipmap");
+	if (!s_glGenerateMipmap) {
+		return false;
+	}
+	s_glGenFramebuffers = (DS_PFNGLGENFRAMEBUFFERSEXTPROC)wglGetProcAddress("glGenFramebuffers");
+	if (!s_glGenFramebuffers) {
+		return false;
+	}
+	s_glBindFramebuffer = (DS_PFNGLBINDFRAMEBUFFEREXTPROC)wglGetProcAddress("glBindFramebuffer");
+	if (!s_glBindFramebuffer) {
+		return false;
+	}
+	s_glFramebufferTexture2D = (DS_PFNGLFRAMEBUFFERTEXTURE2DEXTPROC)wglGetProcAddress("glFramebufferTexture2D");
+	if (!s_glFramebufferTexture2D) {
+		return false;
+	}
+	s_glCheckFramebufferStatus = (DS_PFNGLCHECKFRAMEBUFFERSTATUSEXTPROC)wglGetProcAddress("glCheckFramebufferStatus");
+	if (!s_glCheckFramebufferStatus) {
+		return false;
+	}
+	s_glGenRenderbuffers = (DS_PFNGLGENRENDERBUFFERSEXTPROC)wglGetProcAddress("glGenRenderbuffers");
+	if (!s_glGenRenderbuffers) {
+		return false;
+	}
+	s_glBindRenderbuffer = (DS_PFNGLBINDRENDERBUFFEREXTPROC)wglGetProcAddress("glBindRenderbuffer");
+	if (!s_glBindRenderbuffer) {
+		return false;
+	}
+	s_glRenderbufferStorage = (DS_PFNGLRENDERBUFFERSTORAGEEXTPROC)wglGetProcAddress("glRenderbufferStorage");
+	if (!s_glRenderbufferStorage) {
+		return false;
+	}
+	s_glFramebufferRenderbuffer = (DS_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC)wglGetProcAddress("glFramebufferRenderbuffer");
+	if (!s_glFramebufferRenderbuffer) {
+		return false;
+	}
+	s_glDeleteFramebuffers = (DS_PFNGLDELETEFRAMEBUFFERSEXTPROC)wglGetProcAddress("glDeleteFramebuffers");
+	if (!s_glDeleteFramebuffers) {
+		return false;
+	}
+	s_glDeleteRenderbuffers = (DS_PFNGLDELETERENDERBUFFERSEXTPROC)wglGetProcAddress("glDeleteRenderbuffers");
+	if (!s_glDeleteRenderbuffers) {
+		return false;
+	}
 
 	return true;
 }
@@ -118,9 +202,13 @@ void DsLib::DsGLGetShaderiv(unsigned int shader, unsigned int pname, int* param)
 	s_glGetShaderiv(shader, pname, param);
 }
 
-void DsLib::DsGlGetShaderInfoLog(unsigned int shader, int bufSize, int* length, char* infoLog)
+void DsLib::DsGLGetShaderInfoLog(unsigned int shader, int bufSize, int* length, char* infoLog)
 {
 	s_glGetShaderInfoLog(shader, bufSize, length, infoLog);
+}
+void DsLib::DsGLGetProgramInfoLog(unsigned int program, int bufSize, int* length, char* infoLog)
+{
+	s_glGetProgramInfoLog(program, bufSize, length, infoLog);
 }
 
 void DsLib::DsGLGetProgramiv(unsigned int program, unsigned int pname, int* param)
@@ -146,6 +234,10 @@ void DsLib::DsGLDeleteShader(unsigned int shader)
 unsigned int DsLib::DsGLCreateShader(unsigned int type)
 {
 	return s_glCreateShader(type);
+}
+
+unsigned int DsLib::DsGLCreateProgram() {
+	return s_glCreateProgram();
 }
 
 void DsLib::DsGLAttachShader(unsigned int program, unsigned int shader)
@@ -185,4 +277,64 @@ void DsLib::DsGLUniform2i(unsigned int location, int v0, int v1)
 void DsLib::DsGLUniform2f(unsigned int location, float v0, int v1)
 {
 	s_glUniform2f(location, v0, v1);
+}
+
+void DsLib::DsGLActiveTexture(unsigned int texture)
+{
+	s_glActiveTexture(texture);
+}
+
+void DsLib::DsGLGenerateMipmap(unsigned int target)
+{
+	s_glGenerateMipmap(target);
+}
+
+void DsLib::DsGLGenFramebuffers(int n, unsigned int* framebuffers)
+{
+	s_glGenFramebuffers(n, framebuffers);
+}
+
+void DsLib::DsGLBindFramebuffer(unsigned int target, unsigned int framebuffer)
+{
+	s_glBindFramebuffer(target, framebuffer);
+}
+
+void DsLib::DsGLFramebufferTexture2D(unsigned int target, unsigned int attachment, unsigned int textarget, unsigned int texture, int level)
+{
+	s_glFramebufferTexture2D(target, attachment, textarget, texture, level);
+}
+
+unsigned int DsLib::DsGLCheckFramebufferStatus(unsigned int target)
+{
+	return s_glCheckFramebufferStatus(target);
+}
+
+void DsLib::DsGLGenRenderbuffers(int n, unsigned int* renderbuffers)
+{
+	s_glGenRenderbuffers(n, renderbuffers);
+}
+
+void DsLib::DsGLBindRenderbuffer(unsigned int target, unsigned int renderbuffer)
+{
+	s_glBindRenderbuffer(target, renderbuffer);
+}
+
+void DsLib::DsGLRenderbufferStorage(unsigned int target, unsigned int internalformat, int width, int height)
+{
+	s_glRenderbufferStorage(target, internalformat, width, height);
+}
+
+void DsLib::DsGLFramebufferRenderbuffer(unsigned int target, unsigned int attachment, unsigned int renderbuffertarget, unsigned int renderbuffer)
+{
+	s_glFramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer);
+}
+
+void DsLib::DsGLDeleteFramebuffers(int n, const unsigned int* framebuffers)
+{
+	s_glDeleteFramebuffers(n, framebuffers);
+}
+
+void DsLib::DsGLDeleteRenderbuffers(int n, const unsigned int* renderbuffers)
+{
+	s_glDeleteRenderbuffers(n, renderbuffers);
 }

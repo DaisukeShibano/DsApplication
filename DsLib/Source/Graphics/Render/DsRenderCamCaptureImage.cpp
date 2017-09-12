@@ -1,5 +1,7 @@
 #include "DsPch.h"
-#include "gl/glew.h"
+#ifndef _DS_GL_FUNC_
+#include "Graphics/GL/DsGLFunc.h"
+#endif
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #ifndef _DS_RENDER_CAM_CAPTURE_IMAGE_H_
@@ -45,42 +47,42 @@ public:
 		//, m_srcViewport()
 	{
 		//レンダーバッファオブジェクト生成
-		glGenRenderbuffersEXT(1, &m_rboId);
-		glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, m_rboId);
-		glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_RGB, m_imageW, m_imageH);
+		DsGLGenRenderbuffers(1, &m_rboId);
+		DsGLBindRenderbuffer(DS_GL_RENDERBUFFER, m_rboId);
+		DsGLRenderbufferStorage(DS_GL_RENDERBUFFER, GL_RGB, m_imageW, m_imageH);
 
 		//フレームバッファオブジェクト生成
-		glGenFramebuffersEXT(1, &m_fboId);
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_fboId);
+		DsGLGenFramebuffers(1, &m_fboId);
+		DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_fboId);
 
 		//フレームバッファとレンダーバッファを結びつける
-		glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_RENDERBUFFER_EXT, m_rboId);
+		DsGLFramebufferRenderbuffer(DS_GL_FRAMEBUFFER, DS_GL_COLOR_ATTACHMENT0, DS_GL_RENDERBUFFER, m_rboId);
 
 		//デプスバッファ。この視点用のデプスバッファがないと前後関係が正しく描画されない
-		//glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_fboId);//すぐ上でバインドされているので必要なし
-		glGenRenderbuffersEXT(1, &m_dboId);
-		glBindRenderbufferEXT(GL_RENDERBUFFER, m_dboId);
-		glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT16, m_imageW, m_imageH);
-		glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, m_dboId);
+		//DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_fboId);//すぐ上でバインドされているので必要なし
+		DsGLGenRenderbuffers(1, &m_dboId);
+		DsGLBindRenderbuffer(DS_GL_RENDERBUFFER, m_dboId);
+		DsGLRenderbufferStorage(DS_GL_RENDERBUFFER, DS_GL_DEPTH_COMPONENT16, m_imageW, m_imageH);
+		DsGLFramebufferRenderbuffer(DS_GL_FRAMEBUFFER, DS_GL_DEPTH_ATTACHMENT, DS_GL_RENDERBUFFER, m_dboId);
 
 		//バインド解除
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
-		//glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, 0);
+		DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
+		//DsGLBindRenderbuffer(DS_GL_RENDERBUFFER, 0);
 	}
 
 public:
 	virtual ~DsRenderImageImp()
 	{
-		glDeleteFramebuffersEXT(1, &m_fboId);
-		glDeleteRenderbuffersEXT(1, &m_rboId);
-		glDeleteRenderbuffersEXT(1, &m_dboId);
+		DsGLDeleteFramebuffers(1, &m_fboId);
+		DsGLDeleteRenderbuffers(1, &m_rboId);
+		DsGLDeleteRenderbuffers(1, &m_dboId);
 	}
 
 public:
 	virtual void BeginCapture() override
 	{
 		//レンダリング先を変更
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_fboId);
+		DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_fboId);
 
 		//カメラの視点にする
 
@@ -120,7 +122,7 @@ public:
 		glViewport(m_srcViewport[0], m_srcViewport[1], m_srcViewport[2], m_srcViewport[3]);
 
 		//画像取得
-		glReadBuffer(GL_COLOR_ATTACHMENT0_EXT);
+		glReadBuffer(DS_GL_COLOR_ATTACHMENT0);
 		glReadPixels(
 			0,                 //読み取る領域の左下隅のx座標
 			0,                 //読み取る領域の左下隅のy座標 //0 or getCurrentWidth() - 1
@@ -131,7 +133,7 @@ public:
 			m_pImage      //ビットマップのピクセルデータ（実際にはバイト配列）へのポインタ
 		);
 
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+		DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
 	}
 
 private:

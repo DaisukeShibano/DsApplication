@@ -1,6 +1,9 @@
 #include "DsPch.h"
-#include "gl/glew.h"
+#ifndef _DS_GL_FUNC_
+#include "Graphics/GL/DsGLFunc.h"
+#endif
 #include <gl/GL.h>
+#include <gl/GLU.h>
 #include "Graphics/Render/DsShadowMap.h"
 #include "Graphics/Render/DsRender.h"
 #include "Graphics/Shader/DsShader.h"
@@ -8,9 +11,7 @@
 #include "Graphics/Light/DsLight.h"
 #include "Graphics/Light/DsLightMan.h"
 #include "Math/DsInverseMatrix.h"
-#ifndef _DS_GL_FUNC_
-#include "Graphics/GL/DsGLFunc.h"
-#endif
+
 
 
 using namespace DsLib;
@@ -55,25 +56,20 @@ namespace
 	,m_blurFboId(0)
 	,m_blurFboIdColorTextureId(0)
 	{
-		DsInitGLFunc();
-		glewInit();
-		if(!glewIsSupported("GL_ARB_depth_texture GL_ARB_shadow ") )
-		{
-			printf( "ERROR: Support for necessary OpenGL extensions missing.\n" );
-			return;
+		if (!DsInitGLFunc()) {
+			DS_ASSERT(false, "GL関数の初期化に失敗しました。GLのバージョンが2.0未満である可能性があります");
 		}
 
 		m_fDepthSize[0] = static_cast<GLsizei>(s_shadowSize);
 		m_fDepthSize[1] = static_cast<GLsizei>(s_shadowSize);
 
 		// デプス値テクスチャ
-		//glActiveTexture(GL_TEXTURE7);
 		glGenTextures(1, &m_iTexDepth);
 		glBindTexture(GL_TEXTURE_2D, m_iTexDepth);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);//シャドウテクスチャの範囲を超えた場合、日向であってほしいので、ボーダーカラーになるように
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, DS_GL_CLAMP_TO_BORDER);//シャドウテクスチャの範囲を超えた場合、日向であってほしいので、ボーダーカラーになるように
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, DS_GL_CLAMP_TO_BORDER);
 		GLfloat border_color[4] = {1, 1, 1, 1};
 		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, border_color);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, m_fDepthSize[0], m_fDepthSize[1], 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
@@ -85,47 +81,47 @@ namespace
 		glBindTexture(GL_TEXTURE_2D, m_colorTextureId);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, DS_GL_CLAMP_TO_BORDER);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, DS_GL_CLAMP_TO_BORDER);
 		glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, border_color);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F_ARB, m_fDepthSize[0], m_fDepthSize[1], 0, GL_RGB, GL_FLOAT, 0);
-		glGenerateMipmapEXT(GL_TEXTURE_2D);
+		glTexImage2D(GL_TEXTURE_2D, 0, DS_GL_RGB32F, m_fDepthSize[0], m_fDepthSize[1], 0, GL_RGB, GL_FLOAT, 0);
+		DsGLGenerateMipmap(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 
 		// FBO作成h
-		glGenFramebuffersEXT(1, &m_iFBODepth);
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_iFBODepth);
+		DsGLGenFramebuffers(1, &m_iFBODepth);
+		DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_iFBODepth);
 		//glDrawBuffer(GL_NONE);
 		//glReadBuffer(GL_NONE);
 		// デプスマップテクスチャをFBOに接続
-		glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_TEXTURE_2D, m_iTexDepth, 0);
-		glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, m_colorTextureId, 0);
-		GLenum FBOstatus = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
-		if (FBOstatus != GL_FRAMEBUFFER_COMPLETE_EXT) {
-			printf("GL_FRAMEBUFFER_COMPLETE_EXT failed for shadowmap FBO, CANNOT use FBO\n");
+		DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, DS_GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_iTexDepth, 0);
+		DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, DS_GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_colorTextureId, 0);
+		GLenum FBOstatus = DsGLCheckFramebufferStatus(DS_GL_FRAMEBUFFER);
+		if (FBOstatus != DS_GL_FRAMEBUFFER_COMPLETE) {
+			printf("DS_GL_FRAMEBUFFER_COMPLETE failed for shadowmap FBO, CANNOT use FBO\n");
 		}
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+		DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
 
 
 		// ブラー用
-		glGenFramebuffersEXT(1, &m_blurFboId);
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_blurFboId);
+		DsGLGenFramebuffers(1, &m_blurFboId);
+		DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_blurFboId);
 		glGenTextures(1, &m_blurFboIdColorTextureId);
 		glBindTexture(GL_TEXTURE_2D, m_blurFboIdColorTextureId);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F_ARB, m_fDepthSize[0]*BLUR_COEF, m_fDepthSize[1]*BLUR_COEF, 0, GL_RGB, GL_FLOAT, 0);
+		glTexImage2D(GL_TEXTURE_2D, 0, DS_GL_RGB32F, m_fDepthSize[0]*BLUR_COEF, m_fDepthSize[1]*BLUR_COEF, 0, GL_RGB, GL_FLOAT, 0);
 
-		glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, m_blurFboIdColorTextureId, 0);
-		FBOstatus = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
-		if (FBOstatus != GL_FRAMEBUFFER_COMPLETE_EXT) {
-			printf("GL_FRAMEBUFFER_COMPLETE_EXT failed for blur FBO, CANNOT use FBO\n");
+		DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, DS_GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_blurFboIdColorTextureId, 0);
+		FBOstatus = DsGLCheckFramebufferStatus(DS_GL_FRAMEBUFFER);
+		if (FBOstatus != DS_GL_FRAMEBUFFER_COMPLETE) {
+			printf("DS_GL_FRAMEBUFFER_COMPLETE failed for blur FBO, CANNOT use FBO\n");
 		}
 		glBindTexture(GL_TEXTURE_2D, 0);
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+		DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
 	}
 
 	//virtual
@@ -175,7 +171,7 @@ namespace
 
 
 		// 光源からレンダリングしてシャドウマップを生成
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_iFBODepth);	// FBOにレンダリング
+		DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_iFBODepth);	// FBOにレンダリング
 
 		// カラー，デプスバッファのクリア
 		glClearColor(1, 1, 1, 1);
@@ -226,7 +222,7 @@ namespace
 	
 		// テクスチャモードに移行
 		glMatrixMode(GL_TEXTURE);
-		glActiveTexture(GL_TEXTURE7);
+		DsGLActiveTexture(DS_GL_TEXTURE7);
 		
 		glLoadIdentity();
 		glLoadMatrixd(bias);
@@ -239,7 +235,7 @@ namespace
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 		_Blur();
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+		DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
 
 		// 無効にした色のレンダリングを有効にする
 		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE); 
@@ -257,16 +253,16 @@ namespace
 
 		// デプステクスチャを貼り付け
 		glEnable(GL_TEXTURE_2D);
-		glActiveTexture(GL_TEXTURE7);
+		DsGLActiveTexture(DS_GL_TEXTURE7);
 		glBindTexture(GL_TEXTURE_2D, m_iTexDepth);
-		glActiveTexture(GL_TEXTURE6);
+		DsGLActiveTexture(DS_GL_TEXTURE6);
 		glBindTexture(GL_TEXTURE_2D, m_colorTextureId);
-		glGenerateMipmapEXT(GL_TEXTURE_2D);
+		DsGLGenerateMipmap(GL_TEXTURE_2D);
 
 		glEnable(GL_CULL_FACE);
 		glCullFace(GL_BACK);
 
-		glActiveTexture(GL_TEXTURE0);
+		DsGLActiveTexture(DS_GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		glClearColor(0.7f, 0.8f, 1.0f, 1);
@@ -292,7 +288,7 @@ namespace
 
 		glDisable(GL_LIGHTING);
 		glColor4f(1, 1, 1, 1);
-		glActiveTexture(GL_TEXTURE0);
+		DsGLActiveTexture(DS_GL_TEXTURE0);
 		glEnable(GL_TEXTURE_2D);
 		//glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
 		//glBindTexture(GL_TEXTURE_2D, m_iTexDepth);
@@ -318,7 +314,7 @@ namespace
 	{
 		m_shader.EnableShader(SHADER_TYPE::SHADOW_BLUR);
 
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_blurFboId);
+		DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_blurFboId);
 		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//glClearDepth(1.0f);
 		//m_blurFboIdへ横方向にぼかす。m_blurFboIdはm_blurFboIdColorTextureIdと紐づいているのでここに結果が格納される。横をぼかすための一時テクスチャ
@@ -326,7 +322,7 @@ namespace
 		
 		m_shader.SetShadowBlurParam(DsVec2f( 1.0f / (m_fDepthSize[0] * BLUR_COEF), 0.0f),		// Bluring horinzontaly
 									0);
-		glActiveTexture(GL_TEXTURE0);
+		DsGLActiveTexture(DS_GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, m_colorTextureId);//最初っからm_iFBODepthではダメ？
 
 		//Preparing to draw quad
@@ -344,11 +340,11 @@ namespace
 		glTexCoord2d(1, 1); glVertex3f(m_fDepthSize[0] / 2, m_fDepthSize[1] / 2, 0);
 		glTexCoord2d(0, 1); glVertex3f(-m_fDepthSize[0] / 2, m_fDepthSize[1] / 2, 0);
 		glEnd();
-		//glGenerateMipmapEXT(GL_TEXTURE_2D);
+		//DsGLGenerateMipmap(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		// Bluring vertically
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_iFBODepth);
+		DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_iFBODepth);
 		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//glClearDepth(1.0f);
 		//m_blurFboIdColorTextureId で横方にぼかされてるので、縦方向にぼかしたものをm_iFBODepthで描画。m_iFBODepthはm_colorTextureIdに紐づいているので最終的なシャドウマップがこれ
@@ -364,7 +360,7 @@ namespace
 		glTexCoord2d(0, 1); glVertex3f(-m_fDepthSize[0] / 2, m_fDepthSize[1] / 2, 0);
 		glEnd();
 		glBindTexture(GL_TEXTURE_2D, 0);
-		glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+		DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
 
 		m_shader.DisableShader();
 	}

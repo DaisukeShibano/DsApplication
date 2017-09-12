@@ -4,9 +4,11 @@
 #include "Graphics/Shader/ShaderSource/DsDefaultShader.h"
 #include "Graphics/Shader/ShaderSource/DsShadowMapShader.h"
 #include "Graphics/Shader/ShaderSource/DsShadowBlurShader.h"
-
-#include "gl/glew.h"
+#ifndef _DS_GL_FUNC_
+#include "Graphics/GL/DsGLFunc.h"
+#endif
 #include <gl/GL.h>
+
 
 using namespace DsLib;
 static const float s_shadowCoef = 0.3f;//影の一番くらいとこ。0で真っ黒
@@ -20,12 +22,12 @@ namespace
 		int length;
 
 		/* ログの長さは、最後のNULL文字も含む */
-		glGetShaderiv(shader, GL_INFO_LOG_LENGTH , &logSize);
+		DsGLGetShaderiv(shader, DS_GL_INFO_LOG_LENGTH , &logSize);
 
 		if (logSize > 1)
 		{
 			char logBuffer[1024];
-			glGetShaderInfoLog(shader, 1024, &length, logBuffer);
+			DsGLGetShaderInfoLog(shader, 1024, &length, logBuffer);
 			//fprintf(stderr, "Shader Compile Info Log\n%s\n", logBuffer);
 			DS_LOG(logBuffer);
 		}
@@ -39,12 +41,12 @@ namespace
 		int length;
 
 		/* ログの長さは、最後のNULL文字も含む */
-		glGetProgramiv(program, GL_INFO_LOG_LENGTH , &logSize);
+		DsGLGetProgramiv(program, DS_GL_INFO_LOG_LENGTH , &logSize);
 
 		if (logSize > 1)
 		{
 			char logBuffer[1024];
-			glGetProgramInfoLog(program, 1024, &length, logBuffer);
+			DsGLGetProgramInfoLog(program, 1024, &length, logBuffer);
 			//fprintf(stderr, "Shader Link Info Log\n%s\n", logBuffer);
 			DS_LOG(logBuffer);
 		}
@@ -60,18 +62,18 @@ namespace
 		const int size = static_cast<int>(shaderSrc.size());
 		
 		/* シェーダオブジェクトにプログラムをセット */
-		glShaderSource(shader, 1, (GLchar **)&buf, &size);
+		DsGLShaderSource(shader, 1, (char **)&buf, &size);
   
 		/* シェーダのコンパイル */
-		glCompileShader(shader);
+		DsGLCompileShader(shader);
 		
 		GLint compiled;
-		glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
+		DsGLGetShaderiv(shader, DS_GL_COMPILE_STATUS, &compiled);
 		_printShaderInfoLog(shader);		/* コンパイルログの出力 */
 		if (compiled == GL_FALSE)
 		{
 			DS_ERROR("shader compile error\n");
-			glDeleteShader(shader);
+			DsGLDeleteShader(shader);
 			return -1;
 		}
 
@@ -131,8 +133,8 @@ namespace
 		for (int sIdx=0; sIdx < sourceNum; ++sIdx)
 		{
 			/* シェーダオブジェクトの作成 */
-			const GLuint vtxShader = glCreateShader(GL_VERTEX_SHADER);
-			const GLuint frgShader = glCreateShader(GL_FRAGMENT_SHADER);
+			const GLuint vtxShader = DsGLCreateShader(DS_GL_VERTEX_SHADER);
+			const GLuint frgShader = DsGLCreateShader(DS_GL_FRAGMENT_SHADER);
 
 			/* バーテックスシェーダのロードとコンパイル */
 			if (_loadShader(vtxShader, sources[sIdx].pVertexSource) < 0)
@@ -147,20 +149,20 @@ namespace
 			}
 
 			/* プログラムオブジェクトの作成 */
-			const GLuint prog = glCreateProgram();
+			const GLuint prog = DsGLCreateProgram();
 
 			/* シェーダオブジェクトのシェーダプログラムへの登録 */
-			glAttachShader(prog, vtxShader);
-			glAttachShader(prog, frgShader);
+			DsGLAttachShader(prog, vtxShader);
+			DsGLAttachShader(prog, frgShader);
 
 			/* シェーダオブジェクトの削除 */
-			glDeleteShader(vtxShader);
-			glDeleteShader(frgShader);
+			DsGLDeleteShader(vtxShader);
+			DsGLDeleteShader(frgShader);
 
 			/* シェーダプログラムのリンク */
 			GLint linked;
-			glLinkProgram(prog);
-			glGetProgramiv(prog, GL_LINK_STATUS, &linked);
+			DsGLLinkProgram(prog);
+			DsGLGetProgramiv(prog, DS_GL_LINK_STATUS, &linked);
 			_printProgramInfoLog(prog);
 			if (linked == GL_FALSE)
 			{
@@ -178,50 +180,50 @@ namespace
 		if (SHADER_TYPE::NUM > sType ) {
 			int idx = static_cast<int>(sType);
 			m_currentIdx = idx;
-			glUseProgram(m_prog[idx]);
-			glUniform1i(glGetUniformLocation(m_prog[idx], "tex"), 0);//普通のテクスチャは０番に
-			glUniform1i(glGetUniformLocation(m_prog[idx], "depth_tex"), 7);//GLSLの"depth_tex"という変数に値をセット
-			glUniform1i(glGetUniformLocation(m_prog[idx], "depth_tex2"), 6);
-			glUniform1f(glGetUniformLocation(m_prog[idx], "shadow_ambient"), s_shadowCoef);//GLSLの"shadow_ambient"という変数に値をセット
+			DsGLUseProgram(m_prog[idx]);
+			DsGLUniform1i(DsGLGetUniformLocation(m_prog[idx], "tex"), 0);//普通のテクスチャは０番に
+			DsGLUniform1i(DsGLGetUniformLocation(m_prog[idx], "depth_tex"), 7);//GLSLの"depth_tex"という変数に値をセット
+			DsGLUniform1i(DsGLGetUniformLocation(m_prog[idx], "depth_tex2"), 6);
+			DsGLUniform1f(DsGLGetUniformLocation(m_prog[idx], "shadow_ambient"), s_shadowCoef);//GLSLの"shadow_ambient"という変数に値をセット
 		}
 	}
 
 	//virtual
 	void DsShaderImp::DisableShader()
 	{
-		glUseProgram(0);
+		DsGLUseProgram(0);
 	}
 
 	//virtual 
 	void DsShaderImp::SetTextureUnit(int unit)
 	{
-		glUniform1i(glGetUniformLocation(m_prog[m_currentIdx], "tex"), unit);
+		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "tex"), unit);
 	}
 
 	//virtual 
 	void DsShaderImp::SetUseTexture(bool isUse)
 	{
-		glUniform1i(glGetUniformLocation(m_prog[m_currentIdx], "isUseColorTexture"), isUse);
+		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "isUseColorTexture"), isUse);
 	}
 
 	//virtual 
 	void DsShaderImp::SetUseLight(bool isUse)
 	{
-		glUniform1i(glGetUniformLocation(m_prog[m_currentIdx], "isUseLight"), isUse);
+		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "isUseLight"), isUse);
 	}
 
 	//virtual 
 	void DsShaderImp::SetUseShadow(bool isUse)
 	{
 		const float val = (isUse) ? (s_shadowCoef) : (0.0f);
-		glUniform1f(glGetUniformLocation(m_prog[m_currentIdx], "shadow_ambient"), val);
+		DsGLUniform1f(DsGLGetUniformLocation(m_prog[m_currentIdx], "shadow_ambient"), val);
 	}
 
 	//virtual
 	void DsShaderImp::SetShadowBlurParam(DsVec2f s, int ts)
 	{
-		glUniform2f(glGetUniformLocation(m_prog[m_currentIdx], "ScaleU"), s.x, s.y);
-		glUniform1i(glGetUniformLocation(m_prog[m_currentIdx], "textureSource"), ts);
+		DsGLUniform2f(DsGLGetUniformLocation(m_prog[m_currentIdx], "ScaleU"), s.x, s.y);
+		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "textureSource"), ts);
 	}
 }
 
