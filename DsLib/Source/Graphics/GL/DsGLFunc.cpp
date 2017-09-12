@@ -274,7 +274,7 @@ void DsLib::DsGLUniform2i(unsigned int location, int v0, int v1)
 	s_glUniform2i(location, v0, v1);
 }
 
-void DsLib::DsGLUniform2f(unsigned int location, float v0, int v1)
+void DsLib::DsGLUniform2f(unsigned int location, float v0, float v1)
 {
 	s_glUniform2f(location, v0, v1);
 }

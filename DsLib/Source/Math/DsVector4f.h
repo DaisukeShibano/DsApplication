@@ -196,7 +196,7 @@ namespace DsLib
 			}
 		}
 
-		static DsVec4f Clamp4(const DsVec4f& v, double _min, double _max)
+		static DsVec4f Clamp4(const DsVec4f& v, float _min, float _max)
 		{
 			return DsVec4f(min(max(_min, v.x), _max), min(max(_min, v.y), _max), min(max(_min, v.z), _max), min(max(_min, v.w), _max));
 		}

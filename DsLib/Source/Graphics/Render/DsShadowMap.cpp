@@ -113,7 +113,7 @@ namespace
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-		glTexImage2D(GL_TEXTURE_2D, 0, DS_GL_RGB32F, m_fDepthSize[0]*BLUR_COEF, m_fDepthSize[1]*BLUR_COEF, 0, GL_RGB, GL_FLOAT, 0);
+		glTexImage2D(GL_TEXTURE_2D, 0, DS_GL_RGB32F, static_cast<GLsizei>(m_fDepthSize[0]*BLUR_COEF), static_cast<GLsizei>(m_fDepthSize[1]*BLUR_COEF), 0, GL_RGB, GL_FLOAT, 0);
 
 		DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, DS_GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_blurFboIdColorTextureId, 0);
 		FBOstatus = DsGLCheckFramebufferStatus(DS_GL_FRAMEBUFFER);
@@ -275,8 +275,8 @@ namespace
 	*/
 	void DsShadowMapImp::DrawDepthTex()
 	{
-		const float w = m_render.GetWidth();
-		const float h = m_render.GetHeight();
+		const double w = m_render.GetWidth();
+		const double h = m_render.GetHeight();
 		m_shader.DisableShader();
 		glMatrixMode(GL_PROJECTION);
 		glPushMatrix();
@@ -296,10 +296,10 @@ namespace
 		//glBindTexture(GL_TEXTURE_2D, m_blurFboIdColorTextureId);
 		glNormal3d(0, 0, 1);
 		glBegin(GL_QUADS);
-		glTexCoord2d(0, 0); glVertex3f(0.05f*w, 0.05f*h, 0);
-		glTexCoord2d(1, 0); glVertex3f(0.05f*w + 100, 0.05f*h, 0);
-		glTexCoord2d(1, 1); glVertex3f(0.05f*w + 100, 0.05f*h + 100, 0);
-		glTexCoord2d(0, 1); glVertex3f(0.05f*w, 0.05f*h + 100, 0);
+		glTexCoord2d(0, 0); glVertex3d(0.05*w, 0.05*h, 0);
+		glTexCoord2d(1, 0); glVertex3d(0.05*w + 100, 0.05*h, 0);
+		glTexCoord2d(1, 1); glVertex3d(0.05*w + 100, 0.05*h + 100, 0);
+		glTexCoord2d(0, 1); glVertex3d(0.05*w, 0.05*h + 100, 0);
 		glEnd();
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glDisable(GL_TEXTURE_2D);
@@ -318,9 +318,9 @@ namespace
 		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//glClearDepth(1.0f);
 		//m_blurFboIdへ横方向にぼかす。m_blurFboIdはm_blurFboIdColorTextureIdと紐づいているのでここに結果が格納される。横をぼかすための一時テクスチャ
-		glViewport(0, 0, m_fDepthSize[0] * BLUR_COEF, m_fDepthSize[1] * BLUR_COEF);
+		glViewport(0, 0, static_cast<GLsizei>(m_fDepthSize[0] * BLUR_COEF), static_cast<GLsizei>(m_fDepthSize[1] * BLUR_COEF));
 		
-		m_shader.SetShadowBlurParam(DsVec2f( 1.0f / (m_fDepthSize[0] * BLUR_COEF), 0.0f),		// Bluring horinzontaly
+		m_shader.SetShadowBlurParam(DsVec2f( 1.0f / (static_cast<float>(m_fDepthSize[0])*static_cast<float>( BLUR_COEF) ), 0.0f),		// Bluring horinzontaly
 									0);
 		DsGLActiveTexture(DS_GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, m_colorTextureId);//最初っからm_iFBODepthではダメ？
@@ -335,10 +335,10 @@ namespace
 		//Drawing quad 
 		glTranslated(0, 0, -5);
 		glBegin(GL_QUADS);
-		glTexCoord2d(0, 0); glVertex3f(-m_fDepthSize[0] / 2, -m_fDepthSize[1] / 2, 0);
-		glTexCoord2d(1, 0); glVertex3f(m_fDepthSize[0] / 2, -m_fDepthSize[1] / 2, 0);
-		glTexCoord2d(1, 1); glVertex3f(m_fDepthSize[0] / 2, m_fDepthSize[1] / 2, 0);
-		glTexCoord2d(0, 1); glVertex3f(-m_fDepthSize[0] / 2, m_fDepthSize[1] / 2, 0);
+		glTexCoord2d(0, 0); glVertex3f(static_cast<float>(-m_fDepthSize[0] / 2), static_cast<float>(-m_fDepthSize[1] / 2), 0);
+		glTexCoord2d(1, 0); glVertex3f(static_cast<float>(m_fDepthSize[0] / 2), static_cast<float>(-m_fDepthSize[1] / 2), 0);
+		glTexCoord2d(1, 1); glVertex3f(static_cast<float>(m_fDepthSize[0] / 2), static_cast<float>(m_fDepthSize[1] / 2), 0);
+		glTexCoord2d(0, 1); glVertex3f(static_cast<float>(-m_fDepthSize[0] / 2), static_cast<float>(m_fDepthSize[1] / 2), 0);
 		glEnd();
 		//DsGLGenerateMipmap(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, 0);
@@ -349,15 +349,15 @@ namespace
 		//glClearDepth(1.0f);
 		//m_blurFboIdColorTextureId で横方にぼかされてるので、縦方向にぼかしたものをm_iFBODepthで描画。m_iFBODepthはm_colorTextureIdに紐づいているので最終的なシャドウマップがこれ
 		glViewport(0, 0, m_fDepthSize[0], m_fDepthSize[1]);
-		m_shader.SetShadowBlurParam( DsVec2f(0.0f, 1.0f / (m_fDepthSize[1])),
+		m_shader.SetShadowBlurParam( DsVec2f(0.0f, 1.0f / static_cast<float>(m_fDepthSize[1])),
 									0);
 		glBindTexture(GL_TEXTURE_2D, m_blurFboIdColorTextureId);//m_blurFboIdColorTextureId
 
 		glBegin(GL_QUADS);
-		glTexCoord2d(0, 0); glVertex3f(-m_fDepthSize[0] / 2, -m_fDepthSize[1] / 2, 0);
-		glTexCoord2d(1, 0); glVertex3f(m_fDepthSize[0] / 2, -m_fDepthSize[1] / 2, 0);
-		glTexCoord2d(1, 1); glVertex3f(m_fDepthSize[0] / 2, m_fDepthSize[1] / 2, 0);
-		glTexCoord2d(0, 1); glVertex3f(-m_fDepthSize[0] / 2, m_fDepthSize[1] / 2, 0);
+		glTexCoord2d(0, 0); glVertex3f(static_cast<float>(-m_fDepthSize[0] / 2), static_cast<float>(-m_fDepthSize[1] / 2), 0);
+		glTexCoord2d(1, 0); glVertex3f(static_cast<float>(m_fDepthSize[0] / 2), static_cast<float>(-m_fDepthSize[1] / 2), 0);
+		glTexCoord2d(1, 1); glVertex3f(static_cast<float>(m_fDepthSize[0] / 2), static_cast<float>(m_fDepthSize[1] / 2), 0);
+		glTexCoord2d(0, 1); glVertex3f(static_cast<float>(-m_fDepthSize[0] / 2), static_cast<float>(m_fDepthSize[1] / 2), 0);
 		glEnd();
 		glBindTexture(GL_TEXTURE_2D, 0);
 		DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
