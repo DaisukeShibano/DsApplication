@@ -117,7 +117,7 @@
       </Command>
     </PostBuildEvent>
     <Lib>
-      <AdditionalDependencies>glew32.lib;OpenGL32.lib;glu32.lib</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;glu32.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(MSBuildProjectDirectory)\Library\Lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
@@ -172,7 +172,7 @@
       </Command>
     </PostBuildEvent>
     <Lib>
-      <AdditionalDependencies>glew32.lib;OpenGL32.lib;glu32.lib</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;glu32.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(MSBuildProjectDirectory)\Library\Lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
