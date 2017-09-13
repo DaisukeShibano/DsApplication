@@ -23,11 +23,8 @@ static const int ITERATION_NUM = 4;
 
 DsCollisionListener::DsCollisionListener( DsPhysicsWorld& world )
 :m_world(world)
-,m_pColExecuter(NULL)
 ,m_pBoundingTree(NULL)
 {
-	m_pColExecuter = new DsCollisionExecuter(world);
-	DS_ASSERT(m_pColExecuter, "メモリ確保失敗");
 	m_pBoundingTree = new DsBoundingOctree();
 	DS_ASSERT(m_pBoundingTree, "メモリ確保失敗");
 	m_pBoundingTree->CreateTree(64);
@@ -35,7 +32,6 @@ DsCollisionListener::DsCollisionListener( DsPhysicsWorld& world )
 
 DsCollisionListener::~DsCollisionListener()
 {
-	delete m_pColExecuter; m_pColExecuter = NULL;
 	delete m_pBoundingTree; m_pBoundingTree = NULL;
 }
 
@@ -45,9 +41,9 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 	const int totalActTNum = group.GetActorNumber();
 	DsActor** pActors = group.GetActors();
 	DsConstraintSolver* pSolver = m_world.GetConstraintSolver();
+	DsCollisionExecuter executer(m_world);
 
-	//m_pBoundingTreeが更新されないケースを考えなきゃいけなくなるのが面倒なので必ず使う
-	//if (_IsUseBoundingGroup(totalActTNum) || true)
+	if (_IsUseBoundingGroup(totalActTNum) || true)
 	{
 		DsVec3d minPos = DsVec3d(DBL_MAX, DBL_MAX, DBL_MAX);
 		DsVec3d maxPos = DsVec3d(-DBL_MAX, -DBL_MAX, -DBL_MAX);
@@ -93,7 +89,7 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 									((pActor->RefOption().isStatic) && (pParent->RefOption().isStatic))
 									);
 								if (!isSkip) {
-									const DsCollisionResult& result = m_pColExecuter->Exe(*pActor, *pParent);
+									const DsCollisionResult& result = executer.Exe(*pActor, *pParent);
 									if (0 < result.GetColNum()) {
 										pSolver->AddCollision(result);
 									}
@@ -115,7 +111,7 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 								((pActor->RefOption().isStatic) && (pNextActor->RefOption().isStatic))
 								);
 							if (!isSkip){
-								const DsCollisionResult& result = m_pColExecuter->Exe(*pActor, *pNextActor);
+								const DsCollisionResult& result = executer.Exe(*pActor, *pNextActor);
 								if (0 < result.GetColNum()){
 									pSolver->AddCollision(result);
 								}
@@ -145,41 +141,57 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 			}
 		}
 	}
-	//else{//空間分割を使わない総当り判定。数が少ないときは所属空間の割り振り・探索しない分こちらの方が速い（それくらいだったらもう無視してもいいのかも）
-	//	for (int actIdx_1 = 0; actIdx_1 < totalActTNum - 1; ++actIdx_1)
-	//	{
-	//		for (int actIdx_2 = actIdx_1 + 1; actIdx_2 < totalActTNum; ++actIdx_2)
-	//		{
-	//			bool isSkip = (((pActors[actIdx_1]->IsRest()) && (pActors[actIdx_2]->IsRest())) ||
-	//				((pActors[actIdx_1]->IsRest()) && (pActors[actIdx_2]->RefOption().isStatic)) ||
-	//				((pActors[actIdx_1]->RefOption().isStatic) && (pActors[actIdx_2]->IsRest())) ||
-	//				((pActors[actIdx_1]->RefOption().isStatic) && (pActors[actIdx_2]->RefOption().isStatic))
-	//				);
-	//
-	//			if (!isSkip)
-	//			{
-	//				{
-	//					const DsCollisionResult& result = m_pColExecuter->Exe(*pActors[actIdx_1], *pActors[actIdx_2]);
-	//					if (0 < result.GetColNum()){
-	//						pSolver->AddCollision(result);
-	//					}
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
+	else{//空間分割を使わない総当り判定。数が少ないときは所属空間の割り振り・探索しない分こちらの方が速い（それくらいだったらもう無視してもいいのかも）
+		for (int actIdx_1 = 0; actIdx_1 < totalActTNum - 1; ++actIdx_1)
+		{
+			for (int actIdx_2 = actIdx_1 + 1; actIdx_2 < totalActTNum; ++actIdx_2)
+			{
+				bool isSkip = (((pActors[actIdx_1]->IsRest()) && (pActors[actIdx_2]->IsRest())) ||
+					((pActors[actIdx_1]->IsRest()) && (pActors[actIdx_2]->RefOption().isStatic)) ||
+					((pActors[actIdx_1]->RefOption().isStatic) && (pActors[actIdx_2]->IsRest())) ||
+					((pActors[actIdx_1]->RefOption().isStatic) && (pActors[actIdx_2]->RefOption().isStatic))
+					);
+	
+				if (!isSkip)
+				{
+					{
+						const DsCollisionResult& result = executer.Exe(*pActors[actIdx_1], *pActors[actIdx_2]);
+						if (0 < result.GetColNum()){
+							pSolver->AddCollision(result);
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 //拘束に登録せずその場で判定して結果を即返す
 void DsCollisionListener::Cast( const DsActor& actor, const DsCollisionGroup& group, std::vector<DsCollisionResult>& resultVec ) const
 {
-	std::vector < const DsActor* > targetActors;
-	m_pBoundingTree->GetContainAreaActors(actor, targetActors);
-	for (const DsActor* pActor : targetActors) {
-		//((DsActor*)(pActor))->Draw(DsDbgSys::GetIns().RefDrawCom());
-		const DsCollisionResult& result = m_pColExecuter->Exe(*pActor, actor);
-		if (result.GetColNum() > 0){
-			resultVec.push_back(result);
+	const int totalActTNum = group.GetActorNumber();
+	DsCollisionExecuter executer(m_world);
+
+	if (_IsUseBoundingGroup(totalActTNum) || true)
+	{
+		std::vector < const DsActor* > targetActors;
+		m_pBoundingTree->GetContainAreaActors(actor, targetActors);
+		for (const DsActor* pActor : targetActors) {
+			//((DsActor*)(pActor))->Draw(DsDbgSys::GetIns().RefDrawCom());
+			const DsCollisionResult& result = executer.Exe(*pActor, actor);
+			if (result.GetColNum() > 0) {
+				resultVec.push_back(result);
+			}
+		}
+	}
+	else
+	{
+		const DsActor*const* pActors = group.GetActors();
+		for (int i = 0; i < totalActTNum; ++i) {
+			const DsCollisionResult& result = executer.Exe(*pActors[i], actor);
+			if (result.GetColNum() > 0) {
+				resultVec.push_back(result);
+			}
 		}
 	}
 }

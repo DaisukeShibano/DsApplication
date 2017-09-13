@@ -7,7 +7,6 @@ namespace DsPhysics
 	class DsCollisionResult;
 	class DsActor;
 	class DsPhysicsWorld;
-	class DsCollisionExecuter;
 	class DsBoundingOctree;
 }
 
@@ -26,7 +25,6 @@ namespace DsPhysics
 
 	private:
 		DsPhysicsWorld& m_world;
-		DsCollisionExecuter* m_pColExecuter;
 		DsBoundingOctree* m_pBoundingTree;
 	};
 
