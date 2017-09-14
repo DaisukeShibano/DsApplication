@@ -130,7 +130,7 @@ void DsFieldPlayer::Update(double dt)
 			}
 		}
 
-		const double vel = (m_actReq.GetMoveVec().Length()) * 0.3 * dt * 1000.0;
+		const double vel = (moveVec.Length()) * 0.3 * dt * 1000.0;
 		m_vel.Set(0, 0, vel);
 
 

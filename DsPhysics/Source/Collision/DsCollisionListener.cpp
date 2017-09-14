@@ -43,7 +43,7 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 	DsConstraintSolver* pSolver = m_world.GetConstraintSolver();
 	DsCollisionExecuter executer(m_world);
 
-	if (_IsUseBoundingGroup(totalActTNum) || true)
+	if (_IsUseBoundingGroup(totalActTNum))
 	{
 		DsVec3d minPos = DsVec3d(DBL_MAX, DBL_MAX, DBL_MAX);
 		DsVec3d maxPos = DsVec3d(-DBL_MAX, -DBL_MAX, -DBL_MAX);
@@ -172,7 +172,7 @@ void DsCollisionListener::Cast( const DsActor& actor, const DsCollisionGroup& gr
 	const int totalActTNum = group.GetActorNumber();
 	DsCollisionExecuter executer(m_world);
 
-	if (_IsUseBoundingGroup(totalActTNum) || true)
+	if (_IsUseBoundingGroup(totalActTNum))
 	{
 		std::vector < const DsActor* > targetActors;
 		m_pBoundingTree->GetContainAreaActors(actor, targetActors);
