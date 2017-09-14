@@ -54,7 +54,8 @@ namespace
 		switch (msg) {
 			case WM_CREATE:
 			{
-				SetTimer(hWindow, 1, 1000, NULL);
+				//SetTimer(hWindow, 1, 1000, NULL);
+				SetActiveWindow(hWindow);
 			}
 			break;
 
