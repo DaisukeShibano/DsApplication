@@ -89,20 +89,15 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 			}
 
 			if(0){//Õ“ËƒeƒXƒg
-				DsRigidBox::GetVertex(vertex, 1.5, 0.5, 1.5);
+				DsRigidBox::GetVertex(vertex, 1.5, 12, 3);
 				{
 					DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, "” ‚P");
-					factory.InitPos(DsVec3d(1.0, -0.5, 4.0));
+					factory.InitPos(DsVec3d(0.0, 6.5, 0.0));
+					factory.InitRot(DsMat33d::RotateX(-0.4));
 					factory.SetOption(option);
 					pWorld->CreateActor(factory).GetActor()->SetMaterial(DsActorMaterial::Aluminum());
 				}
-				{
-					DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, "” ‚P");
-					factory.InitPos(DsVec3d(1.0, 0.1, 4.0));
-					factory.SetOption(option);
-					pWorld->CreateActor(factory).GetActor()->SetMaterial(DsActorMaterial::Aluminum());
-				}
-				for(int i=0; i<30; ++i){
+				for(int i=0; i<0; ++i){
 					DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, "” ‚P");
 					factory.InitPos(DsVec3d(1.0, 0.6 + (0.6)*(double)i, 4.0));
 					factory.SetOption(option);
@@ -147,19 +142,20 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 		for each(DsActor* actor in pWorld->GetActors() )
 		{
 			std::string tmp = actor->GetName();
-			//if ((tmp == "” ‚P") || (tmp == "” ‚Q") || (tmp == "” ‚R"))
+			//if( (tmp != "robo_0") && (tmp!="ragdoll") )
+			if ((tmp == "” ‚P") || (tmp == "” ‚Q") || (tmp == "” ‚R"))
 			//if (actor->GetType() == DsActor::RIGID_BOX)
 			{
-				//const double rC = (actor->IsRest()) ? (0.5) : (1.0);
-				//if (color == 0){
-				//	actor->SetColor(DsVec4d(1.0, 0.6, 0.2, 1)*rC);
-				//} else if(color == 1){
-				//	actor->SetColor(DsVec4d(0.2, 1.0, 0.6, 1)*rC);
-				//} else{
-				//	actor->SetColor(DsVec4d(0.4, 0.6, 1.0, 1)*rC);
-				//}
-				//actor->SetLineColor(DsVec4d(0, 0, 0, 1));
-				//actor->Draw(args.drawCom);
+				const double rC = (actor->IsRest()) ? (0.5) : (1.0);
+				if (color == 0){
+					actor->SetColor(DsVec4d(1.0, 0.6, 0.2, 1)*rC);
+				} else if(color == 1){
+					actor->SetColor(DsVec4d(0.2, 1.0, 0.6, 1)*rC);
+				} else{
+					actor->SetColor(DsVec4d(0.4, 0.6, 1.0, 1)*rC);
+				}
+				actor->SetLineColor(DsVec4d(0, 0, 0, 1));
+				actor->Draw(args.drawCom);
 			}
 			++color;
 			color %= 3;

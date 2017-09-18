@@ -191,7 +191,7 @@ void DsBoundingOctree::Update(DsActor** pActors, const int actNum, const DsVec3d
 			static_cast<int>(maxGridPos.z),
 		};
 		//一番小さい座標の格子番号
-		const DsVec3d minGridPos = DsVec3d::Div(minPos - allActorMinPos, gridSize);
+		const DsVec3d minGridPos = DsVec3d::Div(minPos - allActorMinPos, gridSize) - DsVec3d(FLT_EPSILON, FLT_EPSILON, FLT_EPSILON);;
 		const int minGridNum[3] = {
 			static_cast<int>(minGridPos.x),
 			static_cast<int>(minGridPos.y),
@@ -243,7 +243,7 @@ void DsBoundingOctree::GetContainAreaActors(const DsActor& actor, std::vector<co
 		static_cast<int>(maxGridPos.z),
 	};
 	//一番小さい座標の格子番号
-	const DsVec3d minGridPos = DsVec3d::Div(minPos - m_allActorMinPos, gridSize);
+	const DsVec3d minGridPos = DsVec3d::Div(minPos - m_allActorMinPos, gridSize) - DsVec3d(FLT_EPSILON, FLT_EPSILON, FLT_EPSILON);;
 	const int minGridNum[3] = {
 		static_cast<int>(minGridPos.x),
 		static_cast<int>(minGridPos.y),

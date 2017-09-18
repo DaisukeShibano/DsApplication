@@ -30,4 +30,7 @@ void DsAnimSkeletonModifier::UtilKeyframeAnim(double dt, DsAnimSkeleton& skeleto
 	};
 
 	skeleton.GetAllBone(setPose);
+
+	//ローカルを更新したのでモデル座標にも反映
+	skeleton.UpdatePose();
 }

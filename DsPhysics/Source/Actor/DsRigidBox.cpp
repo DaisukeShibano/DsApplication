@@ -132,6 +132,8 @@ void DsRigidBox::Create(const DsVec3d* pv, const double mass )
 	m_isForceUpdate = true;
 	m_isForceRotation = true;
 
+	m_prePos = GetPosition() + m_initPos;
+	m_preRot = GetRotation() * m_initRot;
 	SetPosition(GetPosition() + m_initPos);
 	SetRotation(GetRotation() * m_initRot);
 	_Update(DsVec3d::Zero(), DsMat33d::Identity());

@@ -48,8 +48,6 @@ DsFieldPlayer::DsFieldPlayer(DsSys& sys, DsPhysicsWorld& world)
 	, m_mouse(sys.RefMouse())
 	, m_window(sys.RefWindow())
 	, m_actReq(sys)
-	, m_pRagdoll(NULL)
-	, m_pAnimRagdollModifier(NULL)
 {
 }
 
@@ -65,38 +63,12 @@ void DsFieldPlayer::Initialize(const DsFieldInitInfo& initInfo)
 	const DsVec3d pos = DsVec3d(0, 1.5f, -3.5f) + GetPosition();
 	m_cam.SetPos(pos);
 	m_cam.SetRot(GetRotation());
-	const DsAnimCustomProperty* pProperty = m_pAnimation->GetCustomProperty();
-	DsAnimSkeleton* pSkeleton = m_pAnimation->GetSkeleton();
-	
-	//地形あたりは内部のものは全て当たらない
-	m_actorId.GetActor()->SetCollisionFilter(DsAppCollisionFilter::CalcFilterInsideAllGroup());
-
-	if (pProperty && pSkeleton) {
-		m_pRagdoll = new DsRagdoll(pProperty->ragdollParamIds, *pSkeleton, m_world, this);
-		DS_ASSERT(m_pRagdoll, "メモリ確保失敗");
-
-		for (DsRagdollParts& parts : m_pRagdoll->RefParts()) {
-			DsRagdollParam param(parts.ragdollParamId);
-			parts.damperA = param.GetDamperA();
-			parts.damperV = param.GetDamperV();
-			parts.mass = param.GetMass();
-			parts.collisionFilter = DsAppCollisionFilter::CalcFilterInside(param.GetCollisionGroup());
-			parts.collisionFilter = DsAppCollisionFilter::CalcFilterAllOne();//あらぶるので一時的に何にも当たらないように
-			m_pRagdoll->SetParam(parts);
-		}
-
-		m_pAnimRagdollModifier = new DsAnimRagdollModifier(*m_pRagdoll);
-		DS_ASSERT(m_pAnimRagdollModifier, "メモリ確保失敗");
-
-		m_pAnimation->SetAnimSkeletonModifier(m_pAnimRagdollModifier);
-	}
-
-	m_actorId.GetActor()->SetUserData(this);
 }
 
 //virtual 
 void DsFieldPlayer::Update(double dt)
 {
+	//m_actorId.GetActor()->RefOption().isGravity = false;
 	m_actReq.Update(dt);
 	{//キャラ座標の更新
 

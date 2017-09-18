@@ -27,7 +27,7 @@ using namespace DsPhysics;
 
 
 
-DsRagdoll::DsRagdoll(const std::vector<DsAnimRagdollParamId>& ragdollParamIds, DsAnimSkeleton& skeleton, DsPhysicsWorld& world, void* pUserData)
+DsRagdoll::DsRagdoll(const std::vector<DsAnimRagdollParamId>& ragdollParamIds, DsAnimSkeleton& skeleton, DsPhysicsWorld& world, void* pUserData, DsVec3d pos, DsMat33d rot)
 	: m_animSkeleton(skeleton)
 	, m_world(world)
 	, m_parts()
@@ -53,11 +53,11 @@ DsRagdoll::DsRagdoll(const std::vector<DsAnimRagdollParamId>& ragdollParamIds, D
 
 	const std::vector<DsAnimBone*>& bones = skeleton.RefRootBone();
 	for (const DsAnimBone* pBone : bones){
-		_ConstractRagdoll(pBone, NULL, DsVec3d::Zero(), tmpParams, pUserData);
+		_ConstractRagdoll(pBone, NULL, DsVec3d::Zero(), tmpParams, pUserData, pos, rot);
 	}
 }
 
-void DsRagdoll::_ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActor, const DsVec3d attachPos, const std::map<int, DsAnimRagdollParamId>& params, void* pUserData)
+void DsRagdoll::_ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActor, const DsVec3d attachPos, const std::map<int, DsAnimRagdollParamId>& params, void* pUserData, DsVec3d initPos, DsMat33d initRot)
 {
 	if (!pBone->child.empty()) {
 		DsActor* pActor = pParentpActor;
@@ -66,8 +66,15 @@ void DsRagdoll::_ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActo
 		const int arrayIdx = pBone->arrayIdx;
 		auto it = params.find(arrayIdx);
 		if (params.end() != it) {
-			const DsVec3d parentPos = pBone->initWorldPose.GetPos();
-			const DsVec3d childPos = pBone->child[0]->initWorldPose.GetPos();//どの子供でも根っこは同じ座標、でしょ？
+			const DsVec3d parentPos =initPos + pBone->initWorldPose.GetPos();
+			const DsVec3d childPos = initPos + pBone->child[0]->initWorldPose.GetPos();//どの子供でも根っこは同じ座標、でしょ？
+			for (const DsAnimBone* checkChild : pBone->child) {
+				const DsVec3d check = checkChild->initWorldPose.GetPos() - pBone->child[0]->initWorldPose.GetPos();
+				if (!check.IsNearZero()) {
+					DS_ASSERT(false, "ラグドールの子座標が複数ある");
+				}
+			}
+
 			const DsVec3d rigidPos = (parentPos + childPos)*0.5;
 			const DsVec3d dist = childPos - parentPos;
 			DsVec3d vertex[8];
@@ -81,8 +88,8 @@ void DsRagdoll::_ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActo
 			if (pActor) {
 				pActor->SetMaterial(DsActorMaterial::Aluminum());
 				pActor->SetUserData(pUserData);
-				pActor->SetPosition(rigidPos);
-				pActor->SetRotation(pBone->initWorldPose.ToMat33());
+				//pActor->SetPosition(rigidPos);
+				//pActor->SetRotation(pBone->initWorldPose.ToMat33());
 				DsRagdollParts parts = {
 					it->second.boneIndex,
 					it->second.ragdollParamId,
@@ -112,7 +119,7 @@ void DsRagdoll::_ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActo
 			}
 		}
 		for (const DsAnimBone* pChild : pBone->child) {
-			_ConstractRagdoll(pChild, pActor, nextAttachPos, params, pUserData);
+			_ConstractRagdoll(pChild, pActor, nextAttachPos, params, pUserData, initPos, initRot);
 		}
 	}
 	else {

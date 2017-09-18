@@ -67,6 +67,23 @@ DsAnimation::DsAnimation(const DsAnimController& animController, const DsAnimRes
 	{
 		m_blend.Initialize(pClip->RefAnim());
 	}
+
+	if (m_pSkeleton) {
+		m_pSkeleton->UpdatePose();
+	}
+
+	//ボーンの結果を頂点に適用。
+	if (m_pSkinMesh && m_pSkeleton)
+	{
+		m_pSkinMesh->ApplySkeleton(*m_pSkeleton);
+	}
+
+	//モデルの座標を更新
+	DsAnimModel* pModel = _GetAnimModel();
+	if (pModel) {
+		pModel->SetPosition(m_pos);
+		pModel->SetRotation(m_rot);
+	}
 }
 
 DsAnimation::~DsAnimation()
@@ -100,23 +117,29 @@ void DsAnimation::Update(double dt)
 	m_animSM.Update(dt);
 	
 	//ブレンド結果をアニメボーンに適用。
-	if (m_pKeyframeAnim && m_pSkeleton)
+	if (m_pSkeleton)
 	{
-		double blendRate = 1.0;
-		const DsAnimClip* pPre = m_animSM.GetPreActiveClip();
-		if (pPre)
-		{
-			//ブレンド率は、前のアニメから今のアニメに徐々にウェイトが行くようにする
-			blendRate = 1.0 - pPre->GetBlendRate();
-		}
-		const DsKeyframeAnim& blend = m_blend.Blend(m_animSM.GetActiveClip(), pPre, blendRate);
-		m_pSkeleton->UpdatePose();
+		if (m_pKeyframeAnim) {
+			double blendRate = 1.0;
+			const DsAnimClip* pPre = m_animSM.GetPreActiveClip();
+			if (pPre)
+			{
+				//ブレンド率は、前のアニメから今のアニメに徐々にウェイトが行くようにする
+				blendRate = 1.0 - pPre->GetBlendRate();
+			}
+			const DsKeyframeAnim& blend = m_blend.Blend(m_animSM.GetActiveClip(), pPre, blendRate);
 
-		if (m_animModifier) {
-			m_animModifier->ModifyAnim(dt, *m_pSkeleton, blend, m_pos, m_rot);
+			if (m_animModifier) {
+				m_animModifier->ModifyAnim(dt, *m_pSkeleton, blend, m_pos, m_rot);
+			}
+			else {
+				DsAnimSkeletonModifier::UtilKeyframeAnim(dt, *m_pSkeleton, blend);
+				
+			}
 		}
 		else {
-			DsAnimSkeletonModifier::UtilKeyframeAnim(dt, *m_pSkeleton, blend);
+			//キーフレームアニメがないのは初期姿勢のまま
+			m_pSkeleton->UpdatePose();
 		}
 	}
 

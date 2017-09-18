@@ -11,7 +11,18 @@
 #ifndef _DS_ANIM_MODEL_
 #include "Animation/DsAnimModel.h"
 #endif
-
+#ifndef _DS_AMIM_CUSTOM_PROPERTY_
+#include "Animation/DsAnimCustomProperty.h"
+#endif
+#ifndef _DS_ANIM_RAGDOLL_MODIFIER_
+#include "World/Physics/DsAnimRagdollModifier.h"
+#endif
+#ifndef _DS_RES_PARAM_DS_RAGDOLL_PARAM_
+#include "Res/Param/DsRagdollParam.h"
+#endif
+#ifndef __DS_APP_COLLISION_FILTER__
+#include "World/Physics/DsAppCollisionFilter.h"
+#endif
 
 using namespace DsLib;
 using namespace DsPhysics;
@@ -23,6 +34,8 @@ DsFieldChr::DsFieldChr(DsSys& sys, DsPhysicsWorld& world)
 	: DsFieldObj(sys, world)
 	, m_vel(DsVec3d::Zero())
 	, m_ang(DsVec3d::Zero())
+	, m_pRagdoll(NULL)
+	, m_pAnimRagdollModifier(NULL)
 {
 
 }
@@ -45,6 +58,34 @@ void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 		mat.m_kinematicFricCoef = 0.0;
 		pActor->SetMaterial(mat);
 	}
+
+	//ラグドール
+	const DsAnimCustomProperty* pProperty = m_pAnimation->GetCustomProperty();
+	DsAnimSkeleton* pSkeleton = m_pAnimation->GetSkeleton();
+
+	//地形あたりは内部のものは全て当たらない
+	m_actorId.GetActor()->SetCollisionFilter(DsAppCollisionFilter::CalcFilterInsideAllGroup());
+
+	if (pProperty && pSkeleton) {
+		m_pRagdoll = new DsRagdoll(pProperty->ragdollParamIds, *pSkeleton, m_world, this, GetPosition(),GetRotation());
+		DS_ASSERT(m_pRagdoll, "メモリ確保失敗");
+
+		for (DsRagdollParts& parts : m_pRagdoll->RefParts()) {
+			DsRagdollParam param(parts.ragdollParamId);
+			parts.damperA = param.GetDamperA();
+			parts.damperV = param.GetDamperV();
+			parts.mass = param.GetMass();
+			parts.collisionFilter = DsAppCollisionFilter::CalcFilterInside(param.GetCollisionGroup());
+			//parts.collisionFilter = DsAppCollisionFilter::CalcFilterAllOne();//あらぶるので一時的に何にも当たらないように
+			m_pRagdoll->SetParam(parts);
+		}
+
+		m_pAnimRagdollModifier = new DsAnimRagdollModifier(*m_pRagdoll);
+		DS_ASSERT(m_pAnimRagdollModifier, "メモリ確保失敗");
+
+		m_pAnimation->SetAnimSkeletonModifier(m_pAnimRagdollModifier);
+	}
+	m_actorId.GetActor()->SetUserData(this);
 }
 
 //virtual 

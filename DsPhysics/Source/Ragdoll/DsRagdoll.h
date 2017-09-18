@@ -42,7 +42,7 @@ namespace DsPhysics
 		};
 
 	public:
-		DsRagdoll(const std::vector<DsLib::DsAnimRagdollParamId>& ragdollParamIds, DsAnimSkeleton& skeleton, DsPhysicsWorld& world, void* pUserData);
+		DsRagdoll(const std::vector<DsLib::DsAnimRagdollParamId>& ragdollParamIds, DsAnimSkeleton& skeleton, DsPhysicsWorld& world, void* pUserData, DsVec3d pos, DsMat33d rot);
 		virtual ~DsRagdoll();
 
 	public:
@@ -58,7 +58,7 @@ namespace DsPhysics
 		void FixToPhysics(double dt, std::vector<DsAnimBone*>& bones, const DsRagdollParts& parts, DsVec3d worldPos, DsMat33d worldRot);
 
 	private:
-		void _ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActor, const DsVec3d attachPos, const std::map<int, DsAnimRagdollParamId>& params, void* pUserData);
+		void _ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActor, const DsVec3d attachPos, const std::map<int, DsAnimRagdollParamId>& params, void* pUserData, DsVec3d initPos, DsMat33d initRot);
 
 	private:
 		DsAnimSkeleton& m_animSkeleton;

@@ -10,6 +10,16 @@ namespace DsLib
 	class DsHitRes;
 }
 
+namespace DsPhysics
+{
+	class DsRagdoll;
+}
+
+namespace DsApp
+{
+	class DsAnimRagdollModifier;
+}
+
 namespace DsApp
 {
 	class DsFieldChr : public DsFieldObj
@@ -32,7 +42,8 @@ namespace DsApp
 	protected:
 		DsVec3d m_vel;
 		DsVec3d m_ang;
-
+		DsPhysics::DsRagdoll* m_pRagdoll;
+		DsAnimRagdollModifier* m_pAnimRagdollModifier;
 	};
 }
 
