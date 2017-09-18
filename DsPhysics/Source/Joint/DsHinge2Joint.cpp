@@ -108,7 +108,7 @@ void DsHinge2Joint::Update(double dt)
 		m_distance = deltaRot*m_distance;
 		const DsVec3d pos = pMas->GetPosition() + m_distance;
 		const DsVec3d posSub = pSub->GetPosition() + m_distanceSub;
-		const DsVec3d errorP = posSub - pos;
+		const DsVec3d errorP = (posSub - pos);
 		
 		
 		const DsMat33d cRot = m_actorRot*m_cRot;//拘束座標はマスターからの相対なので,グローバルに戻す
