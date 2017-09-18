@@ -147,19 +147,19 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 		for each(DsActor* actor in pWorld->GetActors() )
 		{
 			std::string tmp = actor->GetName();
-			if ((tmp == "” ‚P") || (tmp == "” ‚Q") || (tmp == "” ‚R"))
+			//if ((tmp == "” ‚P") || (tmp == "” ‚Q") || (tmp == "” ‚R"))
 			//if (actor->GetType() == DsActor::RIGID_BOX)
 			{
-				const double rC = (actor->IsRest()) ? (0.5) : (1.0);
-				if (color == 0){
-					actor->SetColor(DsVec4d(1.0, 0.6, 0.2, 1)*rC);
-				} else if(color == 1){
-					actor->SetColor(DsVec4d(0.2, 1.0, 0.6, 1)*rC);
-				} else{
-					actor->SetColor(DsVec4d(0.4, 0.6, 1.0, 1)*rC);
-				}
-				actor->SetLineColor(DsVec4d(0, 0, 0, 1));
-				actor->Draw(args.drawCom);
+				//const double rC = (actor->IsRest()) ? (0.5) : (1.0);
+				//if (color == 0){
+				//	actor->SetColor(DsVec4d(1.0, 0.6, 0.2, 1)*rC);
+				//} else if(color == 1){
+				//	actor->SetColor(DsVec4d(0.2, 1.0, 0.6, 1)*rC);
+				//} else{
+				//	actor->SetColor(DsVec4d(0.4, 0.6, 1.0, 1)*rC);
+				//}
+				//actor->SetLineColor(DsVec4d(0, 0, 0, 1));
+				//actor->Draw(args.drawCom);
 			}
 			++color;
 			color %= 3;

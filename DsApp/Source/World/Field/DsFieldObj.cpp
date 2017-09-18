@@ -171,12 +171,12 @@ void DsFieldObj::SetPosition(const DsVec3d& pos)
 	if (pActor)
 	{
 		const DsVec3d offset = DsVec3d(0, pActor->RefAabb().GetMax().y, 0);
-		pActor->SetPosition(pos + offset);
-	}
+		pActor->SetPosition(pos);
 
-	if (m_pAnimation)
-	{
-		m_pAnimation->SetRootMatrix(GetPosition(), GetRotation());
+		if (m_pAnimation)
+		{
+			m_pAnimation->SetRootMatrix(GetPosition(), GetRotation());
+		}
 	}
 }
 //virtual
@@ -201,7 +201,7 @@ DsVec3d DsFieldObj::GetPosition() const
 	if (pActor)
 	{
 		const DsVec3d offset = DsVec3d(0, -pActor->RefAabb().GetMax().y, 0);
-		return pActor->GetPosition() + offset;
+		return pActor->GetPosition();
 	}
 	else
 	{

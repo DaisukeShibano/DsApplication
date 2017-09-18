@@ -79,7 +79,6 @@ void DsFieldObjectCreator::Create(const char* resPath, DsResource& res, DsPhysic
 			case DS_MAP_FIELD_OBJ_TYPE::OBJ:
 				{
 					DsFieldObj* pObj = new DsFieldObj(m_sys, world);
-					m_objs.push_back(pObj);
 					info.pObj = pObj;
 					m_requestObjs.push_back(info);
 				}

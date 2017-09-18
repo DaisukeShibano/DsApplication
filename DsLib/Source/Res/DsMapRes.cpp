@@ -139,7 +139,7 @@ void DsMapRes::Initialize(const char* path)
 		data.objType = static_cast<DS_MAP_OBJ_TYPE>(obj->objType);
 		data.fieldObjType = static_cast<DS_MAP_FIELD_OBJ_TYPE>(obj->fieldObjType);
 		data.pos = DsVec3d(obj->posX, obj->posY, obj->posZ);
-		data.rot = DsMat33d::RotateX(obj->angX)*DsMat33d::RotateY(obj->angY)*DsMat33d::RotateZ(obj->angZ);
+		data.rot = DsMat33d::RotateX(DegToRad(obj->angX))*DsMat33d::RotateY(DegToRad(obj->angY))*DsMat33d::RotateZ(DegToRad(obj->angZ));
 		m_data.push_back(data);
 	}
 }

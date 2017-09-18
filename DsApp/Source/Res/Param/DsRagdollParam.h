@@ -19,10 +19,10 @@ namespace DsApp
 	struct DsRagdollParamST
 	{
 		double mass;
-		int animType;
+		int animType; //DS_RAGDOLL_PARAM_ANIM_TYPE
 		double damperV;
 		double damperA;
-		unsigned int collisionGroup;
+		unsigned int collisionGroup; //INSIDE_COLLISION_GROUP
 	};
 
 	class DsRagdollParam
