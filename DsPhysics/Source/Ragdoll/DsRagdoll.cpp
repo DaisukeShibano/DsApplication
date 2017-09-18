@@ -86,7 +86,9 @@ void DsRagdoll::_ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActo
 			factory.SetOption(DsActor::Option::Default());
 			pActor = m_world.CreateActor(factory).GetActor();
 			if (pActor) {
-				pActor->SetMaterial(DsActorMaterial::Aluminum());
+				DsActorMaterial material = DsActorMaterial::Aluminum();
+				material.m_bundCoef = 0;
+				pActor->SetMaterial(material);
 				pActor->SetUserData(pUserData);
 				//pActor->SetPosition(rigidPos);
 				//pActor->SetRotation(pBone->initWorldPose.ToMat33());

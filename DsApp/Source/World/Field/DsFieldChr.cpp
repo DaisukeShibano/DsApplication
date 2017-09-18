@@ -58,6 +58,8 @@ void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 		mat.m_kinematicFricCoef = 0.0;
 		pActor->SetMaterial(mat);
 	}
+	
+	m_actorId.GetActor()->SetUserData(this);
 
 	//ƒ‰ƒOƒh[ƒ‹
 	const DsAnimCustomProperty* pProperty = m_pAnimation->GetCustomProperty();
@@ -85,7 +87,6 @@ void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 
 		m_pAnimation->SetAnimSkeletonModifier(m_pAnimRagdollModifier);
 	}
-	m_actorId.GetActor()->SetUserData(this);
 }
 
 //virtual 
