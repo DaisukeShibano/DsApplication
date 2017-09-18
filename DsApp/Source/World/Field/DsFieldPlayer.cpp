@@ -195,12 +195,15 @@ void DsFieldPlayer::_UpdateCam(double dt)
 	{
 		const DsVec2i drag2i = m_mouse.GetDragMove();
 		const DsVec3d drag3 = m_window.GetNormalizeScreenCoord(DsVec2i::ToVec2(-drag2i.x, -drag2i.y));//正面を向いてると仮定して右手系になるように。
-		const double moveVel = 6.0;
+		const double moveVel = 2.0;
 		const DsMat33d mat = m_cam.GetRot();
 		const DsVec3d rotAxisX = mat.GetAxisX();
 		const DsVec3d rotAxisY = mat.GetAxisY();
-		const DsMat33d rotMat = DsMat33d::RotateVec(rotAxisY*drag3.x*moveVel) * 
-			DsMat33d::RotateVec(rotAxisX*drag3.y*moveVel*(-1.0));
+		
+		//円筒座標系で計算する
+		const DsMat33d rotMatY = DsMat33d::RotateVec(rotAxisY*drag3.x*moveVel);
+		const DsMat33d rotMatX = rotMatY*DsMat33d::RotateVec(rotAxisX*drag3.y*moveVel*(-1.0));
+		const DsMat33d rotMat = rotMatY*rotMatX;
 		m_cam.SetRot(rotMat*mat);
 
 		//キャラを中心を回るようにする
