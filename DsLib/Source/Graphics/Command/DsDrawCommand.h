@@ -68,13 +68,11 @@ namespace DsLib
 		DsDrawCommand& SetColor(const DsVec3d& color){ return SetColor(ToVec3f(color)); }
 		DsDrawCommand& SetColor(float r, float g, float b){ return SetColor(DsVec3d(r, g, b)); }
 		DsDrawCommand& SetColor(double r, double g, double b){ return SetColor(ToVec3f(DsVec3d(r,g,b))); }
+		DsDrawCommand& DrawText(DsVec3d& pos, const wchar_t* pText);
 
 	public:
 		DsAnimModelRender& RefAnimRender() { return m_animRender; }
 		DsRender& RefRender() { return m_render; }
-
-	public:
-		std::map<const unsigned char*, unsigned int>& RefTexIdMap() { return m_texIdMap; }
 
 	private:
 		std::vector<DsDrawComBase*> m_coms;
@@ -84,6 +82,10 @@ namespace DsLib
 		DsRender& m_render;
 		unsigned int m_dummyTexId;
 		std::map< const unsigned char*, unsigned int> m_texIdMap;
+
+	private://ƒtƒHƒ“ƒg
+		ds_uint64 m_hdc;
+		ds_uint64 m_hFont;
 
 	};
 

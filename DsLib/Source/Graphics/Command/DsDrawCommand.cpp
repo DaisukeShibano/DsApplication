@@ -1,4 +1,5 @@
 #include "DsPch.h"
+#include <windows.h>
 #include <gl/GL.h>
 #ifndef _DS_DRAW_COMMAND_H_
 #include "Graphics/Command/DsDrawCommand.h"
@@ -13,6 +14,26 @@
 
 
 using namespace DsLib;
+
+
+namespace
+{
+	//DsDrawCommandからDsDrawComBaseへ渡す情報。外部に公開したくないもの
+	struct _InnerCommandInfo
+	{
+		_InnerCommandInfo()
+			: hDC(NULL)
+			, hFont(NULL)
+			, pTexIdMap(NULL)
+		{}
+		HDC hDC;
+		HFONT hFont;
+		std::map< const unsigned char*, unsigned int>* pTexIdMap;
+	};
+
+
+}
+
 
 namespace
 {
@@ -448,7 +469,8 @@ namespace
 	public:
 		_ComTexQuad(const DsVec3d& p1, const DsVec3d& p2, const DsVec3d& p3, const DsVec3d& p4
 			, const DsVec2d& t1, const DsVec2d& t2, const DsVec2d& t3, const DsVec2d& t4
-			, const unsigned char* pImage, int w, int h )
+			, const unsigned char* pImage, int w, int h,
+			_InnerCommandInfo& innerInfo)
 			: m_p1(p1)
 			, m_p2(p2)
 			, m_p3(p3)
@@ -460,15 +482,16 @@ namespace
 			, m_pImage(pImage)
 			, m_w(w)
 			, m_h(h)
+			, m_innerInfo(innerInfo)
 		{}
 		virtual void Exe(DsDrawCommand& owner) override
 		{
 			GLuint texId;
-			auto itr = owner.RefTexIdMap().find(m_pImage);
-			if (itr == owner.RefTexIdMap().end()) {
+			auto itr = m_innerInfo.pTexIdMap->find(m_pImage);
+			if (itr == m_innerInfo.pTexIdMap->end()) {
 				//見つからなかったのでテクスチャ登録
 				glGenTextures(1, &texId);
-				owner.RefTexIdMap()[m_pImage] = texId;
+				(*m_innerInfo.pTexIdMap)[m_pImage] = texId;
 			}
 			else {
 				//見つかったのでIDを取得
@@ -517,6 +540,7 @@ namespace
 		const unsigned char* m_pImage;
 		const int m_w;
 		const int m_h;
+		_InnerCommandInfo& m_innerInfo;
 	};
 
 	/****************************
@@ -599,6 +623,131 @@ namespace
 	private:
 		const DsVec3f m_color;
 	};
+
+	/****************************
+	@brief 文字
+	*****************************/
+	class _ComText : public DsDrawComBase
+	{
+	private:
+		enum 
+		{
+			FONT_W_MAX = 512,
+			FONT_H_MAX = 64,
+		};
+
+	public:
+		_ComText(const DsVec3d& pos, const wchar_t* pText, _InnerCommandInfo& innerInfo)
+			: m_pos(pos)
+			, m_text(pText)
+			, m_innerInfo(innerInfo)
+			//, m_buf()
+		{
+		}
+		virtual void Exe(DsDrawCommand& owner) override
+		{
+			HDC hDC = m_innerInfo.hDC;
+			HFONT hFont = m_innerInfo.hFont;
+
+			//古いフォントをバックアップ
+			HFONT  hFont_old = (HFONT)SelectObject(hDC, hFont);
+
+			//文字のサイズを取得
+			SIZE sizeText;
+			{
+				GetTextExtentPoint32(hDC, m_text.c_str(), static_cast<int>(m_text.length()), &sizeText);
+				sizeText.cx = min(sizeText.cx, FONT_W_MAX);//バッファ越えないように
+				sizeText.cy = min(sizeText.cy, FONT_H_MAX);
+			}
+
+			//文字サイズ分のbitmap用意
+			BITMAP bitmap;
+			HBITMAP hBitmap = NULL;
+			{
+				FillMemory(&bitmap, sizeof(bitmap), 0);
+				bitmap.bmWidth = sizeText.cx;
+				bitmap.bmHeight = sizeText.cy;
+				bitmap.bmWidthBytes = ((sizeText.cx + 7) / 8 + 1) & (~1);
+				bitmap.bmPlanes = 1;
+				bitmap.bmBitsPixel = 1;
+				bitmap.bmBits = m_buf;
+				hBitmap = CreateBitmapIndirect(&bitmap);
+				DS_ASSERT(hBitmap, "フォント用bitmap生成失敗");
+			}
+
+			//メモリ上に文字を出力するための設定
+			HDC hMemDC = CreateCompatibleDC(hDC);
+			HBITMAP hBitmap_memdc_old = (HBITMAP)SelectObject(hMemDC, hBitmap);//古いのバックアップ
+			HFONT hFont_memdc_old = (HFONT)SelectObject(hMemDC, hFont);
+			{
+				DS_ASSERT(hMemDC, "フォント用メモリデバイスコンテキスト作成失敗");
+				SetTextColor(hMemDC, RGB(255, 255, 255));
+				SetBkColor(hMemDC, RGB(0, 0, 0));
+				SetBkMode(hMemDC, OPAQUE);
+				// MemDC上にテキストを出力
+				TextOut(hMemDC, 0, 0, m_text.c_str(), static_cast<int>(m_text.length()));
+			}
+
+			// MonoBitsデータの作成、構築
+			GLubyte* pStringMonoBits = NULL;
+			SIZE rsizeBitmap;
+			{
+				rsizeBitmap.cx = ((bitmap.bmWidth + 31) & (~31));	// 32の倍数にする
+				rsizeBitmap.cy = bitmap.bmHeight;
+				// ビット列の領域の確保
+				const int uiBitsSize = rsizeBitmap.cy * (rsizeBitmap.cx / 8);
+				GLubyte* pMonoBits = (GLubyte*)m_buf;
+				FillMemory(pMonoBits, uiBitsSize, 0);
+				// ビットマップをビット列にコピー
+				struct
+				{
+					BITMAPINFOHEADER	bmiHeader;
+					RGBQUAD		bmiColors[2];	// パレット（色の数(＝2^biBitCount)分のRGBQUADを用意する必要がある）
+				}monobitmapinfo;
+				BITMAPINFO* pBitmapinfo = (BITMAPINFO*)&monobitmapinfo;
+				pBitmapinfo->bmiHeader.biSize = sizeof(pBitmapinfo->bmiHeader);
+				pBitmapinfo->bmiHeader.biWidth = bitmap.bmWidth;
+				pBitmapinfo->bmiHeader.biHeight = bitmap.bmHeight;
+				pBitmapinfo->bmiHeader.biPlanes = 1;
+				pBitmapinfo->bmiHeader.biBitCount = 1;	// 1ピクセルあたりのビット数（1ピクセルあたりの1ビット＝２色ビットマップ）
+				pBitmapinfo->bmiHeader.biCompression = BI_RGB;
+				pBitmapinfo->bmiHeader.biSizeImage = uiBitsSize;
+				pBitmapinfo->bmiHeader.biXPelsPerMeter = 1;
+				pBitmapinfo->bmiHeader.biYPelsPerMeter = 1;
+				pBitmapinfo->bmiHeader.biClrUsed = 0;
+				pBitmapinfo->bmiHeader.biClrImportant = 0;
+				GetDIBits(hDC, hBitmap, 0, bitmap.bmHeight, pMonoBits, pBitmapinfo, DIB_RGB_COLORS);
+				pStringMonoBits = pMonoBits;
+			}
+
+			//古いの復帰
+			SelectObject(hMemDC, hFont_memdc_old);
+			SelectObject(hMemDC, hBitmap_memdc_old);
+
+			//メモリデバイスコンテキスト削除
+			DeleteDC(hMemDC);
+
+			//フォント用bitmap削除
+			DeleteObject(hBitmap);
+
+			//古いフォント復帰
+			SelectObject(hDC, hFont_old);
+
+
+			//GLで描画。pStringMonoBitsとrsizeBitmapさえあればOK
+			{
+
+			}
+
+			
+		}
+
+	private:
+		const DsVec3d m_pos;
+		std::wstring m_text;
+		_InnerCommandInfo& m_innerInfo;
+		char m_buf[FONT_W_MAX * FONT_H_MAX];
+	};
 }
 
 //static
@@ -620,6 +769,8 @@ DsDrawCommand::DsDrawCommand(DsAnimModelRender& animRender, DsRender& render)
 , m_render(render)
 , m_dummyTexId(0)
 , m_texIdMap()
+, m_hFont(0)
+, m_hdc(0)
 {
 	m_coms.clear();
 	m_pBuffer = new char[BUFFER_SIZE];
@@ -651,6 +802,20 @@ DsDrawCommand::DsDrawCommand(DsAnimModelRender& animRender, DsRender& render)
 	//	0, GL_RGB, GL_UNSIGNED_BYTE, dummyTex);
 	//glBindTexture(GL_TEXTURE_2D, 0);
 	//m_dummyTexId = texName;
+
+	HDC hDC = (HDC)m_hdc;
+
+
+	LOGFONT logfont;
+	FillMemory(&logfont, sizeof(LOGFONT), 0);
+	logfont.lfHeight = -MulDiv((int)24, GetDeviceCaps(hDC, LOGPIXELSY), 72);	// 文字の高さ
+	logfont.lfCharSet = SHIFTJIS_CHARSET;	// キャラクタセット（日本語キャラクタセット）
+	logfont.lfWeight = FW_NORMAL;		// 太さ（標準の太さ）
+	wcscpy_s(logfont.lfFaceName, LF_FACESIZE, L"ＭＳ ゴシック");
+	HFONT hFont = CreateFontIndirect(&logfont);
+	DS_ASSERT(hFont, "フォントの初期化に失敗");
+	m_hFont = (ds_uint64)hFont;
+
 }
 
 DsDrawCommand::~DsDrawCommand()
@@ -660,6 +825,8 @@ DsDrawCommand::~DsDrawCommand()
 	for (const auto& texId : m_texIdMap) {
 		glDeleteTextures(1, &texId.second);
 	}
+
+	DeleteObject((HFONT)m_hFont);
 }
 
 void DsDrawCommand::Exe()
@@ -795,7 +962,9 @@ DsDrawCommand& DsDrawCommand::DrawTexQuad(const DsVec3d& p1, const DsVec3d& p2, 
 {
 	if (BUFFER_SIZE > (m_useMemory + sizeof(_ComTexQuad)))
 	{
-		DsDrawComBase* com = new(m_pBuffer + m_useMemory) _ComTexQuad(p1, p2, p3, p4, t1, t2, t3, t4, pImage, w, h);
+		_InnerCommandInfo innerInfo;
+		innerInfo.pTexIdMap = &m_texIdMap;
+		DsDrawComBase* com = new(m_pBuffer + m_useMemory) _ComTexQuad(p1, p2, p3, p4, t1, t2, t3, t4, pImage, w, h, innerInfo);
 		if (com)
 		{
 			m_coms.push_back(com);
@@ -828,6 +997,23 @@ DsDrawCommand& DsDrawCommand::SetColor(const DsVec3f& color)
 		{
 			m_coms.push_back( com );
 			m_useMemory += sizeof(_ComColor);
+		}
+	}
+	return (*this);
+}
+
+
+DsDrawCommand& DsDrawCommand::DrawText(DsVec3d& pos, const wchar_t* pText)
+{
+	if (BUFFER_SIZE > (m_useMemory + sizeof(_ComText)))
+	{
+		_InnerCommandInfo innnerInfo;
+		innnerInfo.hFont = (HFONT)m_hFont;
+		DsDrawComBase* com = new(m_pBuffer + m_useMemory) _ComText(pos, pText, innnerInfo);
+		if (com)
+		{
+			m_coms.push_back(com);
+			m_useMemory += sizeof(_ComText);
 		}
 	}
 	return (*this);
