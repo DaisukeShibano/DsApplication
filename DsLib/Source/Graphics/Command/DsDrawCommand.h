@@ -68,7 +68,8 @@ namespace DsLib
 		DsDrawCommand& SetColor(const DsVec3d& color){ return SetColor(ToVec3f(color)); }
 		DsDrawCommand& SetColor(float r, float g, float b){ return SetColor(DsVec3d(r, g, b)); }
 		DsDrawCommand& SetColor(double r, double g, double b){ return SetColor(ToVec3f(DsVec3d(r,g,b))); }
-		DsDrawCommand& DrawText(DsVec3d& pos, const wchar_t* pText);
+		DsDrawCommand& DrawText(const DsVec3d& pos, const wchar_t* pText, ...);
+		DsDrawCommand& DrawTextScreen(const DsVec2d& pos, const wchar_t* pText, ...);//座標は上下で-0.5,0.5の範囲
 
 	public:
 		DsAnimModelRender& RefAnimRender() { return m_animRender; }
@@ -84,7 +85,6 @@ namespace DsLib
 		std::map< const unsigned char*, unsigned int> m_texIdMap;
 
 	private://フォント
-		ds_uint64 m_hdc;
 		ds_uint64 m_hFont;
 
 	};

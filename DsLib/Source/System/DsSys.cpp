@@ -79,7 +79,7 @@ void DsSys::Update()
 		m_pRender->Update( dt );
 		m_pWindow->Update(dt);
 		DsPerf::RefPerfDefault().DbgPrintPerf();
-		DsPerf::RefPerfTotalFps().DbgPrintFps();
+		//DsPerf::RefPerfTotalFps().DbgPrintFps();
 	}
 }
 

@@ -62,6 +62,8 @@ namespace DsLib
 			}
 		}
 
+		void DbgDrawFps();
+
 		double GetMsec() { return m_ms; }
 		double GetFps() { return m_fps; }
 

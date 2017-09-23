@@ -130,6 +130,7 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 	//m_cam2 = sysCam;
 	//m_pImage2 = DsRenderCamCaptureImage::Create(m_cam2, 128, 128);
 	//args.sys.RefRender().RegisterCaptureImage(m_pImage2);
+
 }
 
 void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
@@ -218,6 +219,8 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 	//args.drawCom.DrawTexQuad(poly2[0], poly2[1], poly2[2], poly2[3],
 	//	tex[0], tex[1], tex[2], tex[3],
 	//	m_pImage2->GetImage(), m_pImage2->GetWidth(), m_pImage2->GetHeight());
+
+	DsPerf::RefPerfTotalFps().DbgDrawFps();
 }
 
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, int nCmdShow)

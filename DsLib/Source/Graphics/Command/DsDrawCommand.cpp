@@ -11,7 +11,9 @@
 #ifndef _DS_RENDER_H_
 #include "Graphics/Render/DsRender.h"
 #endif
-
+#ifndef _DS_CAMERA_H_
+#include "Graphics/Camera/DsCamera.h"
+#endif
 
 using namespace DsLib;
 
@@ -22,11 +24,9 @@ namespace
 	struct _InnerCommandInfo
 	{
 		_InnerCommandInfo()
-			: hDC(NULL)
-			, hFont(NULL)
+			: hFont(NULL)
 			, pTexIdMap(NULL)
 		{}
-		HDC hDC;
 		HFONT hFont;
 		std::map< const unsigned char*, unsigned int>* pTexIdMap;
 	};
@@ -641,12 +641,13 @@ namespace
 			: m_pos(pos)
 			, m_text(pText)
 			, m_innerInfo(innerInfo)
-			//, m_buf()
 		{
 		}
 		virtual void Exe(DsDrawCommand& owner) override
 		{
-			HDC hDC = m_innerInfo.hDC;
+			char buf[FONT_W_MAX * FONT_H_MAX];
+
+			HDC hDC = wglGetCurrentDC();
 			HFONT hFont = m_innerInfo.hFont;
 
 			//古いフォントをバックアップ
@@ -670,7 +671,7 @@ namespace
 				bitmap.bmWidthBytes = ((sizeText.cx + 7) / 8 + 1) & (~1);
 				bitmap.bmPlanes = 1;
 				bitmap.bmBitsPixel = 1;
-				bitmap.bmBits = m_buf;
+				bitmap.bmBits = buf;//サイズ=bitmap.bmWidthBytes * lHeight
 				hBitmap = CreateBitmapIndirect(&bitmap);
 				DS_ASSERT(hBitmap, "フォント用bitmap生成失敗");
 			}
@@ -696,7 +697,7 @@ namespace
 				rsizeBitmap.cy = bitmap.bmHeight;
 				// ビット列の領域の確保
 				const int uiBitsSize = rsizeBitmap.cy * (rsizeBitmap.cx / 8);
-				GLubyte* pMonoBits = (GLubyte*)m_buf;
+				GLubyte* pMonoBits = (GLubyte*)buf;//サイズ=uiBitsSize ;
 				FillMemory(pMonoBits, uiBitsSize, 0);
 				// ビットマップをビット列にコピー
 				struct
@@ -736,17 +737,25 @@ namespace
 
 			//GLで描画。pStringMonoBitsとrsizeBitmapさえあればOK
 			{
-
+				glPushMatrix();
+				glLoadIdentity();
+				glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+				glRasterPos3dv(m_pos.v);
+				glBitmap(rsizeBitmap.cx, rsizeBitmap.cy,
+					0.0,		// ビットマップ原点をどこにするか（ビットマップの左下基準。軸は、Ｘ軸は右向き、Ｙ軸は上向き）
+					0.0,		// ビットマップ原点をどこにするか（ビットマップの左下基準。軸は、Ｘ軸は右向き、Ｙ軸は上向き）
+					0.0,
+					0.0,
+					pStringMonoBits);
+				glPopMatrix();
 			}
 
-			
 		}
 
 	private:
 		const DsVec3d m_pos;
 		std::wstring m_text;
 		_InnerCommandInfo& m_innerInfo;
-		char m_buf[FONT_W_MAX * FONT_H_MAX];
 	};
 }
 
@@ -770,7 +779,6 @@ DsDrawCommand::DsDrawCommand(DsAnimModelRender& animRender, DsRender& render)
 , m_dummyTexId(0)
 , m_texIdMap()
 , m_hFont(0)
-, m_hdc(0)
 {
 	m_coms.clear();
 	m_pBuffer = new char[BUFFER_SIZE];
@@ -803,7 +811,7 @@ DsDrawCommand::DsDrawCommand(DsAnimModelRender& animRender, DsRender& render)
 	//glBindTexture(GL_TEXTURE_2D, 0);
 	//m_dummyTexId = texName;
 
-	HDC hDC = (HDC)m_hdc;
+	HDC hDC = wglGetCurrentDC();
 
 
 	LOGFONT logfont;
@@ -1003,13 +1011,44 @@ DsDrawCommand& DsDrawCommand::SetColor(const DsVec3f& color)
 }
 
 
-DsDrawCommand& DsDrawCommand::DrawText(DsVec3d& pos, const wchar_t* pText)
+DsDrawCommand& DsDrawCommand::DrawText(const DsVec3d& pos, const wchar_t* pText, ...)
 {
+	wchar_t buf[1024];
+	va_list  valist;
+	va_start(valist, pText);
+	//swprintf_s(buf, 1024, pText, valist);
+	vswprintf_s(buf, 1024, pText, valist);
+	va_end(valist);
+
 	if (BUFFER_SIZE > (m_useMemory + sizeof(_ComText)))
 	{
 		_InnerCommandInfo innnerInfo;
 		innnerInfo.hFont = (HFONT)m_hFont;
-		DsDrawComBase* com = new(m_pBuffer + m_useMemory) _ComText(pos, pText, innnerInfo);
+		DsDrawComBase* com = new(m_pBuffer + m_useMemory) _ComText(pos, buf, innnerInfo);
+		if (com)
+		{
+			m_coms.push_back(com);
+			m_useMemory += sizeof(_ComText);
+		}
+	}
+	return (*this);
+}
+
+DsDrawCommand& DsDrawCommand::DrawTextScreen(const DsVec2d& pos, const wchar_t* pText, ...)
+{
+	wchar_t buf[1024];
+	va_list  valist;
+	va_start(valist, pText);
+	//swprintf_s(buf, 1024, pText, valist);
+	vswprintf_s(buf, 1024, pText, valist);
+	va_end(valist);
+
+	if (BUFFER_SIZE > (m_useMemory + sizeof(_ComText)))
+	{
+		_InnerCommandInfo innnerInfo;
+		innnerInfo.hFont = (HFONT)m_hFont;
+		DsVec3d drawPos = DsVec3d(pos.x*m_render.RefCam().GetAspect() , pos.y, -(m_render.RefCam().GetNear()+0.00001));
+		DsDrawComBase* com = new(m_pBuffer + m_useMemory) _ComText(drawPos, buf, innnerInfo);
 		if (com)
 		{
 			m_coms.push_back(com);

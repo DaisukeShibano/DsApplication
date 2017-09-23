@@ -16,7 +16,7 @@ namespace DsLib
 #define DS_LOG( str, ... ) \
       { \
         char c[1024]; \
-        int num = sprintf_s( c, 254, str, __VA_ARGS__ ); \
+        int num = sprintf_s( c, 1023, str, __VA_ARGS__ ); \
 		c[num]='\n'; \
 		c[num+1]='\0'; \
 		OutputDebugStringA( c ); \
