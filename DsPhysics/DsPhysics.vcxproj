@@ -207,6 +207,7 @@
     <ClInclude Include="Source\Collision\EachGeom\DsCollisionBoxBox.h" />
     <ClInclude Include="Source\Collision\EachGeom\DsCollisionBoxMesh.h" />
     <ClInclude Include="Source\Collision\EachGeom\DsCollisionBoxRay.h" />
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionMeshMesh.h" />
     <ClInclude Include="Source\Collision\EachGeom\DsCollisionMeshRay.h" />
     <ClInclude Include="Source\Collision\EachGeom\DsCollisionSphereBox.h" />
     <ClInclude Include="Source\Collision\EachGeom\DsCollisionSphereMesh.h" />
@@ -263,6 +264,7 @@
     <ClCompile Include="Source\Collision\EachGeom\DsCollisionBoxBox.cpp" />
     <ClCompile Include="Source\Collision\EachGeom\DsCollisionBoxMesh.cpp" />
     <ClCompile Include="Source\Collision\EachGeom\DsCollisionBoxRay.cpp" />
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionMeshMesh.cpp" />
     <ClCompile Include="Source\Collision\EachGeom\DsCollisionMeshRay.cpp" />
     <ClCompile Include="Source\Collision\EachGeom\DsCollisionSphereBox.cpp" />
     <ClCompile Include="Source\Collision\EachGeom\DsCollisionSphereMesh.cpp" />

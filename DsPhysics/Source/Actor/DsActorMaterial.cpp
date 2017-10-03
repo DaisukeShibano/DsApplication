@@ -9,7 +9,6 @@ namespace
 }
 
 //static 
-
 const DsActorMaterial& DsPhysics::DsActorMaterial::Null()
 {
 	s_null.m_bundCoef = 1.0;

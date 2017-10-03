@@ -219,6 +219,9 @@
     <ClInclude Include="Source\DsPhysicsDefine.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionMeshMesh.h">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsPhysicsManager.cpp">
@@ -364,6 +367,9 @@
     </ClCompile>
     <ClCompile Include="Source\DsPhysicsDefine.cpp">
       <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionMeshMesh.cpp">
+      <Filter>Source\Collision\EachGeom</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

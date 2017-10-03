@@ -17,6 +17,8 @@ using namespace std;
 using namespace DsLib;
 
 
+//ここでアニメーション制御をまじめにやる気はなく、走る、止まる、くらいな簡単なのを用意しているだけ。アニメーションできることを確認するための最低限の対応
+
 DsAnimSM::DsAnimSM(const DsAnimController& animController)
 	: m_animController(animController)
 	, m_activeState(IDLE)

@@ -19,6 +19,9 @@
 #ifndef _DS_COLLISION_SPHERE_BOX_H_
 #include "Collision/EachGeom/DsCollisionSphereBox.h"
 #endif
+#ifndef _DS_COLLISION_MESH_MESH_H_
+#include "Collision/EachGeom/DsCollisionMeshMesh.h"
+#endif
 
 #ifndef __DS_ACTOR__
 #include "Actor/DsActor.h"
@@ -61,6 +64,7 @@ namespace DsPhysics
 			, m_sphereBox(world)
 			, m_sphereSphere(world)
 			, m_capsuleMesh(world)
+			, m_meshMesh(world)
 		{}
 		virtual ~DsCollisionExecuter()
 		{}
@@ -110,6 +114,13 @@ namespace DsPhysics
 			{
 				m_meshRay.Initialize(actor2.GetCollisionGeometry(), actor1.GetCollisionGeometry());
 				return m_meshRay.Collide();
+			}
+
+			//メッシュとメッシュ
+			else if ((actor1.GetType() == DsActor::RIGID_MESH) && (actor2.GetType() == DsActor::RIGID_MESH))
+			{
+				m_meshMesh.Initialize(actor1.GetCollisionGeometry(), actor2.GetCollisionGeometry());
+				return m_meshMesh.Collide();
 			}
 
 			//スフィアとスフィア
@@ -169,6 +180,7 @@ namespace DsPhysics
 		DsCollisionSphereBox m_sphereBox;
 		DsCollisionSphereSphere m_sphereSphere;
 		DsCollisionCapsuleMesh m_capsuleMesh;
+		DsCollisionMeshMesh m_meshMesh;
 	};
 }
 
