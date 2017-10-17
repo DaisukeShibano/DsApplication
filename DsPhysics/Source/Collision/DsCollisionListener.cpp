@@ -65,6 +65,7 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 		std::vector < const DsActor* > colideStack;
 		colideStack.reserve(totalActTNum);
 
+		//パフォーマンスのため再帰使わずにツリーを巡回する
 		const DsBdOctreeNode* pNode = m_pBoundingTree->GetRootNode();
 		bool isBack = false;
 		while (pNode){
@@ -77,28 +78,28 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 					pActor = pActor->GetOctreeNodeNext();
 				}
 			}else{
-					{//親たちとの衝突判定
-						const DsActor* pActor = pNode->actor;
-						while (pActor){
-							const int stackNum = static_cast<int>(colideStack.size());
-							for (int i = 0; i < stackNum; ++i) {
-								const DsActor* pParent = colideStack[i];
-								const bool isSkip = (((pActor->IsRest()) && (pParent->IsRest())) ||
-									((pActor->IsRest()) && (pParent->RefOption().isStatic)) ||
-									((pActor->RefOption().isStatic) && (pParent->IsRest())) ||
-									((pActor->RefOption().isStatic) && (pParent->RefOption().isStatic))
-									);
-								if (!isSkip) {
-									const DsCollisionResult& result = executer.Exe(*pActor, *pParent);
-									if (0 < result.GetColNum()) {
-										pSolver->AddCollision(result);
-									}
+				{//親たちとの衝突判定
+					const DsActor* pActor = pNode->actor;
+					while (pActor){
+						const int stackNum = static_cast<int>(colideStack.size());
+						for (int i = 0; i < stackNum; ++i) {
+							const DsActor* pParent = colideStack[i];
+							const bool isSkip = (((pActor->IsRest()) && (pParent->IsRest())) ||
+								((pActor->IsRest()) && (pParent->RefOption().isStatic)) ||
+								((pActor->RefOption().isStatic) && (pParent->IsRest())) ||
+								((pActor->RefOption().isStatic) && (pParent->RefOption().isStatic))
+								);
+							if (!isSkip) {
+								const DsCollisionResult& result = executer.Exe(*pActor, *pParent);
+								if (0 < result.GetColNum()) {
+									pSolver->AddCollision(result);
 								}
-								//同空間の次のactorへ
 							}
-							pActor = pActor->GetOctreeNodeNext();
+							//同空間の次のactorへ
 						}
+						pActor = pActor->GetOctreeNodeNext();
 					}
+				}
 
 				{//この空間に登録されているもの同士で当たり判定
 					const DsActor* pActor = pNode->actor;
@@ -154,12 +155,11 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 	
 				if (!isSkip)
 				{
-					{
-						const DsCollisionResult& result = executer.Exe(*pActors[actIdx_1], *pActors[actIdx_2]);
-						if (0 < result.GetColNum()){
-							pSolver->AddCollision(result);
-						}
+					const DsCollisionResult& result = executer.Exe(*pActors[actIdx_1], *pActors[actIdx_2]);
+					if (0 < result.GetColNum()){
+						pSolver->AddCollision(result);
 					}
+					
 				}
 			}
 		}

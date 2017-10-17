@@ -21,7 +21,6 @@ namespace DsLib
 		void Initialize(const char* path);
 		const std::string& RefName() const { return m_name; }
 
-		//既存のアニメリソースから生成される。DsAnimResに新しくデータが追加される訳ではない。
 		DsAnimSkeleton* CreateSkeleton() const;
 		DsKeyframeAnimSet* CreateKeyframeAnim() const;
 		DsAnimModel* CreateAnimModel() const;
