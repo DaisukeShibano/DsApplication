@@ -134,13 +134,15 @@ namespace
 		return;
 	}
 
-
+	/*
+	pointsを、tri[3]を底辺にした三角柱で切り取ったものをclipped_pointsに格納
+	*/
 	void ClipPointsByTri(
 		const DsVec3d* points, int pointcount,
 		const DsVec3d tri[3],
 		const DsVec3d triplanenormal,
 		const double triplanedist,
-		LineContactSet & clipped_points,
+		LineContactSet& clipped_points,
 		const bool triplane_clips)
 	{
 		///build edges planes
@@ -240,56 +242,62 @@ namespace
 		deep_points1.Count = 0;
 
 		////find interval face1
+		{
+			BuildPlane(tri1[0], tri1[1], tri1[2], tri1planeN, tri1planeC);
+			clipped_points1.Count = 0;
+			//tri2三角形 を、tri1から作った三角柱内の内側にあるものだけをclipped_points1へ格納
+			ClipPointsByTri(
+				tri2, 3,
+				tri1,
+				tri1planeN,
+				tri1planeC,
+				clipped_points1, false);
 
-		BuildPlane(tri1[0], tri1[1], tri1[2], tri1planeN, tri1planeC);
-		clipped_points1.Count = 0;
-		//tri2三角形 を、tri1から作った三角柱内の内側にあるものだけをclipped_points1へ格納
-		ClipPointsByTri(
-			tri2, 3,
-			tri1,
-			tri1planeN,
-			tri1planeC,
-			clipped_points1, false);
-
-		//clipped_points1の中から、一番面tri1planeに近い点(ほぼ同着ならそれも含む)をdeep_points1へ。
-		//maxdeepは法線方向にいけばいくほどマイナス
-		maxdeep = MostDeepPoints(
-			clipped_points1,
-			tri1planeN,
-			tri1planeC,
-			deep_points1);
-		separating_normal = tri1planeN;
-
+			//clipped_points1の中から、一番面tri1planeに近い点(ほぼ同着ならそれも含む)をdeep_points1へ。
+			//maxdeepは法線方向にいけばいくほどマイナス
+			maxdeep = MostDeepPoints(
+				clipped_points1,
+				tri1planeN,
+				tri1planeC,
+				deep_points1);
+			separating_normal = tri1planeN;
+		}
 		currdir++;
 
 		////find interval face2
-
-		BuildPlane(tri2[0], tri2[1], tri2[2], tri2planeN, tri2planeC);
-		clipped_points2.Count = 0;
-		//tri1三角形 を、tri2から作った三角柱内の内側にあるものだけをclipped_points2へ格納
-		ClipPointsByTri(
-			tri1, 3,
-			tri2,
-			tri2planeN,
-			tri2planeC,
-			clipped_points2, false);
-
-		dist = MostDeepPoints(
-			clipped_points2,
-			tri2planeN,
-			tri2planeC,
-			deep_points2);
-
-		//maxdeepの方(tri2)がtri1を深く貫通している
-		if (dist<maxdeep)
 		{
-			maxdeep = dist;
-			mostdir = currdir;
-			//mostface = 1;
-			separating_normal = tri2planeN;
+			BuildPlane(tri2[0], tri2[1], tri2[2], tri2planeN, tri2planeC);
+			clipped_points2.Count = 0;
+			//tri1三角形 を、tri2から作った三角柱内の内側にあるものだけをclipped_points2へ格納
+			ClipPointsByTri(
+				tri1, 3,
+				tri2,
+				tri2planeN,
+				tri2planeC,
+				clipped_points2, false);
+
+			dist = MostDeepPoints(
+				clipped_points2,
+				tri2planeN,
+				tri2planeC,
+				deep_points2);
+
+			//maxdeepの方(tri2)がtri1を深く貫通している
+			if (dist < maxdeep)
+			{
+				maxdeep = dist;
+				mostdir = currdir;
+				//mostface = 1;
+				separating_normal = tri2planeN;
+			}
 		}
 		
 		currdir++;
+
+		//odeでは必ずどっちかのdeep_pointsが衝突点になっちゃうけど、
+		//deep_points1,deep_points2共に0以上の衝突点で当たってる、どっちかが0ならあたってない、と判定できるのでは？
+		//できない。例えば上下に平行に配置されてるとどんなに離しても当たってる判定になる
+		//odeは別途接触判定しているんだろうか。この判定単体だと当たってなくても衝突点とれてしまう
 
 		////check most dir for contacts
 		if (mostdir == 0)

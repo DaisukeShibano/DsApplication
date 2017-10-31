@@ -50,7 +50,7 @@ void DsAnimSkeleton::UpdatePose()
 	const std::vector<DsAnimBone*>& roots = RefRootBone();
 	for each( DsAnimBone* root in roots)
 	{
-		// FBX変換かかってなさげなのでここで掛ける(そのうち出力ツール側でやりたい)
+		// FBX変換かかってなさげなので掛けてみる(調査中)。問題なさそうなら出力ツール側でやる。無理なら初期化時
 		//const DsMat33d fbxR = DsMat33d::RotateX(-M_PI_2);
 		//intWorldはFbx変換かかってる。localPoseはかかってない。Fbx変換成分だけを抜き出す。ただし、localPoseの姿勢がキーフレームで変わってるとダメ
 		const DsMat33d fbxR = root->initWorldPose.ToMat33()*root->localPose.ToMat33().ToTransposition();

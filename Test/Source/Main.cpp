@@ -184,7 +184,6 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 		obj->Update(args.dt);
 	}
 
-
 	//const DsCamera& sysCam = args.sys.RefCam();
 	//m_cam = sysCam;
 	//m_cam.SetRot(DsMat33d::RotateY(RadToDeg(10))*sysCam.GetRot());
