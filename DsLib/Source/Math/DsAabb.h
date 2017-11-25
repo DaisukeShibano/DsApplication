@@ -18,13 +18,19 @@ namespace DsLib
 		max +X‘¤/+Y‘¤/+Z‘¤
 		‘S•”ƒvƒ‰ƒX
 		*/
-		void Setup(double maxX, double maxY, double maxZ, const DsVec3d& pos);
-		void SetPos(const DsVec3d& pos){ m_pos = pos; }
-		const DsVec3d& GetPos() const { return m_pos; }
+		void Setup(double maxX, double maxY, double maxZ, double minX, double minY, double minZ);
+		void Setup(const DsVec3d& max, const DsVec3d& min);
 		DsVec3d GetMax() const { return DsVec3d(m_maxX, m_maxY, m_maxZ); }
+		DsVec3d GetMin() const { return DsVec3d(m_minX, m_minY, m_minZ); }
 
 		//ˆê”Ô’·‚¢’·‚³
-		const double GetMaxLen() const{ return m_maxLen; }
+		const double GetMaxLen() const
+		{
+			const double x = m_maxX - m_minX;
+			const double y = m_maxY - m_minY;
+			const double z = m_maxZ - m_minZ;
+			return max(x, max(y, z));
+		}
 		
 	public:
 		static inline bool IsContain(const DsAabb& a, const DsAabb& b)
@@ -45,7 +51,8 @@ namespace DsLib
 			//	return false;
 			//}
 			//return true;
-			return (fabs(a.m_pos.x - b.m_pos.x) < (a.m_maxX + b.m_maxX)) && (fabs(a.m_pos.y - b.m_pos.y) < (a.m_maxY + b.m_maxY)) && (fabs(a.m_pos.z - b.m_pos.z) < (a.m_maxZ + b.m_maxZ));
+			//return (fabs(a.m_pos.x - b.m_pos.x) < (a.m_maxX + b.m_maxX)) && (fabs(a.m_pos.y - b.m_pos.y) < (a.m_maxY + b.m_maxY)) && (fabs(a.m_pos.z - b.m_pos.z) < (a.m_maxZ + b.m_maxZ));
+			return (a.m_minX < b.m_maxX) && (a.m_minZ < b.m_maxY) && (a.m_minZ < b.m_maxZ)  && (b.m_minX < a.m_maxX) && (b.m_minZ < a.m_maxY) && (b.m_minZ < a.m_maxZ);
 #endif
 		}
 
@@ -54,15 +61,22 @@ namespace DsLib
 
 	private:
 		union{
-			double m_maxV[4];
+			double m_maxV[3];
 			struct{
 				double m_maxX;
 				double m_maxY;
 				double m_maxZ;
-				double m_maxLen;
 			};
 		};
-		DsVec3d m_pos;
+
+		union {
+			double m_minV[3];
+			struct {
+				double m_minX;
+				double m_minY;
+				double m_minZ;
+			};
+		};
 	};
 }
 

@@ -7,6 +7,11 @@ namespace DsLib
 	struct DsVec3f;
 	struct DsMat33f;
 }
+
+/*
+ƒMƒŠƒRƒs[‚Ì•û‚ª‘‚¢
+*/
+
 namespace DsLib
 {
 	struct DsMat44f

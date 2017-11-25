@@ -7,6 +7,13 @@ namespace DsLib
 	struct DsVec3d;
 	struct DsMat33d;
 }
+
+
+/*
+ ギリコピーの方が遅い。
+*/
+
+
 namespace DsLib
 {
 	struct DsMat44d

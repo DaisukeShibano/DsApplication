@@ -122,7 +122,7 @@ namespace DsPhysics
 	protected:
 		virtual void _Update(const DsVec3d& deltaPos, const DsMat33d& deltaRot);
 		virtual void _UpdateInertia(const DsMat33d& deltaRot);
-		virtual void _UpdateAabb(bool isChangeRot);
+		virtual void _UpdateAabb();
 		virtual void _UpdateForRest();
 		virtual void _IntegralF();
 		virtual void _IntegralVel();

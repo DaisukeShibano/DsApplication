@@ -9,7 +9,6 @@
 namespace DsPhysics
 {
 	class DsActor;
-	class DsBoundingTreeAabbColideGroup;
 }
 
 namespace DsPhysics
@@ -33,7 +32,6 @@ namespace DsPhysics
 			return cmp.IsContain(*this);
 		}
 		virtual bool IsContain(const DsBoundingTreeAabb& cmp) const override;
-		virtual bool IsContain(const DsBoundingTreeAabbColideGroup& cmp) const override{ return true; }
 
 	public:
 		virtual bool IsContain(const DsLib::DsAabb& cmp) const;

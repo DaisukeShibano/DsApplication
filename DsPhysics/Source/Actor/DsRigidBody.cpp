@@ -152,7 +152,7 @@ void DsRigidBody::_Update( const DsVec3d& deltaPos, const DsMat33d& deltaRot )
 
 	//AABB
 	{
-		_UpdateAabb(isChangeRot);
+		_UpdateAabb();
 	}
 
 	m_isForceUpdate = false;
@@ -183,25 +183,21 @@ void DsRigidBody::_UpdateInertia(const DsMat33d& deltaRot)
 }
 
 //virtual 
-void DsRigidBody::_UpdateAabb(bool isChangeRot)
+void DsRigidBody::_UpdateAabb()
 {
-	if (isChangeRot)
+	DsVec3d max = DsVec3d(-DBL_MAX, -DBL_MAX, -DBL_MAX);
+	DsVec3d min = DsVec3d(DBL_MAX, DBL_MAX, DBL_MAX);
+	for (int i = 0; i < m_geomInfo.vn; ++i)
 	{
-		DsVec3d maxLen = DsVec3d::Zero();
-		for (int i = 0; i < m_geomInfo.vn; ++i)
-		{
-			const DsVec3d len = m_geomInfo.pVertex[i] - m_physicsInfo.centerOfGravity;
-			maxLen.x = max(maxLen.x, fabs(len.x));
-			maxLen.y = max(maxLen.y, fabs(len.y));
-			maxLen.z = max(maxLen.z, fabs(len.z));
-		}
-		m_aabb.Setup(maxLen.x, maxLen.y, maxLen.z, m_physicsInfo.centerOfGravity);
+		const DsVec3d v = m_geomInfo.pVertex[i];
+		max.x = max(max.x, v.x);
+		max.y = max(max.y, v.y);
+		max.z = max(max.z, v.z);
+		min.x = min(min.x, v.x);
+		min.y = min(min.y, v.y);
+		min.z = min(min.z, v.z);
 	}
-	else
-	{
-		//回転してないなら中心座標だけ更新
-		m_aabb.SetPos(m_physicsInfo.centerOfGravity);
-	}
+	m_aabb.Setup(max, min);
 }
 
 //virtual

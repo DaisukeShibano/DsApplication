@@ -43,6 +43,7 @@ namespace DsPhysics
 
 	private:
 		DsVec3d m_vertex[2];
+		DsVec3d m_pos;
 		DsLine m_line;
 		DsAabb m_aabb;
 		DsCollisionGeometry* m_pCollisionGeometry;

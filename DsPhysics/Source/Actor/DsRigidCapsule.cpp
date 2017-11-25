@@ -51,12 +51,6 @@ void DsRigidCapsule::Create(const double r, const double halfLen, const double m
 		//èdêSà íu
 		pi.centerOfGravity = GetPosition();
 
-		
-		//AABB
-		m_aabb.Setup(r, r+halfLen, r, pi.centerOfGravity);
-		m_sideSize.x = r;
-		m_sideSize.y = r+halfLen;
-		m_sideSize.z = r;
 	}
 
 	
@@ -70,27 +64,32 @@ void DsRigidCapsule::Create(const double r, const double halfLen, const double m
 	SetRotation(GetRotation() * m_initRot);
 	_Update(DsVec3d::Zero(), DsMat33d::Identity());
 
+	m_sideSize.x = r;
+	m_sideSize.y = r + halfLen;
+	m_sideSize.z = r;
+	//AABB
+	const DsVec3d max = GetPosition()+m_sideSize;
+	const DsVec3d min = GetPosition()-m_sideSize;
+	m_aabb.Setup(max, min);
+	
+
 	m_pCollisionGeometry = new DsCollisionGeometry(NULL, 0, NULL, 0,
 		NULL, 0, GetId(), m_physicsInfo.centerOfGravity, NULL, m_sideSize, NULL, &m_aabb, GetRotation());
 }
 
 //virtual 
-void DsRigidCapsule::_UpdateAabb(bool isChangeRot)
+void DsRigidCapsule::_UpdateAabb()
 {
-	if (isChangeRot)
-	{
-		const DsVec3d tmpX = GetRotation()*DsVec3d(m_sideSize.x, 0, 0);
-		const DsVec3d tmpY = GetRotation()*DsVec3d(0, m_sideSize.y, 0);
-		const DsVec3d tmpZ = GetRotation()*DsVec3d(0, 0, m_sideSize.z);
-		const double maxX = max(fabs(tmpX.x), max(fabs(tmpY.x), fabs(tmpZ.x)));
-		const double maxY = max(fabs(tmpX.y), max(fabs(tmpY.y), fabs(tmpZ.y)));
-		const double maxZ = max(fabs(tmpX.z), max(fabs(tmpY.z), fabs(tmpZ.z)));
-		m_aabb.Setup(maxX, maxY, maxZ, m_physicsInfo.centerOfGravity);
-	}
-	else
-	{
-		m_aabb.SetPos(m_physicsInfo.centerOfGravity);
-	}
+	const DsVec3d tmpX = GetRotation()*DsVec3d(m_sideSize.x, 0, 0);
+	const DsVec3d tmpY = GetRotation()*DsVec3d(0, m_sideSize.y, 0);
+	const DsVec3d tmpZ = GetRotation()*DsVec3d(0, 0, m_sideSize.z);
+	const double maxX = max(fabs(tmpX.x), max(fabs(tmpY.x), fabs(tmpZ.x)));
+	const double maxY = max(fabs(tmpX.y), max(fabs(tmpY.y), fabs(tmpZ.y)));
+	const double maxZ = max(fabs(tmpX.z), max(fabs(tmpY.z), fabs(tmpZ.z)));
+
+	const DsVec3d max = GetPosition() + DsVec3d(maxX, maxY, maxZ);
+	const DsVec3d min = GetPosition() - DsVec3d(maxX, maxY, maxZ);
+	m_aabb.Setup(max, min);
 }
 
 /*

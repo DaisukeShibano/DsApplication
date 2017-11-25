@@ -193,7 +193,6 @@
     <ClInclude Include="Source\Actor\DsRigidMesh.h" />
     <ClInclude Include="Source\Actor\DsRigidSphere.h" />
     <ClInclude Include="Source\Collision\BoundingTree\DsBoundingTreeAabb.h" />
-    <ClInclude Include="Source\Collision\BoundingTree\DsBoundingTreeAabbColideGroup.h" />
     <ClInclude Include="Source\Collision\BoundingTree\DsBoundingTreeBase.h" />
     <ClInclude Include="Source\Collision\BoundingTree\DsBoundingOctree.h" />
     <ClInclude Include="Source\Collision\DsCollisionGeometry.h" />
@@ -252,7 +251,6 @@
     <ClCompile Include="Source\Actor\DsRigidMesh.cpp" />
     <ClCompile Include="Source\Actor\DsRigidSphere.cpp" />
     <ClCompile Include="Source\Collision\BoundingTree\DsBoundingTreeAabb.cpp" />
-    <ClCompile Include="Source\Collision\BoundingTree\DsBoundingTreeAabbColideGroup.cpp" />
     <ClCompile Include="Source\Collision\BoundingTree\DsBoundingTreeBase.cpp" />
     <ClCompile Include="Source\Collision\BoundingTree\DsBoundingOctree.cpp" />
     <ClCompile Include="Source\Collision\DsCollisionDetection.cpp" />

@@ -61,7 +61,7 @@ namespace DsPhysics
 	public:	
 		//vertexは引数を内部で持ってるメンバにコピー
 		void Create(const double r, const double halfLen, const double mass );
-		virtual void _UpdateAabb(bool isChangeRot) override;
+		virtual void _UpdateAabb() override;
 
 	public: //描画のためのメソッド
 		virtual void Draw(DsDrawCommand& com) override;

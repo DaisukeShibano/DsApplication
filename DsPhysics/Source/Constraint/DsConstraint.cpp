@@ -74,8 +74,8 @@ void DsConstraint::SetUp()
 
 	if (pMas && pSub)
 	{
-		const DsVec3d& posA = pMas->GetPositionForConstraint();
-		const DsVec3d& posB = pSub->GetPositionForConstraint();
+		const DsVec3d posA = pMas->GetPositionForConstraint();
+		const DsVec3d posB = pSub->GetPositionForConstraint();
 		const DsVec3d ra = m_pos - posA;
 		const DsVec3d rb = m_pos - posB;
 		const DsVec3d ra_ex = DsVec3d::Cross(ra, m_ex);

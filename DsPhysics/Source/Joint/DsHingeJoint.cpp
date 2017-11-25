@@ -92,18 +92,18 @@ void DsHingeJoint::Update(double dt)
 	if (pSub)
 	{
 		//subのアタッチ位置を更新
-		const DsMat33d& curRot = pSub->GetRotation();
-		const DsMat33d&& invPreRot = m_subActorRot.ToTransposition();
-		const DsMat33d&& deltaRot = curRot*invPreRot;
+		const DsMat33d curRot = pSub->GetRotation();
+		const DsMat33d invPreRot = m_subActorRot.ToTransposition();
+		const DsMat33d deltaRot = curRot*invPreRot;
 		m_subActorRot = curRot;
 		m_distanceSub = deltaRot*m_distanceSub;
 	}
 	if (pMas && pSub)
 	{
 		//masterの動きに追従する
-		const DsMat33d& curRot = pMas->GetRotation();
-		const DsMat33d&& invPreRot = m_actorRot.ToTransposition();
-		const DsMat33d&& deltaRot = curRot*invPreRot;
+		const DsMat33d curRot = pMas->GetRotation();
+		const DsMat33d invPreRot = m_actorRot.ToTransposition();
+		const DsMat33d deltaRot = curRot*invPreRot;
 		m_actorRot = curRot;
 		m_distance = deltaRot*m_distance;
 		const DsVec3d pos = pMas->GetPosition() + m_distance;

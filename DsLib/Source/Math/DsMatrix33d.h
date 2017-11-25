@@ -3,6 +3,12 @@
 
 namespace DsLib
 {
+
+	/*
+	ƒRƒs[‚Ì•û‚ª‘‚¢
+	*/
+
+
 	struct DsMat33d
 	{
 		union

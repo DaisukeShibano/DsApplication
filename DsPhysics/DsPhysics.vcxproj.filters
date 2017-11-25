@@ -153,9 +153,6 @@
     <ClInclude Include="Source\Collision\BoundingTree\DsBoundingTreeAabb.h">
       <Filter>Source\Collision\BoundingTree</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Collision\BoundingTree\DsBoundingTreeAabbColideGroup.h">
-      <Filter>Source\Collision\BoundingTree</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Collision\BoundingTree\DsBoundingOctree.h">
       <Filter>Source\Collision\BoundingTree</Filter>
     </ClInclude>
@@ -309,9 +306,6 @@
       <Filter>Source\Collision\BoundingTree</Filter>
     </ClCompile>
     <ClCompile Include="Source\Collision\BoundingTree\DsBoundingTreeAabb.cpp">
-      <Filter>Source\Collision\BoundingTree</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Collision\BoundingTree\DsBoundingTreeAabbColideGroup.cpp">
       <Filter>Source\Collision\BoundingTree</Filter>
     </ClCompile>
     <ClCompile Include="Source\Collision\BoundingTree\DsBoundingOctree.cpp">

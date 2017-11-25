@@ -24,13 +24,13 @@ void DsCollisionConstraint::SetUp()
 
 	if (pMas && pSub){
 		if (!m_isSetUp){
-			const DsVec3d& posA = pMas->GetPositionForConstraint();
-			const DsVec3d& posB = pSub->GetPositionForConstraint();
-			const DsVec3d& ra = m_colPos - posA;
-			const DsVec3d& rb = m_colPos - posB;
-			const DsVec3d& n = m_colNormal;
-			const DsVec3d& ra_n = DsVec3d::Cross(ra, n);
-			const DsVec3d& rb_n = DsVec3d::Cross(rb, n);
+			const DsVec3d posA = pMas->GetPositionForConstraint();
+			const DsVec3d posB = pSub->GetPositionForConstraint();
+			const DsVec3d ra = m_colPos - posA;
+			const DsVec3d rb = m_colPos - posB;
+			const DsVec3d n = m_colNormal;
+			const DsVec3d ra_n = DsVec3d::Cross(ra, n);
+			const DsVec3d rb_n = DsVec3d::Cross(rb, n);
 
 			m_bound = (pMas->RefMaterial().m_bundCoef + pSub->RefMaterial().m_bundCoef)*0.5;
 			if (((0.0000001 > pMas->RefMaterial().m_bundCoef) && (pMas->RefMaterial().m_bundCoef < -0.0000001)) ||

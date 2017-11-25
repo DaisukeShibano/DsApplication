@@ -13,7 +13,6 @@ namespace DsLib
 namespace DsPhysics
 {
 	class DsBoundingTreeAabb;
-	class DsBoundingTreeAabbColideGroup;
 }
 
 namespace DsPhysics
@@ -24,7 +23,6 @@ namespace DsPhysics
 		virtual void ConstructTree()=0;
 		virtual bool IsContain(const DsBoundingTreeBase& cmp) const = 0;
 		virtual bool IsContain(const DsBoundingTreeAabb& cmp) const = 0;
-		virtual bool IsContain(const DsBoundingTreeAabbColideGroup& cmp) const = 0;//Œ‹‹ÇŽg‚Á‚Ä‚È‚¢
 
 	public:
 		virtual bool IsContain(const DsLib::DsAabb& cmp) const = 0;

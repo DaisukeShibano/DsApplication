@@ -170,7 +170,8 @@ void DsFieldObj::SetPosition(const DsVec3d& pos)
 	DsActor* pActor = m_world.GetActor(m_actorId);
 	if (pActor)
 	{
-		const DsVec3d offset = DsVec3d(0, pActor->RefAabb().GetMax().y, 0);
+		const double y = pActor->GetPosition().y;
+		const DsVec3d offset = DsVec3d(0, pActor->RefAabb().GetMax().y-y, 0);
 		pActor->SetPosition(pos);
 
 		if (m_pAnimation)
@@ -200,7 +201,8 @@ DsVec3d DsFieldObj::GetPosition() const
 	DsActor* pActor = m_world.GetActor(m_actorId);
 	if (pActor)
 	{
-		const DsVec3d offset = DsVec3d(0, -pActor->RefAabb().GetMax().y, 0);
+		const double y = pActor->GetPosition().y;
+		const DsVec3d offset = DsVec3d(0, -pActor->RefAabb().GetMax().y-y, 0);
 		return pActor->GetPosition();
 	}
 	else

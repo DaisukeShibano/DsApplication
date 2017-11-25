@@ -60,14 +60,7 @@ void DsRigidSphere::Create(const double r, const double mass )
 
 		//重心位置
 		pi.centerOfGravity = GetPosition();
-
 		
-		//AABB
-		DsVec3d maxLen = DsVec3d(r, r, r);
-		m_aabb.Setup(maxLen.x, maxLen.y, maxLen.z, pi.centerOfGravity);
-		m_sideSize.x = maxLen.x;
-		m_sideSize.y = maxLen.y;
-		m_sideSize.z = maxLen.z;
 	}
 
 	//静的オブジェでも最初の一回だけUpdateしないと初期姿勢が反映されない
@@ -79,6 +72,14 @@ void DsRigidSphere::Create(const double r, const double mass )
 	SetPosition(GetPosition() + m_initPos);
 	SetRotation(GetRotation() * m_initRot);
 	_Update(DsVec3d::Zero(), DsMat33d::Identity());
+
+	//AABB
+	DsVec3d maxLen = DsVec3d(r, r, r);
+	m_aabb.Setup(GetPosition() + maxLen, GetPosition() - maxLen);
+	m_sideSize.x = maxLen.x;
+	m_sideSize.y = maxLen.y;
+	m_sideSize.z = maxLen.z;
+
 	
 	m_pCollisionGeometry = new DsCollisionGeometry(NULL, 0, NULL, 0,
 		NULL, 0, GetId(), m_physicsInfo.centerOfGravity, NULL, m_sideSize, NULL, &m_aabb, GetRotation());
@@ -91,17 +92,11 @@ void DsRigidSphere::_UpdateInertia(const DsMat33d& deltaRot)
 }
 
 //virtual
-void DsRigidSphere::_UpdateAabb(bool isChangeRot)
+void DsRigidSphere::_UpdateAabb()
 {
-	DsRigidPhysicsInfo& pi = m_physicsInfo;
-	if (isChangeRot)
-	{
-		m_aabb.Setup(m_sideSize.x, m_sideSize.y, m_sideSize.z, pi.centerOfGravity);
-	}
-	else
-	{
-		m_aabb.SetPos(pi.centerOfGravity);
-	}
+	const DsVec3d max = GetPosition() + m_sideSize;
+	const DsVec3d min = GetPosition() - m_sideSize;
+	m_aabb.Setup(max, min);
 }
 
 

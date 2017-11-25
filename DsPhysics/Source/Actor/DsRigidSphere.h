@@ -68,7 +68,7 @@ namespace DsPhysics
 		
 	private:
 		virtual void _UpdateInertia(const DsMat33d& deltaRot)override;
-		virtual void _UpdateAabb(bool isChangeRot)override;
+		virtual void _UpdateAabb()override;
 
 	private:
 		DsCollisionGeometry* m_pCollisionGeometry;

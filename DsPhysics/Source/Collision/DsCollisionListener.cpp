@@ -48,14 +48,15 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 		DsVec3d minPos = DsVec3d(DBL_MAX, DBL_MAX, DBL_MAX);
 		DsVec3d maxPos = DsVec3d(-DBL_MAX, -DBL_MAX, -DBL_MAX);
 		for (int i = 0; i < totalActTNum; ++i){
-			const DsVec3d& tmpPos = pActors[i]->GetPosition();
-			const DsVec3d& tmpLen = pActors[i]->RefAabb().GetMax();
-			minPos.x = min(minPos.x, tmpPos.x - tmpLen.x);
-			minPos.y = min(minPos.y, tmpPos.y - tmpLen.y);
-			minPos.z = min(minPos.z, tmpPos.z - tmpLen.z);
-			maxPos.x = max(maxPos.x, tmpPos.x + tmpLen.x);
-			maxPos.y = max(maxPos.y, tmpPos.y + tmpLen.y);
-			maxPos.z = max(maxPos.z, tmpPos.z + tmpLen.z);
+			const DsVec3d tmpPos = pActors[i]->GetPosition();
+			const DsVec3d aabbMax = pActors[i]->RefAabb().GetMax();
+			const DsVec3d aabbMin = pActors[i]->RefAabb().GetMin();
+			minPos.x = min(minPos.x, aabbMin.x);
+			minPos.y = min(minPos.y, aabbMin.y);
+			minPos.z = min(minPos.z, aabbMin.z);
+			maxPos.x = max(maxPos.x, aabbMax.x);
+			maxPos.y = max(maxPos.y, aabbMax.y);
+			maxPos.z = max(maxPos.z, aabbMax.z);
 		}
 		//actor‚ÌŠ‘®‹óŠÔXV
 		m_pBoundingTree->Update(pActors, totalActTNum, minPos, maxPos);

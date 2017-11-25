@@ -80,43 +80,41 @@ void DsBoundingTreeAabb::_ConstructTree(int depth)
 		const DsVec3d halfSize = m_boxSize*0.5;
 		const DsVec3d offsetPos[] =	//子ノードの基準位置
 		{
-			m_pos + DsVec3d(halfSize.x, halfSize.y, halfSize.z),
+			m_pos + DsVec3d(halfSize.x, halfSize.y, halfSize.z),	//ここが最大
 			m_pos + DsVec3d(halfSize.x, halfSize.y, -halfSize.z),
 			m_pos + DsVec3d(-halfSize.x, halfSize.y, -halfSize.z),
 			m_pos + DsVec3d(-halfSize.x, halfSize.y, halfSize.z),
 
 			m_pos + DsVec3d(halfSize.x, -halfSize.y, halfSize.z),
 			m_pos + DsVec3d(halfSize.x, -halfSize.y, -halfSize.z),
-			m_pos + DsVec3d(-halfSize.x, -halfSize.y, -halfSize.z),
+			m_pos + DsVec3d(-halfSize.x, -halfSize.y, -halfSize.z), //ここが最小
 			m_pos + DsVec3d(-halfSize.x, -halfSize.y, halfSize.z),
 		};
 		static_assert(sizeof(offsetPos) / sizeof(offsetPos[0]) == CHILD_NUM, "サイズ不一致");
 
 		DsAabb box;
-		box.Setup(halfSize.x, halfSize.y, halfSize.z, DsVec3d::Zero());
 		for (int ci = 0; ci < CHILD_NUM; ++ci){
-			box.SetPos(offsetPos[ci]);
+			box.Setup(offsetPos[0], offsetPos[6]);
 
 			std::vector<int> containFaceIdxs;
 
 			//三角形のaabbを得る。どこ所属の三角形かを算出
 			for each(int faceIdx in m_containFaceIdxs){
 				const DsQuad& face = m_pFace[faceIdx];
-				DsVec3d avePos = DsVec3d::Zero();
 				const int vn = face.vn;
+				DsVec3d max = DsVec3d(-DBL_MAX, -DBL_MAX, -DBL_MAX);
+				DsVec3d min = DsVec3d(DBL_MAX, DBL_MAX, DBL_MAX);
 				for (int vi = 0; vi < vn; ++vi){
-					avePos += m_pVertex[face.index[vi]];
-				}
-				avePos /= (double)vn;
-				DsVec3d maxLen = DsVec3d::Zero();
-				for (int vi = 0; vi < vn; ++vi){
-					const DsVec3d len = m_pVertex[face.index[vi]] - avePos;
-					maxLen.x = max(maxLen.x, fabs(len.x));
-					maxLen.y = max(maxLen.y, fabs(len.y));
-					maxLen.z = max(maxLen.z, fabs(len.z));
+					const DsVec3d len = m_pVertex[face.index[vi]];
+					max.x = max(max.x, len.x);
+					max.y = max(max.y, len.y);
+					max.z = max(max.z, len.z);
+					min.x = min(min.x, len.x);
+					min.y = min(min.y, len.y);
+					min.z = min(min.z, len.z);
 				}
 				DsAabb tri;
-				tri.Setup(maxLen.x, maxLen.y, maxLen.z, avePos);
+				tri.Setup(max, min);
 
 				if (DsAabb::IsContain(box, tri)){
 					//この境界の中に含まれてた
@@ -134,10 +132,10 @@ void DsBoundingTreeAabb::_ConstructTree(int depth)
 bool DsBoundingTreeAabb::IsContain(const DsBoundingTreeAabb& cmp) const
 {
 	DsAabb a;
-	a.Setup(m_boxSize.x, m_boxSize.y, m_boxSize.z, m_pos);
+	a.Setup( m_pos + m_boxSize, m_pos - m_boxSize);
 
 	DsAabb b;
-	b.Setup(cmp.m_boxSize.x, cmp.m_boxSize.y, cmp.m_boxSize.z, cmp.m_pos);
+	b.Setup( cmp.m_pos + cmp.m_boxSize, cmp.m_pos - cmp.m_boxSize);
 
 	//まずは自分にcmpが含まれているか検査
 	const bool isContain = DsAabb::IsContain(a, b);
@@ -157,7 +155,7 @@ bool DsBoundingTreeAabb::IsContain(const DsBoundingTreeAabb& cmp) const
 bool DsBoundingTreeAabb::IsContain(const DsAabb& cmp) const
 {
 	DsAabb a;
-	a.Setup(m_boxSize.x, m_boxSize.y, m_boxSize.z, m_pos);
+	a.Setup(m_pos + m_boxSize, m_pos - m_boxSize);
 
 	DsAabb b = cmp;
 	
@@ -178,7 +176,7 @@ bool DsBoundingTreeAabb::IsContain(const DsAabb& cmp) const
 void DsBoundingTreeAabb::Draw(DsDrawCommand& com) const
 {
 	DsAabb a;
-	a.Setup(m_boxSize.x, m_boxSize.y, m_boxSize.z, m_pos);
+	a.Setup(m_pos + m_boxSize, m_pos - m_boxSize);
 	a.Draw(com);
 
 	for each(DsBoundingTreeAabb* pChild in m_child){
