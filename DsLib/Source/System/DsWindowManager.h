@@ -22,14 +22,13 @@ namespace DsLib
 
 	public:
 		/*
-		@par ウィンドウ作成。中身はWIN32のテンプレで面倒くさい時用。別に必ず叩く必要は無い
-		return 作成したウィンドウハンドル(HWND)
+		@par ウィンドウ作成。
+		@return 作成したウィンドウハンドル(HWND)
 		*/
 		static ds_uint64 MainWindowCreate(ds_uint64 _hInstance, char* lpCmdLine, int nCmdShow);
 		/*
-		@par メッセージループ。中身はWIN32のテンプレで面倒くさい時用。
-　			 DsWindowManager::MainWindowCreateを使った時はこの関数を使う必要がある
-		return 終了したか
+		@par メッセージループ。
+		@return 終了したか
 		*/
 		static bool MainWindowUpdate(ds_uint64 _hwnd, DsSys& sys);
 		

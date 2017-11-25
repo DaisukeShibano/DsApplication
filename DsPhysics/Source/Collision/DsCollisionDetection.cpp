@@ -148,17 +148,61 @@ double DsPhysics::DsCD_NormalFaceDepthMax(const DsVec3d& p1, const DsVec3d& norm
 	return fabs(ret);
 }
 
-
-inline bool _DsCD_LineFace(const DsActorId& p1Id, const DsVec3d& lineV0, const DsVec3d& lineV1, const DsActorId& p2Id, const DsVec3d* p2, const DsQuad& face, const DsVec3d& toDist, DsCollisionResult& info)
-//inline bool _DsCD_LineFace(const DsActorId& p1Id, const DsVec3d* p1, const DsLine& line, const DsActorId& p2Id, const DsVec3d* p2, const DsQuad& face, const DsVec3d& toDist, DsCollisionResult& info)
+bool _DsCD_LineFace(const DsActorId& p1Id, const DsVec3d& lineV0, const DsVec3d& lineV1, const DsActorId& p2Id, const DsVec3d* p2, const DsQuad& face, const DsVec3d& toDist, DsCollisionResult& info)
 {
 	//衝突方向は相手側の面の法線
 
+	//-----------------変数宣言----------------------
+	const int faceVnMax = 16;
+	const int faceVn = face.vn;
+	DS_ASSERT(faceVn <= faceVnMax, "想定外の頂点数");
+
+	const DsVec3d faceNormal = face.normal;
+	DsVec3d faceV[faceVnMax];
+
+	DsVec3d edges[faceVnMax];
+	int edgeIdx;
+
+	double d1;
+	double d2;
+
+	double fd1;
+	double fd2;
+
+	double depth;
+
+	double internalDivision;
+
+	DsVec3d lineVec;
+	DsVec3d colVec;
+	DsVec3d colPos;
+	
+	int endIdx;
+
+	int faceIdx;
+
+	DsVec3d edge;
+
+	DsVec3d cross;
+
+	double retDepth;
+	DsVec3d retNormal;
+	DsVec3d lineCol;
+	DsVec3d lineFlat;
+	double intersectionRate;
+	DsVec3d intersection;
+	//----------------------------------------------
+
+	for (int i = 0; i < faceVn; ++i) {
+		faceV[i] = p2[face.index[i]];
+	}
+
+
 	//平面までの高さを求める
-	const double d1 = DsVec3d::Dot(lineV0 - p2[face.index[0]], face.normal);
-	const double d2 = DsVec3d::Dot(lineV1 - p2[face.index[0]], face.normal);
-	//const double d1 = DsVec3d::Dot( p1[line.index[0]] - p2[face.index[0]], face.normal );
-	//const double d2 = DsVec3d::Dot( p1[line.index[1]] - p2[face.index[0]], face.normal );
+	d1 = DsVec3d::Dot(lineV0 - faceV[0], faceNormal);
+	d2 = DsVec3d::Dot(lineV1 - faceV[0], faceNormal);
+	//const double d1 = DsVec3d::Dot( p1[line.index[0]] - faceV[0], faceNormal );
+	//const double d2 = DsVec3d::Dot( p1[line.index[1]] - faceV[0], faceNormal );
 
 	//衝突してない
 	if( (0.0 >= d1) && (0.0 >= d2) )
@@ -170,8 +214,8 @@ inline bool _DsCD_LineFace(const DsActorId& p1Id, const DsVec3d& lineV0, const D
 		return false;
 	}
 
-	const double fd1 = fabs(d1);
-	const double fd2 = fabs(d2);
+	fd1 = fabs(d1);
+	fd2 = fabs(d2);
 
 	if( 0.000001 > (fd1+fd2) )
 	{
@@ -181,46 +225,46 @@ inline bool _DsCD_LineFace(const DsActorId& p1Id, const DsVec3d& lineV0, const D
 
 	//めり込んでる方の深度を求めておく。マイナスの方がめり込んでる方
 	//これをめり込み量にしちゃうと長い辺はすごいめり込むことになる
-	double depth = (0.0 > d1) ? d1 : d2;
+	depth = (0.0 > d1) ? d1 : d2;
 
 
 	//衝突点までの比率を求める
-	const double internalDivision =	fd1/(fd1+fd2);
+	internalDivision =	fd1/(fd1+fd2);
 	//衝突点までのベクトルを求める
-	const DsVec3d lineVec = lineV1 - lineV0;
-	const DsVec3d colVec = lineVec * internalDivision;
+	lineVec = lineV1 - lineV0;
+	colVec = lineVec * internalDivision;
 	//衝突点の位置を求める
-	const DsVec3d colPos = lineV0 + colVec;
+	colPos = lineV0 + colVec;
 
 	//衝突点が４角形の中に入っているか調べる
-	std::vector<DsVec3d> edges(face.vn); edges.clear();
-	const int endIdx = face.vn - 1;
-	for (int faceIdx = 0; faceIdx < face.vn; ++faceIdx)
+	endIdx = faceVn - 1;
+	edgeIdx = 0;
+	for (faceIdx = 0; faceIdx < faceVn; ++faceIdx)
 	{
 		//四角形を構成する辺
-		const DsVec3d edge = (endIdx != faceIdx) ? (p2[face.index[faceIdx + 1]] - p2[face.index[faceIdx]]) : (p2[face.index[0]] - p2[face.index[faceIdx]]);
-		edges.push_back(edge);//後で使うのでとっておく
+		edge = (endIdx != faceIdx) ? (faceV[faceIdx + 1] - faceV[faceIdx]) : (faceV[0] - faceV[faceIdx]);
+		edges[edgeIdx]=edge;//後で使うのでとっておく
+		++edgeIdx;
 
 		//外積を取り、１つでも面と反対方向なら面に衝突点は含まれない
-		const DsVec3d cross = DsVec3d::Cross( edge, colPos - p2[face.index[faceIdx]] );
-		if( DsVec3d::Dot(cross, face.normal) <= -0.00001 )
+		cross = DsVec3d::Cross( edge, colPos - faceV[faceIdx] );
+		if( DsVec3d::Dot(cross, faceNormal) <= -0.00001 )
 		{
 			return false;
 		}
 	}
 
-	double retDepth = depth;
-	DsVec3d retNormal = face.normal;
+	retDepth = depth;
+	retNormal = faceNormal;
 	//面エッジと貫通線の交点を求め、その直下の線の高さをめり込み量とする。方向は面の方向
-	const DsVec3d lineCol = (0.0 > d1) ? (colPos - lineV0) : (colPos - lineV1);//めり込んでる頂点から衝突点までのベクトル
-	const DsVec3d lineFlat = lineCol - (face.normal*DsVec3d::Dot(lineCol, face.normal));//面の平面に投影
-	DsVec3d intersection;
-	for (int faceIdx = 0; faceIdx < face.vn; ++faceIdx)
+	lineCol = (0.0 > d1) ? (colPos - lineV0) : (colPos - lineV1);//めり込んでる頂点から衝突点までのベクトル
+	lineFlat = lineCol - (faceNormal*DsVec3d::Dot(lineCol, faceNormal));//面の平面に投影
+	for (faceIdx = 0; faceIdx < faceVn; ++faceIdx)
 	{
-		if (DsVec3d::GetIntersection(colPos, lineFlat, p2[face.index[faceIdx]], edges[faceIdx], intersection))
+		if (DsVec3d::GetIntersection(colPos, lineFlat, faceV[faceIdx], edges[faceIdx], intersection))
 		{
 			//交点がlineColのどの割合の箇所にあるか求める
-			const double intersectionRate = ( (colPos - intersection).Length() / lineFlat.Length() );
+			intersectionRate = ( (colPos - intersection).Length() / lineFlat.Length() );
 			//衝突線のめり込んでる方の高さに割合を掛ければ交差点の直下の点までの高さになる
 			retDepth *= intersectionRate;
 			break;
@@ -230,10 +274,10 @@ inline bool _DsCD_LineFace(const DsActorId& p1Id, const DsVec3d& lineV0, const D
 
 	//面エッジと貫通点の最も近い距離がめり込み量。方向は面の中心からエッジに向かう方向
 	//retDepth = 0.0;
-	//for (int faceIdx = 0; faceIdx < face.vn; ++faceIdx){
+	//for (int faceIdx = 0; faceIdx < faceVn; ++faceIdx){
 	//	const DsVec3d tmp = p2[face.index[faceIdx]] - colPos;
-	//	const DsVec3d edge = (faceIdx != (face.vn - 1)) ? (p2[face.index[faceIdx+1]] - p2[face.index[faceIdx]]) : (p2[face.index[0]] - p2[face.index[faceIdx]]);
-	//	DsVec3d normal = DsVec3d::Normalize( DsVec3d::Cross(edge, face.normal) );
+	//	const DsVec3d edge = (faceIdx != (faceVn - 1)) ? (faceV[faceIdx+1] - faceV[faceIdx]) : (faceV[0] - faceV[faceIdx]);
+	//	DsVec3d normal = DsVec3d::Normalize( DsVec3d::Cross(edge, faceNormal) );
 	//	const double dot = DsVec3d::Dot(tmp, normal);
 	//	if (dot < 0.0){
 	//		normal *= -1.0;//衝突点に向かう方向なので逆
@@ -243,7 +287,7 @@ inline bool _DsCD_LineFace(const DsActorId& p1Id, const DsVec3d& lineV0, const D
 	//		retDepth = dotAbs;
 	//		retNormal = normal;
 	//	}
-	//	//DsDbgSys::GetIns().RefDrawCom().SetColor(DsVec3f(1, 0, 0)).DrawLine(p2[face.index[faceIdx]], p2[face.index[faceIdx]]+retNormal);
+	//	//DsDbgSys::GetIns().RefDrawCom().SetColor(DsVec3f(1, 0, 0)).DrawLine(faceV[faceIdx], faceV[faceIdx]+retNormal);
 	//}
 
 	//DsDbgSys::GetIns().RefDrawCom().SetColor(DsVec3f(1, 0, 0)).DrawSphere(colPos, 0.05);
@@ -275,14 +319,19 @@ bool DsPhysics::DsCD_LineFace( const DsCollisionGeometry* pBox1, const DsCollisi
 	const int p2FaceNum = pBox2->GetFaceNum();
 	const DsVec3d toDist = pBox2->GetBasePos() - pBox1->GetBasePos();
 
-	if( p1 && p1Line && p2 && p2Face )
-	{
-		for(int lineIdx=0; p1LineNum > lineIdx; ++lineIdx)
+	const DsAabb aabb1 = *pBox1->GetAabb();
+	DsAabb aabb2 = *pBox2->GetAabb();
+
+	if (DsAabb::IsContain(aabb1, aabb2)) {
+		if (p1 && p1Line && p2 && p2Face)
 		{
-			for(int faceIdx=0; p2FaceNum > faceIdx; ++faceIdx)
+			for (int lineIdx = 0; p1LineNum > lineIdx; ++lineIdx)
 			{
-				const DsLine& line = p1Line[lineIdx];
-				ret |= _DsCD_LineFace(p1Id, p1[line.index[0]], p1[line.index[1]], p2Id, p2, p2Face[faceIdx], toDist, info);
+				for (int faceIdx = 0; p2FaceNum > faceIdx; ++faceIdx)
+				{
+					const DsLine& line = p1Line[lineIdx];
+					ret |= _DsCD_LineFace(p1Id, p1[line.index[0]], p1[line.index[1]], p2Id, p2, p2Face[faceIdx], toDist, info);
+				}
 			}
 		}
 	}
