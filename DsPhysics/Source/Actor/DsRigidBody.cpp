@@ -197,6 +197,7 @@ void DsRigidBody::_UpdateAabb()
 		min.y = min(min.y, v.y);
 		min.z = min(min.z, v.z);
 	}
+	m_sideSize = (max - min)*0.5;
 	m_aabb.Setup(max, min);
 }
 

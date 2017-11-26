@@ -48,9 +48,8 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 		DsVec3d minPos = DsVec3d(DBL_MAX, DBL_MAX, DBL_MAX);
 		DsVec3d maxPos = DsVec3d(-DBL_MAX, -DBL_MAX, -DBL_MAX);
 		for (int i = 0; i < totalActTNum; ++i){
-			const DsVec3d tmpPos = pActors[i]->GetPosition();
-			const DsVec3d aabbMax = pActors[i]->RefAabb().GetMax();
 			const DsVec3d aabbMin = pActors[i]->RefAabb().GetMin();
+			const DsVec3d aabbMax = pActors[i]->RefAabb().GetMax();
 			minPos.x = min(minPos.x, aabbMin.x);
 			minPos.y = min(minPos.y, aabbMin.y);
 			minPos.z = min(minPos.z, aabbMin.z);

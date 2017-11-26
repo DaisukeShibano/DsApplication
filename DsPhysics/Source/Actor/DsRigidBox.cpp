@@ -124,22 +124,6 @@ void DsRigidBox::Create(const DsVec3d* pv, const double mass )
 	SetRotation(GetRotation() * m_initRot);
 	_Update(DsVec3d::Zero(), DsMat33d::Identity());
 	
-	//AABB
-	DsVec3d max = DsVec3d(-DBL_MAX, -DBL_MAX, -DBL_MAX);
-	DsVec3d min = DsVec3d(DBL_MAX, DBL_MAX, DBL_MAX);
-	for (int i = 0; i < VERTEX_NUM; ++i)
-	{
-		const DsVec3d v = m_geomInfo.pVertex[i];
-		max.x = max(max.x, v.x);
-		max.y = max(max.y, v.y);
-		max.z = max(max.z, v.z);
-		min.x = min(min.x, v.x);
-		min.y = min(min.y, v.y);
-		min.z = min(min.z, v.z);
-	}
-	m_aabb.Setup(max, min);
-	m_sideSize = max - GetPosition();
-
 	m_pCollisionGeometry = new DsCollisionGeometry(m_geomInfo.pVertex, VERTEX_NUM, m_geomInfo.pFace, FACE_NUM,
 		m_geomInfo.pLine, LINE_NUM, GetId(), m_physicsInfo.centerOfGravity, NULL, m_sideSize, NULL, &m_aabb, GetRotation());
 }

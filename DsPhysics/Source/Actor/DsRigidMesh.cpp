@@ -184,19 +184,6 @@ void DsRigidMesh::_Update(const DsVec3d& deltaPos, const DsMat33d& deltaRot)
 	//座標の更新があったらツリー作り直し。動くものは頻繁に変わるので非対応
 	if (isCreate && m_option.isStatic)
 	{
-		{//サイズ
-			DsVec3d maxLen = DsVec3d::Zero();
-			for (int i = 0; i < m_geomInfo.vn; ++i)
-			{
-				const DsVec3d len = m_geomInfo.pVertex[i] - m_physicsInfo.centerOfGravity;
-				maxLen.x = max(maxLen.x, fabs(len.x));
-				maxLen.y = max(maxLen.y, fabs(len.y));
-				maxLen.z = max(maxLen.z, fabs(len.z));
-			}
-			m_sideSize.x = maxLen.x;
-			m_sideSize.y = maxLen.y;
-			m_sideSize.z = maxLen.z;
-		}
 		{
 			//AABBツリー生成。
 			delete m_pAabbTree;
@@ -215,6 +202,9 @@ void DsRigidMesh::_Update(const DsVec3d& deltaPos, const DsMat33d& deltaRot)
 //virtual 
 void DsRigidMesh::Draw(DsDrawCommand& com)
 {
+	m_pAabbTree->Draw(com);
+
+	return;
 	const DsVec3d* pVertex = m_geomInfo.pVertex;
 	const int faceNum = m_geomInfo.fn;
 

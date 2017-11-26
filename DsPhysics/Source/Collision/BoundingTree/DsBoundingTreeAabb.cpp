@@ -105,13 +105,13 @@ void DsBoundingTreeAabb::_ConstructTree(int depth)
 				DsVec3d max = DsVec3d(-DBL_MAX, -DBL_MAX, -DBL_MAX);
 				DsVec3d min = DsVec3d(DBL_MAX, DBL_MAX, DBL_MAX);
 				for (int vi = 0; vi < vn; ++vi){
-					const DsVec3d len = m_pVertex[face.index[vi]];
-					max.x = max(max.x, len.x);
-					max.y = max(max.y, len.y);
-					max.z = max(max.z, len.z);
-					min.x = min(min.x, len.x);
-					min.y = min(min.y, len.y);
-					min.z = min(min.z, len.z);
+					const DsVec3d v = m_pVertex[face.index[vi]];
+					max.x = max(max.x, v.x);
+					max.y = max(max.y, v.y);
+					max.z = max(max.z, v.z);
+					min.x = min(min.x, v.x);
+					min.y = min(min.y, v.y);
+					min.z = min(min.z, v.z);
 				}
 				DsAabb tri;
 				tri.Setup(max, min);
