@@ -55,23 +55,27 @@ void DsBoundingTreeAabb::_ConstructTree(int depth)
 		//三角形のaabbを得る
 		for each(int faceIdx in m_containFaceIdxs){
 			const DsQuad& face = m_pFace[faceIdx];
-			DsVec3d avePos = DsVec3d::Zero();
 			const int vn = face.vn;
+			DsVec3d maxP = DsVec3d(-DBL_MAX, -DBL_MAX, -DBL_MAX);
+			DsVec3d minP = DsVec3d(DBL_MAX, DBL_MAX, DBL_MAX);
 			for (int vi = 0; vi < vn; ++vi){
-				avePos += m_pVertex[face.index[vi]];
+				const DsVec3d v = m_pVertex[face.index[vi]];
+				maxP.x = max(maxP.x, v.x);
+				maxP.y = max(maxP.y, v.y);
+				maxP.z = max(maxP.z, v.z);
+				minP.x = min(minP.x, v.x);
+				minP.y = min(minP.y, v.y);
+				minP.z = min(minP.z, v.z);
 			}
-			avePos /= (double)vn;
-			DsVec3d maxLen = DsVec3d::Zero();
-			for (int vi = 0; vi < vn; ++vi){
-				const DsVec3d len = m_pVertex[face.index[vi]] - avePos;
-				maxLen.x = max(maxLen.x, fabs(len.x));
-				maxLen.y = max(maxLen.y, fabs(len.y));
-				maxLen.z = max(maxLen.z, fabs(len.z));
-			}
+			DsAabb tri;
+			tri.Setup(maxP, minP);
+			const DsVec3d maxLen = tri.GetMax() - tri.GetCenter();
+
 			//三角形１つ分のaabbを末端ノードにする
 			std::vector<int> tmp;
 			tmp.push_back(faceIdx);
-			DsBoundingTreeAabb* pChild = new DsBoundingTreeAabb(m_owner, avePos, maxLen, m_pFace, m_faceNum, m_pVertex, m_vertexNum, tmp, m_maxDepth);
+			DsBoundingTreeAabb* pChild = new DsBoundingTreeAabb(m_owner, tri.GetCenter(), maxLen, m_pFace, m_faceNum, m_pVertex, m_vertexNum, tmp, m_maxDepth);
+			DS_ASSERT(pChild, "メモリ確保失敗");
 			m_child.push_back(pChild);
 		}
 	}
@@ -80,21 +84,21 @@ void DsBoundingTreeAabb::_ConstructTree(int depth)
 		const DsVec3d halfSize = m_boxSize*0.5;
 		const DsVec3d offsetPos[] =	//子ノードの基準位置
 		{
-			m_pos + DsVec3d(halfSize.x, halfSize.y, halfSize.z),	//ここが最大
+			m_pos + DsVec3d(halfSize.x, halfSize.y, halfSize.z),
 			m_pos + DsVec3d(halfSize.x, halfSize.y, -halfSize.z),
 			m_pos + DsVec3d(-halfSize.x, halfSize.y, -halfSize.z),
 			m_pos + DsVec3d(-halfSize.x, halfSize.y, halfSize.z),
 
 			m_pos + DsVec3d(halfSize.x, -halfSize.y, halfSize.z),
 			m_pos + DsVec3d(halfSize.x, -halfSize.y, -halfSize.z),
-			m_pos + DsVec3d(-halfSize.x, -halfSize.y, -halfSize.z), //ここが最小
+			m_pos + DsVec3d(-halfSize.x, -halfSize.y, -halfSize.z),
 			m_pos + DsVec3d(-halfSize.x, -halfSize.y, halfSize.z),
 		};
 		static_assert(sizeof(offsetPos) / sizeof(offsetPos[0]) == CHILD_NUM, "サイズ不一致");
 
 		DsAabb box;
 		for (int ci = 0; ci < CHILD_NUM; ++ci){
-			box.Setup(offsetPos[0], offsetPos[6]);
+			box.Setup( offsetPos[ci] + halfSize,  offsetPos[ci] - halfSize);
 
 			std::vector<int> containFaceIdxs;
 
@@ -102,28 +106,34 @@ void DsBoundingTreeAabb::_ConstructTree(int depth)
 			for each(int faceIdx in m_containFaceIdxs){
 				const DsQuad& face = m_pFace[faceIdx];
 				const int vn = face.vn;
-				DsVec3d max = DsVec3d(-DBL_MAX, -DBL_MAX, -DBL_MAX);
-				DsVec3d min = DsVec3d(DBL_MAX, DBL_MAX, DBL_MAX);
+				DsVec3d maxP = DsVec3d(-DBL_MAX, -DBL_MAX, -DBL_MAX);
+				DsVec3d minP = DsVec3d(DBL_MAX, DBL_MAX, DBL_MAX);
 				for (int vi = 0; vi < vn; ++vi){
 					const DsVec3d v = m_pVertex[face.index[vi]];
-					max.x = max(max.x, v.x);
-					max.y = max(max.y, v.y);
-					max.z = max(max.z, v.z);
-					min.x = min(min.x, v.x);
-					min.y = min(min.y, v.y);
-					min.z = min(min.z, v.z);
+					maxP.x = max(maxP.x, v.x);
+					maxP.y = max(maxP.y, v.y);
+					maxP.z = max(maxP.z, v.z);
+					minP.x = min(minP.x, v.x);
+					minP.y = min(minP.y, v.y);
+					minP.z = min(minP.z, v.z);
 				}
-				DsAabb tri;
-				tri.Setup(max, min);
 
-				if (DsAabb::IsContain(box, tri)){
+				DsAabb tri;
+				tri.Setup(maxP, minP);
+
+				if (DsAabb::IsContain(tri, box)){
 					//この境界の中に含まれてた
 					containFaceIdxs.push_back(faceIdx);
 				}
 			}
-			DsBoundingTreeAabb* pChild = new DsBoundingTreeAabb(m_owner, offsetPos[ci], halfSize, m_pFace, m_faceNum, m_pVertex, m_vertexNum, containFaceIdxs, m_maxDepth);
-			pChild->_ConstructTree(depth+1);
-			m_child.push_back(pChild);
+
+			if (!containFaceIdxs.empty())
+			{
+				DsBoundingTreeAabb* pChild = new DsBoundingTreeAabb(m_owner, offsetPos[ci], halfSize, m_pFace, m_faceNum, m_pVertex, m_vertexNum, containFaceIdxs, m_maxDepth);
+				DS_ASSERT(pChild, "メモリ確保失敗");
+				pChild->_ConstructTree(depth + 1);
+				m_child.push_back(pChild);
+			}
 		}
 	}
 }
@@ -147,7 +157,7 @@ bool DsBoundingTreeAabb::IsContain(const DsBoundingTreeAabb& cmp) const
 		}
 	}
 	
-	return isContain;
+	return (isContain && m_child.empty());//末端(=三角形のAABB)に当たっていたかを知りたい
 }
 
 
@@ -159,6 +169,7 @@ bool DsBoundingTreeAabb::IsContain(const DsAabb& cmp) const
 
 	DsAabb b = cmp;
 	
+
 	//まずは自分にcmpが含まれているか検査
 	const bool isContain = DsAabb::IsContain(a, b);
 	if (isContain) {//含まれてたのでさらに内部の子を検索
@@ -169,7 +180,7 @@ bool DsBoundingTreeAabb::IsContain(const DsAabb& cmp) const
 		}
 	}
 
-	return isContain;
+	return (isContain && m_child.empty());//末端(=三角形のAABB)に当たっていたかを知りたい
 }
 
 //virtual 
@@ -178,7 +189,7 @@ void DsBoundingTreeAabb::Draw(DsDrawCommand& com) const
 	DsAabb a;
 	a.Setup(m_pos + m_boxSize, m_pos - m_boxSize);
 	a.Draw(com);
-
+	
 	for each(DsBoundingTreeAabb* pChild in m_child){
 		pChild->Draw(com);
 	}

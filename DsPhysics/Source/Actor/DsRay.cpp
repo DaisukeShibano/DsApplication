@@ -71,6 +71,6 @@ void DsRay::Create( const DsVec3d& start, const DsVec3d& end )
 		min.z = min(min.z, v.z);
 	}
 	m_aabb.Setup(max, min);
-	m_pCollisionGeometry = new DsCollisionGeometry(m_vertex, GetVertexNum(), NULL, 0, &m_line, 1, GetId(), m_vertex[0], m_vertex, DsVec3d::Zero(), NULL, &m_aabb, GetRotation());
+	m_pCollisionGeometry = new DsCollisionGeometry(m_vertex, GetVertexNum(), NULL, 0, &m_line, 1, GetId(), m_vertex, DsVec3d::Zero(), NULL, &m_aabb, GetRotation());
 
 }

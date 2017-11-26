@@ -30,7 +30,10 @@ void DsRigidMesh::Create(const DsAnimModel& animModel)
 {
 	m_geomInfo.vn = animModel.GetVertexNum();
 	m_geomInfo.pVertex = new DsVec3d[m_geomInfo.vn];
+	DS_ASSERT(m_geomInfo.pVertex, "メモリ確保失敗");
 	m_geomInfo.pVertexOriginal = new DsVec3d[m_geomInfo.vn];
+	DS_ASSERT(m_geomInfo.pVertexOriginal, "メモリ確保失敗");
+
 	for (int i = 0; i < m_geomInfo.vn; ++i)
 	{
 		m_geomInfo.pVertex[i] = animModel.GetVertex()[i];
@@ -39,6 +42,7 @@ void DsRigidMesh::Create(const DsAnimModel& animModel)
 
 	m_geomInfo.fn = animModel.GetFaceNum();
 	m_geomInfo.pFace = new DsQuad[m_geomInfo.fn];
+	DS_ASSERT(m_geomInfo.pFace, "メモリ確保失敗");
 	std::vector<DsQuad> addFaces;
 	for (int i = 0; i < m_geomInfo.fn; ++i)
 	{
@@ -105,6 +109,7 @@ void DsRigidMesh::Create(const DsAnimModel& animModel)
 	{
 		const size_t newSize = m_geomInfo.fn + addFaces.size();
 		DsQuad* newFace = new DsQuad[newSize];
+		DS_ASSERT(newFace, "メモリ確保失敗");
 		for (int fi = 0; fi < m_geomInfo.fn; ++fi)
 		{
 			newFace[fi] = m_geomInfo.pFace[fi];
@@ -167,8 +172,9 @@ void DsRigidMesh::Create(const DsAnimModel& animModel)
 	_Update(DsVec3d::Zero(), DsMat33d::Identity());
 
 	m_pCollisionGeometry = new DsCollisionGeometry(m_geomInfo.pVertex, m_geomInfo.vn, m_geomInfo.pFace, m_geomInfo.fn,
-		m_geomInfo.pLine, m_geomInfo.ln, GetId(), m_physicsInfo.centerOfGravity, NULL, //1フレ前頂点はパフォーマンスのためやらない。
+		m_geomInfo.pLine, m_geomInfo.ln, GetId(), NULL, //1フレ前頂点はパフォーマンスのためやらない。
 		m_sideSize, m_pAabbTree, &m_aabb, GetRotation());
+	DS_ASSERT(m_pCollisionGeometry, "メモリ確保失敗");
 }
 
 //virtual 
@@ -192,7 +198,8 @@ void DsRigidMesh::_Update(const DsVec3d& deltaPos, const DsMat33d& deltaRot)
 				faceIdx.push_back(i);
 			}
 			const int depth = DsBoundingTreeAabb::DEFAULT_DEPTH;
-			m_pAabbTree = new DsBoundingTreeAabb(*this, m_physicsInfo.centerOfGravity, m_sideSize, m_geomInfo.pFace, m_geomInfo.fn, m_geomInfo.pVertex, m_geomInfo.vn, faceIdx, depth);
+			m_pAabbTree = new DsBoundingTreeAabb(*this, m_aabb.GetCenter(), m_sideSize, m_geomInfo.pFace, m_geomInfo.fn, m_geomInfo.pVertex, m_geomInfo.vn, faceIdx, depth);
+			DS_ASSERT(m_pAabbTree, "メモリ確保失敗");
 			m_pAabbTree->ConstructTree();
 		}
 	}
@@ -202,9 +209,6 @@ void DsRigidMesh::_Update(const DsVec3d& deltaPos, const DsMat33d& deltaRot)
 //virtual 
 void DsRigidMesh::Draw(DsDrawCommand& com)
 {
-	m_pAabbTree->Draw(com);
-
-	return;
 	const DsVec3d* pVertex = m_geomInfo.pVertex;
 	const int faceNum = m_geomInfo.fn;
 

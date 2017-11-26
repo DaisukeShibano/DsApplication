@@ -144,8 +144,8 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 		{
 			std::string tmp = actor->GetName();
 			//if( (tmp != "robo_0") && (tmp!="ragdoll") )
-			//if ((tmp == "” ‚P") || (tmp == "” ‚Q") || (tmp == "” ‚R"))
-			//if (actor->GetType() == DsActor::RIGID_BOX)
+			if ((tmp == "” ‚P") || (tmp == "” ‚Q") || (tmp == "” ‚R"))
+			//if (actor->GetType() == DsActor::RIGID_MESH)
 			{
 				const double rC = (actor->IsRest()) ? (0.5) : (1.0);
 				if (color == 0){

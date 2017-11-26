@@ -74,7 +74,7 @@ void DsRigidCapsule::Create(const double r, const double halfLen, const double m
 	
 
 	m_pCollisionGeometry = new DsCollisionGeometry(NULL, 0, NULL, 0,
-		NULL, 0, GetId(), m_physicsInfo.centerOfGravity, NULL, m_sideSize, NULL, &m_aabb, GetRotation());
+		NULL, 0, GetId(), NULL, m_sideSize, NULL, &m_aabb, GetRotation());
 }
 
 //virtual 

@@ -25,7 +25,7 @@ namespace DsPhysics
 	{
 	public:
 		DsCollisionGeometry(const DsVec3d* pVertex, const int vertexNum, const DsQuad* pFace, const int faceNum,
-			const DsLine* pLine, const int lineNum, const DsActorId& id, const DsVec3d& basePos, const DsVec3d* pPreVertex,
+			const DsLine* pLine, const int lineNum, const DsActorId& id, const DsVec3d* pPreVertex,
 			const DsVec3d& side, const DsBoundingTreeBase* pBoungingTree, const DsAabb* pAabb, const DsMat33d& rot)
 			: m_pVertex(pVertex)
 			, m_vertexNum(vertexNum)
@@ -34,7 +34,6 @@ namespace DsPhysics
 			, m_pLine(pLine)
 			, m_lineNum(lineNum)
 			, m_ownerId(id)
-			, m_basePos(basePos)
 			, m_pPreVertex(pPreVertex)
 			, m_side(side)
 			, m_pBoungingTree(pBoungingTree)
@@ -50,7 +49,7 @@ namespace DsPhysics
 		const DsLine* GetLine() const { return m_pLine; }
 		const int GetLineNum() const { return m_lineNum; }
 		const DsActorId& RefOwnerId() const { return m_ownerId; }
-		const DsVec3d& GetBasePos() const { return m_basePos; }
+		const DsVec3d GetBasePos() const { return m_pAabb->GetCenter(); }
 		const DsVec3d* GetPreVertex() const { return m_pPreVertex; }
 		const DsVec3d& GetSide() const { return m_side; }
 		const DsBoundingTreeBase* GetBoungingTree() const { return m_pBoungingTree; }
@@ -65,7 +64,6 @@ namespace DsPhysics
 		const DsLine* m_pLine;
 		const int m_lineNum;
 		const DsActorId& m_ownerId;
-		const DsVec3d& m_basePos;
 		const DsVec3d* m_pPreVertex;
 		const DsVec3d& m_side;
 		const DsBoundingTreeBase* m_pBoungingTree;

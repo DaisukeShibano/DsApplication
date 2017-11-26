@@ -9,6 +9,7 @@ DsAabb::DsAabb()
 	: m_maxX(0)
 	, m_maxY(0)
 	, m_maxZ(0)
+	, m_center(DsVec3d::Zero())
 {
 }
 
@@ -25,6 +26,7 @@ void DsAabb::Setup(double maxX, double maxY, double maxZ, double minX, double mi
 	m_minX = minX;
 	m_minY = minY;
 	m_minZ = minZ;
+	m_center = DsVec3d((m_maxX + m_minX)*0.5, (m_maxY + m_minY)*0.5, (m_maxZ + m_minZ)*0.5);
 }
 
 void DsAabb::Setup(const DsVec3d& max, const DsVec3d& min)
@@ -35,6 +37,7 @@ void DsAabb::Setup(const DsVec3d& max, const DsVec3d& min)
 	m_minX = min.x;
 	m_minY = min.y;
 	m_minZ = min.z;
+	m_center = DsVec3d((m_maxX + m_minX)*0.5, (m_maxY + m_minY)*0.5, (m_maxZ + m_minZ)*0.5);
 }
 
 void DsAabb::Draw(DsDrawCommand& com) const

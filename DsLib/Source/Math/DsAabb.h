@@ -22,7 +22,8 @@ namespace DsLib
 		void Setup(const DsVec3d& max, const DsVec3d& min);
 		DsVec3d GetMax() const { return DsVec3d(m_maxX, m_maxY, m_maxZ); }
 		DsVec3d GetMin() const { return DsVec3d(m_minX, m_minY, m_minZ); }
-
+		DsVec3d GetCenter() const { return m_center; }
+		
 		//ˆê”Ô’·‚¢’·‚³
 		const double GetMaxLen() const
 		{
@@ -52,7 +53,7 @@ namespace DsLib
 			//}
 			//return true;
 			//return (fabs(a.m_pos.x - b.m_pos.x) < (a.m_maxX + b.m_maxX)) && (fabs(a.m_pos.y - b.m_pos.y) < (a.m_maxY + b.m_maxY)) && (fabs(a.m_pos.z - b.m_pos.z) < (a.m_maxZ + b.m_maxZ));
-			return (a.m_minX < b.m_maxX) && (a.m_minZ < b.m_maxY) && (a.m_minZ < b.m_maxZ)  && (b.m_minX < a.m_maxX) && (b.m_minZ < a.m_maxY) && (b.m_minZ < a.m_maxZ);
+			return (a.m_minX <= b.m_maxX) && (a.m_minY <= b.m_maxY) && (a.m_minZ <= b.m_maxZ)  && (b.m_minX <= a.m_maxX) && (b.m_minY <= a.m_maxY) && (b.m_minZ <= a.m_maxZ);
 #endif
 		}
 
@@ -77,6 +78,8 @@ namespace DsLib
 				double m_minZ;
 			};
 		};
+
+		DsVec3d m_center;
 	};
 }
 

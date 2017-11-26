@@ -185,20 +185,20 @@ void DsRigidBody::_UpdateInertia(const DsMat33d& deltaRot)
 //virtual 
 void DsRigidBody::_UpdateAabb()
 {
-	DsVec3d max = DsVec3d(-DBL_MAX, -DBL_MAX, -DBL_MAX);
-	DsVec3d min = DsVec3d(DBL_MAX, DBL_MAX, DBL_MAX);
+	DsVec3d maxP = DsVec3d(-DBL_MAX, -DBL_MAX, -DBL_MAX);
+	DsVec3d minP = DsVec3d(DBL_MAX, DBL_MAX, DBL_MAX);
 	for (int i = 0; i < m_geomInfo.vn; ++i)
 	{
 		const DsVec3d v = m_geomInfo.pVertex[i];
-		max.x = max(max.x, v.x);
-		max.y = max(max.y, v.y);
-		max.z = max(max.z, v.z);
-		min.x = min(min.x, v.x);
-		min.y = min(min.y, v.y);
-		min.z = min(min.z, v.z);
+		maxP.x = max(maxP.x, v.x);
+		maxP.y = max(maxP.y, v.y);
+		maxP.z = max(maxP.z, v.z);
+		minP.x = min(minP.x, v.x);
+		minP.y = min(minP.y, v.y);
+		minP.z = min(minP.z, v.z);
 	}
-	m_sideSize = (max - min)*0.5;
-	m_aabb.Setup(max, min);
+	m_aabb.Setup(maxP, minP);
+	m_sideSize = (maxP - minP)*0.5;
 }
 
 //virtual

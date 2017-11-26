@@ -117,7 +117,7 @@ namespace
 		const double radius = pSphere->GetSide().x;
 		const double radiusWithThreshold = radius /*+ contactBreakingThreshold 0.02‚­‚ç‚¢ */;
 
-		const DsVec3d& sphereCenter = pSphere->GetBasePos();
+		const DsVec3d sphereCenter = pSphere->GetBasePos();
 		const DsVec3d p1ToCentre = sphereCenter - pVertex[0];
 		double distanceFromPlane = DsVec3d::Dot( p1ToCentre, normal);
 
@@ -208,7 +208,7 @@ DsCollisionResult& DsCollisionSphereMesh::Collide()
 		}
 
 		const double r = m_pSphere->GetSide().x;
-		const DsVec3d& sPos = m_pSphere->GetBasePos();
+		const DsVec3d sPos = m_pSphere->GetBasePos();
 		const DsVec3d* pVertex = m_pMesh->GetVertex();
 		const int faceNum = m_pMesh->GetFaceNum();
 		const DsQuad* pFace = m_pMesh->GetFace();
