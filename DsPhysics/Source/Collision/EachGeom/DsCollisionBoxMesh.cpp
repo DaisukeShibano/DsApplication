@@ -62,7 +62,6 @@ namespace
 	{
 		_TriGeom(const DsCollisionGeometry* pMesh, int faceIdx)
 			: pContext(pMesh)
-			, pos(pMesh->GetBasePos())
 			, normal(pMesh->GetFace()[faceIdx].normal)
 		{
 			DS_ASSERT(3 == pMesh->GetFace()[faceIdx].vn, "キューブ*メッシュのあたり判定でメッシュが三角形ではない");
@@ -75,7 +74,6 @@ namespace
 			vN = DsVec3d::Cross(vE0, vE1);//これ予め求めときたい
 		}
 		const DsCollisionGeometry* pContext;
-		DsVec3d pos;
 		DsVec3d normal;
 		DsVec3d v[3];
 		DsVec3d vE0;

@@ -53,7 +53,7 @@ namespace DsLib
 			//}
 			//return true;
 			//return (fabs(a.m_pos.x - b.m_pos.x) < (a.m_maxX + b.m_maxX)) && (fabs(a.m_pos.y - b.m_pos.y) < (a.m_maxY + b.m_maxY)) && (fabs(a.m_pos.z - b.m_pos.z) < (a.m_maxZ + b.m_maxZ));
-			return (a.m_minX <= b.m_maxX) && (a.m_minY <= b.m_maxY) && (a.m_minZ <= b.m_maxZ)  && (b.m_minX <= a.m_maxX) && (b.m_minY <= a.m_maxY) && (b.m_minZ <= a.m_maxZ);
+			return (a.m_minX <= b.m_maxX) && (a.m_minY <= b.m_maxY) && (a.m_minZ <= b.m_maxZ) && (b.m_minX <= a.m_maxX) && (b.m_minY <= a.m_maxY) && (b.m_minZ <= a.m_maxZ);
 #endif
 		}
 
