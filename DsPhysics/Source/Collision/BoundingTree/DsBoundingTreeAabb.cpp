@@ -53,6 +53,7 @@ void DsBoundingTreeAabb::_ConstructTree(int depth)
 						|| (depth >= m_maxDepth);
 	if (isTerminal){
 		//OŠpŒ`‚Ìaabb‚ğ“¾‚é
+		const double extraLen = 0.2;//‚Ò‚Á‚½‚è–Ê‚É‚­‚Á‚Â‚¢‚½AABB‚¾‚ÆÚ‚µ‚Ä‚é‚Æ‚«‚ÉˆÀ’è‚µ‚È‚¢
 		for each(int faceIdx in m_containFaceIdxs){
 			const DsQuad& face = m_pFace[faceIdx];
 			const int vn = face.vn;
@@ -60,12 +61,12 @@ void DsBoundingTreeAabb::_ConstructTree(int depth)
 			DsVec3d minP = DsVec3d(DBL_MAX, DBL_MAX, DBL_MAX);
 			for (int vi = 0; vi < vn; ++vi){
 				const DsVec3d v = m_pVertex[face.index[vi]];
-				maxP.x = max(maxP.x, v.x);
-				maxP.y = max(maxP.y, v.y);
-				maxP.z = max(maxP.z, v.z);
-				minP.x = min(minP.x, v.x);
-				minP.y = min(minP.y, v.y);
-				minP.z = min(minP.z, v.z);
+				maxP.x = max(maxP.x, v.x+extraLen);
+				maxP.y = max(maxP.y, v.y+extraLen);
+				maxP.z = max(maxP.z, v.z+extraLen);
+				minP.x = min(minP.x, v.x-extraLen);
+				minP.y = min(minP.y, v.y-extraLen);
+				minP.z = min(minP.z, v.z-extraLen);
 			}
 			DsAabb tri;
 			tri.Setup(maxP, minP);
