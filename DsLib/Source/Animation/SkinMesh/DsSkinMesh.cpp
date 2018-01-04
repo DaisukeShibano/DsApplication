@@ -65,7 +65,7 @@ namespace
 			vertex[dstIdx] += DsVec4d(transVW.x, transVW.y, transVW.z, 0);
 		}
 
-		//再起版
+		//再帰版
 		//for each(const DsAnimBone* child in bone->child)
 		//{
 		//	_Mapping(child, child->worldPose.ToMat33(), child->worldPose.GetPos(), vertex, srcVertex);
@@ -92,7 +92,7 @@ void DsSkinMesh::ApplySkeleton(const DsAnimSkeleton& skeleton)
 		_Mapping(pBone, pBone->modelPose.ToMat33(), pBone->modelPose.GetPos(), m_pModel->GetVertex(), m_srcModel.GetVertex());
 	}
 
-	//再起版
+	//再帰版
 	//for each(const DsAnimBone* root in roots)
 	//{
 	//	_Mapping(root, root->worldPose.ToMat33(), root->worldPose.GetPos(), m_pModel->GetVertex(), m_srcModel.GetVertex());

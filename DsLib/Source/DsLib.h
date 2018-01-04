@@ -59,6 +59,9 @@
 #ifndef _DS_ANIMATION_H_
 #include "Animation/DsAnimation.h"
 #endif
+#ifndef _DS_ANIM_CLIP_H_
+#include "Animation/DsAnimClip.h"
+#endif
 #ifndef _DS_ANIM_SKELETON_MODIFIER_
 #include "Animation/DsAnimSkeletonModifier.h"
 #endif
@@ -86,5 +89,10 @@
 #ifndef _DS_FILE_
 #include "System/DsFile.h"
 #endif
-
+#ifndef _DS_ACTION_STATE_CTRL_
+#include"ActionState/DsActionStateCtrl.h"
+#endif
+#ifndef _DS_AS_NODE_
+#include "ActionState/DsASNode.h"
+#endif
 #endif

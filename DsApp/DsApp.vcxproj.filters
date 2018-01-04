@@ -37,6 +37,9 @@
     <Filter Include="Source\World\Field\Controller">
       <UniqueIdentifier>{e57b3ea2-9d3c-472c-b08e-8fd31eb26d75}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\World\Field\Action">
+      <UniqueIdentifier>{649328aa-dafb-4410-bec1-03de74441f97}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsAppPch.h">
@@ -102,6 +105,15 @@
     <ClInclude Include="Source\World\Field\DsFieldChr.h">
       <Filter>Source\World\Field</Filter>
     </ClInclude>
+    <ClInclude Include="Source\World\Field\Action\DsChrState.h">
+      <Filter>Source\World\Field\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Field\Action\DsActionRequest.h">
+      <Filter>Source\World\Field\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Field\Action\DsActionCtrl.h">
+      <Filter>Source\World\Field\Action</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsAppPch.cpp">
@@ -163,6 +175,15 @@
     </ClCompile>
     <ClCompile Include="Source\World\Field\DsFieldChr.cpp">
       <Filter>Source\World\Field</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Field\Action\DsChrState.cpp">
+      <Filter>Source\World\Field\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Field\Action\DsActionRequest.cpp">
+      <Filter>Source\World\Field\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Field\Action\DsActionCtrl.cpp">
+      <Filter>Source\World\Field\Action</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

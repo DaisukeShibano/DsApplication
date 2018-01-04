@@ -24,20 +24,25 @@ DsAnimBlend::~DsAnimBlend()
 void DsAnimBlend::Initialize(const DsKeyframeAnim& src)
 {
 	m_pBlendAnim = new DsKeyframeAnim();
+	DS_ASSERT(m_pBlendAnim, "ƒƒ‚ƒŠŠm•Û¸”s");
 	m_pBlendAnim->m_name = "blend";
 	m_pBlendAnim->m_boneNum = src.m_boneNum;
 	m_pBlendAnim->m_pBone = new DsKeyframeAnim::Pose[src.m_boneNum];
+	DS_ASSERT(m_pBlendAnim->m_pBone, "ƒƒ‚ƒŠŠm•Û¸”s");
 	for (int bi = 0; bi < src.m_boneNum; ++bi)
 	{
 		m_pBlendAnim->m_pBone[bi].m_pPos = new DsKeyframeAnim::Vec3Key();
+		DS_ASSERT(m_pBlendAnim->m_pBone[bi].m_pPos, "ƒƒ‚ƒŠŠm•Û¸”s");
 		*(m_pBlendAnim->m_pBone[bi].m_pPos) = src.m_pBone[bi].m_pPos[0];
 		m_pBlendAnim->m_pBone[bi].m_currentIdxPos = 0;
 
 		m_pBlendAnim->m_pBone[bi].m_pRot = new DsKeyframeAnim::Vec4Key();
+		DS_ASSERT(m_pBlendAnim->m_pBone[bi].m_pRot, "ƒƒ‚ƒŠŠm•Û¸”s");
 		*(m_pBlendAnim->m_pBone[bi].m_pRot) = src.m_pBone[bi].m_pRot[0];
 		m_pBlendAnim->m_pBone[bi].m_currentIdxRot = 0;
 
 		m_pBlendAnim->m_pBone[bi].m_pScale = new DsKeyframeAnim::Vec3Key();
+		DS_ASSERT(m_pBlendAnim->m_pBone[bi].m_pScale, "ƒƒ‚ƒŠŠm•Û¸”s");
 		*(m_pBlendAnim->m_pBone[bi].m_pScale) = src.m_pBone[bi].m_pScale[0];
 		m_pBlendAnim->m_pBone[bi].m_currentIdxScale = 0;
 		

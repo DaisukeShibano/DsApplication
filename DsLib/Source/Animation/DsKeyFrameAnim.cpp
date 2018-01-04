@@ -6,7 +6,6 @@
 using namespace DsLib;
 
 
-//１フレで２回呼ぶとずれるので注意
 void DsKeyframeAnim::Pose::Update(double dt)
 {
 	m_currentTimeMs += (dt*1000.0);

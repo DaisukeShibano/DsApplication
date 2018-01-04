@@ -1,34 +1,21 @@
-#include "DsPch.h"
-#ifndef _DS_ACT_REQ_H_
-#include "Animation/ActionRequest/DsActReq.h"
+#include "DsAppPch.h"
+#ifndef _DS_ACTION_REQUEST_
+#include "World/Field/Action/DsActionRequest.h"
 #endif
 
-#ifndef _DS_SYS_H_
-#include "System/DsSys.h"
-#endif
-#ifndef _DS_KEYBOARD_H_
-#include "Keyboard/DsKeyboard.h"
-#endif
+using namespace DsApp;
 
-using namespace DsLib;
-
-DsActReq::DsActReq(const DsSys& sys)
+DsActionRequest::DsActionRequest(const DsLib::DsSys& sys)
 	: m_key(sys.RefKeyboard())
 	, m_moveVec(DsVec3d::Zero())
 {
-	for(double& dir : m_moveDir)
-	{
-		dir = 0.0;
-	}
 }
 
-DsActReq::~DsActReq()
+DsActionRequest::~DsActionRequest()
 {
-
 }
 
-//virtual
-void DsActReq::Update(double dt)
+void DsActionRequest::Update(double dt)
 {
 	const double vel = 2000.0*dt;
 	if (m_key.IsPush(DsKeyboard::FORWARD))
@@ -78,10 +65,18 @@ void DsActReq::Update(double dt)
 	m_moveVec.x = m_moveDir[2] + m_moveDir[3];
 }
 
-//virtual 
-bool DsActReq::IsMove() const
+DsVec3d DsActionRequest::GetMoveVec()const
+{
+	return m_moveVec;
+}
+ACTION_TYPE DsActionRequest::GetAction() const
 {
 	const double len = m_moveVec.Length();
-	const bool ret = (0.01 < len);
-	return ret;
+	const bool isMove = (0.01 < len);
+	if (isMove) {
+		return ACTION_TYPE::MOVE;
+	}
+	else {
+		return ACTION_TYPE::IDLE;
+	}
 }

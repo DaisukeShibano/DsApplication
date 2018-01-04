@@ -194,6 +194,9 @@
     <ClInclude Include="Source\NeuralNetwork\DsNeuron.h" />
     <ClInclude Include="Source\NeuralNetwork\DsNeuronCtrl.h" />
     <ClInclude Include="Source\Res\Param\DsRagdollParam.h" />
+    <ClInclude Include="Source\World\Field\Action\DsActionCtrl.h" />
+    <ClInclude Include="Source\World\Field\Action\DsActionRequest.h" />
+    <ClInclude Include="Source\World\Field\Action\DsChrState.h" />
     <ClInclude Include="Source\World\Field\Controller\DsChrController.h" />
     <ClInclude Include="Source\World\Field\Controller\DsGpController.h" />
     <ClInclude Include="Source\World\Field\Creator\DsFieldObjectCreator.h" />
@@ -221,6 +224,9 @@
     <ClCompile Include="Source\NeuralNetwork\DsNeuron.cpp" />
     <ClCompile Include="Source\NeuralNetwork\DsNeuronCtrl.cpp" />
     <ClCompile Include="Source\Res\Param\DsRagdollParam.cpp" />
+    <ClCompile Include="Source\World\Field\Action\DsActionCtrl.cpp" />
+    <ClCompile Include="Source\World\Field\Action\DsActionRequest.cpp" />
+    <ClCompile Include="Source\World\Field\Action\DsChrState.cpp" />
     <ClCompile Include="Source\World\Field\Controller\DsChrController.cpp" />
     <ClCompile Include="Source\World\Field\Controller\DsGpController.cpp" />
     <ClCompile Include="Source\World\Field\Creator\DsFieldObjectCreator.cpp" />

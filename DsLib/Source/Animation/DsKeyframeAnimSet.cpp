@@ -15,6 +15,11 @@
 
 using namespace DsLib;
 
+
+/*
+このクラス無意味だな・・・
+*/
+
 DsKeyframeAnimSet::DsKeyframeAnimSet(DsKeyframeAnim* pAnim, int animNum)
 	: m_pAnim(pAnim)
 	, m_animNum(animNum)

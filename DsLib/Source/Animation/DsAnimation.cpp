@@ -60,6 +60,7 @@ DsAnimation::DsAnimation(const DsAnimController& animController, const DsAnimRes
 
 		//キーフレームアニメないならスキンメッシュモデルは無駄。
 		m_pSkinMesh = new DsSkinMesh(*m_pAnimModel);
+		DS_ASSERT(m_pSkinMesh, "メモリ確保失敗");
 		m_pSkinMesh->Initialize();
 	}
 

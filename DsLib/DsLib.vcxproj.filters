@@ -110,6 +110,9 @@
     <Filter Include="Source\Graphics\GL">
       <UniqueIdentifier>{a057a54b-0cce-48cf-bc73-5d7d25a42d9a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\ActionState">
+      <UniqueIdentifier>{c20473b0-9445-4354-bd09-bdaec8d228a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsPch.cpp">
@@ -285,6 +288,12 @@
     </ClCompile>
     <ClCompile Include="Source\Graphics\GL\DsGLFunc.cpp">
       <Filter>Source\Graphics\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ActionState\DsASNode.cpp">
+      <Filter>Source\ActionState</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ActionState\DsActionStateCtrl.cpp">
+      <Filter>Source\ActionState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -521,6 +530,12 @@
     </ClInclude>
     <ClInclude Include="Source\Graphics\GL\DsGLFunc.h">
       <Filter>Source\Graphics\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ActionState\DsASNode.h">
+      <Filter>Source\ActionState</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ActionState\DsActionStateCtrl.h">
+      <Filter>Source\ActionState</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

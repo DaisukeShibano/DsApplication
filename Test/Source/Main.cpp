@@ -222,6 +222,7 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 	DsPerf::RefPerfTotalFps().DbgDrawFps();
 }
 
+
 int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, int nCmdShow)
 {
 	ds_uint64 hwnd = DsWindowManager::MainWindowCreate((ds_uint64)hInstance, lpCmdLine, nCmdShow);

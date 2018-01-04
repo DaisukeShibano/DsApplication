@@ -26,6 +26,7 @@ DsRigidMesh::~DsRigidMesh()
 	delete m_pCollisionGeometry; m_pCollisionGeometry = NULL;
 }
 
+//三角形のみなことが保障されているならモデルと頂点とか共有できるかも。
 void DsRigidMesh::Create(const DsAnimModel& animModel)
 {
 	m_geomInfo.vn = animModel.GetVertexNum();
