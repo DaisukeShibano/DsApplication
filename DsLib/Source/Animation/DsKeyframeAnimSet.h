@@ -21,9 +21,6 @@ namespace DsLib
 		DsKeyframeAnim* GetKeyframeAnims(){ return m_pAnim; }
 		int GetKeyframeAnimNum() const { return m_animNum; }
 
-	public:
-		void ApplyAnim(double dt, DsAnimSkeleton& skeleton, const DsKeyframeAnim& anim) const;
-
 	private:
 		DsKeyframeAnim* m_pAnim;
 		const int m_animNum;

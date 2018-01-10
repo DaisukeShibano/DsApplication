@@ -17,6 +17,7 @@ namespace DsApp
 	{
 		IDLE,
 		RUN,
+		NUM
 	};
 
 	class DsChrState;
@@ -25,11 +26,24 @@ namespace DsApp
 	class DsChrState : public DsLib::DsASNode
 	{
 	public:
-		static DsChrState* CreateIns(CHR_STATE state, StateMap& allState, DsLib::DsAnimClip* pAnimClip, const DsActionRequest& actReq);
+		struct INIT_ARG
+		{
+			INIT_ARG(DsLib::DsAnimClip* arg1, DsActionRequest& arg2, StateMap& arg3)
+				: pAnimClip(arg1)
+				, actReq(arg2)
+				, allState(arg3)
+			{}
+			DsLib::DsAnimClip* pAnimClip;
+			DsActionRequest& actReq;
+			StateMap& allState;
+		};
 
 	public:
-		DsChrState(StateMap& allState, DsLib::DsAnimClip* pAnimClip, const DsActionRequest& actReq)
-			:m_pAnimClip(pAnimClip), m_nextState(CHR_STATE::IDLE), m_actReq(actReq), m_allState(allState), m_pNextStateNode(){}
+		static DsChrState* CreateIns(CHR_STATE state, const INIT_ARG& arg);
+
+	public:
+		DsChrState(const INIT_ARG& arg)
+			:m_pAnimClip(arg.pAnimClip), m_nextState(CHR_STATE::IDLE), m_actReq(arg.actReq), m_allState(arg.allState), m_pNextStateNode(){}
 		virtual ~DsChrState() {}
 
 	public:

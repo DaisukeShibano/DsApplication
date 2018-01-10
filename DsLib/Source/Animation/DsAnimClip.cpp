@@ -74,3 +74,8 @@ bool DsAnimClip::IsEnd() const
 {
 	return ( m_isRequestEnd && (m_blendRate < 0.00001) );
 }
+
+const std::string& DsAnimClip::RefAnimName() const
+{
+	return RefAnim().RefName();
+}

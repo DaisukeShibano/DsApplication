@@ -62,6 +62,9 @@
 #ifndef _DS_ANIM_CLIP_H_
 #include "Animation/DsAnimClip.h"
 #endif
+#ifndef _DS_KEYFRAME_ANIM_
+#include "Animation/DsKeyframeAnim.h"
+#endif
 #ifndef _DS_ANIM_SKELETON_MODIFIER_
 #include "Animation/DsAnimSkeletonModifier.h"
 #endif

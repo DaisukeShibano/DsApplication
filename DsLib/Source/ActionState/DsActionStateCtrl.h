@@ -14,9 +14,9 @@ namespace DsLib
 		virtual ~DsActionStateCtrl();
 
 	public:
-		void RegisterNode(DsASNode* pNode);
+		void RegisterActiveNode(DsASNode* pNode);
 		void Update(double dt);
-
+		std::vector<DsASNode*> GetActiveNode() const;
 
 	private:
 		std::vector<DsASNode*> m_execNodes;

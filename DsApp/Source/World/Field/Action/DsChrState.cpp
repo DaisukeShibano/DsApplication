@@ -19,13 +19,38 @@ namespace
 	*/
 
 
+	
+	class StateFactory
+	{
+	public:
+		virtual  DsChrState* Create(const DsChrState::INIT_ARG& arg) { return NULL; }
+	};
+
+	static StateFactory* s_factory[static_cast<int>(CHR_STATE::NUM)];
+
+	#define REGISTER_STATE(ClassName, state)\
+	class ClassNameFactory : public StateFactory\
+	{\
+	public:\
+		ClassNameFactory()\
+		{\
+			s_factory[static_cast<int>(state)] = this;\
+		}\
+		virtual ClassName* Create(const DsChrState::INIT_ARG& arg) override { new ClassName(arg); }\
+	};\
+	static ClassNameFactory m_ins;\
+	virtual CHR_STATE GetMyState() const override { return state; }\
+
+
+
 	/*********************************************************
 	@brief ë“ã@
 	**********************************************************/
 	class DsChrStateIdle : public DsChrState
 	{
+		REGISTER_STATE(DsChrStateIdle, CHR_STATE::IDLE)
 	public:
-		DsChrStateIdle(StateMap& allState, DsLib::DsAnimClip* pAnimClip, const DsActionRequest& actReq):DsChrState(allState, pAnimClip, actReq)
+		DsChrStateIdle(const INIT_ARG& arg):DsChrState(arg)
 		{
 			m_nextState = GetMyState();
 			if (m_pAnimClip) {
@@ -44,19 +69,16 @@ namespace
 			}
 			
 		};
-
-	public:
-		virtual CHR_STATE GetMyState() const override { return CHR_STATE::IDLE; }
-
 	};
-
+	
 	/*********************************************************
 	@brief ëñçs
 	**********************************************************/
 	class DsChrStateRun : public DsChrState
 	{
+		REGISTER_STATE(DsChrStateRun, CHR_STATE::RUN)
 	public:
-		DsChrStateRun(StateMap& allState, DsLib::DsAnimClip* pAnimClip, const DsActionRequest& actReq) :DsChrState(allState, pAnimClip, actReq)
+		DsChrStateRun(const INIT_ARG& arg) :DsChrState(arg)
 		{
 			m_nextState = GetMyState();
 			if (m_pAnimClip) {
@@ -73,20 +95,20 @@ namespace
 			else {
 				m_nextState = CHR_STATE::IDLE;
 			}
-
 		};
-
-	public:
-		virtual CHR_STATE GetMyState() const override { return CHR_STATE::RUN; }
-
 	};
 
 }
 
-#define NEW_CHR_STATE(state, arg1, arg2, arg3) new DsChrState##state(arg1, arg2, arg3)
+
 
 //static 
-DsChrState* DsChrState::CreateIns(CHR_STATE state, StateMap& allState, DsLib::DsAnimClip* pAnimClip, const DsActionRequest& actReq)
+DsChrState* DsChrState::CreateIns(CHR_STATE state, const INIT_ARG& arg)
 {
-	return NEW_CHR_STATE(state, allState, pAnimClip, actReq);
+	DsChrState* ret = NULL;
+	StateFactory* pFactory = s_factory[static_cast<int>(state)];
+	if (pFactory) {
+		ret = pFactory->Create(arg);
+	}
+	return ret;
 }

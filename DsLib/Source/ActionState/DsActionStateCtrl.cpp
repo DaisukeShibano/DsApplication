@@ -19,7 +19,7 @@ DsActionStateCtrl::~DsActionStateCtrl()
 {
 }
 
-void DsActionStateCtrl::RegisterNode(DsASNode* pNode)
+void DsActionStateCtrl::RegisterActiveNode(DsASNode* pNode)
 {
 	if (pNode) {
 		m_registerNodes.push_back(pNode);
@@ -67,4 +67,10 @@ void DsActionStateCtrl::Update(double dt)
 		m_execNodes.push_back(pNode);
 	}
 
+}
+
+
+std::vector<DsASNode*> DsActionStateCtrl::GetActiveNode() const
+{
+	return m_execNodes;
 }

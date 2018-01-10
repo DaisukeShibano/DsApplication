@@ -39,6 +39,7 @@ namespace DsLib
 		void SetAnimSkeletonModifier(DsAnimSkeletonModifier* pModifier) { m_animModifier = pModifier; }
 		DsAnimSkeleton* GetSkeleton() { return m_pSkeleton; }
 		const DsAnimSkeleton* GetSkeleton() const { return m_pSkeleton; }
+		DsKeyframeAnimSet* GetKeyframeAnim() const { return m_pKeyframeAnim; }
 
 	private:
 		DsAnimModel* _GetAnimModel();

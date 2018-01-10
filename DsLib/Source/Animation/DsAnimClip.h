@@ -25,6 +25,7 @@ namespace DsLib
 
 	public:
 		const DsKeyframeAnim& RefAnim() const { return m_anim; }
+		const std::string& RefAnimName() const;
 
 	private:
 		DsKeyframeAnim& m_anim;
