@@ -68,12 +68,6 @@
 #ifndef _DS_ANIM_SKELETON_MODIFIER_
 #include "Animation/DsAnimSkeletonModifier.h"
 #endif
-#ifndef _DS_ANIM_CONTROLLER_H_
-#include "Animation/ActionRequest/DsAnimController.h"
-#endif
-#ifndef _DS_ACT_REQ_H_
-#include "Animation/ActionRequest/DsActReq.h"
-#endif
 #ifndef _DS_RESOURCE_
 #include "Res/DsResource.h"
 #endif

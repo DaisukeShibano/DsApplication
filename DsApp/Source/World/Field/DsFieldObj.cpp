@@ -46,7 +46,7 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 
 	if (initInfo.pAnimRes)
 	{
-		m_pAnimation = new DsAnimation(RefAnimController(), *initInfo.pAnimRes, m_sys.RefRender().RefDrawCom());
+		m_pAnimation = new DsAnimation(*initInfo.pAnimRes, m_sys.RefRender().RefDrawCom());
 	}
 
 	if (initInfo.pHitRes)
@@ -234,13 +234,6 @@ const DsActor* DsFieldObj::GetActor() const
 {
 	return m_world.GetActor(m_actorId);
 }
-
-//virtual 
-DsAnimController& DsFieldObj::RefAnimController()
-{
-	return DsAnimController::Null();
-}
-
 
 //virtual 
 void DsFieldObj::DbgDraw(DsLib::DsDrawCommand& com)

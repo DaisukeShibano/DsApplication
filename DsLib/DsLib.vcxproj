@@ -187,9 +187,6 @@
   <ItemGroup>
     <ClCompile Include="Source\ActionState\DsActionStateCtrl.cpp" />
     <ClCompile Include="Source\ActionState\DsASNode.cpp" />
-    <ClCompile Include="Source\Animation\ActionRequest\DsActReq.cpp" />
-    <ClCompile Include="Source\Animation\ActionRequest\DsAnimController.cpp" />
-    <ClCompile Include="Source\Animation\AnimSM\DsAnimSM.cpp" />
     <ClCompile Include="Source\Animation\Blend\DsAnimBlend.cpp" />
     <ClCompile Include="Source\Animation\DsAnimation.cpp" />
     <ClCompile Include="Source\Animation\DsAnimClip.cpp" />
@@ -254,9 +251,6 @@
   <ItemGroup>
     <ClInclude Include="Source\ActionState\DsActionStateCtrl.h" />
     <ClInclude Include="Source\ActionState\DsASNode.h" />
-    <ClInclude Include="Source\Animation\ActionRequest\DsActReq.h" />
-    <ClInclude Include="Source\Animation\ActionRequest\DsAnimController.h" />
-    <ClInclude Include="Source\Animation\AnimSM\DsAnimSM.h" />
     <ClInclude Include="Source\Animation\Blend\DsAnimBlend.h" />
     <ClInclude Include="Source\Animation\DsAnimation.h" />
     <ClInclude Include="Source\Animation\DsAnimClip.h" />

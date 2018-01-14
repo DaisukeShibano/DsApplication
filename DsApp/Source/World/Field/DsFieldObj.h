@@ -35,9 +35,6 @@ namespace DsApp
 		const DsPhysics::DsActor* GetActor() const;
 
 	protected:
-		virtual DsLib::DsAnimController& RefAnimController();
-
-	protected:
 		DsLib::DsSys& m_sys;
 		std::string m_name;
 		DsLib::DsAnimation* m_pAnimation;

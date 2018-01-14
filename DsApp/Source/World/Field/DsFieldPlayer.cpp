@@ -51,7 +51,6 @@ DsFieldPlayer::DsFieldPlayer(DsSys& sys, DsPhysicsWorld& world)
 	, m_cam(sys.RefCam())
 	, m_mouse(sys.RefMouse())
 	, m_window(sys.RefWindow())
-	, m_actReq(sys)
 {
 }
 
@@ -82,7 +81,6 @@ DsActionRequest* DsFieldPlayer::_CreareActionRequest()
 void DsFieldPlayer::Update(double dt)
 {
 	//m_actorId.GetActor()->RefOption().isGravity = false;
-	m_actReq.Update(dt);
 	{//キャラ座標の更新
 
 		//カメラのY軸回転量を求める
@@ -92,7 +90,7 @@ void DsFieldPlayer::Update(double dt)
 		const DsMat33d camRotY = DsMat33d::RotateVec(camRotCross*camRotYang);
 
 		//入力移動量をカメラからの座標に変換し、キャラの目標角度にする
-		const DsVec3d moveVec = camRotY*DsVec3d::Normalize(m_actReq.GetMoveVec());
+		const DsVec3d moveVec = camRotY*DsVec3d::Normalize(m_pActReq->GetMoveVec());
 		const DsVec3d chrDir = DsMat33d::RotateY(m_ang.y)*DsVec3d::GetZ();
 		const DsVec3d axis = DsVec3d::Cross(chrDir, moveVec);
 		const double dAng = acos(Clamp(DsVec3d::Dot(chrDir, moveVec), -1.0, 1.0));
@@ -229,13 +227,6 @@ void DsFieldPlayer::_UpdateCam(double dt)
 	}
 
 }
-
-//virtual 
-DsAnimController& DsFieldPlayer::RefAnimController()
-{
-	return m_actReq;
-}
-
 
 
 //virtual 

@@ -15,9 +15,6 @@
 #ifndef _DS_APP_H_
 #include "DsApp.h"
 #endif
-#ifndef _DS_ANIM_CONTROLLER_H_
-#include "Animation/ActionRequest/DsAnimController.h"
-#endif
 
 using namespace DsLib;
 using namespace DsPhysics;

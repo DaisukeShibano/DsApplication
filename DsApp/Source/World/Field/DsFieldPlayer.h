@@ -25,14 +25,10 @@ namespace DsApp
 	private:
 		void _UpdateCam(double dt);
 
-	protected:
-		virtual DsLib::DsAnimController& RefAnimController() override;
-
 	private:
 		DsLib::DsCamera& m_cam;
 		DsLib::DsMouse& m_mouse;
 		DsLib::DsWindow& m_window;
-		DsLib::DsActReq m_actReq;
 
 	public:
 		virtual void DbgDraw(DsLib::DsDrawCommand& com);

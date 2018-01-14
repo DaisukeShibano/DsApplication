@@ -35,7 +35,7 @@
 
 using namespace DsLib;
 
-DsAnimation::DsAnimation(const DsAnimController& animController, const DsAnimRes& anim, DsDrawCommand& com)
+DsAnimation::DsAnimation(const DsAnimRes& anim, DsDrawCommand& com)
 	: m_pSkeleton(NULL)
 	, m_pKeyframeAnim(NULL)
 	, m_pAnimModel(NULL)

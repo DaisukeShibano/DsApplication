@@ -65,12 +65,6 @@
     <Filter Include="Source\Graphics\Image">
       <UniqueIdentifier>{319583d1-a83e-45aa-b30a-706402129d9b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Animation\AnimSM">
-      <UniqueIdentifier>{261da0fe-1ef7-4c3b-92cd-d3aebe0f9010}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source\Animation\ActionRequest">
-      <UniqueIdentifier>{4f299f02-9b84-4522-b56c-8855c55fa9b2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Keyboard">
       <UniqueIdentifier>{07c901da-8179-49aa-ae1f-5dc8edf46ee9}</UniqueIdentifier>
     </Filter>
@@ -199,12 +193,6 @@
     <ClCompile Include="Source\Graphics\Render\DsTexture.cpp">
       <Filter>Source\Graphics\Render</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Animation\AnimSM\DsAnimSM.cpp">
-      <Filter>Source\Animation\AnimSM</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Animation\ActionRequest\DsActReq.cpp">
-      <Filter>Source\Animation\ActionRequest</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Keyboard\DsKeyboard.cpp">
       <Filter>Source\Keyboard</Filter>
     </ClCompile>
@@ -231,9 +219,6 @@
     </ClCompile>
     <ClCompile Include="Source\System\DsWindowEz.cpp">
       <Filter>Source\System</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Animation\ActionRequest\DsAnimController.cpp">
-      <Filter>Source\Animation\ActionRequest</Filter>
     </ClCompile>
     <ClCompile Include="Source\Res\DsMapRes.cpp">
       <Filter>Source\Res</Filter>
@@ -405,12 +390,6 @@
     <ClInclude Include="Source\Graphics\Render\DsTexture.h">
       <Filter>Source\Graphics\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Animation\AnimSM\DsAnimSM.h">
-      <Filter>Source\Animation\AnimSM</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Animation\ActionRequest\DsActReq.h">
-      <Filter>Source\Animation\ActionRequest</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Keyboard\DsKeyboard.h">
       <Filter>Source\Keyboard</Filter>
     </ClInclude>
@@ -440,9 +419,6 @@
     </ClInclude>
     <ClInclude Include="Source\Animation\SkinMesh\DsSkinMesh.h">
       <Filter>Source\Animation\SkinMesh</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Animation\ActionRequest\DsAnimController.h">
-      <Filter>Source\Animation\ActionRequest</Filter>
     </ClInclude>
     <ClInclude Include="Source\Res\DsMapRes.h">
       <Filter>Source\Res</Filter>

@@ -7,7 +7,6 @@
 
 namespace DsLib
 {
-	class DsAnimController;
 	class DsAnimSkeleton;
 	class DsKeyframeAnimSet;
 	class DsAnimModel;
@@ -24,7 +23,7 @@ namespace DsLib
 	class DsAnimation
 	{
 	public:
-		DsAnimation(const DsAnimController& animController, const DsAnimRes& anim, DsDrawCommand& com);
+		DsAnimation(const DsAnimRes& anim, DsDrawCommand& com);
 		virtual ~DsAnimation();
 
 	public:
