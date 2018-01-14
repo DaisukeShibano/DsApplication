@@ -18,6 +18,8 @@ namespace DsPhysics
 namespace DsApp
 {
 	class DsAnimRagdollModifier;
+	class DsActionRequest;
+	class DsActionCtrl;
 }
 
 namespace DsApp
@@ -31,19 +33,28 @@ namespace DsApp
 	public:
 		virtual void Update(double dt);
 		virtual void Initialize(const DsFieldInitInfo& initInfo);
+	protected:
+		virtual DsActionRequest* _CreareActionRequest();
+
+	public:
 		virtual DsVec3d GetPosition() const override;
 		virtual DsMat33d GetRotation() const override;
 		virtual void SetPosition(const DsVec3d& pos) override;
 		virtual void SetRotation(const DsMat33d& rot) override;
 
-	public:
-		virtual void DbgDraw(DsLib::DsDrawCommand& com);
 
 	protected:
 		DsVec3d m_vel;
 		DsVec3d m_ang;
 		DsPhysics::DsRagdoll* m_pRagdoll;
 		DsAnimRagdollModifier* m_pAnimRagdollModifier;
+		DsActionRequest* m_pActReq;
+		DsActionCtrl* m_pActCtrl;
+
+
+	public://デバッグ
+		virtual void DbgDraw(DsLib::DsDrawCommand& com);
+
 	};
 }
 

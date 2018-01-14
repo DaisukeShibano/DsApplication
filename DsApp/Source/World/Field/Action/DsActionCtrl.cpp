@@ -3,9 +3,6 @@
 #include "World/Field/Action/DsActionCtrl.h"
 #endif
 
-#ifndef _DS_ACTION_REQUEST_
-#include "World/Field/Action/DsActionRequest.h"
-#endif
 #ifndef _DS_CHR_STATE_
 #include "World/Field/Action/DsChrState.h"
 #endif
@@ -13,16 +10,14 @@ using namespace DsApp;
 
 
 
-DsActionCtrl::DsActionCtrl(const DsLib::DsSys& sys, const std::vector<DsAnimClip*>& animClip)
+DsActionCtrl::DsActionCtrl(const DsActionRequest& actReq, const std::vector<DsLib::DsAnimClip*>& animClip)
 	: m_pASCtrl(NULL)
-	, m_pActReq(NULL)
+	, m_actReq(actReq)
 	, m_state()
 	, m_pCurrentAnim(NULL)
 {
 	m_pASCtrl = new DsLib::DsActionStateCtrl;
 	DS_ASSERT(m_pASCtrl, "メモリ確保失敗");
-	m_pActReq = new DsActionRequest(sys);
-	DS_ASSERT(m_pActReq, "メモリ確保失敗");
 
 
 	struct CREATE_INFO
@@ -41,9 +36,9 @@ DsActionCtrl::DsActionCtrl(const DsLib::DsSys& sys, const std::vector<DsAnimClip
 		for (DsAnimClip* pAnim : animClip) {
 			if ( std::string::npos != pAnim->RefAnimName().find(info.animTypeName) ) {
 				//ステートに該当するアニメを見つけたのでステート生成
-				DsChrState::INIT_ARG arg(pAnim, *m_pActReq, m_state);
-				DsChrState* pState = DsChrState::CreateIns(info.state, arg);
-				DS_ASSERT(pState, "メモリ不足");
+				DsChrState::INIT_ARG arg(pAnim, m_actReq, m_state, info.state);
+				DsChrState* pState = DsChrState::CreateIns(arg);
+				DS_ASSERT(pState, "ステート作成失敗");
 				m_state[info.state] = pState;
 				break;
 			}
@@ -54,13 +49,13 @@ DsActionCtrl::DsActionCtrl(const DsLib::DsSys& sys, const std::vector<DsAnimClip
 	auto it = m_state.find(CHR_STATE::IDLE);
 	if (it != m_state.end()) {
 		m_pASCtrl->RegisterActiveNode(it->second);
+		m_pCurrentAnim = it->second->GetAnimClip();
 	}
 }
 
 DsActionCtrl::~DsActionCtrl()
 {
 	delete m_pASCtrl; m_pASCtrl = NULL;
-	delete m_pActReq; m_pActReq = NULL;
 	
 	for (auto& state : m_state) {
 		delete state.second;
@@ -70,11 +65,6 @@ DsActionCtrl::~DsActionCtrl()
 
 void DsActionCtrl::Update(double dt)
 {
-	//リクエストの更新
-	if (m_pActReq) {
-		m_pActReq->Update(dt);
-	}
-
 	//ステートの更新
 	if (m_pASCtrl) {
 		m_pASCtrl->Update(dt);

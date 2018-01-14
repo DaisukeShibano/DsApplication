@@ -196,6 +196,7 @@
     <ClInclude Include="Source\Res\Param\DsRagdollParam.h" />
     <ClInclude Include="Source\World\Field\Action\DsActionCtrl.h" />
     <ClInclude Include="Source\World\Field\Action\DsActionRequest.h" />
+    <ClInclude Include="Source\World\Field\Action\DsActionRequestManual.h" />
     <ClInclude Include="Source\World\Field\Action\DsChrState.h" />
     <ClInclude Include="Source\World\Field\Controller\DsChrController.h" />
     <ClInclude Include="Source\World\Field\Controller\DsGpController.h" />
@@ -226,6 +227,7 @@
     <ClCompile Include="Source\Res\Param\DsRagdollParam.cpp" />
     <ClCompile Include="Source\World\Field\Action\DsActionCtrl.cpp" />
     <ClCompile Include="Source\World\Field\Action\DsActionRequest.cpp" />
+    <ClCompile Include="Source\World\Field\Action\DsActionRequestManual.cpp" />
     <ClCompile Include="Source\World\Field\Action\DsChrState.cpp" />
     <ClCompile Include="Source\World\Field\Controller\DsChrController.cpp" />
     <ClCompile Include="Source\World\Field\Controller\DsGpController.cpp" />

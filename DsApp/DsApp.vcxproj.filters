@@ -114,6 +114,9 @@
     <ClInclude Include="Source\World\Field\Action\DsActionCtrl.h">
       <Filter>Source\World\Field\Action</Filter>
     </ClInclude>
+    <ClInclude Include="Source\World\Field\Action\DsActionRequestManual.h">
+      <Filter>Source\World\Field\Action</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsAppPch.cpp">
@@ -183,6 +186,9 @@
       <Filter>Source\World\Field\Action</Filter>
     </ClCompile>
     <ClCompile Include="Source\World\Field\Action\DsActionCtrl.cpp">
+      <Filter>Source\World\Field\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Field\Action\DsActionRequestManual.cpp">
       <Filter>Source\World\Field\Action</Filter>
     </ClCompile>
   </ItemGroup>

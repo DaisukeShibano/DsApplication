@@ -28,29 +28,32 @@ namespace DsApp
 	public:
 		struct INIT_ARG
 		{
-			INIT_ARG(DsLib::DsAnimClip* arg1, DsActionRequest& arg2, StateMap& arg3)
+			INIT_ARG(DsLib::DsAnimClip* arg1, const DsActionRequest& arg2, StateMap& arg3, CHR_STATE arg4)
 				: pAnimClip(arg1)
 				, actReq(arg2)
 				, allState(arg3)
+				, myState(arg4)
+
 			{}
 			DsLib::DsAnimClip* pAnimClip;
-			DsActionRequest& actReq;
+			const DsActionRequest& actReq;
 			StateMap& allState;
+			CHR_STATE myState;
 		};
 
 	public:
-		static DsChrState* CreateIns(CHR_STATE state, const INIT_ARG& arg);
+		static DsChrState* CreateIns(const INIT_ARG& arg);
 
 	public:
 		DsChrState(const INIT_ARG& arg)
-			:m_pAnimClip(arg.pAnimClip), m_nextState(CHR_STATE::IDLE), m_actReq(arg.actReq), m_allState(arg.allState), m_pNextStateNode(){}
+			:m_pAnimClip(arg.pAnimClip), m_nextState(arg.myState), m_actReq(arg.actReq), m_allState(arg.allState), m_pNextStateNode(){}
 		virtual ~DsChrState() {}
 
 	public:
 		DsLib::DsAnimClip* GetAnimClip()const { return m_pAnimClip; }
 
 	protected:
-		virtual void OnActive(double dt) override {};
+		virtual void OnActive(double dt) override { m_nextState = GetMyState(); }//デフォ実装では次のステートに行かないように設定
 		virtual void Update(double dt) override {};
 		virtual void OnDeactive(double dt) override {};
 		virtual bool IsNext()const override { return m_nextState != GetMyState(); }//デフォ実装でステートが変わったら
@@ -59,7 +62,7 @@ namespace DsApp
 		virtual int GetNextNum() const override final{ return 1; }
 		virtual DsASNode** GetNext() override final
 		{
-			auto it = m_allState.find(GetMyState());
+			auto it = m_allState.find(m_nextState);
 			if (it != m_allState.end()) {
 				m_pNextStateNode[0] = it->second;
 				return m_pNextStateNode;

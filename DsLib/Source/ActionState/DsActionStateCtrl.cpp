@@ -37,8 +37,10 @@ void DsActionStateCtrl::Update(double dt)
 
 			const int num = pNode->GetNextNum();
 			for (int idx = 0; idx < num; ++idx) {
-				DsASNode* pAddNode = pNode->GetNext()[idx];
-				add.push_back(pAddNode);
+				DsASNode** pAddNode = pNode->GetNext();
+				if (pAddNode) {
+					add.push_back(pAddNode[idx]);
+				}
 			}
 		}
 		else {
@@ -47,12 +49,15 @@ void DsActionStateCtrl::Update(double dt)
 	}
 
 	for (DsASNode* pNode : del) {
-		std::remove_if(m_execNodes.begin(), m_execNodes.end(), [pNode, dt](DsASNode* pExecNode) {
-			const bool ret = pNode == pExecNode;
-			//他のノードがUpdateでフラグ立てるかもしれないので、Deactiveは全てのUpdateが終わった後
-			pNode->OnDeactive(dt);
-			return ret;
+		auto it = std::find_if(m_execNodes.begin(), m_execNodes.end(), [pNode, dt](DsASNode* pExecNode) {
+			return pNode == pExecNode;
 		});
+
+		if (m_execNodes.end() != it) {
+			//他のノードがUpdateでフラグ立てるかもしれないので、Deactiveは全てのUpdateが終わった後
+			(*it)->OnDeactive(dt);
+			m_execNodes.erase(it);
+		}
 	}
 
 	for (DsASNode* pNode : m_registerNodes) {

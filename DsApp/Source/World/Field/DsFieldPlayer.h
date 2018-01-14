@@ -16,6 +16,10 @@ namespace DsApp
 
 	public:
 		virtual void Initialize(const DsFieldInitInfo& initInfo);
+	protected:
+		virtual DsActionRequest* _CreareActionRequest() override;
+
+	public:
 		virtual void Update(double dt);
 
 	private:

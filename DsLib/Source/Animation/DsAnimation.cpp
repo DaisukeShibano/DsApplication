@@ -36,8 +36,7 @@
 using namespace DsLib;
 
 DsAnimation::DsAnimation(const DsAnimController& animController, const DsAnimRes& anim, DsDrawCommand& com)
-	: m_animSM(animController)
-	, m_pSkeleton(NULL)
+	: m_pSkeleton(NULL)
 	, m_pKeyframeAnim(NULL)
 	, m_pAnimModel(NULL)
 	, m_pSkinMesh(NULL)
@@ -46,6 +45,10 @@ DsAnimation::DsAnimation(const DsAnimController& animController, const DsAnimRes
 	, m_blend()
 	, m_pos(DsVec3d::Zero())
 	, m_rot(DsMat33d::Identity())
+	, m_animClips()
+	, m_pRequestAnim(NULL)
+	, m_pPlayAnim(NULL)
+	, m_pPlayAnimPre(NULL)
 	, m_com(com)
 {
 	m_pSkeleton = anim.CreateSkeleton();
@@ -53,10 +56,17 @@ DsAnimation::DsAnimation(const DsAnimController& animController, const DsAnimRes
 	m_pAnimModel = anim.CreateAnimModel();
 	m_pCustomProperty = anim.CustomProperty();
 
-	//m_animSMは仮のアニメ遷移制御
 	if (m_pKeyframeAnim && m_pSkeleton && m_pAnimModel)
 	{
-		m_animSM.Initialize(m_pKeyframeAnim->GetKeyframeAnims(), m_pKeyframeAnim->GetKeyframeAnimNum());
+		const int animNum = m_pKeyframeAnim->GetKeyframeAnimNum();
+		DsKeyframeAnim* pAnims = m_pKeyframeAnim->GetKeyframeAnims();
+		m_animClips.reserve(animNum);
+		for (int idx = 0; idx < animNum; ++idx) {
+			DsAnimClip* pClip = new DsAnimClip(pAnims[idx]);
+			DS_ASSERT(pClip, "メモリ確保失敗");
+			m_animClips.push_back(pClip);
+		}
+
 
 		//キーフレームアニメないならスキンメッシュモデルは無駄。
 		m_pSkinMesh = new DsSkinMesh(*m_pAnimModel);
@@ -64,9 +74,9 @@ DsAnimation::DsAnimation(const DsAnimController& animController, const DsAnimRes
 		m_pSkinMesh->Initialize();
 	}
 
-	if (const DsAnimClip* pClip = m_animSM.GetDefaultClip())
-	{
-		m_blend.Initialize(pClip->RefAnim());
+	//ここはアニメじゃなくてスケルトンで初期化したい
+	if (!m_animClips.empty()){
+		m_blend.Initialize(m_animClips[0]->RefAnim());
 	}
 
 	if (m_pSkeleton) {
@@ -96,6 +106,11 @@ DsAnimation::~DsAnimation()
 	delete m_pSkinMesh; m_pSkinMesh = NULL;
 	delete m_pCustomProperty; m_pCustomProperty = NULL;
 	
+	for (DsAnimClip* pClip : m_animClips) {
+		delete pClip;
+	}
+	m_animClips.clear();
+
 }
 
 void DsAnimation::RegisterDraw()
@@ -114,33 +129,55 @@ void DsAnimation::RegisterDraw()
 
 void DsAnimation::Update(double dt)
 {
-	//再生アニメを決定
-	m_animSM.Update(dt);
-	
-	//ブレンド結果をアニメボーンに適用。
-	if (m_pSkeleton)
-	{
-		if (m_pKeyframeAnim) {
-			double blendRate = 1.0;
-			const DsAnimClip* pPre = m_animSM.GetPreActiveClip();
-			if (pPre)
-			{
-				//ブレンド率は、前のアニメから今のアニメに徐々にウェイトが行くようにする
-				blendRate = 1.0 - pPre->GetBlendRate();
-			}
-			const DsKeyframeAnim& blend = m_blend.Blend(m_animSM.GetActiveClip(), pPre, blendRate);
+	//アニメ更新
+	bool isChangeAnim = false;
+	if (m_pRequestAnim != m_pPlayAnim) {
+		m_pPlayAnimPre = m_pPlayAnim;
+		m_pPlayAnim = m_pRequestAnim;
+		isChangeAnim = true;
+	}
 
-			if (m_animModifier) {
-				m_animModifier->ModifyAnim(dt, *m_pSkeleton, blend, m_pos, m_rot);
-			}
-			else {
-				DsAnimSkeletonModifier::UtilKeyframeAnim(dt, *m_pSkeleton, blend);
-				
-			}
+	for (DsAnimClip* pAnim : m_animClips) {
+		if ((pAnim != m_pPlayAnim) && (pAnim != m_pPlayAnimPre)) {
+			pAnim->Deactivate(dt);
+			pAnim->ResetAnim();
+		}
+	}
+	if (isChangeAnim) {
+		if (m_pPlayAnim) {
+			m_pPlayAnim->Activate(dt);
+		}
+		if (m_pPlayAnimPre) {
+			m_pPlayAnimPre->Deactivate(dt);
+		}
+	}
+	if (m_pPlayAnim) {
+		m_pPlayAnim->Update(dt);
+	}
+	//一つ前のアニメは補間のためしばらく更新し続ける
+	if (m_pPlayAnimPre) {
+		m_pPlayAnimPre->Update(dt);
+		if (m_pPlayAnimPre->IsEnd()) {
+			m_pPlayAnimPre->ResetAnim();
+			m_pPlayAnimPre = NULL;
+		}
+	}
+
+	//アニメブレンド
+	double blendRate = 1.0;
+	if (m_pPlayAnimPre) {
+		//ブレンド率は、前のアニメから今のアニメに徐々にウェイトが行くようにする
+		blendRate = 1.0 - m_pPlayAnimPre->GetBlendRate();
+	}
+	const DsKeyframeAnim& blend = m_blend.Blend(m_pPlayAnim, m_pPlayAnimPre, blendRate);
+
+	//ブレンド結果をアニメボーンに適用。
+	if (m_pSkeleton) {
+		if (m_animModifier) {
+			m_animModifier->ModifyAnim(dt, *m_pSkeleton, blend, m_pos, m_rot);
 		}
 		else {
-			//キーフレームアニメがないのは初期姿勢のまま
-			m_pSkeleton->UpdatePose();
+			DsAnimSkeletonModifier::UtilKeyframeAnim(dt, *m_pSkeleton, blend);
 		}
 	}
 

@@ -28,31 +28,35 @@ namespace
 
 	static StateFactory* s_factory[static_cast<int>(CHR_STATE::NUM)];
 
-	#define REGISTER_STATE(ClassName, state)\
-	class ClassNameFactory : public StateFactory\
+#define DEFINE_STATE(ClassName, state)\
+	class ClassName##Factory : public StateFactory\
 	{\
 	public:\
-		ClassNameFactory()\
+		ClassName##Factory()\
 		{\
 			s_factory[static_cast<int>(state)] = this;\
 		}\
-		virtual ClassName* Create(const DsChrState::INIT_ARG& arg) override { new ClassName(arg); }\
+		virtual ClassName* Create(const DsChrState::INIT_ARG& arg) override { return new ClassName(arg); }\
 	};\
-	static ClassNameFactory m_ins;\
-	virtual CHR_STATE GetMyState() const override { return state; }\
+	static ClassName##Factory s_##ClassName##Factory;\
 
 
+	bool _IsMove(const DsActionRequest& req)
+	{
+		const double len = req.GetMoveVec().LengthSq();
+		const bool isMove = (0.0001 < len);
+		return isMove;
+	}
 
 	/*********************************************************
 	@brief 待機
 	**********************************************************/
 	class DsChrStateIdle : public DsChrState
 	{
-		REGISTER_STATE(DsChrStateIdle, CHR_STATE::IDLE)
+		virtual CHR_STATE GetMyState() const override { return CHR_STATE::IDLE; }
 	public:
 		DsChrStateIdle(const INIT_ARG& arg):DsChrState(arg)
 		{
-			m_nextState = GetMyState();
 			if (m_pAnimClip) {
 				m_pAnimClip->SetLoop(true);
 			}
@@ -61,26 +65,24 @@ namespace
 	private:
 		virtual void Update(double dt) override 
 		{
-			if (m_actReq.GetAction() == ACTION_TYPE::MOVE) {
+			m_nextState = GetMyState();
+
+			if (_IsMove(m_actReq)) {
 				m_nextState = CHR_STATE::RUN;
 			}
-			else {
-				m_nextState = GetMyState();
-			}
-			
 		};
 	};
-	
+	DEFINE_STATE(DsChrStateIdle, CHR_STATE::IDLE)
+
 	/*********************************************************
 	@brief 走行
 	**********************************************************/
 	class DsChrStateRun : public DsChrState
 	{
-		REGISTER_STATE(DsChrStateRun, CHR_STATE::RUN)
+		virtual CHR_STATE GetMyState() const override { return CHR_STATE::RUN; }
 	public:
 		DsChrStateRun(const INIT_ARG& arg) :DsChrState(arg)
 		{
-			m_nextState = GetMyState();
 			if (m_pAnimClip) {
 				m_pAnimClip->SetLoop(true);
 			}
@@ -89,26 +91,25 @@ namespace
 	private:
 		virtual void Update(double dt) override
 		{
-			if (m_actReq.GetAction() == ACTION_TYPE::MOVE) {
-				m_nextState = GetMyState();
-			}
-			else {
+			m_nextState = GetMyState();
+
+			if (!_IsMove(m_actReq)) {
 				m_nextState = CHR_STATE::IDLE;
 			}
 		};
 	};
-
+	DEFINE_STATE(DsChrStateRun, CHR_STATE::RUN)
 }
 
 
 
 //static 
-DsChrState* DsChrState::CreateIns(CHR_STATE state, const INIT_ARG& arg)
+DsChrState* DsChrState::CreateIns(const INIT_ARG& arg)
 {
 	DsChrState* ret = NULL;
-	StateFactory* pFactory = s_factory[static_cast<int>(state)];
-	if (pFactory) {
-		ret = pFactory->Create(arg);
-	}
+	StateFactory* pFactory = s_factory[static_cast<int>(arg.myState)];
+	DS_ASSERT(pFactory, "登録されていないステート[%d]を生成しようとしました", arg.myState);
+	ret = pFactory->Create(arg);
+	
 	return ret;
 }

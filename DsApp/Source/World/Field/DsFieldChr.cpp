@@ -23,6 +23,12 @@
 #ifndef __DS_APP_COLLISION_FILTER__
 #include "World/Physics/DsAppCollisionFilter.h"
 #endif
+#ifndef _DS_ACTION_REQUEST_
+#include "World/Field/Action/DsActionRequest.h"
+#endif
+#ifndef _DS_ACTION_CTRL_
+#include "World/Field/Action/DsActionCtrl.h"
+#endif
 
 using namespace DsLib;
 using namespace DsPhysics;
@@ -36,6 +42,8 @@ DsFieldChr::DsFieldChr(DsSys& sys, DsPhysicsWorld& world)
 	, m_ang(DsVec3d::Zero())
 	, m_pRagdoll(NULL)
 	, m_pAnimRagdollModifier(NULL)
+	, m_pActReq(NULL)
+	, m_pActCtrl(NULL)
 {
 
 }
@@ -87,11 +95,29 @@ void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 
 		m_pAnimation->SetAnimSkeletonModifier(m_pAnimRagdollModifier);
 	}
+
+	//アクション
+	m_pActReq = _CreareActionRequest();
+	m_pActCtrl = new DsActionCtrl(*m_pActReq, m_pAnimation->RefAnimClips());
+	DS_ASSERT(m_pActCtrl, "メモリ確保失敗");
+	m_pAnimation->PlayAnim(m_pActCtrl->GetCurrentAnim());
+}
+
+//virtual
+DsActionRequest* DsFieldChr::_CreareActionRequest()
+{
+	DsActionRequest* ret = new DsActionRequest();
+	DS_ASSERT(ret, "メモリ確保失敗");
+	return ret;
 }
 
 //virtual 
 void DsFieldChr::Update(double dt)
 {
+	m_pActReq->Update(dt);
+	m_pActCtrl->Update(dt);
+	m_pAnimation->PlayAnim(m_pActCtrl->GetCurrentAnim());
+
 	DsActor* pActor = m_actorId.GetActor();
 	if (pActor)
 	{
@@ -173,6 +199,7 @@ void DsFieldChr::SetRotation(const DsMat33d& rot)
 		}
 	}
 }
+
 
 
 //virtual 

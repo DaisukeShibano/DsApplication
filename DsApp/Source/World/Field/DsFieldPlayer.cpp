@@ -2,6 +2,7 @@
 #ifndef _DS_FIELD_PLAYER_H_
 #include "World/Field/DsFieldPlayer.h"
 #endif
+
 #ifndef _DS_ANIM_RES_
 #include "Res/DsAnimRes.h"
 #endif
@@ -35,6 +36,9 @@
 #ifndef __DS_APP_COLLISION_FILTER__
 #include "World/Physics/DsAppCollisionFilter.h"
 #endif
+#ifndef _DS_ACTION_REQUEST_MANUAL_
+#include "World/Field/Action/DsActionRequestManual.h"
+#endif
 
 using namespace DsLib;
 using namespace DsPhysics;
@@ -63,6 +67,15 @@ void DsFieldPlayer::Initialize(const DsFieldInitInfo& initInfo)
 	const DsVec3d pos = DsVec3d(0, 1.5f, -3.5f) + GetPosition();
 	m_cam.SetPos(pos);
 	m_cam.SetRot(GetRotation());
+}
+
+
+//virtual
+DsActionRequest* DsFieldPlayer::_CreareActionRequest()
+{
+	DsActionRequest* ret = new DsActionRequestManual(m_sys);
+	DS_ASSERT(ret, "ÉÅÉÇÉäämï€é∏îs");
+	return ret;
 }
 
 //virtual 

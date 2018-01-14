@@ -1,9 +1,6 @@
 #ifndef _DS_ANIMATION_H_
 #define _DS_ANIMATION_H_
 
-#ifndef _DS_ANIM_SM_H_
-#include "Animation/AnimSM/DsAnimSM.h"
-#endif
 #ifndef _DS_ANIM_BLEND_H_
 #include "Animation/Blend/DsAnimBlend.h"
 #endif
@@ -19,6 +16,7 @@ namespace DsLib
 	class DsAnimRes;
 	struct DsAnimCustomProperty;
 	class DsAnimSkeletonModifier;
+	class DsAnimClip;
 }
 
 namespace DsLib
@@ -40,12 +38,13 @@ namespace DsLib
 		DsAnimSkeleton* GetSkeleton() { return m_pSkeleton; }
 		const DsAnimSkeleton* GetSkeleton() const { return m_pSkeleton; }
 		DsKeyframeAnimSet* GetKeyframeAnim() const { return m_pKeyframeAnim; }
+		void PlayAnim(DsAnimClip* pAnim) { m_pRequestAnim = pAnim; }
+		std::vector<DsAnimClip*>& RefAnimClips() { return m_animClips; }
 
 	private:
 		DsAnimModel* _GetAnimModel();
 
 	private:
-		DsAnimSM m_animSM;
 		DsAnimSkeleton* m_pSkeleton;
 		DsKeyframeAnimSet* m_pKeyframeAnim;
 		DsAnimModel* m_pAnimModel;
@@ -55,6 +54,10 @@ namespace DsLib
 		DsAnimBlend m_blend;
 		DsVec3d m_pos;
 		DsMat33d m_rot;
+		std::vector<DsAnimClip*> m_animClips;
+		DsAnimClip* m_pRequestAnim;
+		DsAnimClip* m_pPlayAnim;
+		DsAnimClip* m_pPlayAnimPre;
 
 	private:
 		DsDrawCommand& m_com;
