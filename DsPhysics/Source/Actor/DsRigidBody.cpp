@@ -198,7 +198,6 @@ void DsRigidBody::_UpdateAabb()
 		minP.z = min(minP.z, v.z);
 	}
 	m_aabb.Setup(maxP, minP);
-	m_sideSize = (maxP - minP)*0.5;
 }
 
 //virtual

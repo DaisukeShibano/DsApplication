@@ -129,6 +129,22 @@ void DsRigidMesh::Create(const DsAnimModel& animModel)
 	m_geomInfo.pLine = 0;
 
 	{
+		DsVec3d maxP = DsVec3d(-DBL_MAX, -DBL_MAX, -DBL_MAX);
+		DsVec3d minP = DsVec3d(DBL_MAX, DBL_MAX, DBL_MAX);
+		for (int i = 0; i < m_geomInfo.vn; ++i)
+		{
+			const DsVec3d v = m_geomInfo.pVertex[i];
+			maxP.x = max(maxP.x, v.x);
+			maxP.y = max(maxP.y, v.y);
+			maxP.z = max(maxP.z, v.z);
+			minP.x = min(minP.x, v.x);
+			minP.y = min(minP.y, v.y);
+			minP.z = min(minP.z, v.z);
+		}
+		m_sideSize = (maxP - minP)*0.5;
+	}
+
+	{
 		DsRigidPhysicsInfo& pi = m_physicsInfo;
 
 		//mass
