@@ -29,7 +29,7 @@ namespace DsLib
 		const DsVec3d GetPos() const { return DsVec3d::ToVec3_forMat16(m_mat); }
 		const DsMat33d GetRot() const { return DsMat33d::ToMat33(m_mat); }
 		const DsMat33d GetRotInv() const { return DsMat33d::ToMat33(m_matInv); }
-		const DsVec3f GetUp() const { return DsVec3f::GetY(); }
+		const DsVec3f GetUp() const { return GetRot().GetAxisY(); }
 		double GetNear() const;
 		double GetFar() const;
 		double GetFovy() const;

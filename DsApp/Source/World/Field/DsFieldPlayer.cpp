@@ -190,40 +190,66 @@ void DsFieldPlayer::_UpdateCam(double dt)
 			DsVec3d chrMoveDir = DsVec3d::Normalize(DsVec3d::ToVec3(toChr.x, toChr.y/*0*/, toChr.z));
 			DsVec3d camDir = m_cam.GetRot().GetAxisZ();
 			camDir = DsVec3d::Normalize(DsVec3d::ToVec3(camDir.x, camDir.y/*0*/, camDir.z));
-			const DsVec3d axis = DsVec3d::Cross(camDir, chrMoveDir);
-			double ang = acos(max(-1.0, min(1.0, DsVec3d::Dot(chrMoveDir, camDir))));
-			if (0.001 < fabs(ang))
+
+			DsMat33d camRot = m_cam.GetRot();
+			DsMat33d yFix;
 			{
-				const double dAng = ang * dt * 10.0;
-				const DsMat33d dr = DsMat33d::RotateVec(axis*dAng);
-				m_cam.SetRot(dr*m_cam.GetRot());
+				const DsVec3d chr = DsVec3d::Normalize(DsVec3d(toChr.x, 0, toChr.z));
+				const DsVec3d cam = DsVec3d::Normalize(DsVec3d(camDir.x, 0, camDir.z));
+				double angY = DsVec3d::Dot(chr, cam);
+				angY = acos(max(-1.0, min(1.0, angY)));
+				const DsVec3d axisY = DsVec3d::Cross(cam, chr);
+				camRot = DsMat33d::RotateVec(axisY * angY * dt*10.0)*camRot;
+				yFix = DsMat33d::RotateVec(axisY*angY)*camRot;//yŽ²‰ñ“]‚ðˆê’v‚³‚¹‚½ƒJƒƒ‰Žp¨
 			}
+			{
+				double angX = DsVec3d::Dot(yFix.GetAxisZ(), chrMoveDir);
+				angX = acos(max(-1.0, min(1.0, angX)));
+				const DsVec3d axisX = DsVec3d::Cross(yFix.GetAxisZ(), chrMoveDir);
+				camRot = DsMat33d::RotateVec(axisX*angX*dt*10.0)*camRot;
+			}
+			m_cam.SetRot(camRot);
+
+			//const DsVec3d axis = DsVec3d::Cross(camDir, chrMoveDir);
+			//double ang = acos(max(-1.0, min(1.0, DsVec3d::Dot(chrMoveDir, camDir))));
+			//if (0.001 < fabs(ang))
+			//{
+			//	const double dAng = ang * dt * 10.0;
+			//	const DsMat33d dr = DsMat33d::RotateVec(axis*dAng);
+			//	m_cam.SetRot(dr*m_cam.GetRot());
+			//}
 		}
 	}
 
 	//‰EƒNƒŠƒbƒN‚Å‰ñ“]
 	if (m_mouse.GetClickState() == DsMouseClickState::DS_LEFT_CLICK)
 	{
-		const DsVec2i drag2i = m_mouse.GetDragMove();
-		const DsVec3d drag3 = m_window.GetNormalizeScreenCoord(DsVec2i::ToVec2(-drag2i.x, -drag2i.y));//³–Ê‚ðŒü‚¢‚Ä‚é‚Æ‰¼’è‚µ‚Ä‰EŽèŒn‚É‚È‚é‚æ‚¤‚ÉB
-		const double moveVel = 2.0;
-		const DsMat33d mat = m_cam.GetRot();
-		const DsVec3d rotAxisX = mat.GetAxisX();
-		const DsVec3d rotAxisY = mat.GetAxisY();
-		
-		//‰~“›À•WŒn‚ÅŒvŽZ‚·‚é
-		const DsMat33d rotMatY = DsMat33d::RotateVec(rotAxisY*drag3.x*moveVel);
-		const DsMat33d rotMatX = rotMatY*DsMat33d::RotateVec(rotAxisX*drag3.y*moveVel*(-1.0));
-		const DsMat33d rotMat = rotMatY*rotMatX;
-		m_cam.SetRot(rotMat*mat);
+		{
+			const DsVec2i drag2i = m_mouse.GetDragMove();
+			const DsVec3d drag3 = m_window.GetNormalizeScreenCoord(DsVec2i::ToVec2(-drag2i.x, -drag2i.y));//³–Ê‚ðŒü‚¢‚Ä‚é‚Æ‰¼’è‚µ‚Ä‰EŽèŒn‚É‚È‚é‚æ‚¤‚ÉB
+			const double moveVel = 2.0;
+			const DsMat33d mat = m_cam.GetRot();
+			const DsVec3d rotAxisX = mat.GetAxisX();
+			const DsVec3d rotAxisY = mat.GetAxisY();
 
-		//ƒLƒƒƒ‰‚ð’†S‚ð‰ñ‚é‚æ‚¤‚É‚·‚é
-		DsVec3d toCam = m_cam.GetPos() - GetPosition();
-		DsVec3d toChrSrc = -toCam;
-		toCam = rotMat*toCam;
-		m_cam.SetPos(m_cam.GetPos() + (toChrSrc+toCam) );
-		//ƒJƒƒ‰‚ª“®‚¢‚½‚±‚Æ‚É‚æ‚é‹——£’Ç]•ª‚¸‚ê‚é
-		//ƒLƒƒƒ‰‚ªƒJƒƒ‰‚Ì’†S‚É‚¢‚È‚¢ê‡‚É‚¸‚ê‚é
+			const DsMat33d rotMatY = DsMat33d::RotateVec(DsVec3d::GetY()*drag3.x*moveVel);
+			const DsMat33d rotMatX = rotMatY*DsMat33d::RotateVec(rotAxisX*drag3.y*moveVel*(-1.0));
+			const DsMat33d rotMat = rotMatY*rotMatX;
+			m_cam.SetRot(rotMat*mat);
+
+			//’Ž‹“_‚ð’†S‚ð‰ñ‚é‚æ‚¤‚É‚·‚é
+			DsVec3d toLook = m_cam.GetRot().GetAxisZ() * (GetPosition() - m_cam.GetPos()).Length();
+			DsVec3d toCam = -toLook;
+			DsVec3d toCamDr = rotMat*toCam;
+			m_cam.SetPos(m_cam.GetPos() + (toCamDr - toCam));
+		}
+	}
+
+	{//ZŽ²‰ñ“]‚ð…•½‚É•Û‚Â
+		const DsVec3d tmpX = DsVec3d::Normalize(DsVec3d::Cross(DsVec3d::GetY(), m_cam.GetRot().GetAxisZ()));
+		const DsVec3d rotAxis = DsVec3d::Normalize(DsVec3d::Cross(m_cam.GetRot().GetAxisX(), tmpX));
+		const double ang = acos(max(-1.0, min(1.0, DsVec3d::Dot(m_cam.GetRot().GetAxisX(), tmpX))));
+		m_cam.SetRot(DsMat33d::RotateVec(rotAxis*ang)*m_cam.GetRot());
 	}
 
 }
