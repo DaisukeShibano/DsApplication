@@ -382,9 +382,6 @@ namespace
 DsShadowMap& DsShadowMap::Create( const DsRender& ren, DsShader& shader )
 {
 	DsShadowMap* ret = new DsShadowMapImp( ren, shader);
-	if( NULL == ret )
-	{
-		DsError::Panic("");
-	}
+	DS_ASSERT(ret, "ƒƒ‚ƒŠŠm•Û¸”s");
 	return *ret;
 }

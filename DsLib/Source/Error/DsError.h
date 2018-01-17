@@ -1,17 +1,33 @@
 #ifndef _DS_ERROR_H_
 #define _DS_ERROR_H_
 
+#include <assert.h>  
+
 namespace DsLib
 {
 
 //#define DS_ASSERT( flag, ex ) ( (flag) ? (flag) : assert( (flag) && (ex) ) )
 #ifdef _DEBUG
-#define DS_ASSERT( flag, ex, ...) ( (flag) ? (flag) : DsError::Asset( ex ) )
+#define DS_ASSERTW( flag, ex, ...)\
+	{\
+		if(!(flag)){\
+			wchar_t c[1024]; \
+			int num = swprintf_s(c, 1023, ex, __VA_ARGS__); \
+			c[num] = L'\n'; \
+			c[num + 1] = L'\0'; \
+			_wassert(c, _CRT_WIDE(__FILE__), __LINE__);\
+		}\
+	}\
+
+#define DS_ASSERT( flag, ex, ...) DS_ASSERTW(flag, L#ex, __VA_ARGS__)
+
 #else
 #define DS_ASSERT( flag, ex, ...)
 #endif
-//#define DS_ASSERT( flag, ex ) ( assert(flag && ex) )
-#define DS_ERROR( mes, ... ) (DsError::Asset( mes ))
+
+
+
+#define DS_ERROR( mes, ... ) DS_ASSERT(false, mes, __VA_ARGS__ )
 
 #define DS_LOG( str, ... ) \
       { \
@@ -20,18 +36,8 @@ namespace DsLib
 		c[num]='\n'; \
 		c[num+1]='\0'; \
 		OutputDebugStringA( c ); \
-      }
+      }\
 
-	class DsError
-	{
-	public:
-		DsError();
-		virtual ~DsError();
-
-	public:
-		static void Panic(const char* format, ...);
-		static void Asset( const char* format, ... );
-	};
 }
 
 #endif

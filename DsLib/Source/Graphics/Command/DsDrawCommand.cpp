@@ -763,10 +763,7 @@ namespace
 DsDrawCommand& DsDrawCommand::Create(DsAnimModelRender& animRender, DsRender& render)
 {
 	DsDrawCommand* ret = new DsDrawCommand(animRender, render);
-	if( NULL == ret )
-	{
-		DsError::Panic("");
-	}
+	DS_ASSERT(ret, "ƒƒ‚ƒŠŠm•Û¸”s");
 	return *ret;
 }
 

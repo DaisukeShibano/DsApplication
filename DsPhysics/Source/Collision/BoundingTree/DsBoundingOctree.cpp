@@ -260,7 +260,7 @@ void DsBoundingOctree::GetContainAreaActors(const DsActor& actor, std::vector<co
 		pMaxParent = pMaxParent->parent;
 		pMinParent = pMinParent->parent;
 	}//少なくともルート空間で必ず一致するはず。NULLなら実装ミス
-	DS_ASSERT(pMaxParent && pMinParent, "DsBoundingOctreeで所属空間が見つからないactorがいる %s", pActor->GetName());
+	DS_ASSERT(pMaxParent && pMinParent, "DsBoundingOctreeで所属空間が見つからないactorがいる %s", actor.GetName());
 
 
 	bool isBack = false;

@@ -22,10 +22,7 @@ DsDbgSys::~DsDbgSys()
 void DsDbgSys::Initialize( DsSys& sys )
 {
 	s_pDbgSys = new DsDbgSys(sys);
-	if (NULL == s_pDbgSys)
-	{
-		DsError::Panic("");
-	}
+	DS_ASSERT(s_pDbgSys, "ÉÅÉÇÉäämï€é∏îs");
 }
 
 //static

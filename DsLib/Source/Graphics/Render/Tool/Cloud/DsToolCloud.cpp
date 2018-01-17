@@ -189,9 +189,6 @@ DsToolCloud::~DsToolCloud()
 DsToolCloud& DsToolCloud::Create(DsDrawCommand& com, const DsCamera& rendCam)
 {
 	DsToolCloud* ret = new DsToolCloudImp(com, rendCam);
-	if (NULL == ret)
-	{
-		DsError::Panic("ƒƒ‚ƒŠŠm•Û¸”s\n");
-	}
+	DS_ASSERT(ret, "ƒƒ‚ƒŠŠm•Û¸”s\n");
 	return *ret;
 }

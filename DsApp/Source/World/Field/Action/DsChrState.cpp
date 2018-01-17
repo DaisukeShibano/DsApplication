@@ -28,12 +28,13 @@ namespace
 
 	static StateFactory* s_factory[static_cast<int>(CHR_STATE::NUM)];
 
-#define DEFINE_STATE(ClassName, state)\
+#define REGISTER_STATE(ClassName, state)\
 	class ClassName##Factory : public StateFactory\
 	{\
 	public:\
 		ClassName##Factory()\
 		{\
+			DS_ASSERT( (NULL==s_factory[static_cast<int>(state)]), "キャラステート[%d]の重複登録", state);\
 			s_factory[static_cast<int>(state)] = this;\
 		}\
 		virtual ClassName* Create(const DsChrState::INIT_ARG& arg) override { return new ClassName(arg); }\
@@ -72,7 +73,7 @@ namespace
 			}
 		};
 	};
-	DEFINE_STATE(DsChrStateIdle, CHR_STATE::IDLE)
+	REGISTER_STATE(DsChrStateIdle, CHR_STATE::IDLE)
 
 	/*********************************************************
 	@brief 走行
@@ -98,7 +99,7 @@ namespace
 			}
 		};
 	};
-	DEFINE_STATE(DsChrStateRun, CHR_STATE::RUN)
+	REGISTER_STATE(DsChrStateRun, CHR_STATE::RUN)
 }
 
 

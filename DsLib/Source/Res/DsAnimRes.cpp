@@ -979,10 +979,8 @@ DsKeyframeAnimSet* DsAnimRes::CreateKeyframeAnim() const
 	for (int aIdx = 0; aIdx < pRes->dsAnimBone.an; ++aIdx)
 	{
 		const DS_ANIM& anim = pRes->dsAnimBone.pAnim[aIdx];
-		if (anim.poseNum != pRes->dsAnimBone.bn)
-		{
-			DsError::Panic("キーフレームアニメボーン数とスケルトンボーン数が一致しない");
-		}
+		DS_ASSERT(anim.poseNum == pRes->dsAnimBone.bn, "キーフレームアニメボーン数とスケルトンボーン数が一致しない");
+
 		pKeyAnim[aIdx].m_name = anim.animName;
 		pKeyAnim[aIdx].m_pBone = new DsKeyframeAnim::Pose[anim.poseNum];
 		pKeyAnim[aIdx].m_boneNum = anim.poseNum;
@@ -993,17 +991,17 @@ DsKeyframeAnimSet* DsAnimRes::CreateKeyframeAnim() const
 				anim.pose[bIdx].keyFrameNumRY != anim.pose[bIdx].keyFrameNumRZ ||
 				anim.pose[bIdx].keyFrameNumRZ != anim.pose[bIdx].keyFrameNumRQ )
 			{
-				DsError::Panic("回転キーフレーム数が成分間で一致しない");
+				DS_ASSERT(false, "回転キーフレーム数が成分間で一致しない");
 			}
 			if (anim.pose[bIdx].keyFrameNumTX != anim.pose[bIdx].keyFrameNumTY ||
 				anim.pose[bIdx].keyFrameNumTY != anim.pose[bIdx].keyFrameNumTZ)
 			{
-				DsError::Panic("位置キーフレーム数が成分間で一致しない");
+				DS_ASSERT(false, "位置キーフレーム数が成分間で一致しない");
 			}			
 			if (anim.pose[bIdx].keyFrameNumSX != anim.pose[bIdx].keyFrameNumSY ||
 				anim.pose[bIdx].keyFrameNumSY != anim.pose[bIdx].keyFrameNumSZ )
 			{
-				DsError::Panic("拡大キーフレーム数が成分間で一致しない");
+				DS_ASSERT(false, "拡大キーフレーム数が成分間で一致しない");
 			}
 			
 
@@ -1017,7 +1015,7 @@ DsKeyframeAnimSet* DsAnimRes::CreateKeyframeAnim() const
 					anim.pose[bIdx].keyFrameRY[k].localTimeMs != anim.pose[bIdx].keyFrameRZ[k].localTimeMs ||
 					anim.pose[bIdx].keyFrameRZ[k].localTimeMs != anim.pose[bIdx].keyFrameRQ[k].localTimeMs )
 				{
-					DsError::Panic("回転ローカルタイムが成分間で一致しない");
+					DS_ASSERT(false, "回転ローカルタイムが成分間で一致しない");
 				}
 				pKeyAnim[aIdx].m_pBone[bIdx].m_pRot[k].localTime = anim.pose[bIdx].keyFrameRX[k].localTimeMs;
 				pKeyAnim[aIdx].m_pBone[bIdx].m_pRot[k].val.x = anim.pose[bIdx].keyFrameRX[k].value;
@@ -1036,7 +1034,7 @@ DsKeyframeAnimSet* DsAnimRes::CreateKeyframeAnim() const
 				if (anim.pose[bIdx].keyFrameTX[k].localTimeMs != anim.pose[bIdx].keyFrameTY[k].localTimeMs ||
 					anim.pose[bIdx].keyFrameTY[k].localTimeMs != anim.pose[bIdx].keyFrameTZ[k].localTimeMs )
 				{
-					DsError::Panic("位置ローカルタイムが成分間で一致しない");
+					DS_ASSERT(false, "位置ローカルタイムが成分間で一致しない");
 				}
 				pKeyAnim[aIdx].m_pBone[bIdx].m_pPos[k].localTime = anim.pose[bIdx].keyFrameTX[k].localTimeMs;
 				pKeyAnim[aIdx].m_pBone[bIdx].m_pPos[k].val.x = anim.pose[bIdx].keyFrameTX[k].value;
@@ -1054,7 +1052,7 @@ DsKeyframeAnimSet* DsAnimRes::CreateKeyframeAnim() const
 				if (anim.pose[bIdx].keyFrameSX[k].localTimeMs != anim.pose[bIdx].keyFrameSY[k].localTimeMs ||
 					anim.pose[bIdx].keyFrameSY[k].localTimeMs != anim.pose[bIdx].keyFrameSZ[k].localTimeMs)
 				{
-					DsError::Panic("拡大ローカルタイムが成分間で一致しない");
+					DS_ASSERT(false, "拡大ローカルタイムが成分間で一致しない");
 				}
 				pKeyAnim[aIdx].m_pBone[bIdx].m_pScale[k].localTime = anim.pose[bIdx].keyFrameSX[k].localTimeMs;
 				pKeyAnim[aIdx].m_pBone[bIdx].m_pScale[k].val.x = anim.pose[bIdx].keyFrameSX[k].value;

@@ -29,10 +29,7 @@ using namespace DsLib;
 DsRender& DsRender::Create(DsCamera& cam, DsSys& sys)
 {
 	DsRender* ret = new DsRender(cam, sys);
-	if( NULL == ret )
-	{
-		DsError::Panic("");
-	}
+	DS_ASSERT(ret, "ƒƒ‚ƒŠŠm•Û¸”s");
 	return *ret;
 }
 
@@ -75,10 +72,7 @@ DsRender::DsRender(DsCamera& cam, DsSys& sys)
 	m_light.SetDir(DsVec3f::ToVec3(0, -1, 0));
 
 	m_pRenderTool = new DsRenderTool(*m_pDrawCom, cam);
-	if (NULL == m_pRenderTool)
-	{
-		DsError::Panic("ƒƒ‚ƒŠŠm•Û¸”s\n");
-	}
+	DS_ASSERT(m_pRenderTool, "ƒƒ‚ƒŠŠm•Û¸”s");
 }
 
 DsRender::~DsRender()

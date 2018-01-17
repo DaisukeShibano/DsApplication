@@ -231,9 +231,6 @@ namespace
  DsShader& DsShader::Create()
 {
 	DsShader* ret = new DsShaderImp();
-	if( NULL == ret )
-	{
-		DsError::Panic("DsShader:ƒƒ‚ƒŠŠm•Û¸”s");
-	}
+	DS_ASSERT(ret, "ƒƒ‚ƒŠŠm•Û¸”s");
 	return *ret;
 }

@@ -42,31 +42,18 @@ void DsWindow::Update(double dt)
 //virtual 
 void DsWindow::Initialize(InitArgs& args)
 {
-	if (NULL == args.pCam)
-	{
-		DsError::Panic("");
-	}
-	if (NULL == args.pLoop)
-	{
-		DsError::Panic("");
-	}
-	if (NULL == args.pSys)
-	{
-		DsError::Panic("");
-	}
+	DS_ASSERT(args.pCam, "ウィンドウ初期化引数が不正");
+	DS_ASSERT(args.pLoop, "ウィンドウ初期化引数が不正");
+	DS_ASSERT(args.pSys, "ウィンドウ初期化引数が不正");
+
 	m_pCam = args.pCam;
 	m_pLoop = args.pLoop;
 	m_pSys = args.pSys;
 	m_pMouse = new DsMouse();
-	if (NULL == m_pMouse)
-	{
-		DsError::Panic("メモリ確保失敗\n");
-	}
+	DS_ASSERT(m_pMouse, "メモリ確保失敗");
+	
 	m_pKeyboard = new DsKeyboard();
-	if(NULL == m_pKeyboard)
-	{
-		DsError::Panic("メモリ確保失敗\n");
-	}
+	DS_ASSERT(m_pKeyboard, "メモリ確保失敗");
 }
 
 //virtual 
