@@ -49,18 +49,18 @@ void DsCollisionConstraint::SetUp()
 				m_kFric = 0;//どっちかが摩擦無視なら０
 			}
 
-			const DsVec3d& mV = pMas->GetVelocity();
-			const DsVec3d& mW = pMas->GetAngularVel();
-			const DsVec3d& sV = pSub->GetVelocity();
-			const DsVec3d& sW = pSub->GetAngularVel();
+			const DsVec3d mV = pMas->GetVelocity();
+			const DsVec3d mW = pMas->GetAngularVel();
+			const DsVec3d sV = pSub->GetVelocity();
+			const DsVec3d sW = pSub->GetAngularVel();
 
 			DsVec3d nx;
 			DsVec3d ny;
 			m_colNormal.GetVerticalPlane(nx, ny);
-			const DsVec3d& ra_nx = DsVec3d::Cross(ra, nx);
-			const DsVec3d& rb_nx = DsVec3d::Cross(rb, nx);
-			const DsVec3d& ra_ny = DsVec3d::Cross(ra, ny);
-			const DsVec3d& rb_ny = DsVec3d::Cross(rb, ny);
+			const DsVec3d ra_nx = DsVec3d::Cross(ra, nx);
+			const DsVec3d rb_nx = DsVec3d::Cross(rb, nx);
+			const DsVec3d ra_ny = DsVec3d::Cross(ra, ny);
+			const DsVec3d rb_ny = DsVec3d::Cross(rb, ny);
 
 			//拘束座標系から物体座標系に変換する行列。衝突専用なので衝突方向しか成分がない1*12
 			m_J[0][0] = nx.x; m_J[0][1] = nx.y; m_J[0][2] = nx.z; m_J[0][3] = ra_nx.x; m_J[0][4] = ra_nx.y; m_J[0][5] = ra_nx.z; m_J[0][6] = -nx.x; m_J[0][7] = -nx.y; m_J[0][8] = -nx.z; m_J[0][9] = -rb_nx.x; m_J[0][10] = -rb_nx.y; m_J[0][11] = -rb_nx.z;
@@ -361,22 +361,23 @@ void DsCollisionConstraint::_CalcConatraintForce()
 		}
 	}
 
-	double requestVel = 0;	
+	
+	//跳ね返る速度を求める
 	const double vel = fabs(m_w[2]);
-	requestVel = ((20.0 * m_error) - (0.05*m_w[2]));//めり込み解消速度。バネダンパ
-	if (requestVel < 0.0){
-		requestVel = 0.0;
-	}
-	const double maxVel = 2.0;
-	if (maxVel < requestVel){
-		requestVel = maxVel;
-	}
-	requestVel *= staticC;
-	if( 0.1 < vel){//振動防止
+	//めり込み解消速度。バネダンパ
+	double requestVel = max( ((20.0 * m_error) - (0.05*m_w[2])), 0.0);
+	
+	//静的じゃない方を2倍
+	//重さも考慮して力がかかるので、もし静的がとても重く設定されているなら、ほとんどがrequestVelは動的の方の速度変化分が占める。
+	//それを2倍するとさらに加速してしまうので飛んでしまう
+	//同じ重さなら2倍でちょうどいいのだから、重さで比率かける方がいい？でも回転が分からないのでなんとも。
+	//軽い静的物があるとめり込んでしまうが、めり込み解消でなんとかする。か静的になった瞬間重くするか
+	//requestVel *= staticC;
+
+	//跳ね返り速度を求める
+	if( 0.1 < vel){//振動防止のため止まろうとしているときはめり込み分しかかけない
 		const double boundVel = (vel*(m_bound));
-		if( boundVel>requestVel){
-			requestVel=boundVel;
-		}
+		requestVel = max(boundVel, requestVel);//めり込み解消より小さくならないように
 	}
 	
 	{//摩擦
@@ -575,7 +576,7 @@ void DsCollisionConstraintSolver::Solve(DsCollisionConstraint& c, const int iter
 				if ((row == 2) || (eq.isStaticByFric[row]))
 				{
 					//衝突力
-					if (0.0000001 < fabs(eq.A[row][row])){
+					if (DBL_EPSILON < fabs(eq.A[row][row])){
 						double forward = 0;//更新済みK+1
 						for (int col = 0; col < row; ++col){//一つ一つのA成分の列のループ。forwardは、既に解いてあるrow成分まで加算
 							forward += eq.A[row][col] * eq.lambda[col];
@@ -590,7 +591,7 @@ void DsCollisionConstraintSolver::Solve(DsCollisionConstraint& c, const int iter
 						const double w_b = eq.max_wplus1[row] - eq.b[row];
 						const double weight = 1.1;
 						const double old_lamdba = eq.lambda[row];
-						double new_lambda = (w_b - forward - back) / eq.A[row][row];
+						const double new_lambda = (w_b - forward - back) / eq.A[row][row];
 						eq.lambda[row] = old_lamdba + weight*(new_lambda - old_lamdba);//SOR法。ガウスザイデルの解の変化量をweight倍加速
 
 						eq.lambda[row] = Clamp(eq.lambda[row], minLambda[row], maxLambda[row]);
@@ -602,16 +603,15 @@ void DsCollisionConstraintSolver::Solve(DsCollisionConstraint& c, const int iter
 			}
 
 			//収束したのでやめる
-			if ( (fabs(preLambda[0] - eq.lambda[0]) < 0.0001) &&
-				(fabs(preLambda[1] - eq.lambda[1]) < 0.0001) &&
-				(fabs(preLambda[2] - eq.lambda[2]) < 0.0001)
-				){
-				break;
-			}
-
-			preLambda[0] = eq.lambda[0];
-			preLambda[1] = eq.lambda[1];
-			preLambda[2] = eq.lambda[2];
+			//if ( (fabs(preLambda[0] - eq.lambda[0]) < 0.0001) &&
+			//	(fabs(preLambda[1] - eq.lambda[1]) < 0.0001) &&
+			//	(fabs(preLambda[2] - eq.lambda[2]) < 0.0001)
+			//	){
+			//	break;
+			//}
+			//preLambda[0] = eq.lambda[0];
+			//preLambda[1] = eq.lambda[1];
+			//preLambda[2] = eq.lambda[2];
 		}
 	}
 
