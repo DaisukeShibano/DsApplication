@@ -1,8 +1,6 @@
 #ifndef _DS_ERROR_H_
 #define _DS_ERROR_H_
 
-#include <assert.h>  
-
 namespace DsLib
 {
 
