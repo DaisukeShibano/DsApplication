@@ -155,7 +155,7 @@ void DsAnimModelRender::Render() const
 	glEnable(GL_TEXTURE_2D);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
-	for each(const DsAnimModel* pModel in m_drawList) 
+	for(const DsAnimModel* pModel : m_drawList) 
 	{
 #ifndef		USE_OLD_MODEL_COOD
 		//À•W
@@ -195,7 +195,7 @@ void DsAnimModelRender::Render() const
 				
 				int uvIdx = 0;
 				const DsAnimModel::Material::Texture::UV *pUV = pTex->pUV;
-				for each(const DsAnimModel::Face* pFace in pTex->refGeomFaces)
+				for(const DsAnimModel::Face* pFace : pTex->refGeomFaces)
 				{
 					//Ş¿‚ÌF‚Í“K“–
 					const static GLfloat col[] = { 1.0f, 1.0f, 1.0f, 1.0f };

@@ -215,6 +215,7 @@
     <ClInclude Include="Source\Collision\GJK\DsGJK.h" />
     <ClInclude Include="Source\Common\DsPose.h" />
     <ClInclude Include="Source\Constraint\ConstraintSolver\DsConstraintSolver.h" />
+    <ClInclude Include="Source\Constraint\ConstraintSolver\DsPositionDepthSolver.h" />
     <ClInclude Include="Source\Constraint\DsBallConstraint.h" />
     <ClInclude Include="Source\Constraint\DsCollisionConstraint.h" />
     <ClInclude Include="Source\Constraint\DsConstraint.h" />
@@ -270,6 +271,7 @@
     <ClCompile Include="Source\Collision\GJK\DsGJK.cpp" />
     <ClCompile Include="Source\Common\DsPose.cpp" />
     <ClCompile Include="Source\Constraint\ConstraintSolver\DsConstraintSolver.cpp" />
+    <ClCompile Include="Source\Constraint\ConstraintSolver\DsPositionDepthSolver.cpp" />
     <ClCompile Include="Source\Constraint\DsBallConstraint.cpp" />
     <ClCompile Include="Source\Constraint\DsCollisionConstraint.cpp" />
     <ClCompile Include="Source\Constraint\DsConstraint.cpp" />

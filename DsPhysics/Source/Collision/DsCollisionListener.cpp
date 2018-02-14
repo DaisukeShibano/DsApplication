@@ -37,7 +37,7 @@ DsCollisionListener::~DsCollisionListener()
 
 void DsCollisionListener::Collide( DsCollisionGroup& group )
 {
-	//group.SortActor();//積み重なったときに安定するように。iteration増やしたほうがマシかも
+	group.SortActor();//積み重なったときに安定するように。iteration増やしたほうがマシかも？
 	const int totalActTNum = group.GetActorNumber();
 	DsActor** pActors = group.GetActors();
 	DsConstraintSolver* pSolver = m_world.GetConstraintSolver();
@@ -92,6 +92,7 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 							if (!isSkip) {
 								const DsCollisionResult& result = executer.Exe(*pActor, *pParent);
 								if (0 < result.GetColNum()) {
+									//拘束への追加までやってしまっているのでスレッドセーフでない。外に出したい
 									pSolver->AddCollision(result);
 								}
 							}
@@ -114,6 +115,7 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 							if (!isSkip){
 								const DsCollisionResult& result = executer.Exe(*pActor, *pNextActor);
 								if (0 < result.GetColNum()){
+									//拘束への追加までやってしまっているのでスレッドセーフでない。外に出したい
 									pSolver->AddCollision(result);
 								}
 							}

@@ -194,6 +194,11 @@ namespace DsPhysics
 		void SetOctreeNodeNext(const DsActor* pActor){ m_pOctreeNodeActorNext = pActor; }
 		const DsActor* GetOctreeNodeNext() const { return m_pOctreeNodeActorNext; }
 
+	public:
+		//ÇﬂÇËçûÇ›ó ê›íË
+		virtual void SetCollisionDepth(const DsVec3d& depth) {};
+		virtual DsVec3d GetCollisionDepth()const { return DsVec3d::Zero(); }
+
 	protected:
 		void SetLifeTime(long int time){ m_lifeTime = time; }
 		double GetDT() const { return m_dt; }

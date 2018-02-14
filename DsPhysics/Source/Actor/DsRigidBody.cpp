@@ -31,6 +31,7 @@ DsRigidBody::DsRigidBody(const DsActorId& id, const char* name)
 , m_damperVel(0)
 , m_damperAngVel(0)
 , m_biasInertia(DsVec3d::Zero())
+, m_colDepth(DsVec3d::Zero())
 , m_pCollisionGeometry(NULL)
 {}
 
@@ -270,6 +271,47 @@ void DsRigidBody::_IntegralVel()
 		//回転はよく分からん
 		//const DsMat33d dr = m_preRot.ToTransposition()*m_physicsInfo.rotation;
 		//m_preRot = m_physicsInfo.rotation;
+	}
+
+	//めり込み方向に変位を出さないように
+	if(0)//相手の速度も考慮するとめり込み方向に進んでも問題ない場合もあるので微妙な挙動になる。例えば落下しているとき、上の物体が下の物体に追いつくと、上の物体が急停止する
+	{
+		const double decay = 0.0;//0だとめり込まないけど、押しのけにくくなった。でも拘束のときに力考慮しているからその挙動はおかしいのか？
+		const double ep = 0.000001;
+		if (ep < m_colDepth.x) {//x+方向にめり込んでるのでx+方向の変位減衰
+			if (0.0 < m_addPos.x) {
+				m_addPos.x *= decay;
+			}
+		}
+		else if (m_colDepth.x < -ep) {//x-方向にめり込んでるのでx-方向の変位減衰
+			if (m_addPos.x < 0.0) {
+				m_addPos.x *= decay;
+			}
+		}
+
+		if (ep < m_colDepth.y) {
+			if (0.0 < m_addPos.y) {
+				m_addPos.y *= decay;
+			}
+		}
+		else if (m_colDepth.y < -ep) {
+			if (m_addPos.y < 0.0) {
+				m_addPos.y *= decay;
+			}
+		}
+
+		if (ep < m_colDepth.z) {
+			if (0.0 < m_addPos.z) {
+				m_addPos.z *= decay;
+			}
+		}
+		else if (m_colDepth.z < -ep) {
+			if (m_addPos.z < 0.0) {
+				m_addPos.z *= decay;
+			}
+		}
+
+		m_colDepth = DsVec3d::Zero();
 	}
 }
 

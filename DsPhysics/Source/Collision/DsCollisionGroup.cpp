@@ -7,7 +7,7 @@
 using namespace DsPhysics;
 
 
-//フィールドがある程度物理的に干渉しないよう分割されてて、それぞれのグループごとに見えてる奴だけ計算したり、別スレッドで計算したり、とか考えてたけど今は意味を成してない
+//メインとバックグラウンドで分ける
 
 
 DsCollisionGroup::DsCollisionGroup()

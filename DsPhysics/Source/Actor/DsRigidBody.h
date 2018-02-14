@@ -114,6 +114,12 @@ namespace DsPhysics
 		virtual void SetDamper(double vel, double angVel) override { m_damperVel = vel; m_damperAngVel = angVel; }
 		virtual void SetInertiaBias(const DsVec3d& bias) override { m_biasInertia = bias; }
 
+	public:
+		//ÇﬂÇËçûÇ›ó ê›íË
+		virtual void SetCollisionDepth(const DsVec3d& depth) override { m_colDepth = depth; }
+		virtual DsVec3d GetCollisionDepth()const override { return m_colDepth; }
+
+
 	protected:
 		DsVec3d _GetMaxVector(const DsVec3d* pVec, const int vn) const;
 		DsVec3d _GetCenterOfGravity(const DsVec3d* v, const int vertexNum)const;
@@ -151,6 +157,7 @@ namespace DsPhysics
 		double m_damperVel;
 		double m_damperAngVel;
 		DsVec3d m_biasInertia;
+		DsVec3d m_colDepth;
 
 	protected:
 		DsCollisionGeometry* m_pCollisionGeometry;

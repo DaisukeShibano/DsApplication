@@ -100,7 +100,7 @@ void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 	m_pActReq = _CreareActionRequest();
 	m_pActCtrl = new DsActionCtrl(*m_pActReq, m_pAnimation->RefAnimClips());
 	DS_ASSERT(m_pActCtrl, "ƒƒ‚ƒŠŠm•ÛŽ¸”s");
-	m_pAnimation->PlayAnim(m_pActCtrl->GetCurrentAnim());
+	m_pAnimation->RequestPlayAnim(m_pActCtrl->GetCurrentAnim());
 }
 
 //virtual
@@ -116,7 +116,7 @@ void DsFieldChr::Update(double dt)
 {
 	m_pActReq->Update(dt);
 	m_pActCtrl->Update(dt);
-	m_pAnimation->PlayAnim(m_pActCtrl->GetCurrentAnim());
+	m_pAnimation->RequestPlayAnim(m_pActCtrl->GetCurrentAnim());
 
 	DsActor* pActor = m_actorId.GetActor();
 	if (pActor)

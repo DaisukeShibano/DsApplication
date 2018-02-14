@@ -13,7 +13,9 @@
 #ifndef __ICONSTRAINT__
 #include "Constraint/IConstraint.h"
 #endif
-
+#ifndef _DS_POSITION_DEPTH_SOLVER_
+#include "Constraint/ConstraintSolver/DsPositionDepthSolver.h"
+#endif
 
 using namespace DsPhysics;
 
@@ -30,7 +32,7 @@ DsConstraintSolver::DsConstraintSolver(const DsPhysicsWorld& world)
 	, m_colBufMinTimer(0)
 	, m_eqs()
 	, m_currentIteration(0)
-
+	, m_pPosDepthSolver(NULL)
 #ifdef COL_COLLECT
 	, m_collisionResults()
 #endif
@@ -41,18 +43,26 @@ DsConstraintSolver::DsConstraintSolver(const DsPhysicsWorld& world)
 	//衝突コンストレントのメモリ確保
 	//m_colConstraintBuff = new char[m_colConstraintBuffSize];
 	DsCollisionConstraint* tmp = new DsCollisionConstraint[s_defaultColNum];
+	DS_ASSERT(tmp, "メモリ確保失敗");
 	m_colConstraintBuff = reinterpret_cast<char*>(tmp);
+
+	m_pPosDepthSolver = new DsPositionDepthSolver(world);
+	DS_ASSERT(m_pPosDepthSolver, "メモリ確保失敗");
 }
 
 //virtual 
 DsConstraintSolver::~DsConstraintSolver()
 {
 	delete[] reinterpret_cast<DsCollisionConstraint*>(m_colConstraintBuff);
-	m_colConstraintBuff = 0;
+	m_colConstraintBuff = NULL;
+
+	delete m_pPosDepthSolver; m_pPosDepthSolver = NULL;
 }
 
 void DsConstraintSolver::AddCollision(const DsCollisionResult& colResult)
 {
+	m_pPosDepthSolver->AddDepth(colResult);
+
 #ifndef COL_COLLECT
 	const int colNum = colResult.GetColNum();
 
@@ -64,6 +74,7 @@ void DsConstraintSolver::AddCollision(const DsCollisionResult& colResult)
 		//増量
 		const unsigned int tmpNum = static_cast<unsigned int>( m_colConstraintBuffSize / sizeof(DsCollisionConstraint));
 		DsCollisionConstraint* newBuf = new DsCollisionConstraint[tmpNum];
+		DS_ASSERT(newBuf, "メモリ確保失敗");
 		char* tmpBuf = reinterpret_cast<char*>(newBuf);
 		//内容コピー
 		memcpy(tmpBuf, m_colConstraintBuff, tmpSize);

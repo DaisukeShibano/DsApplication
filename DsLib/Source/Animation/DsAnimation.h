@@ -37,7 +37,7 @@ namespace DsLib
 		DsAnimSkeleton* GetSkeleton() { return m_pSkeleton; }
 		const DsAnimSkeleton* GetSkeleton() const { return m_pSkeleton; }
 		DsKeyframeAnimSet* GetKeyframeAnim() const { return m_pKeyframeAnim; }
-		void PlayAnim(DsAnimClip* pAnim) { m_pRequestAnim = pAnim; }
+		void RequestPlayAnim(DsAnimClip* pAnim) { m_pRequestAnim = pAnim; }
 		std::vector<DsAnimClip*>& RefAnimClips() { return m_animClips; }
 
 	private:

@@ -147,7 +147,9 @@ void DsFieldPlayer::Update(double dt)
 						const double rideVel = max(upHeight,0.0)/dt;
 						const double velGain = 200.0f;//加速ゲイン
 						const double targetVelF = (rideVel - pActor->GetVelocity().y)*velGain;
-						pActor->AddForce(DsVec3d(0, targetVelF, 0));
+
+						//上に飛ぶことがある・・・
+						//pActor->AddForce(DsVec3d(0, targetVelF, 0));
 
 						//DsDbgSys::GetIns().RefDrawCom().SetColor(DsVec3d(1, 0, 0)).DrawSphere(hitPos, 0.1);
 					}

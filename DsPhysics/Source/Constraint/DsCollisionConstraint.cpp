@@ -13,12 +13,6 @@ using namespace DsPhysics;
 
 void DsCollisionConstraint::SetUp()
 {
-
-	//衝突点１つ１つに対して拘束解くんだったらはバネダンパで跳ね返す方がコスト的に良い。
-	//纏めて解く方法はないか？←纏めても結果は同じ
-	//ODEのソースとか参考にしてみる
-	//速度と力が小さいなら相対速度＝０で拘束条件を解いてみる。
-
 	DsActor* pMas = m_world->GetActor(m_masterId);
 	DsActor* pSub = m_world->GetActor(m_subId);
 
@@ -375,11 +369,13 @@ void DsCollisionConstraint::_CalcConatraintForce()
 	//requestVel *= staticC;
 
 	//跳ね返り速度を求める
-	if( 0.1 < vel){//振動防止のため止まろうとしているときはめり込み分しかかけない
+	//const double km_s = 10.0;
+	//const double dv = (km_s*1000.0*m_dt)/(60.0*60.0);
+	if( 0.04 < vel){//振動防止のため止まろうとしているときはめり込み分しかかけない
 		const double boundVel = (vel*(m_bound));
 		requestVel = max(boundVel, requestVel);//めり込み解消より小さくならないように
 	}
-	
+
 	{//摩擦
 		//zが衝突方向で、垂直抗力方向なので注意
 

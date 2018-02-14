@@ -12,6 +12,7 @@ namespace DsPhysics
 	class DsPhysicsWorld;
 	class IConstraint;
 	class DsCollisionConstraint;
+	class DsPositionDepthSolver;
 	struct DsConstraintEquation;
 }
 
@@ -45,7 +46,7 @@ namespace DsPhysics
 	private:
 		std::vector<DsConstraintEquation*> m_eqs;
 		int m_currentIteration;
-
+		DsPositionDepthSolver* m_pPosDepthSolver;
 
 
 	private:

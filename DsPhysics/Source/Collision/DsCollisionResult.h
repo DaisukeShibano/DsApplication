@@ -173,8 +173,8 @@ namespace DsPhysics
 		}
 
 		const std::vector<DsVec3d>& RefPos() const{ return m_colPos; }
-		const std::vector<DsVec3d>& RefNormal() const{ return m_colNormal; }
-		const std::vector<double>&	RefDepth() const { return m_depth; }
+		const std::vector<DsVec3d>& RefNormal() const{ return m_colNormal; }//owner1‚ð’µ‚Ë•Ô‚·•ûŒü
+		const std::vector<double>&	RefDepth() const { return m_depth; }//•K‚¸ƒvƒ‰ƒX
 		const std::vector<DsActorId>& RefOwnerId1() const { return m_ownerId_1; }
 		const std::vector<DsActorId>& RefOwnerId2() const { return m_ownerId_2; }
 

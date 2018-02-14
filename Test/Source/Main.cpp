@@ -88,18 +88,11 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 				m_joint2->AttachJoint(act2, act3, act2.GetActor()->GetPosition() + DsVec3d(-0.5, 0, 0), DsVec3d(0, 0, 1), DsVec3d(1, 0, 0));
 			}
 
-			if(0){//衝突テスト
-				DsRigidBox::GetVertex(vertex, 1.5, 15, 3);
-				{
+			if(1){//衝突テスト
+				DsRigidBox::GetVertex(vertex, 1.5, 0.5, 1.5);
+				for(int i=0; i<30; ++i){
 					DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, "箱１");
-					factory.InitPos(DsVec3d(-2.2, 6.5, 0.0));
-					factory.InitRot(DsMat33d::RotateX(0.1));
-					factory.SetOption(option);
-					pWorld->CreateActor(factory).GetActor()->SetMaterial(DsActorMaterial::Aluminum());
-				}
-				for(int i=0; i<0; ++i){
-					DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, "箱１");
-					factory.InitPos(DsVec3d(1.0, 0.6 + (0.6)*(double)i, 4.0));
+					factory.InitPos(DsVec3d(0.0, 0.0 + (0.5)*(double)i, 0.0));
 					factory.SetOption(option);
 					DsActorId actorId = pWorld->CreateActor(factory);
 					DsActor* pActor = actorId.GetActor();

@@ -15,6 +15,45 @@ using namespace DsPhysics;
 
 static const int CHILD_NUM = 8;
 
+
+/*
+
+どの物体とどの物体が当たっているか、の捜査を絞るための空間分割。
+ツリー状になってて、一番大きな、全ての物体を包む空間がルート空間
+それを8分割したのが子空間
+さらにその子空間それぞれを8分割し・・・以下繰り返しで構成される空間。
+
+
+とある空間Aに所属する物体は、同じAに所属する物体か、親の空間に所属する物体にのみ当たる可能性がある。
+というのを一番下の階層からやっていけば、全ての当たる可能性のパターンを網羅できる。
+(実際は高速化のために再帰関数は使わず、whileで巡回する。)
+
+
+毎フレUpdateで、物体がどの空間に所属するのかを更新してやる必要がある。
+なるべく高速に所属グループを更新したいので、座標値がそのまま格子番号になるようにしている(ちょっとできてないけど)。
+物体の所属空間は、その物体を完全に内包する空間を選ぶようにする。
+そうしないと、物体が所属空間をはみ出てしまい、「同じ空間か、親としか当たる可能性がない」の前提が崩れる。
+空間が小さすぎて入らない場合は、収まるサイズになるまで親を遡る。そうして所属空間の階層を決めている(この検索が微妙かも。１発で求めたい)。
+
+↓一発で求められてるので参考にしたい。
+http://marupeke296.com/COL_2D_No8_QuadTree.html
+
+
+CreateTree(const int resolution)
+引数は、一番下の層の（つまり一番細かい）空間分割数を指定する。
+
+例えば、64なら、ルート空間を縦横奥に64分割した空間が一番細かい分割数の階層として作られる。
+そこから、2*2*2のサイズの空間を1つの空間として作りそれを親する。以上を繰り返して中間の層を作る。
+
+一番細かい分割数を指定する方が精度と速度の調整がしやすいだろう・・・と思ったため。
+
+
+ちなみにルート空間のサイズは全物体が収まるサイズに毎フレ計算しなおしている。
+活動範囲が静的に求まる場合用に、固定値版も用意したほうがいいかもしれない(もともと毎フレ更新する前提なのであとから設定しなおすことは全然問題ない)
+
+*/
+
+
 DsBoundingOctree::DsBoundingOctree()
 	: m_pRoot(NULL)
 	, m_pTerminal(NULL)
@@ -56,11 +95,11 @@ void DsBoundingOctree::CreateTree(const int resolution)
 		DsBdOctreeNode* pNode = new DsBdOctreeNode[nodeNum];
 		m_allNodeNum += nodeNum;
 
-		const int resolution2 = resolution*resolution;//同じ掛け算何回もしないように。
+		const int resolution2 = resolution*resolution;
 		for (int xi = 0; xi < resolution; ++xi){
-			const int xOffset = xi*resolution2;//同じ掛け算何回もしないように。
+			const int xOffset = xi*resolution2;
 			for (int yi = 0; yi < resolution; ++yi){
-				const int yOffset = yi*resolution;//同じ掛け算何回もしないように。
+				const int yOffset = yi*resolution;
 				for (int zi = 0; zi < resolution; ++zi){
 					DsBdOctreeNode* pSetNode = pNode + (xOffset + yOffset + zi);
 					pSetNode->child = NULL;
@@ -205,7 +244,7 @@ void DsBoundingOctree::Update(DsActor** pActors, const int actNum, const DsVec3d
 		//最大座標と最小座標のグリッドの親をさかのぼっていって、同じになれば両方が含まれる空間＝そのactorを完全に含む空間
 		DsBdOctreeNode* pMaxParent = m_pTerminal[maxIdx].parent;
 		DsBdOctreeNode* pMinParent = m_pTerminal[minIdx].parent;
-		while (pMaxParent != pMinParent) {
+		while (pMaxParent != pMinParent) {//最悪のループ回数は最大階層分。おそらく最大階層は7～8ぐらいになると予想
 			pMaxParent = pMaxParent->parent;
 			pMinParent = pMinParent->parent;
 		}//少なくともルート空間で必ず一致するはず。NULLなら実装ミス
