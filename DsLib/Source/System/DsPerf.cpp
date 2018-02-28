@@ -20,5 +20,5 @@ DsPerf& DsPerf::RefPerfTotalFps()
 
 void DsPerf::DbgDrawFps()
 {
-	DsDbgSys::GetIns().RefDrawCom().SetColor(DsVec3d(0,0,0)).DrawTextScreen(DsVec2d(0.3, 0.3), L"FPS:%.1f", m_fps );
+	DsDbgSys::GetIns().RefDrawCom().SetColor(DsVec3d(0,0,0)).DrawTextScreen(DsVec2d(0.25, 0.35), L"FPS:%.1f", m_fps );
 }

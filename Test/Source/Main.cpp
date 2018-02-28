@@ -88,7 +88,7 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 				m_joint2->AttachJoint(act2, act3, act2.GetActor()->GetPosition() + DsVec3d(-0.5, 0, 0), DsVec3d(0, 0, 1), DsVec3d(1, 0, 0));
 			}
 
-			if(1){//è’ìÀÉeÉXÉg
+			if(0){//è’ìÀÉeÉXÉg
 				DsRigidBox::GetVertex(vertex, 1.5, 0.5, 1.5);
 				for(int i=0; i<30; ++i){
 					DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, "î†ÇP");
@@ -131,34 +131,36 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 	DsPhysicsWorld* pWorld = DsPhysicsManager::GetDefaultWorld();
 	if (pWorld)
 	{
-		pWorld->Update(args.dt);
-		int color = 0;
-		for each(DsActor* actor in pWorld->GetActors() )
-		{
-			std::string tmp = actor->GetName();
-			//if( (tmp != "robo_0") && (tmp!="ragdoll") )
-			if ((tmp == "î†ÇP") || (tmp == "î†ÇQ") || (tmp == "î†ÇR"))
+	pWorld->Update(args.dt);
+	int color = 0;
+	for each(DsActor* actor in pWorld->GetActors())
+	{
+		std::string tmp = actor->GetName();
+		//if( (tmp != "robo_0") && (tmp!="ragdoll") )
+		if ((tmp == "î†ÇP") || (tmp == "î†ÇQ") || (tmp == "î†ÇR"))
 			//if (actor->GetType() == DsActor::RIGID_MESH)
-			{
-				const double rC = (actor->IsRest()) ? (0.5) : (1.0);
-				if (color == 0){
-					actor->SetColor(DsVec4d(1.0, 0.6, 0.2, 1)*rC);
-				} else if(color == 1){
-					actor->SetColor(DsVec4d(0.2, 1.0, 0.6, 1)*rC);
-				} else{
-					actor->SetColor(DsVec4d(0.4, 0.6, 1.0, 1)*rC);
-				}
-				actor->SetLineColor(DsVec4d(0, 0, 0, 1));
-				actor->Draw(args.drawCom);
+		{
+			const double rC = (actor->IsRest()) ? (0.5) : (1.0);
+			if (color == 0) {
+				actor->SetColor(DsVec4d(1.0, 0.6, 0.2, 1)*rC);
 			}
-			++color;
-			color %= 3;
+			else if (color == 1) {
+				actor->SetColor(DsVec4d(0.2, 1.0, 0.6, 1)*rC);
+			}
+			else {
+				actor->SetColor(DsVec4d(0.4, 0.6, 1.0, 1)*rC);
+			}
+			actor->SetLineColor(DsVec4d(0, 0, 0, 1));
+			actor->Draw(args.drawCom);
 		}
-		m_joint->Update(args.dt);
-		m_joint->DbgDraw(args.drawCom);
+		++color;
+		color %= 3;
+	}
+	m_joint->Update(args.dt);
+	m_joint->DbgDraw(args.drawCom);
 
-		m_joint2->Update(args.dt);
-		m_joint2->DbgDraw(args.drawCom);
+	m_joint2->Update(args.dt);
+	m_joint2->DbgDraw(args.drawCom);
 
 	}
 
@@ -211,11 +213,12 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 	//args.drawCom.DrawTexQuad(poly2[0], poly2[1], poly2[2], poly2[3],
 	//	tex[0], tex[1], tex[2], tex[3],
 	//	m_pImage2->GetImage(), m_pImage2->GetWidth(), m_pImage2->GetHeight());
-
+	
 	DsPerf::RefPerfTotalFps().DbgDrawFps();
 }
 
-int WINAPI WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, int nCmdShow)
+
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, int nCmdShow)
 {
 	ds_uint64 hwnd = DsWindowManager::MainWindowCreate((ds_uint64)hInstance, lpCmdLine, nCmdShow);
 	if (0 == hwnd) {

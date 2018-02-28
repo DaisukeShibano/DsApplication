@@ -540,7 +540,7 @@ namespace
 		const unsigned char* m_pImage;
 		const int m_w;
 		const int m_h;
-		_InnerCommandInfo& m_innerInfo;
+		_InnerCommandInfo m_innerInfo;
 	};
 
 	/****************************
@@ -755,7 +755,7 @@ namespace
 	private:
 		const DsVec3d m_pos;
 		std::wstring m_text;
-		_InnerCommandInfo& m_innerInfo;
+		_InnerCommandInfo m_innerInfo;
 	};
 }
 

@@ -66,13 +66,15 @@ void DsCollisionGroup::RemoveGroup( const DsActorId& id )
 
 void DsCollisionGroup::SortActor()
 {
-	class Prd{
-	public:
-		bool operator()(const DsActor* l, const DsActor* r) const {
-			return l->GetPosition().y < r->GetPosition().y;
-		}
-	};
-	std::sort(m_actorVec, m_actorVec + (m_totalActorNum - 1), Prd());
+	if (m_actorVec && (1<m_totalActorNum) ) {
+		class Prd {
+		public:
+			bool operator()(const DsActor* l, const DsActor* r) const {
+				return l->GetPosition().y < r->GetPosition().y;
+			}
+		};
+		std::sort(m_actorVec, m_actorVec + (m_totalActorNum - 1), Prd());
+	}
 }
 
 void DsCollisionGroup::Clear()
