@@ -169,7 +169,7 @@ bool DsFile::GetLine(std::string& str)
 	}
 
 	if (ret) {
-		str.assign(m_pReadBuf, read);
+		str.assign(m_pReadBuf, static_cast<ds_uint64>(read- m_pReadBuf) );
 		m_pReadBuf = (char*)read;
 		++m_pReadBuf;
 	}

@@ -9,6 +9,9 @@
 using namespace DsApp;
 
 
+static const char* IDEL_ANIM_NAME = "idle";
+static const char* RUN_ANIM_NAME = "run";
+
 
 DsActionCtrl::DsActionCtrl(const DsActionRequest& actReq, const std::vector<DsLib::DsAnimClip*>& animClip)
 	: m_pASCtrl(NULL)
@@ -27,8 +30,8 @@ DsActionCtrl::DsActionCtrl(const DsActionRequest& actReq, const std::vector<DsLi
 	};
 	const CREATE_INFO createInfo[] =
 	{
-		{ CHR_STATE::IDLE, "idle"},
-		{ CHR_STATE::RUN, "run" },
+		{ CHR_STATE::IDLE, IDEL_ANIM_NAME },
+		{ CHR_STATE::RUN, RUN_ANIM_NAME },
 	};
 
 	for (const CREATE_INFO& info : createInfo) {

@@ -42,11 +42,14 @@ namespace
 	static ClassName##Factory s_##ClassName##Factory;\
 
 
-	bool _IsMove(const DsActionRequest& req)
+	namespace
 	{
-		const double len = req.GetMoveVec().LengthSq();
-		const bool isMove = (0.0001 < len);
-		return isMove;
+		bool _IsMove(const DsActionRequest& req)
+		{
+			const double len = req.GetMoveVec().LengthSq();
+			const bool isMove = (0.0001 < len);
+			return isMove;
+		}
 	}
 
 	/*********************************************************
