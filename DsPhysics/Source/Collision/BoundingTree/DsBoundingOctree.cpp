@@ -248,7 +248,7 @@ void DsBoundingOctree::Update(DsActor** pActors, const int actNum, const DsVec3d
 			pMaxParent = pMaxParent->parent;
 			pMinParent = pMinParent->parent;
 		}//少なくともルート空間で必ず一致するはず。NULLなら実装ミス
-		DS_ASSERT(pMaxParent && pMinParent, "DsBoundingOctreeで所属空間が見つからないactorがいる %s", pActor->GetName());
+		DS_ASSERT(pMaxParent && pMinParent, "DsBoundingOctreeで所属空間が見つからないactorがいる %S", pActor->GetName());
 
 		 //所属空間が分かったのでここに登録
 		pActor->SetOctreeNodeNext(pMaxParent->actor);//一番最初はNULL
@@ -299,7 +299,7 @@ void DsBoundingOctree::GetContainAreaActors(const DsActor& actor, std::vector<co
 		pMaxParent = pMaxParent->parent;
 		pMinParent = pMinParent->parent;
 	}//少なくともルート空間で必ず一致するはず。NULLなら実装ミス
-	DS_ASSERT(pMaxParent && pMinParent, "DsBoundingOctreeで所属空間が見つからないactorがいる %s", actor.GetName());
+	DS_ASSERT(pMaxParent && pMinParent, "DsBoundingOctreeで所属空間が見つからないactorがいる %S", actor.GetName());
 
 
 	bool isBack = false;

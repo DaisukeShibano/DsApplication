@@ -13,9 +13,6 @@
     <Filter Include="Source\Collision">
       <UniqueIdentifier>{7e6b1df0-6e40-4c12-b4e1-3e613e041c6f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Common">
-      <UniqueIdentifier>{ffbb32d6-b03f-4f3b-8cfc-9f3703f485e7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Constraint">
       <UniqueIdentifier>{a9f12eb7-1122-4904-bf46-5f26f980029d}</UniqueIdentifier>
     </Filter>
@@ -89,9 +86,6 @@
     </ClInclude>
     <ClInclude Include="Source\Collision\DsCollisionResult.h">
       <Filter>Source\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Common\DsPose.h">
-      <Filter>Source\Common</Filter>
     </ClInclude>
     <ClInclude Include="Source\Constraint\DsBallConstraint.h">
       <Filter>Source\Constraint</Filter>
@@ -251,9 +245,6 @@
     <ClCompile Include="Source\Collision\DsCollisionListener.cpp">
       <Filter>Source\Collision</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Common\DsPose.cpp">
-      <Filter>Source\Common</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Constraint\DsCollisionConstraint.cpp">
       <Filter>Source\Constraint</Filter>
     </ClCompile>
@@ -274,9 +265,6 @@
     </ClCompile>
     <ClCompile Include="Source\Doll\DsDoll.cpp">
       <Filter>Source\Doll</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Joint\DsJoint.cpp">
-      <Filter>Source\Joint</Filter>
     </ClCompile>
     <ClCompile Include="Source\Joint\DsHingeJoint.cpp">
       <Filter>Source\Joint</Filter>
@@ -304,9 +292,6 @@
     </ClCompile>
     <ClCompile Include="Source\Collision\GJK\DsGJK.cpp">
       <Filter>Source\Collision\GJK</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Collision\BoundingTree\DsBoundingTreeBase.cpp">
-      <Filter>Source\Collision\BoundingTree</Filter>
     </ClCompile>
     <ClCompile Include="Source\Collision\BoundingTree\DsBoundingTreeAabb.cpp">
       <Filter>Source\Collision\BoundingTree</Filter>

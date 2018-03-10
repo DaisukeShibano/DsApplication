@@ -112,13 +112,7 @@
     <ClCompile Include="Source\DsPch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Math\DsInverseMatrix .cpp">
-      <Filter>Source\Math</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Math\DsMathUtil.cpp">
-      <Filter>Source\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Math\DsInverseMatIteration.cpp">
       <Filter>Source\Math</Filter>
     </ClCompile>
     <ClCompile Include="Source\Graphics\Shader\DsShader.cpp">
@@ -126,9 +120,6 @@
     </ClCompile>
     <ClCompile Include="Source\Config\DsConf.cpp">
       <Filter>Source\Config</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Error\DsError.cpp">
-      <Filter>Source\Error</Filter>
     </ClCompile>
     <ClCompile Include="Source\Graphics\Render\DsShadowMap.cpp">
       <Filter>Source\Graphics\Render</Filter>
@@ -175,9 +166,6 @@
     <ClCompile Include="Source\Mouse\DsMouse.cpp">
       <Filter>Source\Mouse</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Math\DsQuaternion.cpp">
-      <Filter>Source\Math</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Animation\DsAnimModel.cpp">
       <Filter>Source\Animation</Filter>
     </ClCompile>
@@ -217,9 +205,6 @@
     <ClCompile Include="Source\System\DsWindowGL.cpp">
       <Filter>Source\System</Filter>
     </ClCompile>
-    <ClCompile Include="Source\System\DsWindowEz.cpp">
-      <Filter>Source\System</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Res\DsMapRes.cpp">
       <Filter>Source\Res</Filter>
     </ClCompile>
@@ -245,9 +230,6 @@
       <Filter>Source\Graphics\Shader\ShaderSource</Filter>
     </ClCompile>
     <ClCompile Include="Source\Animation\DsAnimSkeleton.cpp">
-      <Filter>Source\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Animation\DsAnimCustomProperty.cpp">
       <Filter>Source\Animation</Filter>
     </ClCompile>
     <ClCompile Include="Source\Animation\DsAnimSkeletonModifier.cpp">
@@ -412,9 +394,6 @@
       <Filter>Source\System</Filter>
     </ClInclude>
     <ClInclude Include="Source\System\DsWindowGL.h">
-      <Filter>Source\System</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\System\DsWindowEz.h">
       <Filter>Source\System</Filter>
     </ClInclude>
     <ClInclude Include="Source\Animation\SkinMesh\DsSkinMesh.h">

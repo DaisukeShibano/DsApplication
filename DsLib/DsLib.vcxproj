@@ -191,7 +191,6 @@
     <ClCompile Include="Source\Animation\DsAnimation.cpp" />
     <ClCompile Include="Source\Animation\DsAnimClip.cpp" />
     <ClCompile Include="Source\Animation\DsAnimModel.cpp" />
-    <ClCompile Include="Source\Animation\DsAnimCustomProperty.cpp" />
     <ClCompile Include="Source\Animation\DsAnimSkeleton.cpp" />
     <ClCompile Include="Source\Animation\DsAnimSkeletonModifier.cpp" />
     <ClCompile Include="Source\Animation\DsKeyframeAnim.cpp" />
@@ -206,7 +205,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\DsUtil.cpp" />
-    <ClCompile Include="Source\Error\DsError.cpp" />
     <ClCompile Include="Source\Graphics\Camera\DsCamera.cpp" />
     <ClCompile Include="Source\Graphics\Command\DsDrawCommand.cpp" />
     <ClCompile Include="Source\Graphics\GL\DsGLFunc.cpp" />
@@ -229,10 +227,7 @@
     <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsShadowMapShader.cpp" />
     <ClCompile Include="Source\Keyboard\DsKeyboard.cpp" />
     <ClCompile Include="Source\Math\DsAabb.cpp" />
-    <ClCompile Include="Source\Math\DsInverseMatIteration.cpp" />
-    <ClCompile Include="Source\Math\DsInverseMatrix .cpp" />
     <ClCompile Include="Source\Math\DsMathUtil.cpp" />
-    <ClCompile Include="Source\Math\DsQuaternion.cpp" />
     <ClCompile Include="Source\Mouse\DsMouse.cpp" />
     <ClCompile Include="Source\Res\DsAnimRes.cpp" />
     <ClCompile Include="Source\Res\DsHitRes.cpp" />
@@ -244,7 +239,6 @@
     <ClCompile Include="Source\System\DsPerf.cpp" />
     <ClCompile Include="Source\System\DsSys.cpp" />
     <ClCompile Include="Source\System\DsWindow.cpp" />
-    <ClCompile Include="Source\System\DsWindowEz.cpp" />
     <ClCompile Include="Source\System\DsWindowGL.cpp" />
     <ClCompile Include="Source\System\DsWindowManager.cpp" />
   </ItemGroup>
@@ -322,7 +316,6 @@
     <ClInclude Include="Source\System\DsSys.h" />
     <ClInclude Include="Source\System\DsSysDefine.h" />
     <ClInclude Include="Source\System\DsWindow.h" />
-    <ClInclude Include="Source\System\DsWindowEz.h" />
     <ClInclude Include="Source\System\DsWindowGL.h" />
     <ClInclude Include="Source\System\DsWindowManager.h" />
     <ClInclude Include="Source\targetver.h" />

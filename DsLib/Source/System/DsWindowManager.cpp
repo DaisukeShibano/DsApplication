@@ -6,9 +6,6 @@
 #ifndef _DS_WINDOW_H_
 #include "System/DsWindow.h"
 #endif
-#ifndef _DS_WINDOW_EZ_H_
-#include "System/DsWindowEz.h"
-#endif
 #ifndef _DS_WINDOW_GL_H_
 #include "System/DsWindowGL.h"
 #endif

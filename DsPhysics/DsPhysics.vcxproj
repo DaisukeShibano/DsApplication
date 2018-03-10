@@ -213,7 +213,6 @@
     <ClInclude Include="Source\Collision\EachGeom\DsCollisionSphereSphere.h" />
     <ClInclude Include="Source\Collision\EachGeom\ICollisionGeom.h" />
     <ClInclude Include="Source\Collision\GJK\DsGJK.h" />
-    <ClInclude Include="Source\Common\DsPose.h" />
     <ClInclude Include="Source\Constraint\ConstraintSolver\DsConstraintSolver.h" />
     <ClInclude Include="Source\Constraint\ConstraintSolver\DsPositionDepthSolver.h" />
     <ClInclude Include="Source\Constraint\DsBallConstraint.h" />
@@ -252,7 +251,6 @@
     <ClCompile Include="Source\Actor\DsRigidMesh.cpp" />
     <ClCompile Include="Source\Actor\DsRigidSphere.cpp" />
     <ClCompile Include="Source\Collision\BoundingTree\DsBoundingTreeAabb.cpp" />
-    <ClCompile Include="Source\Collision\BoundingTree\DsBoundingTreeBase.cpp" />
     <ClCompile Include="Source\Collision\BoundingTree\DsBoundingOctree.cpp" />
     <ClCompile Include="Source\Collision\DsCollisionDetection.cpp" />
     <ClCompile Include="Source\Collision\DsCollisionExecuter.cpp" />
@@ -269,7 +267,6 @@
     <ClCompile Include="Source\Collision\EachGeom\DsCollisionSphereMesh.cpp" />
     <ClCompile Include="Source\Collision\EachGeom\DsCollisionSphereSphere.cpp" />
     <ClCompile Include="Source\Collision\GJK\DsGJK.cpp" />
-    <ClCompile Include="Source\Common\DsPose.cpp" />
     <ClCompile Include="Source\Constraint\ConstraintSolver\DsConstraintSolver.cpp" />
     <ClCompile Include="Source\Constraint\ConstraintSolver\DsPositionDepthSolver.cpp" />
     <ClCompile Include="Source\Constraint\DsBallConstraint.cpp" />
@@ -292,7 +289,6 @@
     <ClCompile Include="Source\Joint\DsBallJoint.cpp" />
     <ClCompile Include="Source\Joint\DsHingeJoint.cpp" />
     <ClCompile Include="Source\Joint\DsHinge2Joint.cpp" />
-    <ClCompile Include="Source\Joint\DsJoint.cpp" />
     <ClCompile Include="Source\PhysicsUtil\DsPhysicsUtil.cpp" />
     <ClCompile Include="Source\Ragdoll\DsRagdoll.cpp" />
     <ClCompile Include="Source\Tool\DsActorSelector.cpp" />

@@ -5,3 +5,7 @@
 using namespace DsPhysics;
 
 
+DsDollJointChain::DsDollJointChain()
+{
+
+}
