@@ -92,4 +92,13 @@
 #ifndef _DS_AS_NODE_
 #include "ActionState/DsASNode.h"
 #endif
+#ifndef _DS_HITRES_H_
+#include "Res/DsHitRes.h"
+#endif
+#ifndef _DS_ANIM_RES_
+#include "Res/DsAnimRes.h"
+#endif
+
+
+
 #endif
