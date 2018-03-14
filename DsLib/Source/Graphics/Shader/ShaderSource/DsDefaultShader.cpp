@@ -50,8 +50,8 @@ namespace
 		uniform float shadow_ambient;
 
 		// テクスチャの有無
-		uniform bool isUseColorTexture=true;
-		uniform bool isUseLight = true;
+		uniform bool isUseColorTexture;// = true;//GLSL 1.10でエラー出るのでコメントアウト
+		uniform bool isUseLight;// = true;
 
 		/*!
 		* Phong反射モデルによるシェーディング
