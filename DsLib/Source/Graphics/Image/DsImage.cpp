@@ -127,7 +127,7 @@ void DsImage::Load(const char* path)
 	const string ext = path + strLen - 4; // .***‚Ì•”•ª‚ğæ‚èo‚·
 	bool isLoad = false;
 
-	if ((ext == ".tga") || (ext == ".tga") )
+	if ((ext == ".tga") || (ext == ".TGA") )
 	{
 		isLoad = _LoadTga(path, &m_pImgTop, m_imgWidth, m_imgHeight);
 	}

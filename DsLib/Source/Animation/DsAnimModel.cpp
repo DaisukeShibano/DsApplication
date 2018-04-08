@@ -103,7 +103,7 @@ void DsAnimModel::CreateVertexNormal()
 	const int vn = GetVertexNum();
 	m_pVertexNormalIdxs = new ShareNlmIdxs[vn];
 	DS_ASSERT(m_pVertexNormalIdxs, "メモリ確保失敗");
-	m_pVertexNormals = new DsVec3f[vn];
+	m_pVertexNormals = new DsVec3d[vn];
 	DS_ASSERT(m_pVertexNormals, "メモリ確保失敗");
 
 	const Face* pFace = GetFace();
@@ -147,13 +147,13 @@ void DsAnimModel::UpdateNormal()
 		const int vn = GetVertexNum();
 		for (int vi = 0; vi < vn; ++vi)
 		{
-			DsVec3f normal = DsVec3f::Zero();
+			DsVec3d normal = DsVec3d::Zero();
 			for each(int fIdx in m_pVertexNormalIdxs[vi])
 			{
 				//頂点法線を、隣接している面の法線の合計から求める
-				normal = normal + DsVec3f::ToVec3(static_cast<float>(pFace[fIdx].normal.x), static_cast<float>(pFace[fIdx].normal.y), static_cast<float>(pFace[fIdx].normal.z));
+				normal = normal + DsVec3d::ToVec3(static_cast<float>(pFace[fIdx].normal.x), static_cast<float>(pFace[fIdx].normal.y), static_cast<float>(pFace[fIdx].normal.z));
 			}
-			m_pVertexNormals[vi] = DsVec3f::Normalize(normal);
+			m_pVertexNormals[vi] = DsVec3d::Normalize(normal);
 		}
 	}
 }

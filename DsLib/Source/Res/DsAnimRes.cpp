@@ -464,6 +464,8 @@ namespace
 
 	OutputRes* _LoadAnim(const char* path)
 	{
+		//一行ずつ読み取るのではく、がっとコピーするようにする
+
 		OutputRes& res= *(new OutputRes());
 
 		DsFile fs(path, std::ios::out | std::ios::binary);

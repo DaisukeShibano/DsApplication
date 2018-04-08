@@ -28,7 +28,7 @@ void DsAnimModelRender::Register(const DsAnimModel* pModel)
 	{
 		m_drawList.push_back(pModel);
 
-		//非同期で読みなら場所を考える
+		//場所を考える
 		m_texture.Load(*pModel);
 	}
 }
@@ -108,7 +108,7 @@ void DsAnimModelRender::RenderNonMaterial() const
 
 			//頂点法線
 			const bool isUseVertexNormal = pModel->IsCreateVertexNormal();
-			const DsVec3f* pVertexNormals = pModel->GetVertexNormals();
+			const DsVec3d* pVertexNormals = pModel->GetVertexNormals();
 
 			for (int fi = 0; fi < fn; ++fi, ++pFace)
 			{
@@ -134,7 +134,7 @@ void DsAnimModelRender::RenderNonMaterial() const
 					const int vIndex = (*pIndex);
 					if (isUseVertexNormal)
 					{
-						glNormal3fv(pVertexNormals[vIndex].v);
+						glNormal3dv(pVertexNormals[vIndex].v);
 					}
 					const DsVec4d& v = pVertex[vIndex];
 					glVertex3dv(pVertex[vIndex].v);
@@ -173,7 +173,7 @@ void DsAnimModelRender::Render() const
 
 		//頂点法線
 		const bool isUseVertexNormal = pModel->IsCreateVertexNormal();
-		const DsVec3f* pVertexNormals = pModel->GetVertexNormals();
+		const DsVec3d* pVertexNormals = pModel->GetVertexNormals();
 
 		//頂点、面
 		const int fn = pModel->GetFaceNum();
@@ -221,7 +221,7 @@ void DsAnimModelRender::Render() const
 						const int vIdx = uv.vertexIdx;
 						if (isUseVertexNormal)
 						{
-							glNormal3fv(pVertexNormals[vIdx].v);
+							glNormal3dv(pVertexNormals[vIdx].v);
 						}
 						glTexCoord2f(uv.x, uv.y);
 						DsVec3d tmp = pModel->GetRotation()*pVertex[vIdx] + pModel->GetPosition();//glMultMatrixdを使えるようにせねば

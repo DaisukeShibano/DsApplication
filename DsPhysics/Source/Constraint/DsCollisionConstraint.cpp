@@ -323,7 +323,6 @@ void DsCollisionConstraint::_CalcConatraintForce()
 	//b = w[t] + JinvMFe * dt
 	//w[t+1] = Ax+b		xÇ™ãÅÇﬂÇΩÇ¢çSë©óÕ
 
-	//ÉRÉsÅ[ÇÃñ≥ë 
 	//const double A[3][3] = {
 	//	{ m_JinvMJt[0][0], m_JinvMJt[0][1], m_JinvMJt[0][2]},
 	//	{ m_JinvMJt[1][0], m_JinvMJt[1][1], m_JinvMJt[1][2]},

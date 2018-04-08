@@ -92,7 +92,7 @@ namespace DsLib
 		void CreateVertexNormal();
 		bool IsCreateVertexNormal() const { return (m_pVertexNormalIdxs && m_pVertexNormals); }
 		void UpdateNormal();
-		const DsVec3f* GetVertexNormals() const { return m_pVertexNormals; }
+		const DsVec3d* GetVertexNormals() const { return m_pVertexNormals; }
 
 	public:
 		void SetPosition(const DsVec3d& pos) { m_pos = pos; }
@@ -116,7 +116,7 @@ namespace DsLib
 		//１つの頂点に隣接している面のインデックス
 		typedef std::vector<int> ShareNlmIdxs;
 		ShareNlmIdxs* m_pVertexNormalIdxs;
-		DsVec3f* m_pVertexNormals;
+		DsVec3d* m_pVertexNormals;
 	};
 }
 
