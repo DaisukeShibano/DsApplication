@@ -131,36 +131,36 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 	DsPhysicsWorld* pWorld = DsPhysicsManager::GetDefaultWorld();
 	if (pWorld)
 	{
-	pWorld->Update(args.dt);
-	int color = 0;
-	for each(DsActor* actor in pWorld->GetActors())
-	{
-		std::string tmp = actor->GetName();
-		//if( (tmp != "robo_0") && (tmp!="ragdoll") )
-		if ((tmp == "” ‚P") || (tmp == "” ‚Q") || (tmp == "” ‚R"))
-			//if (actor->GetType() == DsActor::RIGID_MESH)
+		pWorld->Update(args.dt);
+		int color = 0;
+		for each(DsActor* actor in pWorld->GetActors())
 		{
-			const double rC = (actor->IsRest()) ? (0.5) : (1.0);
-			if (color == 0) {
-				actor->SetColor(DsVec4d(1.0, 0.6, 0.2, 1)*rC);
+			std::string tmp = actor->GetName();
+			//if( (tmp != "robo_0") && (tmp!="ragdoll") )
+			if ((tmp == "” ‚P") || (tmp == "” ‚Q") || (tmp == "” ‚R"))
+				//if (actor->GetType() == DsActor::RIGID_MESH)
+			{
+				const double rC = (actor->IsRest()) ? (0.5) : (1.0);
+				if (color == 0) {
+					actor->SetColor(DsVec4d(1.0, 0.6, 0.2, 1)*rC);
+				}
+				else if (color == 1) {
+					actor->SetColor(DsVec4d(0.2, 1.0, 0.6, 1)*rC);
+				}
+				else {
+					actor->SetColor(DsVec4d(0.4, 0.6, 1.0, 1)*rC);
+				}
+				actor->SetLineColor(DsVec4d(0, 0, 0, 1));
+				actor->Draw(args.drawCom);
 			}
-			else if (color == 1) {
-				actor->SetColor(DsVec4d(0.2, 1.0, 0.6, 1)*rC);
-			}
-			else {
-				actor->SetColor(DsVec4d(0.4, 0.6, 1.0, 1)*rC);
-			}
-			actor->SetLineColor(DsVec4d(0, 0, 0, 1));
-			actor->Draw(args.drawCom);
+			++color;
+			color %= 3;
 		}
-		++color;
-		color %= 3;
-	}
-	m_joint->Update(args.dt);
-	m_joint->DbgDraw(args.drawCom);
+		m_joint->Update(args.dt);
+		m_joint->DbgDraw(args.drawCom);
 
-	m_joint2->Update(args.dt);
-	m_joint2->DbgDraw(args.drawCom);
+		m_joint2->Update(args.dt);
+		m_joint2->DbgDraw(args.drawCom);
 
 	}
 
@@ -215,6 +215,11 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 	//	m_pImage2->GetImage(), m_pImage2->GetWidth(), m_pImage2->GetHeight());
 	
 	DsPerf::RefPerfTotalFps().DbgDrawFps();
+
+	//args.drawCom.SetColor(DsVec3d(0, 0, 0)).DrawTextScreen(DsVec2d(-0.33, 0.36), L" w");
+	//args.drawCom.SetColor(DsVec3d(0, 0, 0)).DrawTextScreen(DsVec2d(-0.33, 0.32), L"a d  ˆÚ“®");
+	//args.drawCom.SetColor(DsVec3d(0, 0, 0)).DrawTextScreen(DsVec2d(-0.33, 0.28), L" s");
+	//args.drawCom.SetColor(DsVec3d(0, 0, 0)).DrawTextScreen(DsVec2d(-0.33, 0.20), L"drag Ž‹“_‰ñ“]");
 }
 
 
