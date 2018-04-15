@@ -107,6 +107,12 @@
     <Filter Include="Source\ActionState">
       <UniqueIdentifier>{c20473b0-9445-4354-bd09-bdaec8d228a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Graphics\Effect">
+      <UniqueIdentifier>{bd64c5e9-d4d9-498e-a264-7156de2d3062}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Graphics\Effect\Particle">
+      <UniqueIdentifier>{18bc64ce-47cb-48a5-ab0a-0d8d614734ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsPch.cpp">
@@ -261,6 +267,9 @@
     </ClCompile>
     <ClCompile Include="Source\ActionState\DsActionStateCtrl.cpp">
       <Filter>Source\ActionState</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Effect\Particle\DsTraceParticleEmitter.cpp">
+      <Filter>Source\Graphics\Effect\Particle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -491,6 +500,12 @@
     </ClInclude>
     <ClInclude Include="Source\ActionState\DsActionStateCtrl.h">
       <Filter>Source\ActionState</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Effect\Particle\DsTraceParticleEmitter.h">
+      <Filter>Source\Graphics\Effect\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Effect\Particle\DsParticle.h">
+      <Filter>Source\Graphics\Effect\Particle</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

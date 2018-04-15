@@ -5,6 +5,10 @@
 #include "Graphics/Render/DsAnimModelRender.h"
 #endif
 
+#ifndef _DS_TRACE_PARTICLE_EMITTER_
+#include "Graphics/Effect/Particle/DsTraceParticleEmitter.h"
+#endif
+
 namespace DsLib
 {
 	class DsCamera;
@@ -77,6 +81,9 @@ namespace DsLib
 
 	private:
 		std::vector<DsRenderCamCaptureImage*> m_renderImages;
+
+
+		DsTraceParticleEmitter m_test;
 	};
 
 }

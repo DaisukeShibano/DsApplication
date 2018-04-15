@@ -121,6 +121,9 @@ void DsRender::Render( const double dt )
 	
 	//デバッグ用
 	//m_pShadow->DrawDepthTex();
+
+	m_test.RequestEmit();
+	m_test.Update(dt);
 }
 
 void DsRender::Update( const double dt )
