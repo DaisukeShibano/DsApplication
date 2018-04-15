@@ -16,7 +16,7 @@ static const double PARTICLE_LIFE_TIME = 1.5f;//パーティクル寿命
 
 
 
-static const int BLOCK_SIZE = 32;//この個数単位でメモリ確保される
+static const int BLOCK_SIZE = 256;//この個数単位でメモリ確保される
 static const double DELETE_BLOCK_TIME = 5.0f;//ブロックがこの時間以上空だったら削除する
 
 
@@ -47,44 +47,42 @@ void DsTraceParticleEmitter::Update(double dt)
 
 
 	//更新/削除
-	{
-		for (ParticleBlock& block : m_particle) {
-			DsSquareParticle* pParticle = block.pUseHead;
-			DsSquareParticle* pPre = NULL;
-			while (pParticle) {
-				pParticle->lifeTime -= dt;
+	for (ParticleBlock& block : m_particle) {
+		DsSquareParticle* pParticle = block.pUseHead;
+		DsSquareParticle* pPre = NULL;
+		while (pParticle) {
+			pParticle->lifeTime -= dt;
 
-				//寿命尽きたので消す(フリーリストに移動させる)
-				if (pParticle->lifeTime <= 0.0) {
-					DsSquareParticle* pNext = pParticle->pNext;
+			//寿命尽きたので消す(フリーリストに移動させる)
+			if (pParticle->lifeTime <= 0.0) {
+				DsSquareParticle* pNext = pParticle->pNext;
 
-					//使用中リストからはずす
-					if (pPre) {//中間が消えた
-						pPre->pNext = pNext;
-					}
-					else {//先頭が消えた
-						block.pUseHead = pNext;
-					}
-
-					//消えたのが使用中末尾なら後退
-					if (pParticle == block.pUseTail) {
-						block.pUseTail = pPre;//先頭==使用中末尾ならpPreはNULLで使用中末尾はNULL
-						if (block.pUseTail) {
-							block.pUseTail->pNext = NULL;
-						}
-					}
-
-					//フリーリストに追加
-					pParticle->pNext = block.pFreeTail;
-					block.pFreeTail = pParticle;
-
-					//進んでないので一個前(pPre)は更新しない
-					pParticle = pNext;
+				//使用中リストからはずす
+				if (pPre) {//中間が消えた
+					pPre->pNext = pNext;
 				}
-				else {
-					pPre = pParticle;
-					pParticle = pParticle->pNext;
+				else {//先頭が消えた
+					block.pUseHead = pNext;
 				}
+
+				//消えたのが使用中末尾なら後退
+				if (pParticle == block.pUseTail) {
+					block.pUseTail = pPre;//先頭==使用中末尾ならpPreはNULLで使用中末尾はNULL
+					if (block.pUseTail) {
+						block.pUseTail->pNext = NULL;
+					}
+				}
+
+				//フリーリストに追加
+				pParticle->pNext = block.pFreeTail;
+				block.pFreeTail = pParticle;
+
+				//進んでないので一個前(pPre)は更新しない
+				pParticle = pNext;
+			}
+			else {
+				pPre = pParticle;
+				pParticle = pParticle->pNext;
 			}
 		}
 	}
@@ -129,24 +127,22 @@ void DsTraceParticleEmitter::Update(double dt)
 			}
 			
 			DsSquareParticle* pParticle = pFreeBlock->pFreeTail;
-			if (pParticle) {
-				pParticle->pos[0] = m_emitPos[0];
-				pParticle->pos[1] = m_emitPos[1];
-				pParticle->pos[2] = m_emitPrePos[0];
-				pParticle->pos[3] = m_emitPrePos[1];
-				pParticle->speed = DsVec3d::Zero();//軌跡はその場にとどまるだけなので速度はなし
-				pParticle->lifeTime = PARTICLE_LIFE_TIME;
+			pParticle->pos[0] = m_emitPos[0];
+			pParticle->pos[1] = m_emitPos[1];
+			pParticle->pos[2] = m_emitPrePos[0];
+			pParticle->pos[3] = m_emitPrePos[1];
+			pParticle->speed = DsVec3d::Zero();//軌跡はその場にとどまるだけなので速度はなし
+			pParticle->lifeTime = PARTICLE_LIFE_TIME;
 
-				//フリーリストを消費
-				pFreeBlock->pFreeTail = pFreeBlock->pFreeTail->pNext;
+			//フリーリストを消費
+			pFreeBlock->pFreeTail = pFreeBlock->pFreeTail->pNext;
 
-				//使用中に追加
-				if (pFreeBlock->pUseTail) {
-					pFreeBlock->pUseTail->pNext = pParticle;
-				}
-				pFreeBlock->pUseTail = pParticle;
-				pParticle->pNext = NULL;
+			//使用中に追加
+			if (pFreeBlock->pUseTail) {
+				pFreeBlock->pUseTail->pNext = pParticle;
 			}
+			pFreeBlock->pUseTail = pParticle;
+			pParticle->pNext = NULL;
 
 			m_nextEmitTime = INTERVAL_TIME;
 
