@@ -197,9 +197,9 @@ void DsAnimModelRender::Render() const
 				for(const DsAnimModel::Face* pFace : pTex->refGeomFaces)
 				{
 					//材質の色は適当
-					const static GLfloat col[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-					const static GLfloat spec[] = { 0.0f, 0.0f, 0.0f, 1.0f };	// 鏡面反射色
-					const static GLfloat ambi[] = { 0.1f, 0.1f, 0.1f, 1.0f };	// 環境光
+					const GLfloat col[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+					const GLfloat spec[] = { 0.0f, 0.0f, 0.0f, 1.0f };	// 鏡面反射色
+					const GLfloat ambi[] = { 0.1f, 0.1f, 0.1f, 1.0f };	// 環境光
 					glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
 					glMaterialfv(GL_FRONT, GL_AMBIENT, ambi);
 					glMaterialf(GL_FRONT, GL_SHININESS, 30);

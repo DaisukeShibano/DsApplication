@@ -83,6 +83,7 @@ DsRender::~DsRender()
 	delete m_pDrawCom; m_pDrawCom=NULL;
 }
 
+//d‚É‰e‚Ì‘ÎÛ‚Ì•`‰æ
 void DsRender::RendPolygon() const
 {
 	m_animRender.RenderPolygon();
@@ -175,7 +176,8 @@ void DsRender::_RenderModel() const
 	m_pShader->SetUseLight(true);
 	m_pShader->SetUseTexture(true);
 	m_animRender.Render();
-	
+	m_particleRender.Render();
+
 	m_pShader->SetUseTexture(false);
 	m_animRender.RenderNonMaterial();
 

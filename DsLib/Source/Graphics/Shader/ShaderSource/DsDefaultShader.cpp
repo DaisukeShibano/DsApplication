@@ -169,7 +169,10 @@ namespace
 			float shadow_blurry = ChebyshevUpperBound(shadow_coord, depth_tex_coord2);
 			float shadow_blurry_modify = min(shadow_ambient + shadow_blurry, 1.0);
 			gl_FragColor = vec4(shadow_blurry_modify)*light_col;
-			gl_FragColor.w = texColor.w;//アルファ値は演算の対象外
+
+			//アルファ値は個別で算出
+			//glColor4f()のアルファ値だけを適用する。フェードアウト用など
+			gl_FragColor.w = gl_Color.w * texColor.w;
 		}
 	);
 }

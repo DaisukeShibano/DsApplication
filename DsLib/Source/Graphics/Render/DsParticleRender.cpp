@@ -44,28 +44,31 @@ void DsParticleRender::Render() const
 {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDisable(GL_CULL_FACE);
 
 	const DsVec3d camDir =  -m_cam.GetRot().GetAxisZ();
 
 	for (const DsTraceParticleEmitter* pEmitter : m_traceDrawList) {
+		const double maxLifeTime = pEmitter->GetParticleMaxLifeTime();
 		const GLuint texId = m_texture.GetTexId(pEmitter->GetTexPath());
 		glBindTexture(GL_TEXTURE_2D, texId);
 		//材質の色は適当
-		const static GLfloat col[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-		const static GLfloat spec[] = { 0.0f, 0.0f, 0.0f, 1.0f };	// 鏡面反射色
-		const static GLfloat ambi[] = { 0.1f, 0.1f, 0.1f, 1.0f };	// 環境光
+		const GLfloat diff[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		const GLfloat spec[] = { 0.0f, 0.0f, 0.0f, 1.0f };	// 鏡面反射色
+		const GLfloat ambi[] = { 0.1f, 0.1f, 0.1f, 1.0f };	// 環境光
 		glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
 		glMaterialfv(GL_FRONT, GL_AMBIENT, ambi);
 		glMaterialf(GL_FRONT, GL_SHININESS, 30);
-		glMaterialfv(GL_FRONT, GL_DIFFUSE, col);
-		glColor3fv(col);
+		glMaterialfv(GL_FRONT, GL_DIFFUSE, diff);
 
 		//パーティクルループ
 		{
-			auto func = [this, texId, camDir](const DsSquareParticle& particle) {
+			auto func = [this, texId, camDir, maxLifeTime](const DsSquareParticle& particle) {
 				const DsVec2f* pUv = particle.uvPos;
 				const DsVec3d* pPos = particle.pos;
-
+				const GLfloat col[] = { 1.0f, 1.0f, 1.0f, static_cast<float>(particle.lifeTime/ maxLifeTime) };
+				
+				glColor4fv(col);
 				glNormal3dv(camDir.v);
 				glBegin(GL_QUADS);
 				glTexCoord2fv(pUv[0].v);
@@ -81,6 +84,8 @@ void DsParticleRender::Render() const
 			pEmitter->EnumParticle(func);
 		}
 	}
+
+	glEnable(GL_CULL_FACE);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glDisable(GL_BLEND);
 

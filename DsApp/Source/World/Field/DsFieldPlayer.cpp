@@ -52,6 +52,7 @@ DsFieldPlayer::DsFieldPlayer(DsSys& sys, DsPhysicsWorld& world)
 	, m_mouse(sys.RefMouse())
 	, m_window(sys.RefWindow())
 {
+	m_sys.RefRender().RefParticleRender().Register(m_testEmitter);
 }
 
 DsFieldPlayer::~DsFieldPlayer()
@@ -80,6 +81,12 @@ DsActionRequest* DsFieldPlayer::_CreareActionRequest()
 //virtual 
 void DsFieldPlayer::Update(double dt)
 {
+	//パーティクルテスト
+	m_testEmitter.RequestEmit();
+	m_testEmitter.SetPosition(GetPosition(), GetPosition() + DsVec3d(0, 1, 0));
+	m_testEmitter.Update(dt);
+
+
 	//m_actorId.GetActor()->RefOption().isGravity = false;
 	{//キャラ座標の更新
 

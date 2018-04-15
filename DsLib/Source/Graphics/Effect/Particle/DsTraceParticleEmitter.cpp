@@ -128,10 +128,10 @@ void DsTraceParticleEmitter::Update(double dt)
 			DsSquareParticle* pParticle = pFreeBlock->pFreeTail;
 			pParticle->pos[0] = m_emitPos[0];
 			pParticle->pos[1] = m_emitPos[1];
-			pParticle->pos[2] = m_emitPrePos[0];
-			pParticle->pos[3] = m_emitPrePos[1];
+			pParticle->pos[2] = m_emitPrePos[1];
+			pParticle->pos[3] = m_emitPrePos[0];
 			pParticle->speed = DsVec3d::Zero();//軌跡はその場にとどまるだけなので速度はなし
-			pParticle->lifeTime = PARTICLE_LIFE_TIME;
+			pParticle->lifeTime = GetParticleMaxLifeTime();
 
 			//フリーリストを消費
 			pFreeBlock->pFreeTail = pFreeBlock->pFreeTail->pNext;
@@ -184,6 +184,11 @@ void DsTraceParticleEmitter::SetPosition(const DsVec3d& pos1, const DsVec3d& pos
 {
 	m_emitPos[0] = pos1;
 	m_emitPos[1] = pos2;
+}
+
+double DsTraceParticleEmitter::GetParticleMaxLifeTime()const
+{
+	return PARTICLE_LIFE_TIME;
 }
 
 
