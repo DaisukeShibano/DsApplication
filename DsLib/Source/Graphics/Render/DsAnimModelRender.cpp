@@ -152,7 +152,6 @@ void DsAnimModelRender::RenderNonMaterial() const
 void DsAnimModelRender::Render() const
 {
 	glEnable(GL_BLEND);
-	glEnable(GL_TEXTURE_2D);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
 	for(const DsAnimModel* pModel : m_drawList) 
@@ -245,6 +244,5 @@ void DsAnimModelRender::Render() const
 #endif
 	}
 
-	glDisable(GL_TEXTURE_2D);
 	glDisable(GL_BLEND);
 }

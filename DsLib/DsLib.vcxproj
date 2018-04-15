@@ -214,6 +214,7 @@
     <ClCompile Include="Source\Graphics\Light\DsLightMan.cpp" />
     <ClCompile Include="Source\Graphics\Light\DsSunLight.cpp" />
     <ClCompile Include="Source\Graphics\Render\DsAnimModelRender.cpp" />
+    <ClCompile Include="Source\Graphics\Render\DsParticleRender.cpp" />
     <ClCompile Include="Source\Graphics\Render\DsRender.cpp" />
     <ClCompile Include="Source\Graphics\Render\DsRenderCamCaptureImage.cpp" />
     <ClCompile Include="Source\Graphics\Render\DsShadowMap.cpp" />
@@ -273,6 +274,7 @@
     <ClInclude Include="Source\Graphics\Light\DsLightMan.h" />
     <ClInclude Include="Source\Graphics\Light\DsSunLight.h" />
     <ClInclude Include="Source\Graphics\Render\DsAnimModelRender.h" />
+    <ClInclude Include="Source\Graphics\Render\DsParticleRender.h" />
     <ClInclude Include="Source\Graphics\Render\DsRender.h" />
     <ClInclude Include="Source\Graphics\Render\DsRenderCamCaptureImage.h" />
     <ClInclude Include="Source\Graphics\Render\DsShadowMap.h" />

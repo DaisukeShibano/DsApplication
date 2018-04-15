@@ -4,9 +4,7 @@
 #include "Graphics/Effect/Particle/DsTraceParticleEmitter.h"
 #endif
 //‘¼‚Ìƒwƒbƒ_
-#ifndef _DS_PARTICLE_
-#include "Graphics/Effect/Particle/DsParticle.h"
-#endif
+
 
 using namespace DsLib;
 
@@ -24,10 +22,11 @@ DsTraceParticleEmitter::DsTraceParticleEmitter()
 	: m_particle()
 	, m_emitPos()
 	, m_emitPrePos()
+	, m_texPath()
 	, m_nextEmitTime(0)
 	, m_isRequestEmit(false)
 {
-
+	m_texPath = "TestParticle.tga";
 }
 
 DsTraceParticleEmitter::~DsTraceParticleEmitter()

@@ -271,6 +271,9 @@
     <ClCompile Include="Source\Graphics\Effect\Particle\DsTraceParticleEmitter.cpp">
       <Filter>Source\Graphics\Effect\Particle</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Graphics\Render\DsParticleRender.cpp">
+      <Filter>Source\Graphics\Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsPch.h">
@@ -506,6 +509,9 @@
     </ClInclude>
     <ClInclude Include="Source\Graphics\Effect\Particle\DsParticle.h">
       <Filter>Source\Graphics\Effect\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Render\DsParticleRender.h">
+      <Filter>Source\Graphics\Render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

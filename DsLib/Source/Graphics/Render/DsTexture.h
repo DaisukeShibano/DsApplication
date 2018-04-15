@@ -34,6 +34,9 @@ namespace DsLib
 		void Load(const DsAnimModel& model);
 		void UnLoad(const DsAnimModel& model);
 
+		void Load(const std::string& path);
+		void UnLoad(const std::string& path);
+
 		inline unsigned int GetTexId(const std::string texPath) const
 		{
 			auto it = m_texMap.find(texPath);

@@ -9,7 +9,7 @@
 
 namespace DsLib
 {
-	static const double SQUARE_PARTICLE_UV[4][2] =
+	static const float SQUARE_PARTICLE_UV[4][2] =
 	{
 		{0, 0},
 		{0, 1},
@@ -21,12 +21,17 @@ namespace DsLib
 	{
 		DsSquareParticle()
 			: pos()
+			, uvPos()
 			, speed()
 			, lifeTime(0)
 			, pNext(NULL)
-		{}
+		{
+			for (int i = 0; i < 4; ++i) {
+				uvPos[i].Set(SQUARE_PARTICLE_UV[i][0], SQUARE_PARTICLE_UV[i][1]);
+			}
+		}
 		DsVec3d pos[4];
-		//DsVec2d uvPos[4];//uv座標はインデックス値から固定
+		DsVec2f uvPos[4];
 		DsVec3d speed;
 		double lifeTime;
 		DsSquareParticle* pNext;

@@ -41,6 +41,7 @@ DsRender::DsRender(DsCamera& cam, DsSys& sys)
 ,m_light(DsLightMan::GetIns().GetSunLight())
 ,m_sys(sys)
 ,m_animRender()
+,m_particleRender(cam)
 ,m_renderImages()
 {
 	
@@ -121,9 +122,6 @@ void DsRender::Render( const double dt )
 	
 	//デバッグ用
 	//m_pShadow->DrawDepthTex();
-
-	m_test.RequestEmit();
-	m_test.Update(dt);
 }
 
 void DsRender::Update( const double dt )

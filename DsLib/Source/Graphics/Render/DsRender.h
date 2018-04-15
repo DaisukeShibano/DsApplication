@@ -5,8 +5,8 @@
 #include "Graphics/Render/DsAnimModelRender.h"
 #endif
 
-#ifndef _DS_TRACE_PARTICLE_EMITTER_
-#include "Graphics/Effect/Particle/DsTraceParticleEmitter.h"
+#ifndef _DS_PARTICLE_RENDER_
+#include "Graphics/Render/DsParticleRender.h"
 #endif
 
 namespace DsLib
@@ -51,6 +51,7 @@ namespace DsLib
 		double GetWidth() const;
 		double GetHeight() const;
 		DsAnimModelRender& RefAnimRender() { return m_animRender; }
+		DsParticleRender& RefParticleRender() { return m_particleRender; }
 
 	public:
 		void SetEnableTexture(bool isEnable);
@@ -78,12 +79,10 @@ namespace DsLib
 
 	private:
 		DsAnimModelRender m_animRender;
+		DsParticleRender m_particleRender;
 
 	private:
 		std::vector<DsRenderCamCaptureImage*> m_renderImages;
-
-
-		DsTraceParticleEmitter m_test;
 	};
 
 }
