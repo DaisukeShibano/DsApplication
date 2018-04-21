@@ -39,8 +39,9 @@ namespace
 	void _Mapping(const DsAnimBone* bone, const DsMat33d& bRot, const DsVec3d& bPos, DsVec4d* vertex, const DsVec4d* srcVertex)
 	{
 		for (int idx = 0; idx < bone->vIndexNum; ++idx)
-		{	
-			const DsVec3d srcV = srcVertex[bone->pIndex[idx]];
+		{
+			const int vertexIdx = bone->pIndex[idx];
+			const DsVec3d srcV = srcVertex[vertexIdx];
 			const double w = bone->pWeight[idx];
 
 			//s_weigth[index] += w;//デバッグ用
@@ -48,7 +49,7 @@ namespace
 			//頂点は初期姿勢のボーンと一致している
 
 			//initWorldPose はスケールがかかっている
-			//bRot　はすでに親のスケールがかかってる
+			//bRotはすでに親のスケールがかかってる
 
 			//初期姿勢からどれだけ動いたか求める。
 			DsVec3d diffP = bPos - bone->initWorldPose.GetPos();//initWorldPosがTスタンスのときのポーズでないとダメ。
@@ -58,11 +59,10 @@ namespace
 			const DsVec3d transV = (diffR*(srcV - bone->initWorldPose.GetPos())) + (bone->initWorldPose.GetPos() + diffP);
 			
 			//重み付けした頂点の変化量
-			const DsVec3d transVW = (transV - srcVertex[bone->pIndex[idx]])*w;
+			const DsVec3d transVW = (transV - srcVertex[vertexIdx])*w;
 
 			//反映
-			const int dstIdx = bone->pIndex[idx];
-			vertex[dstIdx] += DsVec4d(transVW.x, transVW.y, transVW.z, 0);
+			vertex[vertexIdx] += DsVec4d(transVW.x, transVW.y, transVW.z, 0);
 		}
 
 		//再帰版

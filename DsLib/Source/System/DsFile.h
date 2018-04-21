@@ -32,6 +32,12 @@ namespace DsLib
 
 		bool GetLine(std::string& str);
 
+		size_t GetSize() const { return m_bufSize; }
+
+		char* GetBufferTop()const { return m_pBufTop; }
+
+		char* GetReadBuffer()const { return m_pReadBuf; }
+
 	private:
 		void _Init();
 
@@ -45,7 +51,7 @@ namespace DsLib
 #elif defined __USE_IFSTREAM2
 		char* m_pBufTop;
 		char* m_pReadBuf;
-		unsigned long long int m_bufSize;
+		size_t m_bufSize;
 #endif
 	};
 

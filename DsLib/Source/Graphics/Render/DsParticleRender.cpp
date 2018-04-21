@@ -46,7 +46,7 @@ void DsParticleRender::Render() const
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_CULL_FACE);
 
-	const DsVec3d camDir =  -m_cam.GetRot().GetAxisZ();
+	const DsVec3d camDir = -m_cam.GetRot().GetAxisZ();
 
 	for (const DsTraceParticleEmitter* pEmitter : m_traceDrawList) {
 		const double maxLifeTime = pEmitter->GetParticleMaxLifeTime();

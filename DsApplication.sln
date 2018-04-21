@@ -30,6 +30,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimuEditor", "SimuEditor\Si
 		{61114261-4D1D-4E51-B88B-11A3281853CB} = {61114261-4D1D-4E51-B88B-11A3281853CB}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TimingEventEditor", "TimingEventEditor\TimingEventEditor.vcxproj", "{105091FC-BBB8-4DA4-806F-D356823BA9AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -78,8 +80,19 @@ Global
 		{F315696F-350D-4039-A302-4EEA19669037}.Release|x64.Build.0 = Release|x64
 		{F315696F-350D-4039-A302-4EEA19669037}.Release|x86.ActiveCfg = Release|Win32
 		{F315696F-350D-4039-A302-4EEA19669037}.Release|x86.Build.0 = Release|Win32
+		{105091FC-BBB8-4DA4-806F-D356823BA9AA}.Debug|x64.ActiveCfg = Debug|x64
+		{105091FC-BBB8-4DA4-806F-D356823BA9AA}.Debug|x64.Build.0 = Debug|x64
+		{105091FC-BBB8-4DA4-806F-D356823BA9AA}.Debug|x86.ActiveCfg = Debug|Win32
+		{105091FC-BBB8-4DA4-806F-D356823BA9AA}.Debug|x86.Build.0 = Debug|Win32
+		{105091FC-BBB8-4DA4-806F-D356823BA9AA}.Release|x64.ActiveCfg = Release|x64
+		{105091FC-BBB8-4DA4-806F-D356823BA9AA}.Release|x64.Build.0 = Release|x64
+		{105091FC-BBB8-4DA4-806F-D356823BA9AA}.Release|x86.ActiveCfg = Release|Win32
+		{105091FC-BBB8-4DA4-806F-D356823BA9AA}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A43817D6-D7FF-4D33-A533-EB6F2B6474EE}
 	EndGlobalSection
 EndGlobal
