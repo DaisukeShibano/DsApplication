@@ -44,11 +44,12 @@ namespace SimuEditor {
 		/// </summary>
 		~MainForm()
 		{
+			DsSimu::Finalize();
 			if (components)
 			{
 				delete components;
 			}
-			DsSimu::Finalize();
+			
 		}
 
 
