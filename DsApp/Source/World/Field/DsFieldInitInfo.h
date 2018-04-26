@@ -15,7 +15,7 @@ namespace DsApp
 	{
 		DsFieldInitInfo()
 			: pos()
-			, rot()
+			, ang()
 			, name(NULL)
 			, pHitRes(NULL)
 			, pAnimRes(NULL)
@@ -23,7 +23,7 @@ namespace DsApp
 			, boundCoef(0.0)
 		{}
 		DsVec3d pos;
-		DsMat33d rot;
+		DsVec3d ang;
 		const char* name;
 		const DsLib::DsHitRes* pHitRes;
 		const DsLib::DsAnimRes* pAnimRes;

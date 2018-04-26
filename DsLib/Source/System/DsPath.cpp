@@ -8,11 +8,19 @@ using namespace DsLib;
 using namespace std;
 
 static std::wstring s_assetPath;
+static bool s_isSetAssetPath = false;
+
+//static
+bool DsPath::IsSetAssetPath()
+{
+	return s_isSetAssetPath;
+}
 
 //static
 void DsPath::SetAssetPath(const wstring path)
 {
 	s_assetPath = path;
+	s_isSetAssetPath = true;
 }
 
 //static
@@ -54,8 +62,13 @@ wstring DsPath::GetFileName(wstring path)
 wstring DsPath::ConvAssetPath(wstring path)
 {
 	wstring ret = L"";
-	wstring assetPath = DsPath::GetAssetPath();
-	wstring fileName = DsPath::GetFileName(path);
-	ret = assetPath + L"\\" + fileName;
+	if (DsPath::IsSetAssetPath()) {
+		wstring assetPath = DsPath::GetAssetPath();
+		wstring fileName = DsPath::GetFileName(path);
+		ret = assetPath + L"\\" + fileName;
+	}
+	else {
+		ret = path;
+	}
 	return ret;
 }

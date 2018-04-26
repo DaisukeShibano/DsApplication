@@ -21,13 +21,12 @@ namespace DsPhysics
 	{
 		public:
 		/////////////Factory////////////
-		class DsRigidMeshFactory : public DsActorFactory
+		class DsRigidMeshFactory : public DsActorCoordFactory
 		{
 		public:
 			DsRigidMeshFactory(const DsAnimModel& anim, const char* name)
-				: m_anim(anim)
-				, m_initPos(DsVec3d::Zero())
-				, m_initRot(DsMat33d::Identity())
+				: DsActorCoordFactory()
+				, m_anim(anim)
 				, m_initOption(Option::Default())
 				, m_name(name)
 			{}
@@ -35,14 +34,10 @@ namespace DsPhysics
 			virtual DsActor* CreateIns(const DsActorId& id) const override;
 
 		public:
-			void InitPos(const DsVec3d& pos){ m_initPos = pos; }
-			void InitRot(const DsMat33d& rot){ m_initRot = rot; }
 			void SetOption(const Option& option){ m_initOption = option; }
 
 		private:
 			const DsAnimModel& m_anim;
-			DsVec3d m_initPos;
-			DsMat33d m_initRot;
 			Option m_initOption;
 			std::string m_name;
 		};

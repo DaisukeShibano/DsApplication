@@ -9,6 +9,11 @@ namespace DsLib
 {
 }
 
+namespace DsPhysics
+{
+	class DsActorCoordFactory;
+}
+
 namespace DsApp
 {
 	class DsFieldObj
@@ -24,7 +29,13 @@ namespace DsApp
 
 	public:
 		virtual void Update(double dt);
+
+	public:
 		virtual void Initialize(const DsFieldInitInfo& initInfo);
+	protected:
+		virtual void _SetActorCoord(DsPhysics::DsActorCoordFactory& factory, const DsFieldInitInfo& initInfo);
+
+	public:
 		virtual void SetPosition(const DsVec3d& pos);
 		virtual void SetRotation(const DsMat33d& rot);
 		virtual DsVec3d GetPosition() const;
@@ -33,6 +44,7 @@ namespace DsApp
 	public:
 		DsPhysics::DsActor* GetActor();
 		const DsPhysics::DsActor* GetActor() const;
+
 
 	protected:
 		DsLib::DsSys& m_sys;

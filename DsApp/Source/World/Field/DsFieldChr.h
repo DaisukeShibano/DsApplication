@@ -32,7 +32,12 @@ namespace DsApp
 
 	public:
 		virtual void Update(double dt);
+
+	public:
 		virtual void Initialize(const DsFieldInitInfo& initInfo);
+	private:
+		virtual void _SetActorCoord(DsPhysics::DsActorCoordFactory& factory, const DsFieldInitInfo& initInfo) override;
+
 	protected:
 		virtual DsActionRequest* _CreareActionRequest();
 

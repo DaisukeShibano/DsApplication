@@ -50,12 +50,18 @@ DsFieldChr::DsFieldChr(DsSys& sys, DsPhysicsWorld& world)
 
 DsFieldChr::~DsFieldChr()
 {
+	delete m_pRagdoll; m_pRagdoll = NULL;
 }
 
 //virtual
 void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 {
 	DsFieldObj::Initialize(initInfo);
+
+	//DsFieldObj::Initializeでは剛体の中心がアニメの中心になっているので再度キャラ用基点にセットし直し
+	SetPosition(initInfo.pos);
+	m_pAnimation->SetRootMatrix(GetPosition(), GetRotation());
+
 
 	DsActor* pActor = m_world.GetActor(m_actorId);
 	{
@@ -102,6 +108,16 @@ void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 	DS_ASSERT(m_pActCtrl, "メモリ確保失敗");
 	m_pAnimation->RequestPlayAnim(m_pActCtrl->GetCurrentAnim());
 }
+
+//virtual
+void DsFieldChr::_SetActorCoord(DsPhysics::DsActorCoordFactory& factory, const DsFieldInitInfo& initInfo)
+{
+	m_ang = initInfo.ang;
+	const DsMat33d rot = DsMat33d::RotateY(m_ang.y)*DsMat33d::RotateX(m_ang.x);
+	factory.InitPos(initInfo.pos);
+	factory.InitRot(rot);
+}
+
 
 //virtual
 DsActionRequest* DsFieldChr::_CreareActionRequest()

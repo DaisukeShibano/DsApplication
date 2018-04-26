@@ -57,7 +57,6 @@ DsFieldPlayer::DsFieldPlayer(DsSys& sys, DsPhysicsWorld& world)
 
 DsFieldPlayer::~DsFieldPlayer()
 {
-	delete m_pRagdoll; m_pRagdoll = NULL;
 }
 
 //virtual

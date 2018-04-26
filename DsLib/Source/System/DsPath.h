@@ -7,6 +7,9 @@ namespace DsLib
 	{
 	public:
 		static
+		bool IsSetAssetPath();
+
+		static
 		void SetAssetPath(const std::wstring path);
 
 		static

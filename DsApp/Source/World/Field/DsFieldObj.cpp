@@ -39,6 +39,32 @@ DsFieldObj::~DsFieldObj()
 	delete m_pAnimation; m_pAnimation = NULL;
 }
 
+namespace
+{
+	DsActor::Option _GetActorOption(const DS_MAP_OBJ_TYPE type)
+	{
+		DsActor::Option option = DsActor::Option::Default();
+		switch (type)
+		{
+		case DS_MAP_OBJ_TYPE::STATIC:
+			option = DsActor::Option::Static();
+			break;
+		case DS_MAP_OBJ_TYPE::DYNAMIC:
+			option = DsActor::Option::Default();
+			break;
+		case DS_MAP_OBJ_TYPE::AUTONOMOUS:
+			option = DsActor::Option::Default();
+			break;
+		case DS_MAP_OBJ_TYPE::CONTROL:
+			option = DsActor::Option::ChrProxy();
+			break;
+		default:
+			break;
+		}
+		return option;
+	}
+}
+
 //virtual
 void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 {
@@ -58,26 +84,8 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 			if (pHitModel)
 			{
 				DsRigidMesh::DsRigidMeshFactory factory(*pHitModel, m_name.c_str());
-				factory.InitPos(initInfo.pos);
-				factory.InitRot(initInfo.rot);
-				DsActor::Option option = DsActor::Option::Default();
-				switch (initInfo.physicsType)
-				{
-				case DS_MAP_OBJ_TYPE::STATIC:
-					option = DsActor::Option::Static();
-					break;
-				case DS_MAP_OBJ_TYPE::DYNAMIC:
-					option = DsActor::Option::Default();
-					break;
-				case DS_MAP_OBJ_TYPE::AUTONOMOUS:
-					option = DsActor::Option::Default();
-					break;
-				case DS_MAP_OBJ_TYPE::CONTROL:
-					option = DsActor::Option::ChrProxy();
-					break;
-				default:
-					break;
-				}
+				_SetActorCoord(factory, initInfo);
+				const DsActor::Option option = _GetActorOption(initInfo.physicsType);
 				factory.SetOption(option);
 				m_actorId = m_world.CreateActor(factory);
 				DsActor* pActor = m_world.GetActor(m_actorId);
@@ -104,26 +112,8 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 			DsRigidBox::GetVertex(vertex, shape.sizeX, shape.sizeY, shape.sizeZ);
 			{
 				DsRigidBox::DsRigidBoxFactory factory(vertex, shape.weight, m_name.c_str());
-				factory.InitPos(initInfo.pos);
-				factory.InitRot(initInfo.rot);
-				DsRigidBox::Option option = DsRigidBox::Option::Default();
-				switch (initInfo.physicsType)
-				{
-				case DS_MAP_OBJ_TYPE::STATIC:
-					option = DsActor::Option::Static();
-					break;
-				case DS_MAP_OBJ_TYPE::DYNAMIC:
-					option = DsActor::Option::Default();
-					break;
-				case DS_MAP_OBJ_TYPE::AUTONOMOUS:
-					option = DsActor::Option::Default();
-					break;
-				case DS_MAP_OBJ_TYPE::CONTROL:
-					option = DsActor::Option::ChrProxy();
-					break;
-				default:
-					break;
-				}
+				_SetActorCoord(factory, initInfo);
+				const DsActor::Option option = _GetActorOption(initInfo.physicsType);
 				factory.SetOption(option);
 				
 				m_actorId = m_world.CreateActor(factory);
@@ -151,6 +141,14 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 
 	m_reqestIsInit = true;
 	m_isCompleteInit = true;
+}
+
+//virtual
+void DsFieldObj::_SetActorCoord(DsPhysics::DsActorCoordFactory& factory, const DsFieldInitInfo& initInfo)
+{
+	const DsMat33d rot = DsMat33d::RotateX(initInfo.ang.x)*DsMat33d::RotateY(initInfo.ang.y)*DsMat33d::RotateZ(initInfo.ang.z);
+	factory.InitPos(initInfo.pos);
+	factory.InitRot(rot);
 }
 
 //virtual 

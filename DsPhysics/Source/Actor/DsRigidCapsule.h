@@ -17,15 +17,14 @@ namespace DsPhysics
 	{
 	public:
 		/////////////Factory////////////
-	class DsRigidCapsuleFactory : public DsActorFactory
+	class DsRigidCapsuleFactory : public DsActorCoordFactory
 	{
 	public:
 		DsRigidCapsuleFactory( const double r, const double halfLen, const double mass, const char* name )
-		:m_r(r)
+		:DsActorCoordFactory()
+		,m_r(r)
 		,m_halfLen(halfLen)
 		,m_mass(mass)
-		,m_initPos(DsVec3d::Zero())
-		,m_initRot(DsMat33d::Identity())
 		,m_initOption(Option::Default())
 		,m_name(name)
 		{}
@@ -33,16 +32,12 @@ namespace DsPhysics
 		virtual DsActor* CreateIns( const DsActorId& id ) const override;
 
 	public:
-		void InitPos(const DsVec3d& pos){m_initPos = pos;}
-		void InitRot(const DsMat33d& rot){m_initRot = rot;}
 		void SetOption(const Option& option){ m_initOption = option; }
 
 	private:
 		const double m_r;
 		const double m_halfLen;
 		const double m_mass;
-		DsVec3d m_initPos;
-		DsMat33d m_initRot;
 		Option m_initOption;
 		std::string m_name;
 	};

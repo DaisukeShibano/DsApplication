@@ -33,7 +33,7 @@ namespace DsLib
 			const char* pAnimPath;
 			const char* pHitPath;
 			DsVec3d pos;
-			DsMat33d rot;
+			DsVec3d ang;
 			DS_MAP_OBJ_TYPE objType;
 			DS_MAP_FIELD_OBJ_TYPE fieldObjType;
 		};

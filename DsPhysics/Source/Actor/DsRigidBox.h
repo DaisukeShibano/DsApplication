@@ -19,15 +19,14 @@ namespace DsPhysics
 	
 	public:
 	/////////////Factory////////////
-	class DsRigidBoxFactory : public DsActorFactory
+	class DsRigidBoxFactory : public DsActorCoordFactory
 	{
 	public:
 		DsRigidBoxFactory( const DsVec3d* pv, const double mass, const char* name )
-			: m_pv()
+			: DsActorCoordFactory()
+			, m_pv()
 			, m_sizeVertex(NULL)
 			, m_mass(mass)
-			, m_initPos(DsVec3d::Zero())
-			, m_initRot(DsMat33d::Identity())
 			, m_initOption(Option::Default())
 			, m_name(name)
 			, m_biasI(DsVec3d::Zero())
@@ -44,8 +43,6 @@ namespace DsPhysics
 		virtual DsActor* CreateIns( const DsActorId& id ) const override;
 
 	public:
-		void InitPos(const DsVec3d& pos){m_initPos = pos;}
-		void InitRot(const DsMat33d& rot){m_initRot = rot;}
 		void SetOption(const Option& option){ m_initOption = option; }
 		void SetBiasI(const DsVec3d& bias) { m_biasI = bias; }
 
@@ -53,8 +50,6 @@ namespace DsPhysics
 		DsVec3d m_pv[VERTEX_NUM];
 		DsVec3d* m_sizeVertex;
 		const double m_mass;
-		DsVec3d m_initPos;
-		DsMat33d m_initRot;
 		Option m_initOption;
 		std::string m_name;
 		DsVec3d m_biasI;

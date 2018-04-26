@@ -19,6 +19,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
+    <Text Include="dummyHit.txt">
+      <Filter>Simu</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -38,6 +41,9 @@
     </ClInclude>
     <ClInclude Include="Setting.h">
       <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="DsSimuUtlil.h">
+      <Filter>Simu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +65,9 @@
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="Simu\DsSimu.cpp">
+      <Filter>Simu</Filter>
+    </ClCompile>
+    <ClCompile Include="DsSimuUtil.cpp">
       <Filter>Simu</Filter>
     </ClCompile>
   </ItemGroup>

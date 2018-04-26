@@ -41,10 +41,12 @@ DsFieldObjectCreator::~DsFieldObjectCreator()
 void DsFieldObjectCreator::Create(const char* resPath, DsResource& res, DsPhysicsWorld& world)
 {
 	const DsMapRes* pMapRes = res.RegisterMapRes(resPath);
-	if (NULL == pMapRes) return;
+	if (NULL == pMapRes) {
+		return;
+	}
 
 	//”z’uî•ñ‚Å¶¬
-	for each(const DsMapRes::Data& mapInfo in pMapRes->GetData())
+	for(const DsMapRes::Data& mapInfo : pMapRes->GetData())
 	{
 		const DsAnimRes* pAnimRes = res.RegisterAnimRes(mapInfo.pAnimPath);
 		const DsHitRes* pHitRes = res.RegisterHitRes(mapInfo.pHitPath);
@@ -54,7 +56,7 @@ void DsFieldObjectCreator::Create(const char* resPath, DsResource& res, DsPhysic
 			DsFieldInitInfo reqInitInfo;
 			reqInitInfo.name = mapInfo.pName;
 			reqInitInfo.pos = mapInfo.pos;
-			reqInitInfo.rot = mapInfo.rot;
+			reqInitInfo.ang = mapInfo.ang;
 			reqInitInfo.pHitRes = pHitRes;
 			reqInitInfo.pAnimRes = pAnimRes;
 			reqInitInfo.physicsType = mapInfo.objType;

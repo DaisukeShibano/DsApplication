@@ -58,7 +58,7 @@ void DsGene::Initialize(DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& world, DsL
 	DsFieldInitInfo initInfo;
 	initInfo.name = "GPƒLƒƒƒ‰";
 	initInfo.pos = DsVec3d::Zero();
-	initInfo.rot = DsMat33d::Identity();
+	initInfo.ang = DsVec3d::Zero();
 	initInfo.pHitRes = &hitRes;
 	initInfo.pAnimRes = res.RegisterAnimRes(EVO_CHR_ANIM_RES_PATH);
 	initInfo.physicsType = DS_MAP_OBJ_TYPE::DYNAMIC;

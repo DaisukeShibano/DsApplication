@@ -149,9 +149,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="dummyHit.txt" />
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DsSimuUtlil.h" />
     <ClInclude Include="Form1.h">
       <FileType>CppForm</FileType>
     </ClInclude>
@@ -166,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="DsSimuUtil.cpp" />
     <ClCompile Include="Simu\DsSimu.cpp" />
     <ClCompile Include="TimingEventEditor.cpp" />
     <ClCompile Include="Form1.cpp" />

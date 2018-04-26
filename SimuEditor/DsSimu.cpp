@@ -23,7 +23,8 @@ public:
 	virtual void BeforeWindowUpdate(DsMainLoopArgs& args) override;
 
 private:
-	
+	DsAppCollisionCallback m_callback;
+
 };
 
 
@@ -36,6 +37,7 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 		DsPhysicsWorld* pWorld = DsPhysicsManager::GetDefaultWorld();
 		if (pWorld)
 		{
+			pWorld->SetCollisionCallback(&m_callback);
 			const double zOffset = 5.0;
 			const double yOffset = -2.0;
 			//DsVec3d vertex[8];
@@ -156,13 +158,14 @@ namespace
 		//右クリックで回転
 		if (mouse.GetClickState() == DsMouseClickState::DS_RIGHT_CLICK)
 		{
-			const double moveVel = 3.0f;
+			const double moveVel = 2.0f;
 			DsMat33d mat = cam.GetRot();
 			const DsVec3d rotAxisX = mat.GetAxisX();
 			const DsVec3d rotAxisY = mat.GetAxisY();
-			mat = DsMat33d::RotateVec(rotAxisX*drag3.y*moveVel*(-1.0f)) * mat;
-			mat = DsMat33d::RotateVec(rotAxisY*drag3.x*moveVel) * mat;
-			cam.SetRot(mat);
+			const DsMat33d rotMatY = DsMat33d::RotateVec(DsVec3d::GetY()*drag3.x*moveVel);
+			const DsMat33d rotMatX = rotMatY * DsMat33d::RotateVec(rotAxisX*drag3.y*moveVel*(-1.0));
+			const DsMat33d rotMat = rotMatY * rotMatX;
+			cam.SetRot(rotMat*mat);
 		}
 	}
 }
@@ -317,7 +320,7 @@ DsFieldObj* DsSimu::RegisterObj(const char* drawModelPath, const char* hitModelP
 	DsFieldInitInfo info;
 	info.name = drawModelPath;
 	info.pos = DsVec3d(px, py, pz);
-	info.rot = DsMat33d::RotateZ(DegToRad(rz))*DsMat33d::RotateY(DegToRad(ry))*DsMat33d::RotateX(DegToRad(rx));
+	info.ang = DsVec3d(DegToRad(rx), DegToRad(ry), DegToRad(rz));
 	info.pHitRes = pHit;
 	info.pAnimRes = pAnim;
 	info.physicsType = physicsType;

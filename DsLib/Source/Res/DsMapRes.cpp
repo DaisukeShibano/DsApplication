@@ -130,7 +130,7 @@ void DsMapRes::Initialize(const char* path)
 	OutputRes* pRes = _LoadRes(path);
 	m_resTop = pRes;
 
-	for each(const ObjInsFormat* obj in pRes->objs)
+	for(const ObjInsFormat* obj : pRes->objs)
 	{
 		Data data;
 		data.pName = obj->objInsName.c_str();
@@ -139,7 +139,7 @@ void DsMapRes::Initialize(const char* path)
 		data.objType = static_cast<DS_MAP_OBJ_TYPE>(obj->objType);
 		data.fieldObjType = static_cast<DS_MAP_FIELD_OBJ_TYPE>(obj->fieldObjType);
 		data.pos = DsVec3d(obj->posX, obj->posY, obj->posZ);
-		data.rot = DsMat33d::RotateX(DegToRad(obj->angX))*DsMat33d::RotateY(DegToRad(obj->angY))*DsMat33d::RotateZ(DegToRad(obj->angZ));
+		data.ang = DsVec3d(DegToRad(obj->angX), DegToRad(obj->angY), DegToRad(obj->angZ));
 		m_data.push_back(data);
 	}
 }

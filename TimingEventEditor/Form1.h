@@ -2,6 +2,9 @@
 #ifndef _DS_SIMU_H_
 #include "Simu/DsSimu.h"
 #endif
+#ifndef _DS_SIMU_UTIL_
+#include "DsSimuUtlil.h"
+#endif
 
 #include "TagData.h"
 #include "Setting.h"
@@ -61,6 +64,13 @@ namespace TimingEventEditor {
 	private: System::Windows::Forms::DataGridView^  dataGridView1;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column1;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column2;
+	private: System::Windows::Forms::MenuStrip^  menuStrip1;
+	private: System::Windows::Forms::ToolStripMenuItem^  ファイルToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^  openToolStripMenuItem;
+	private: System::Windows::Forms::Panel^  panel2;
+	private: System::Windows::Forms::TextBox^  animPathTextBox;
+	private: System::Windows::Forms::Button^  animPathOpenButton;
+
 
 
 
@@ -70,6 +80,8 @@ namespace TimingEventEditor {
 
 	private:
 		int m_actionNum = 0;
+		String^ m_animPath = gcnew String("");
+		DsApp::DsFieldObj* m_pChrIns = NULL;
 
 
 #pragma region Windows Form Designer generated code
@@ -90,23 +102,35 @@ namespace TimingEventEditor {
 			this->dataGridView1 = (gcnew System::Windows::Forms::DataGridView());
 			this->Column1 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->Column2 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
+			this->ファイルToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->openToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->panel2 = (gcnew System::Windows::Forms::Panel());
+			this->animPathOpenButton = (gcnew System::Windows::Forms::Button());
+			this->animPathTextBox = (gcnew System::Windows::Forms::TextBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->panel1->SuspendLayout();
 			this->contextMenuStrip1->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
+			this->menuStrip1->SuspendLayout();
+			this->panel2->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// pictureBox1
 			// 
 			this->pictureBox1->BackColor = System::Drawing::SystemColors::Control;
 			this->pictureBox1->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
-			this->pictureBox1->Location = System::Drawing::Point(12, 12);
+			this->pictureBox1->Location = System::Drawing::Point(12, 32);
 			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(337, 249);
+			this->pictureBox1->Size = System::Drawing::Size(309, 239);
 			this->pictureBox1->TabIndex = 0;
 			this->pictureBox1->TabStop = false;
 			this->pictureBox1->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Form1::pictureBox1_Paint);
+			this->pictureBox1->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &Form1::pictureBox1_MouseClick);
+			this->pictureBox1->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &Form1::pictureBox1_MouseMove);
+			this->pictureBox1->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &Form1::pictureBox1_MouseUp);
+			this->pictureBox1->MouseWheel += gcnew System::Windows::Forms::MouseEventHandler(this, &Form1::pictureBox1_MouseWheel);
 			// 
 			// timer1
 			// 
@@ -123,9 +147,9 @@ namespace TimingEventEditor {
 			this->panel1->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
 			this->panel1->ContextMenuStrip = this->contextMenuStrip1;
 			this->panel1->Controls->Add(this->trackBar1);
-			this->panel1->Location = System::Drawing::Point(243, 277);
+			this->panel1->Location = System::Drawing::Point(248, 277);
 			this->panel1->Name = L"panel1";
-			this->panel1->Size = System::Drawing::Size(627, 187);
+			this->panel1->Size = System::Drawing::Size(622, 187);
 			this->panel1->TabIndex = 1;
 			// 
 			// contextMenuStrip1
@@ -143,10 +167,10 @@ namespace TimingEventEditor {
 			// trackBar1
 			// 
 			this->trackBar1->BackColor = System::Drawing::SystemColors::ControlLight;
-			this->trackBar1->Location = System::Drawing::Point(3, 3);
+			this->trackBar1->Location = System::Drawing::Point(-10, 3);
 			this->trackBar1->Maximum = 100;
 			this->trackBar1->Name = L"trackBar1";
-			this->trackBar1->Size = System::Drawing::Size(792, 45);
+			this->trackBar1->Size = System::Drawing::Size(805, 45);
 			this->trackBar1->TabIndex = 2;
 			// 
 			// dataGridView1
@@ -194,15 +218,72 @@ namespace TimingEventEditor {
 			this->Column2->HeaderText = L"Value";
 			this->Column2->Name = L"Column2";
 			// 
+			// menuStrip1
+			// 
+			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->ファイルToolStripMenuItem });
+			this->menuStrip1->Location = System::Drawing::Point(0, 0);
+			this->menuStrip1->Name = L"menuStrip1";
+			this->menuStrip1->Size = System::Drawing::Size(882, 26);
+			this->menuStrip1->TabIndex = 3;
+			this->menuStrip1->Text = L"menuStrip1";
+			// 
+			// ファイルToolStripMenuItem
+			// 
+			this->ファイルToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->openToolStripMenuItem });
+			this->ファイルToolStripMenuItem->Name = L"ファイルToolStripMenuItem";
+			this->ファイルToolStripMenuItem->Size = System::Drawing::Size(68, 22);
+			this->ファイルToolStripMenuItem->Text = L"ファイル";
+			// 
+			// openToolStripMenuItem
+			// 
+			this->openToolStripMenuItem->Name = L"openToolStripMenuItem";
+			this->openToolStripMenuItem->Size = System::Drawing::Size(100, 22);
+			this->openToolStripMenuItem->Text = L"開く";
+			this->openToolStripMenuItem->Click += gcnew System::EventHandler(this, &Form1::openToolStripMenuItem_Click);
+			// 
+			// panel2
+			// 
+			this->panel2->Controls->Add(this->animPathOpenButton);
+			this->panel2->Controls->Add(this->animPathTextBox);
+			this->panel2->Font = (gcnew System::Drawing::Font(L"MS UI Gothic", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(128)));
+			this->panel2->Location = System::Drawing::Point(336, 32);
+			this->panel2->Name = L"panel2";
+			this->panel2->Size = System::Drawing::Size(525, 239);
+			this->panel2->TabIndex = 4;
+			// 
+			// animPathOpenButton
+			// 
+			this->animPathOpenButton->Font = (gcnew System::Drawing::Font(L"MS UI Gothic", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(128)));
+			this->animPathOpenButton->Location = System::Drawing::Point(480, 12);
+			this->animPathOpenButton->Name = L"animPathOpenButton";
+			this->animPathOpenButton->Size = System::Drawing::Size(28, 23);
+			this->animPathOpenButton->TabIndex = 1;
+			this->animPathOpenButton->Text = L"...";
+			this->animPathOpenButton->UseVisualStyleBackColor = true;
+			this->animPathOpenButton->Click += gcnew System::EventHandler(this, &Form1::animPathOpenButton_Click);
+			// 
+			// animPathTextBox
+			// 
+			this->animPathTextBox->Location = System::Drawing::Point(14, 14);
+			this->animPathTextBox->Name = L"animPathTextBox";
+			this->animPathTextBox->Size = System::Drawing::Size(460, 19);
+			this->animPathTextBox->TabIndex = 0;
+			this->animPathTextBox->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Form1::animPathTextBox_KeyDown);
+			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoScroll = true;
 			this->ClientSize = System::Drawing::Size(882, 476);
+			this->Controls->Add(this->panel2);
+			this->Controls->Add(this->menuStrip1);
 			this->Controls->Add(this->dataGridView1);
 			this->Controls->Add(this->panel1);
 			this->Controls->Add(this->pictureBox1);
+			this->MainMenuStrip = this->menuStrip1;
 			this->Name = L"Form1";
 			this->Text = L"Form1";
 			this->Load += gcnew System::EventHandler(this, &Form1::Form1_Load);
@@ -212,7 +293,12 @@ namespace TimingEventEditor {
 			this->contextMenuStrip1->ResumeLayout(false);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->trackBar1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->EndInit();
+			this->menuStrip1->ResumeLayout(false);
+			this->menuStrip1->PerformLayout();
+			this->panel2->ResumeLayout(false);
+			this->panel2->PerformLayout();
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
@@ -220,8 +306,8 @@ namespace TimingEventEditor {
 #pragma region MainForm
 
 	private: System::Void Form1_Load(System::Object^  sender, System::EventArgs^  e) {
-		this->trackBar1->Maximum = MAX_FRAME;
-		this->trackBar1->Size = System::Drawing::Size(WDTH_FRAME*MAX_FRAME, 45);
+		this->trackBar1->Maximum = MAX_TICK_NUM;
+		this->trackBar1->Size = System::Drawing::Size(MAX_TICK_NUM*TICK_WDTH, 45);
 
 		for (const ACTION_TYPE_NAME& act : ACTION_NAME_ARRAY) {
 			ToolStripMenuItem^ item = gcnew ToolStripMenuItem();
@@ -263,6 +349,56 @@ namespace TimingEventEditor {
 			}
 		}
 	}
+	 //クリック処理
+	private: System::Void pictureBox1_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
+		pictureBox1->Focus();//フォーカス当てないとマウスホイールイベントが発行されないらしい。
+		
+		if (DsSimu::GetIns() && DsSimu::GetIns()->IsInit())
+		{
+			DsMouseClickState clickState = DsMouseClickState::DS_NON_CLICK;
+			switch (e->Button)
+			{
+			case Forms::MouseButtons::Left:
+				clickState = DsMouseClickState::DS_LEFT_CLICK;
+				break;
+
+			case Forms::MouseButtons::Right:
+				clickState = DsMouseClickState::DS_RIGHT_CLICK;
+				break;
+
+			case Forms::MouseButtons::Middle:
+				clickState = DsMouseClickState::DS_CENTER_CLICK;
+				break;
+
+			case Forms::MouseButtons::None:
+				clickState = DsMouseClickState::DS_NON_CLICK;
+				break;
+
+			default:
+				break;
+			}
+			DsSimu::GetIns()->RefWindow().Click(clickState, DsMouseUpDown::DS_DOWN_MOUSE, e->X, e->Y);
+		}
+	}
+	private: System::Void pictureBox1_MouseUp(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
+		if (DsSimu::GetIns() && DsSimu::GetIns()->IsInit())
+		{
+			DsSimu::GetIns()->RefWindow().Click(DsMouseClickState::DS_NON_CLICK, DsMouseUpDown::DS_UP_MOUSE, e->X, e->Y);
+		}
+	}
+	private: System::Void pictureBox1_MouseMove(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
+		if (DsSimu::GetIns() && DsSimu::GetIns()->IsInit())
+		{
+			DsSimu::GetIns()->RefWindow().Drag(e->X, e->Y);
+		}
+	}
+	//ホイール処理
+	private: System::Void pictureBox1_MouseWheel(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
+		if (DsSimu::GetIns() && DsSimu::GetIns()->IsInit())
+		{
+			DsSimu::GetIns()->RefWindow().Wheel(e->Delta / WHEEL_DELTA, e->X, e->Y);
+		}
+	}
 #pragma endregion
 
 
@@ -298,12 +434,12 @@ namespace TimingEventEditor {
 				}
 			}
 		}
-		else {
-		
-		}
 
+		tag->startTime = SPF * static_cast<float>(textBox->Location.X) / TICK_WDTH;
+		tag->endTime = SPF * static_cast<float>(textBox->Location.X+ textBox->Size.Width) / TICK_WDTH;
 		tag->preMousePos = mousePos;
 	}
+
 	private: System::Void textBox1_Click(System::Object^  sender, System::EventArgs^  e) {
 		TextBox^ bar = (TextBox^)(sender);
 		ActionBarTag^ tag = (ActionBarTag^)bar->Tag;
@@ -338,6 +474,34 @@ namespace TimingEventEditor {
 		}
 		break;
 
+		case DAMAGE:
+		{
+			DAMAGE_PARAM^ param = (DAMAGE_PARAM^)tag->param;
+			this->dataGridView1->Rows->Add(param->paramNum);
+			DataGridViewTextBoxCell^ cell00 = gcnew DataGridViewTextBoxCell();
+			DataGridViewTextBoxCell^ cell01 = gcnew DataGridViewTextBoxCell();
+			cell00->Value = param->dmyPolyId0.name;
+			cell01->Value = param->dmyPolyId0.value;
+			cell01->Tag = param->dmyPolyId0.value;
+			this->dataGridView1->Rows[0]->Cells[0] = cell00;
+			this->dataGridView1->Rows[0]->Cells[1] = cell01;
+			DataGridViewTextBoxCell^ cell10 = gcnew DataGridViewTextBoxCell();
+			DataGridViewTextBoxCell^ cell11 = gcnew DataGridViewTextBoxCell();
+			cell10->Value = param->dmyPolyId1.name;
+			cell11->Value = param->dmyPolyId1.value;
+			cell11->Tag = param->dmyPolyId1.value;
+			this->dataGridView1->Rows[1]->Cells[0] = cell10;
+			this->dataGridView1->Rows[1]->Cells[1] = cell11;
+			DataGridViewTextBoxCell^ cell20 = gcnew DataGridViewTextBoxCell();
+			DataGridViewTextBoxCell^ cell21 = gcnew DataGridViewTextBoxCell();
+			cell20->Value = param->damageId.name;
+			cell21->Value = param->damageId.value;
+			cell21->Tag = param->damageId.value;
+			this->dataGridView1->Rows[2]->Cells[0] = cell20;
+			this->dataGridView1->Rows[2]->Cells[1] = cell21;
+		}
+		break;
+
 		default:
 			break;
 		}
@@ -363,6 +527,10 @@ namespace TimingEventEditor {
 		}
 
 		if (pAct) {
+			float startTime = 0;
+			float endTime = 0.1f;
+			int barSize = static_cast<int>(FPSf * endTime * static_cast<float>(TICK_WDTH));
+
 			TextBox^ addBar = gcnew TextBox();
 			addBar->Anchor = System::Windows::Forms::AnchorStyles::None;
 			addBar->BackColor = System::Drawing::Color::Orange;
@@ -370,7 +538,7 @@ namespace TimingEventEditor {
 				static_cast<System::Byte>(128)));
 			addBar->Location = System::Drawing::Point(0, m_actionNum*HEIGHT_BAR + this->trackBar1->Size.Height);
 			addBar->Name = L"textBox1";
-			addBar->Size = System::Drawing::Size(50, HEIGHT_BAR);
+			addBar->Size = System::Drawing::Size(barSize, HEIGHT_BAR);
 			addBar->Text = gcnew String(pAct->name);
 			addBar->ReadOnly = true;
 			addBar->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &Form1::textBox1_MouseMove);
@@ -378,11 +546,19 @@ namespace TimingEventEditor {
 
 			ActionBarTag^ tag = gcnew ActionBarTag();
 			tag->actionType = pAct->type;
+			tag->startTime = startTime;
+			tag->endTime = endTime;
+
 			//パラメータのインスタンス作成
 			switch (tag->actionType) {
 			case TRACE_EFFECT:
 				tag->param = gcnew TRACE_EFFECT_PARAM();
 				break;
+
+			case DAMAGE:
+				tag->param = gcnew DAMAGE_PARAM();
+				break;
+
 			default:
 				break;
 			}
@@ -419,6 +595,57 @@ namespace TimingEventEditor {
 		(*src) = iVal;
 	}
 #pragma endregion
+
+#pragma region MenuBar
+	private: System::Void openToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+
+	}
+#pragma endregion
+
+#pragma region AnimList
+	private: System::Void animPathTextBox_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+		if (e->KeyCode == Keys::Enter) {
+			TextBox^ tbox = (TextBox^)sender;
+			if (IO::File::Exists(tbox->Text)) {
+				m_animPath = tbox->Text;
+				_CreateModel();
+			}
+		}
+	}
+	private: System::Void animPathOpenButton_Click(System::Object^  sender, System::EventArgs^  e) {
+		OpenFileDialog ^ openFileDialog = gcnew OpenFileDialog();
+		openFileDialog->Filter = L"アニメモデル|*.dmdl";
+		openFileDialog->Title = L"アニメモデルの読み込み";
+		if (openFileDialog->ShowDialog() == Forms::DialogResult::OK)
+		{
+			m_animPath = openFileDialog->FileName;
+			_CreateModel();
+		}
+	}
+
+	private: System::Void _CreateModel()
+	{
+		DsSimu::GetIns()->Unregister(m_pChrIns);
+		const char* animPath = CreateCharArray(m_animPath);
+		String^ current = IO::Directory::GetCurrentDirectory();
+		String^ tmp = current + L"\\" + L"dummyHit.txt";
+		const char* hitPath = CreateCharArray(tmp);
+		m_pChrIns = DsSimu::GetIns()->RegisterObj(animPath, hitPath, 0, 0, 0, 0, 180, 0, DS_MAP_OBJ_TYPE::CONTROL, DS_MAP_FIELD_OBJ_TYPE::CHR);
+		if (m_pChrIns) {
+			animPathTextBox->Text = m_animPath;
+		}
+		else {
+			animPathTextBox->Text = L"";
+		}
+
+
+		delete animPath;
+		delete hitPath;
+	}
+
+#pragma endregion
+
+
 
 
 };

@@ -1,13 +1,18 @@
 #pragma once
 
-static const int WDTH_FRAME = 5;//1フレあたりの幅
+static const int FPS = 60;
+static const float FPSf = static_cast<float>(FPS);
+static const float SPF = 1.0f/FPSf;
+static const int TICK_WDTH = 5;//1目盛りあたりの幅
+static const float MAX_TIME = 5.0f;//最大秒数
+static const int MAX_TICK_NUM = static_cast<int>(MAX_TIME * FPSf);//1目盛り当たり0.01666秒
 static const int HEIGHT_BAR = 24;//バーの高さ
-static const int MAX_FRAME = 300;//最大フレーム
 
 
 enum ACTION_TYPE
 {
 	TRACE_EFFECT,
+	DAMAGE,
 };
 
 struct ACTION_TYPE_NAME
@@ -18,7 +23,8 @@ struct ACTION_TYPE_NAME
 
 static const ACTION_TYPE_NAME ACTION_NAME_ARRAY[]=
 {
-	{ TRACE_EFFECT, L"軌跡エフェクト" },
+	{ TRACE_EFFECT,		L"軌跡エフェクト" },
+	{ DAMAGE,			L"ダメージ" },
 };
 
 ref struct INT_PARAM : public System::Object
@@ -41,5 +47,22 @@ ref struct TRACE_EFFECT_PARAM : public System::Object
 	INT_PARAM dmyPolyId0;
 	INT_PARAM dmyPolyId1;
 	INT_PARAM effectId;
+	const int paramNum = 3;
+};
+
+ref struct DAMAGE_PARAM : public System::Object
+{
+	DAMAGE_PARAM()
+	{
+		dmyPolyId0.name = gcnew System::String(L"dmyPolyId0");
+		dmyPolyId0.value = gcnew System::Int32(-1);
+		dmyPolyId1.name = gcnew System::String(L"dmyPolyId1");
+		dmyPolyId1.value = gcnew System::Int32(-1);
+		damageId.name = gcnew System::String(L"damageId");
+		damageId.value = gcnew System::Int32(-1);
+	}
+	INT_PARAM dmyPolyId0;
+	INT_PARAM dmyPolyId1;
+	INT_PARAM damageId;
 	const int paramNum = 3;
 };
