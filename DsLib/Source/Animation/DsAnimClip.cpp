@@ -70,6 +70,12 @@ void  DsAnimClip::ResetAnim()
 	m_anim.Reset();
 }
 
+void DsAnimClip::SetLocalTime(double time)
+{
+	m_localTime = time;
+	m_anim.SetLocalTime(time);
+}
+
 bool DsAnimClip::IsEnd() const
 {
 	return ( m_isRequestEnd && (m_blendRate < 0.00001) );

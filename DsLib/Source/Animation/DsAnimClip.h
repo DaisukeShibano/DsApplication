@@ -20,6 +20,7 @@ namespace DsLib
 		void Deactivate(double dt);
 		void SetLoop(bool loop){ m_isLoop = loop; }
 		void ResetAnim();
+		void SetLocalTime(double time);
 		bool IsEnd() const;
 		double GetBlendRate() const { return m_blendRate; }
 

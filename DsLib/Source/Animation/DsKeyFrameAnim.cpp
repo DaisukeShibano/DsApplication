@@ -6,12 +6,41 @@
 using namespace DsLib;
 
 
+
+/*----------------------------------------------------------------------------
+DsKeyframeAnim::Pose
+-----------------------------------------------------------------------------*/
+
 void DsKeyframeAnim::Pose::Update(double dt)
 {
 	m_currentTimeMs += (dt*1000.0);
+	_Update();
+}
 
+void DsKeyframeAnim::Pose::Reset()
+{
+	m_currentTimeMs = 0.0;
+	m_currentIdxRot = 0;
+	m_currentIdxPos = 0;
+	m_currentIdxScale = 0;
+	m_endFlag = 0;
+}
+
+void DsKeyframeAnim::Pose::SetLocalTime(double time)
+{
+	Reset();
+	m_currentTimeMs = time;
+	_Update();
+}
+
+
+bool DsKeyframeAnim::Pose::IsEnd() const
+{
+	return (m_endFlag == END_FLAG_ALL);
+}
+void DsKeyframeAnim::Pose::_Update()
+{
 	//現在のキーフレームインデックス更新
-	
 	//１フレで複数キーフレームまたぐかもしれないので、現在の時間になるまでスキップ
 	while (m_pPos[m_currentIdxPos].localTime < m_currentTimeMs)
 	{
@@ -47,25 +76,15 @@ void DsKeyframeAnim::Pose::Update(double dt)
 	}
 }
 
-void DsKeyframeAnim::Pose::Reset()
-{
-	m_currentTimeMs = 0.0;
-	m_currentIdxRot = 0;
-	m_currentIdxPos = 0;
-	m_currentIdxScale = 0;
-	m_endFlag = 0;
-}
-
-bool DsKeyframeAnim::Pose::IsEnd() const
-{
-	return (m_endFlag == END_FLAG_ALL);
-}
 
 
 
 
 
 
+/*----------------------------------------------------------------------------
+DsKeyframeAnim
+-----------------------------------------------------------------------------*/
 
 
 DsKeyframeAnim::DsKeyframeAnim()
@@ -94,6 +113,14 @@ void DsKeyframeAnim::Reset()
 	for (int i = 0; i < m_boneNum; ++i)
 	{
 		m_pBone[i].Reset();
+	}
+}
+
+void DsKeyframeAnim::SetLocalTime(double dt)
+{
+	for (int i = 0; i < m_boneNum; ++i)
+	{
+		m_pBone[i].SetLocalTime(dt);
 	}
 }
 

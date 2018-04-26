@@ -65,6 +65,7 @@ namespace DsLib
 		public:
 			void Update(double dt);
 			void Reset();
+			void SetLocalTime(double time);
 			bool IsEnd() const;
 
 		public:
@@ -80,6 +81,9 @@ namespace DsLib
 			{
 				return m_pScale[m_currentIdxScale].val;
 			}
+
+		private:
+			void _Update();
 
 		private:
 			Vec3Key* m_pPos;
@@ -104,6 +108,7 @@ namespace DsLib
 	public:
 		void Update(double dt);
 		void Reset();
+		void SetLocalTime(double dt);
 		bool IsEnd() const;
 
 	public:

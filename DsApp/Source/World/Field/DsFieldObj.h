@@ -45,6 +45,8 @@ namespace DsApp
 		DsPhysics::DsActor* GetActor();
 		const DsPhysics::DsActor* GetActor() const;
 
+		const DsLib::DsAnimation* GetAnim() const { return m_pAnimation; }
+
 
 	protected:
 		DsLib::DsSys& m_sys;
