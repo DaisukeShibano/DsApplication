@@ -46,7 +46,12 @@ namespace DsApp
 		const DsPhysics::DsActor* GetActor() const;
 
 		const DsLib::DsAnimation* GetAnim() const { return m_pAnimation; }
+		DsLib::DsAnimation* GetAnim() { return m_pAnimation; }
 
+		void SetRequestAnim(std::string name);
+
+	protected:
+		bool IsRequestDirectAnim()const { return m_isRequestDirectAnim; }
 
 	protected:
 		DsLib::DsSys& m_sys;
@@ -56,6 +61,9 @@ namespace DsApp
 		DsPhysics::DsPhysicsWorld& m_world;
 		bool m_reqestIsInit;
 		bool m_isCompleteInit;
+
+	private:
+		bool m_isRequestDirectAnim;
 
 	public:
 		virtual void DbgDraw(DsLib::DsDrawCommand& com);

@@ -70,15 +70,23 @@ void  DsAnimClip::ResetAnim()
 	m_anim.Reset();
 }
 
+//time[s]
 void DsAnimClip::SetLocalTime(double time)
 {
 	m_localTime = time;
+	m_blendRate = min(1.0, time / (BLEND_TIME));
 	m_anim.SetLocalTime(time);
+	m_isRequestEnd = m_anim.IsEnd();
 }
 
 bool DsAnimClip::IsEnd() const
 {
-	return ( m_isRequestEnd && (m_blendRate < 0.00001) );
+	return ( m_isRequestEnd && (m_blendRate < 0.00001) );//ブレンド率見るのは補間中もアクティブ扱いにしたいから
+}
+
+bool DsAnimClip::IsEndWithoutBlend() const
+{
+	return m_isRequestEnd;
 }
 
 const std::string& DsAnimClip::RefAnimName() const

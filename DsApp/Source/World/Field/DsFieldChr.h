@@ -47,7 +47,6 @@ namespace DsApp
 		virtual void SetPosition(const DsVec3d& pos) override;
 		virtual void SetRotation(const DsMat33d& rot) override;
 
-
 	protected:
 		DsVec3d m_vel;
 		DsVec3d m_ang;
@@ -55,7 +54,6 @@ namespace DsApp
 		DsAnimRagdollModifier* m_pAnimRagdollModifier;
 		DsActionRequest* m_pActReq;
 		DsActionCtrl* m_pActCtrl;
-
 
 	public://デバッグ
 		virtual void DbgDraw(DsLib::DsDrawCommand& com);

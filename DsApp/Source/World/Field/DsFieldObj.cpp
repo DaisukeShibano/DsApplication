@@ -29,6 +29,7 @@ DsFieldObj::DsFieldObj(DsSys& sys, DsPhysicsWorld& world)
 	, m_world(world)
 	, m_reqestIsInit(false)
 	, m_isCompleteInit(false)
+	, m_isRequestDirectAnim(false)
 {
 	
 }
@@ -156,7 +157,11 @@ void DsFieldObj::Update(double dt)
 {
 	if (m_pAnimation)
 	{
+		if (m_isRequestDirectAnim) {
+			dt = 0;
+		}
 		m_pAnimation->Update(dt);
+		m_isRequestDirectAnim = false;
 		const DsActor* pActor = m_world.GetActor(m_actorId);
 		m_pAnimation->SetRootMatrix(GetPosition(), GetRotation());
 	}
@@ -232,6 +237,21 @@ const DsActor* DsFieldObj::GetActor() const
 {
 	return m_world.GetActor(m_actorId);
 }
+
+//virtual
+void DsFieldObj::SetRequestAnim(std::string name)
+{
+	if (m_pAnimation) {
+		for (DsAnimClip* pClip : m_pAnimation->RefAnimClips()) {
+			if (name == pClip->RefAnimName()) {
+				m_pAnimation->RequestPlayAnim(pClip);
+				m_isRequestDirectAnim = true;
+				break;
+			}
+		}
+	}
+}
+
 
 //virtual 
 void DsFieldObj::DbgDraw(DsLib::DsDrawCommand& com)

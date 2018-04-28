@@ -26,10 +26,24 @@ void DsKeyframeAnim::Pose::Reset()
 	m_endFlag = 0;
 }
 
+//time[s]
 void DsKeyframeAnim::Pose::SetLocalTime(double time)
 {
-	Reset();
-	m_currentTimeMs = time;
+	m_currentTimeMs = 0.0;
+	m_currentIdxRot = 0;
+	m_currentIdxPos = 0;
+	m_currentIdxScale = 0;
+
+	const double maxTime = max(max(m_pPos[m_keyFrameNumPos - 1].localTime, m_pRot[m_keyFrameNumRot - 1].localTime), m_pScale[m_keyFrameNumScale - 1].localTime);
+	m_currentTimeMs = time * 1000.0;
+
+	if (m_currentTimeMs < DBL_EPSILON) {
+		m_endFlag = 0;
+	}
+	else if ((maxTime-DBL_EPSILON) < m_currentTimeMs) {
+		m_endFlag = END_FLAG_ALL;
+	}
+
 	_Update();
 }
 

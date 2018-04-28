@@ -53,9 +53,6 @@ namespace TimingEventEditor {
 
 
 	private: System::Windows::Forms::TrackBar^  trackBar1;
-
-
-
 	private: System::ComponentModel::IContainer^  components;
 	private: System::Windows::Forms::ContextMenuStrip^  contextMenuStrip1;
 
@@ -72,17 +69,26 @@ namespace TimingEventEditor {
 	private: System::Windows::Forms::Button^  animPathOpenButton;
 
 
-
-
-
-
 	protected:
+
+
+	private: System::Windows::Forms::Panel^  panel3;
+	private: System::Windows::Forms::Button^  RestartButton;
+	private: System::Windows::Forms::Button^  ResetButton;
+	private: System::Windows::Forms::Button^  PlayButton;
+	private: System::Windows::Forms::ImageList^  imageList1;
+
+
+#pragma region Private Menber
 
 	private:
 		int m_actionNum = 0;
 		String^ m_animPath = gcnew String("");
-		DsApp::DsFieldObj* m_pChrIns = NULL;
+	private: System::Windows::Forms::ListBox^  AnimListBox;
 
+			 bool m_isPlayAnim = false;
+
+#pragma endregion
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -93,6 +99,7 @@ namespace TimingEventEditor {
 		{
 			this->components = (gcnew System::ComponentModel::Container());
 			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle1 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(Form1::typeid));
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
@@ -106,8 +113,14 @@ namespace TimingEventEditor {
 			this->ファイルToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->openToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
+			this->AnimListBox = (gcnew System::Windows::Forms::ListBox());
 			this->animPathOpenButton = (gcnew System::Windows::Forms::Button());
 			this->animPathTextBox = (gcnew System::Windows::Forms::TextBox());
+			this->panel3 = (gcnew System::Windows::Forms::Panel());
+			this->RestartButton = (gcnew System::Windows::Forms::Button());
+			this->ResetButton = (gcnew System::Windows::Forms::Button());
+			this->PlayButton = (gcnew System::Windows::Forms::Button());
+			this->imageList1 = (gcnew System::Windows::Forms::ImageList(this->components));
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->panel1->SuspendLayout();
 			this->contextMenuStrip1->SuspendLayout();
@@ -115,15 +128,16 @@ namespace TimingEventEditor {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView1))->BeginInit();
 			this->menuStrip1->SuspendLayout();
 			this->panel2->SuspendLayout();
+			this->panel3->SuspendLayout();
 			this->SuspendLayout();
 			// 
 			// pictureBox1
 			// 
 			this->pictureBox1->BackColor = System::Drawing::SystemColors::Control;
 			this->pictureBox1->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
-			this->pictureBox1->Location = System::Drawing::Point(12, 32);
+			this->pictureBox1->Location = System::Drawing::Point(12, 29);
 			this->pictureBox1->Name = L"pictureBox1";
-			this->pictureBox1->Size = System::Drawing::Size(309, 239);
+			this->pictureBox1->Size = System::Drawing::Size(377, 283);
 			this->pictureBox1->TabIndex = 0;
 			this->pictureBox1->TabStop = false;
 			this->pictureBox1->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &Form1::pictureBox1_Paint);
@@ -147,9 +161,9 @@ namespace TimingEventEditor {
 			this->panel1->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
 			this->panel1->ContextMenuStrip = this->contextMenuStrip1;
 			this->panel1->Controls->Add(this->trackBar1);
-			this->panel1->Location = System::Drawing::Point(248, 277);
+			this->panel1->Location = System::Drawing::Point(248, 318);
 			this->panel1->Name = L"panel1";
-			this->panel1->Size = System::Drawing::Size(622, 187);
+			this->panel1->Size = System::Drawing::Size(672, 187);
 			this->panel1->TabIndex = 1;
 			// 
 			// contextMenuStrip1
@@ -167,11 +181,12 @@ namespace TimingEventEditor {
 			// trackBar1
 			// 
 			this->trackBar1->BackColor = System::Drawing::SystemColors::ControlLight;
-			this->trackBar1->Location = System::Drawing::Point(-10, 3);
+			this->trackBar1->Location = System::Drawing::Point(-13, 0);
 			this->trackBar1->Maximum = 100;
 			this->trackBar1->Name = L"trackBar1";
 			this->trackBar1->Size = System::Drawing::Size(805, 45);
 			this->trackBar1->TabIndex = 2;
+			this->trackBar1->ValueChanged += gcnew System::EventHandler(this, &Form1::trackBar1_ValueChanged);
 			// 
 			// dataGridView1
 			// 
@@ -195,7 +210,7 @@ namespace TimingEventEditor {
 					this->Column2
 			});
 			this->dataGridView1->GridColor = System::Drawing::SystemColors::ActiveCaption;
-			this->dataGridView1->Location = System::Drawing::Point(12, 277);
+			this->dataGridView1->Location = System::Drawing::Point(12, 318);
 			this->dataGridView1->Name = L"dataGridView1";
 			this->dataGridView1->RowHeadersVisible = false;
 			this->dataGridView1->RowTemplate->Height = 21;
@@ -223,7 +238,7 @@ namespace TimingEventEditor {
 			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->ファイルToolStripMenuItem });
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(882, 26);
+			this->menuStrip1->Size = System::Drawing::Size(932, 26);
 			this->menuStrip1->TabIndex = 3;
 			this->menuStrip1->Text = L"menuStrip1";
 			// 
@@ -243,14 +258,27 @@ namespace TimingEventEditor {
 			// 
 			// panel2
 			// 
+			this->panel2->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
+			this->panel2->Controls->Add(this->AnimListBox);
 			this->panel2->Controls->Add(this->animPathOpenButton);
 			this->panel2->Controls->Add(this->animPathTextBox);
 			this->panel2->Font = (gcnew System::Drawing::Font(L"MS UI Gothic", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(128)));
-			this->panel2->Location = System::Drawing::Point(336, 32);
+			this->panel2->Location = System::Drawing::Point(395, 29);
 			this->panel2->Name = L"panel2";
-			this->panel2->Size = System::Drawing::Size(525, 239);
+			this->panel2->Size = System::Drawing::Size(525, 251);
 			this->panel2->TabIndex = 4;
+			// 
+			// AnimListBox
+			// 
+			this->AnimListBox->FormattingEnabled = true;
+			this->AnimListBox->HorizontalScrollbar = true;
+			this->AnimListBox->ItemHeight = 12;
+			this->AnimListBox->Location = System::Drawing::Point(14, 39);
+			this->AnimListBox->Name = L"AnimListBox";
+			this->AnimListBox->Size = System::Drawing::Size(494, 196);
+			this->AnimListBox->TabIndex = 2;
+			this->AnimListBox->MouseDoubleClick += gcnew System::Windows::Forms::MouseEventHandler(this, &Form1::AnimListBox_MouseDoubleClick);
 			// 
 			// animPathOpenButton
 			// 
@@ -272,12 +300,63 @@ namespace TimingEventEditor {
 			this->animPathTextBox->TabIndex = 0;
 			this->animPathTextBox->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Form1::animPathTextBox_KeyDown);
 			// 
+			// panel3
+			// 
+			this->panel3->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			this->panel3->Controls->Add(this->RestartButton);
+			this->panel3->Controls->Add(this->ResetButton);
+			this->panel3->Controls->Add(this->PlayButton);
+			this->panel3->Location = System::Drawing::Point(395, 283);
+			this->panel3->Name = L"panel3";
+			this->panel3->Size = System::Drawing::Size(525, 29);
+			this->panel3->TabIndex = 5;
+			// 
+			// RestartButton
+			// 
+			this->RestartButton->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"RestartButton.Image")));
+			this->RestartButton->Location = System::Drawing::Point(61, 2);
+			this->RestartButton->Name = L"RestartButton";
+			this->RestartButton->Size = System::Drawing::Size(24, 24);
+			this->RestartButton->TabIndex = 2;
+			this->RestartButton->UseVisualStyleBackColor = true;
+			this->RestartButton->Click += gcnew System::EventHandler(this, &Form1::RestartButton_Click);
+			// 
+			// ResetButton
+			// 
+			this->ResetButton->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"ResetButton.Image")));
+			this->ResetButton->Location = System::Drawing::Point(32, 2);
+			this->ResetButton->Name = L"ResetButton";
+			this->ResetButton->Size = System::Drawing::Size(24, 24);
+			this->ResetButton->TabIndex = 1;
+			this->ResetButton->UseVisualStyleBackColor = true;
+			this->ResetButton->Click += gcnew System::EventHandler(this, &Form1::ResetButton_Click);
+			// 
+			// PlayButton
+			// 
+			this->PlayButton->ForeColor = System::Drawing::SystemColors::HighlightText;
+			this->PlayButton->ImageIndex = 0;
+			this->PlayButton->ImageList = this->imageList1;
+			this->PlayButton->Location = System::Drawing::Point(4, 2);
+			this->PlayButton->Name = L"PlayButton";
+			this->PlayButton->Size = System::Drawing::Size(24, 24);
+			this->PlayButton->TabIndex = 0;
+			this->PlayButton->UseVisualStyleBackColor = true;
+			this->PlayButton->Click += gcnew System::EventHandler(this, &Form1::PlayButton_Click);
+			// 
+			// imageList1
+			// 
+			this->imageList1->ImageStream = (cli::safe_cast<System::Windows::Forms::ImageListStreamer^>(resources->GetObject(L"imageList1.ImageStream")));
+			this->imageList1->TransparentColor = System::Drawing::Color::Transparent;
+			this->imageList1->Images->SetKeyName(0, L"playIcon.bmp");
+			this->imageList1->Images->SetKeyName(1, L"stopIcon.bmp");
+			// 
 			// Form1
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 12);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->AutoScroll = true;
-			this->ClientSize = System::Drawing::Size(882, 476);
+			this->ClientSize = System::Drawing::Size(932, 517);
+			this->Controls->Add(this->panel3);
 			this->Controls->Add(this->panel2);
 			this->Controls->Add(this->menuStrip1);
 			this->Controls->Add(this->dataGridView1);
@@ -297,6 +376,7 @@ namespace TimingEventEditor {
 			this->menuStrip1->PerformLayout();
 			this->panel2->ResumeLayout(false);
 			this->panel2->PerformLayout();
+			this->panel3->ResumeLayout(false);
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -333,6 +413,11 @@ namespace TimingEventEditor {
 			if (DsSimu::GetIns()->IsInit())
 			{
 				DsSimu::GetIns()->RefWindow().Display();
+
+				if (m_isPlayAnim) {
+					this->trackBar1->Value = (this->trackBar1->Value+1) % (this->trackBar1->Maximum);
+				}
+
 			}
 		}
 	}
@@ -505,8 +590,19 @@ namespace TimingEventEditor {
 		default:
 			break;
 		}
+	}
 
-		
+	private: System::Void UpdateLocateTime(TrackBar^ bar) {
+		const double time = TICK_SEC * static_cast<double>(bar->Value);
+		DsSimu::GetIns()->SetLocalTimeAnim(time);
+		if (DsSimu::GetIns()->IsEndAnim()) {
+			bar->Value = 0;
+		}
+	}
+
+	private: System::Void trackBar1_ValueChanged(System::Object^  sender, System::EventArgs^  e) {
+		TrackBar^ bar = (TrackBar^)(sender);
+		UpdateLocateTime(bar);
 	}
 
 #pragma endregion
@@ -533,9 +629,10 @@ namespace TimingEventEditor {
 
 			TextBox^ addBar = gcnew TextBox();
 			addBar->Anchor = System::Windows::Forms::AnchorStyles::None;
-			addBar->BackColor = System::Drawing::Color::Orange;
+			addBar->BackColor = System::Drawing::Color::BlueViolet;
 			addBar->Font = (gcnew System::Drawing::Font(L"ＭＳ ゴシック", 10.0F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(128)));
+			addBar->ForeColor = System::Drawing::SystemColors::HighlightText;
 			addBar->Location = System::Drawing::Point(0, m_actionNum*HEIGHT_BAR + this->trackBar1->Size.Height);
 			addBar->Name = L"textBox1";
 			addBar->Size = System::Drawing::Size(barSize, HEIGHT_BAR);
@@ -569,6 +666,7 @@ namespace TimingEventEditor {
 
 		}
 	}
+
 #pragma endregion
 
 
@@ -598,7 +696,6 @@ namespace TimingEventEditor {
 
 #pragma region MenuBar
 	private: System::Void openToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
-
 	}
 #pragma endregion
 
@@ -625,28 +722,69 @@ namespace TimingEventEditor {
 
 	private: System::Void _CreateModel()
 	{
-		DsSimu::GetIns()->Unregister(m_pChrIns);
+		DsSimu::GetIns()->ClearObj();
 		const char* animPath = CreateCharArray(m_animPath);
 		String^ current = IO::Directory::GetCurrentDirectory();
 		String^ tmp = current + L"\\" + L"dummyHit.txt";
 		const char* hitPath = CreateCharArray(tmp);
-		m_pChrIns = DsSimu::GetIns()->RegisterObj(animPath, hitPath, 0, 0, 0, 0, 180, 0, DS_MAP_OBJ_TYPE::CONTROL, DS_MAP_FIELD_OBJ_TYPE::CHR);
-		if (m_pChrIns) {
+		const std::vector<std::string> clips = DsSimu::GetIns()->RegisterObj(animPath, hitPath, 0, 0, 0, 0, 180, 0, DS_MAP_OBJ_TYPE::CONTROL, DS_MAP_FIELD_OBJ_TYPE::CHR);
+		if (!clips.empty()) {
 			animPathTextBox->Text = m_animPath;
 		}
 		else {
 			animPathTextBox->Text = L"";
 		}
 
+		this->AnimListBox->Items->Clear();
+		for (std::string name : clips) {
+			this->AnimListBox->Items->Add(gcnew String(name.c_str()));
+		}
 
 		delete animPath;
 		delete hitPath;
 	}
 
+	private: System::Void AnimListBox_MouseDoubleClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
+		ListBox^ listBox = (ListBox^)(sender);
+		String^ item = (String^)listBox->SelectedItem;
+		if (item) {
+
+			const char* name = CreateCharArray(item);
+			DsSimu::GetIns()->SetCurrentAnimName(name);
+
+			this->trackBar1->Value = 0;
+			UpdateLocateTime(this->trackBar1);
+
+			delete name;
+		}
+	}
+
 #pragma endregion
 
 
+#pragma region PlayButton
+	private: System::Void PlayButton_Click(System::Object^  sender, System::EventArgs^  e) {
+		m_isPlayAnim = !m_isPlayAnim;
+		if (m_isPlayAnim) {
+			this->PlayButton->ImageIndex = 1;
+		}
+		else {
+			this->PlayButton->ImageIndex = 0;
+		}
+	}
 
+	private: System::Void ResetButton_Click(System::Object^  sender, System::EventArgs^  e) {
+		m_isPlayAnim = false;
+		this->trackBar1->Value = 0;
+		this->PlayButton->ImageIndex = 0;
+	}
+
+	private: System::Void RestartButton_Click(System::Object^  sender, System::EventArgs^  e) {
+		this->trackBar1->Value = this->trackBar1->Value+1;
+		m_isPlayAnim = false;
+		this->PlayButton->ImageIndex = 0;
+	}
+#pragma endregion
 
 };
 }

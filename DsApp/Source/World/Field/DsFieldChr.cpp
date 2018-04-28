@@ -132,7 +132,10 @@ void DsFieldChr::Update(double dt)
 {
 	m_pActReq->Update(dt);
 	m_pActCtrl->Update(dt);
-	m_pAnimation->RequestPlayAnim(m_pActCtrl->GetCurrentAnim());
+	
+	if (!IsRequestDirectAnim()) {
+		m_pAnimation->RequestPlayAnim(m_pActCtrl->GetCurrentAnim());
+	}
 
 	DsActor* pActor = m_actorId.GetActor();
 	if (pActor)
@@ -215,6 +218,9 @@ void DsFieldChr::SetRotation(const DsMat33d& rot)
 		}
 	}
 }
+
+
+
 
 
 

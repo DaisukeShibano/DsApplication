@@ -33,16 +33,22 @@ public:
 	DsWindowGL& RefWindow();
 	bool IsInit() const { return m_isInit; }
 	void Update(double dt);
-	DsApp::DsFieldObj* RegisterObj(const char* drawModelPath, const char* hitModelPath, double px, double py, double pz, double rx, double ry, double rz, DS_MAP_OBJ_TYPE physicsType, DS_MAP_FIELD_OBJ_TYPE fieldObjType);
-	void Unregister(DsApp::DsFieldObj* pObj);
+	std::vector<std::string> RegisterObj(const char* drawModelPath, const char* hitModelPath, double px, double py, double pz, double rx, double ry, double rz, DS_MAP_OBJ_TYPE physicsType, DS_MAP_FIELD_OBJ_TYPE fieldObjType);
 	void ClearObj();
+
+public:
+	void SetLocalTimeAnim(double time);
+	void SetCurrentAnimName(const char* name);
+	bool IsEndAnim()const;
 
 private:
 	DsSys* m_pSys;
 	DsMainLoop* m_pLoop;
-	bool m_isInit;
 	std::list<DsApp::DsFieldObj*> m_fieldObjs;
+	std::string m_selectAnimName;
 	DsResource m_resource;
+	DsApp::DsFieldObj* m_pChrIns;
+	bool m_isInit;
 };
 
 

@@ -22,6 +22,7 @@ namespace DsLib
 		void ResetAnim();
 		void SetLocalTime(double time);
 		bool IsEnd() const;
+		bool IsEndWithoutBlend() const;
 		double GetBlendRate() const { return m_blendRate; }
 
 	public:

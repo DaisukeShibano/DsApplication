@@ -57,7 +57,6 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 
 namespace
 {
-
 	void _CamUpdate(DsMainLoopArgs& args)
 	{
 		DsCamera& cam = args.sys.RefCam();
@@ -143,16 +142,19 @@ DsSimu* DsSimu::GetIns()
 DsSimu::DsSimu()
 	:m_pSys(NULL)
 	,m_pLoop(NULL)
-	,m_isInit(false)
 	,m_fieldObjs()
+	,m_selectAnimName()
 	,m_resource()
+	,m_pChrIns(NULL)
+	,m_isInit(false)
+
 {
 	
 }
 
 DsSimu::~DsSimu()
 {
-	for each(DsFieldObj* obj in m_fieldObjs)
+	for(DsFieldObj* obj : m_fieldObjs)
 	{
 		delete obj;
 	}
@@ -188,15 +190,15 @@ DsWindowGL& DsSimu::RefWindow()
 
 void DsSimu::Update(double dt)
 {
-	for each(DsFieldObj* pObj in m_fieldObjs)
-	{
-		pObj->Update(dt);
-		DsDbgSys::GetIns().RefDrawCom().SetColor(0.9, 1.0, 0.9);
+	if (m_pChrIns) {
+		m_pChrIns->SetRequestAnim(m_selectAnimName);
+		m_pChrIns->Update(dt);
 	}
 }
 
-DsFieldObj* DsSimu::RegisterObj(const char* drawModelPath, const char* hitModelPath, double px, double py, double pz, double rx, double ry, double rz, DS_MAP_OBJ_TYPE physicsType, DS_MAP_FIELD_OBJ_TYPE fieldObjType)
+std::vector<std::string> DsSimu::RegisterObj(const char* drawModelPath, const char* hitModelPath, double px, double py, double pz, double rx, double ry, double rz, DS_MAP_OBJ_TYPE physicsType, DS_MAP_FIELD_OBJ_TYPE fieldObjType)
 {
+	std::vector<std::string> ret;
 	DsAnimRes* pAnim = m_resource.RegisterAnimRes(drawModelPath);
 	DsHitRes* pHit = m_resource.RegisterHitRes(hitModelPath);
 
@@ -232,29 +234,68 @@ DsFieldObj* DsSimu::RegisterObj(const char* drawModelPath, const char* hitModelP
 	pObj->GetActor()->RefOption().isStatic = true;
 
 	m_fieldObjs.push_back(pObj);
-	return pObj;
-}
+	m_pChrIns = pObj;
 
-void DsSimu::Unregister(DsApp::DsFieldObj* pObj)
-{
-	if (pObj) {
-		for (DsFieldObj* obj : m_fieldObjs)
-		{
-			if (obj == pObj)
-			{
-				m_fieldObjs.remove(pObj);
-				delete pObj;
-				break;
+
+	if (m_pChrIns) {
+		DsAnimation* pAnim = m_pChrIns->GetAnim();
+		if (pAnim) {
+			for( DsAnimClip* pClip : pAnim->RefAnimClips() ){
+				ret.push_back(pClip->RefAnimName());
 			}
 		}
 	}
+
+	return ret;
 }
 
 void DsSimu::ClearObj()
 {
+	m_pChrIns = NULL;
 	for(DsFieldObj* pObj : m_fieldObjs)
 	{
 		delete pObj;
 	}
 	m_fieldObjs.clear();
+}
+
+void DsSimu::SetLocalTimeAnim(double time)
+{
+	if (m_pChrIns) {
+		DsAnimation* pAnim = m_pChrIns->GetAnim();
+		if (pAnim) {
+			for (DsAnimClip* pClip : pAnim->RefAnimClips()) {
+				if (m_selectAnimName == pClip->RefAnimName()) {
+					pClip->SetLocalTime(time);
+				}
+				else {
+					//選択アニメ以外は元に戻しておく
+					pClip->SetLocalTime(0);
+				}
+			}
+		}
+	}
+
+}
+
+void DsSimu::SetCurrentAnimName(const char* name)
+{
+	m_selectAnimName = name;
+}
+
+bool DsSimu::IsEndAnim()const
+{
+	bool ret = true;
+	if (m_pChrIns) {
+		DsAnimation* pAnim = m_pChrIns->GetAnim();
+		if (pAnim) {
+			for (DsAnimClip* pClip : pAnim->RefAnimClips()) {
+				if (m_selectAnimName == pClip->RefAnimName()) {
+					ret = pClip->IsEndWithoutBlend();
+					break;
+				}
+			}
+		}
+	}
+	return ret;
 }
