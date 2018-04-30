@@ -4,7 +4,7 @@
 #include "DsSimuUtlil.h"
 #endif
 #ifndef _DS_SIMU_H_
-#include "Simu/DsSimu.h"
+#include "DsSimu.h"
 #endif
 #include < iostream >
 #include < vcclr.h >

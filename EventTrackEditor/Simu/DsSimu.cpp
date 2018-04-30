@@ -282,6 +282,10 @@ void DsSimu::SetCurrentAnimName(const char* name)
 {
 	m_selectAnimName = name;
 }
+std::string DsSimu::GetCurrentAnimName()const
+{
+	return m_selectAnimName;
+}
 
 bool DsSimu::IsEndAnim()const
 {

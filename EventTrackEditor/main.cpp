@@ -1,4 +1,4 @@
-// TimingEventEditor.cpp: Hauptprojektdatei.
+// EventTrackEditor.cpp: Hauptprojektdatei.
 
 // #include "stdafx.h"
 // using namespace System;
@@ -19,6 +19,6 @@ using namespace System::Windows::Forms;
 int main() {
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
-	Application::Run(gcnew TimingEventEditor::Form1()); // "TimingEventEditor" noch anpassen
+	Application::Run(gcnew EventTrackEditor::Form1()); // "EventTrackEditor" noch anpassen
 	return 0;
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include "Setting.h"
+#include "DataFormat.h"
 
 private ref struct ActionBarTag : public System::Object
 {

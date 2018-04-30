@@ -11,11 +11,11 @@ using namespace System::Security::Permissions;
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die einer Assembly zugeordnet sind.
 //
-[assembly:AssemblyTitleAttribute(L"TimingEventEditor")];
+[assembly:AssemblyTitleAttribute(L"EventTrackEditor")];
 [assembly:AssemblyDescriptionAttribute(L"")];
 [assembly:AssemblyConfigurationAttribute(L"")];
 [assembly:AssemblyCompanyAttribute(L"")];
-[assembly:AssemblyProductAttribute(L"TimingEventEditor")];
+[assembly:AssemblyProductAttribute(L"EventTrackEditor")];
 [assembly:AssemblyCopyrightAttribute(L"Copyright (c)  2017")];
 [assembly:AssemblyTrademarkAttribute(L"")];
 [assembly:AssemblyCultureAttribute(L"")];

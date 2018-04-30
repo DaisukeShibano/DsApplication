@@ -45,6 +45,9 @@
     <ClInclude Include="DsSimuUtlil.h">
       <Filter>Simu</Filter>
     </ClInclude>
+    <ClInclude Include="DataFormat.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="app.rc">
@@ -61,14 +64,14 @@
     <ClCompile Include="Form1.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="TimingEventEditor.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="Simu\DsSimu.cpp">
       <Filter>Simu</Filter>
     </ClCompile>
     <ClCompile Include="DsSimuUtil.cpp">
       <Filter>Simu</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

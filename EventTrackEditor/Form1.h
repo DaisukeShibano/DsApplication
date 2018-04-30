@@ -3,14 +3,14 @@
 #include "Simu/DsSimu.h"
 #endif
 #ifndef _DS_SIMU_UTIL_
-#include "DsSimuUtlil.h"
+#include "Simu/DsSimuUtlil.h"
 #endif
 
 #include "TagData.h"
 #include "Setting.h"
+#include "DataFormat.h"
 
-
-namespace TimingEventEditor {
+namespace EventTrackEditor {
 
 	using namespace System;
 	using namespace System::Windows;
@@ -19,6 +19,8 @@ namespace TimingEventEditor {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+	using namespace System::Collections;
+	using namespace System::Collections::Generic;
 
 	/// <summary>
 	/// Zusammenfassung f・ Form1
@@ -77,16 +79,15 @@ namespace TimingEventEditor {
 	private: System::Windows::Forms::Button^  ResetButton;
 	private: System::Windows::Forms::Button^  PlayButton;
 	private: System::Windows::Forms::ImageList^  imageList1;
-
+	private: System::Windows::Forms::ListBox^  AnimListBox;
 
 #pragma region Private Menber
 
 	private:
 		int m_actionNum = 0;
 		String^ m_animPath = gcnew String("");
-	private: System::Windows::Forms::ListBox^  AnimListBox;
-
-			 bool m_isPlayAnim = false;
+		bool m_isPlayAnim = false;
+		EDIT_DATA^ m_data = gcnew EDIT_DATA();
 
 #pragma endregion
 
@@ -609,6 +610,7 @@ namespace TimingEventEditor {
 
 
 #pragma region ActionContextMenu
+			
 	private: System::Void AddToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
 		ToolStripMenuItem^ item = (ToolStripMenuItem^)sender;
 		
@@ -634,7 +636,7 @@ namespace TimingEventEditor {
 				static_cast<System::Byte>(128)));
 			addBar->ForeColor = System::Drawing::SystemColors::HighlightText;
 			addBar->Location = System::Drawing::Point(0, m_actionNum*HEIGHT_BAR + this->trackBar1->Size.Height);
-			addBar->Name = L"textBox1";
+			addBar->Name = L"TrackBar";
 			addBar->Size = System::Drawing::Size(barSize, HEIGHT_BAR);
 			addBar->Text = gcnew String(pAct->name);
 			addBar->ReadOnly = true;
@@ -662,6 +664,15 @@ namespace TimingEventEditor {
 			addBar->Tag = tag;
 
 			this->panel1->Controls->Add(addBar);
+			
+			//元データにバーを保存
+			for each(EDIT_TRACK_SET^ trackSet in this->m_data->data) {
+				String^  curAnimName = gcnew String(DsSimu::GetIns()->GetCurrentAnimName().c_str());
+				if(trackSet->animName == curAnimName) {
+					trackSet->tracks->Add(addBar);
+					break;
+				}
+			}
 			++m_actionNum;
 
 		}
@@ -734,11 +745,24 @@ namespace TimingEventEditor {
 		else {
 			animPathTextBox->Text = L"";
 		}
-
+		
+		//アニメリストに反映
 		this->AnimListBox->Items->Clear();
 		for (std::string name : clips) {
 			this->AnimListBox->Items->Add(gcnew String(name.c_str()));
 		}
+
+		//元データを作成
+		this->m_data->animPath = m_animPath;
+		this->m_data->data->Clear();
+		for (std::string name : clips) {
+			EDIT_TRACK_SET^ trackSet = gcnew EDIT_TRACK_SET();
+			trackSet->animName = gcnew String(name.c_str());
+			this->m_data->data->Add(trackSet);
+		}
+
+		//アクション数クリア
+		m_actionNum = 0;
 
 		delete animPath;
 		delete hitPath;
@@ -746,6 +770,7 @@ namespace TimingEventEditor {
 
 	private: System::Void AnimListBox_MouseDoubleClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 		ListBox^ listBox = (ListBox^)(sender);
+
 		String^ item = (String^)listBox->SelectedItem;
 		if (item) {
 
@@ -754,6 +779,37 @@ namespace TimingEventEditor {
 
 			this->trackBar1->Value = 0;
 			UpdateLocateTime(this->trackBar1);
+
+			//カレントアニメが変わったので対応するバーの種類を再セットする
+			List<TextBox^>^ removeList = gcnew List<TextBox^>();
+			for each(Forms::Control^ control in this->panel1->Controls) {
+				//バーのコントロールだけを削除
+				TextBox^ textBox = dynamic_cast<TextBox^>(control);
+				if (textBox) {
+					ActionBarTag^ bar = dynamic_cast<ActionBarTag^>(textBox->Tag);
+					if (bar) {
+						removeList->Add(textBox);
+					}
+				}
+			}
+			for each(TextBox^ removeItem in removeList) {
+				this->panel1->Controls->Remove(removeItem);
+			}
+			m_actionNum = 0;
+
+			//既存の編集データがあるならそれを入れる
+			if (m_data->animPath == this->animPathTextBox->Text) {
+				for each(EDIT_TRACK_SET^ trackSet in this->m_data->data) {
+					if (trackSet->animName == item) {
+						for each(TextBox^ textBox in trackSet->tracks) {
+							this->panel1->Controls->Add(textBox);
+							++m_actionNum;
+						}
+					}
+				}
+			}
+			
+
 
 			delete name;
 		}

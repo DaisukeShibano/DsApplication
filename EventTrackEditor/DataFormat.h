@@ -1,19 +1,12 @@
 #pragma once
-
-static const int FPS = 60;
-static const float FPSf = static_cast<float>(FPS);
-static const float SPF = 1.0f/FPSf;
-static const float TICK_SEC = SPF;//1目盛りあたりの秒数
-static const int TICK_WDTH = 5;//1目盛りあたりの幅
-static const float MAX_TIME = 5.0f;//最大秒数
-static const int MAX_TICK_NUM = static_cast<int>(MAX_TIME / TICK_SEC);
-static const int HEIGHT_BAR = 24;//バーの高さ
+#include "Setting.h"
 
 
 enum ACTION_TYPE
 {
 	TRACE_EFFECT,
 	DAMAGE,
+	ACTION_TYPE_NUM,
 };
 
 struct ACTION_TYPE_NAME
@@ -66,4 +59,64 @@ ref struct DAMAGE_PARAM : public System::Object
 	INT_PARAM dmyPolyId1;
 	INT_PARAM damageId;
 	const int paramNum = 3;
+};
+
+
+struct ET_HEADER
+{
+	int version;
+};
+
+struct ET_TRACE_EFFECT
+{
+	int dmyPolyId[2];
+	int effectId;
+};
+
+struct ET_DAMAGE
+{
+	int dmyPolyId[2];
+	int damageId;
+};
+
+//1バー
+struct ET_PARAM
+{
+	long long paramOffset;
+	int paramType;
+	float startTime;
+	float endTime;
+};
+
+//1アニメ
+struct ET_PARAM_SET
+{
+	long long animNameOffset;
+	long long paramsOffset;
+};
+
+//全体
+struct ET_DATA
+{
+	ET_HEADER header;
+	long long paramSetOffset;
+};
+
+
+
+
+
+
+//元データ1アニメ
+ref struct EDIT_TRACK_SET : public System::Object
+{
+	System::String^ animName;
+	System::Collections::Generic::List<System::Windows::Forms::TextBox^>^ tracks = gcnew System::Collections::Generic::List<System::Windows::Forms::TextBox^>();
+};
+
+//元データ全体
+ref struct EDIT_DATA : public System::Object
+{
+	System::String^ animPath;
+	System::Collections::Generic::List<EDIT_TRACK_SET^>^ data = gcnew System::Collections::Generic::List<EDIT_TRACK_SET^>();
 };

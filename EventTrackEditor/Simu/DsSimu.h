@@ -39,6 +39,7 @@ public:
 public:
 	void SetLocalTimeAnim(double time);
 	void SetCurrentAnimName(const char* name);
+	std::string GetCurrentAnimName()const;
 	bool IsEndAnim()const;
 
 private:

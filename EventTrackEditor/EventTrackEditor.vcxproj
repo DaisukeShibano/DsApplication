@@ -23,9 +23,9 @@
     <ProjectGuid>{105091fc-bbb8-4da4-806f-d356823ba9aa}</ProjectGuid>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <Keyword>ManagedCProj</Keyword>
-    <RootNamespace>TimingEventEditor</RootNamespace>
+    <RootNamespace>EventTrackEditor</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
-    <ProjectName>TimingEventEditor</ProjectName>
+    <ProjectName>EventTrackEditor</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -153,13 +153,15 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DsSimuUtlil.h" />
+    <ClInclude Include="DataFormat.h" />
+    <ClInclude Include="DataReadWriter.h" />
     <ClInclude Include="Form1.h">
       <FileType>CppForm</FileType>
     </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="Setting.h" />
     <ClInclude Include="Simu\DsSimu.h" />
+    <ClInclude Include="Simu\DsSimuUtlil.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TagData.h" />
   </ItemGroup>
@@ -168,10 +170,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
-    <ClCompile Include="DsSimuUtil.cpp" />
+    <ClCompile Include="DataReadWrite.cpp" />
     <ClCompile Include="Simu\DsSimu.cpp" />
-    <ClCompile Include="TimingEventEditor.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Form1.cpp" />
+    <ClCompile Include="Simu\DsSimuUtil.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
