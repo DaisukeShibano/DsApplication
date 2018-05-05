@@ -27,7 +27,19 @@ ref struct INT_PARAM : public System::Object
 	System::String^ name;
 };
 
-ref struct TRACE_EFFECT_PARAM : public System::Object
+public ref struct PARAM_BASE abstract : public System::Object
+{
+	virtual char* GetParamStaticBuff()=0;
+};
+
+
+
+struct ET_TRACE_EFFECT
+{
+	int dmyPolyId[2];
+	int effectId;
+};
+ref struct TRACE_EFFECT_PARAM : PARAM_BASE
 {
 	TRACE_EFFECT_PARAM()
 	{
@@ -42,9 +54,29 @@ ref struct TRACE_EFFECT_PARAM : public System::Object
 	INT_PARAM dmyPolyId1;
 	INT_PARAM effectId;
 	const int paramNum = 3;
+
+	virtual char* GetParamStaticBuff() override
+	{
+		static ET_TRACE_EFFECT ret;
+		ret.dmyPolyId[0] = (*dmyPolyId0.value);
+		ret.dmyPolyId[1] = (*dmyPolyId1.value);
+		ret.effectId = (*effectId.value);
+		return (char*)(&ret);
+	}
+	void Set(const ET_TRACE_EFFECT& param) {
+		dmyPolyId0.value = param.dmyPolyId[0];
+		dmyPolyId1.value = param.dmyPolyId[1];
+		effectId.value = param.effectId;
+	}
 };
 
-ref struct DAMAGE_PARAM : public System::Object
+
+struct ET_DAMAGE
+{
+	int dmyPolyId[2];
+	int damageId;
+};
+ref struct DAMAGE_PARAM : PARAM_BASE
 {
 	DAMAGE_PARAM()
 	{
@@ -59,6 +91,20 @@ ref struct DAMAGE_PARAM : public System::Object
 	INT_PARAM dmyPolyId1;
 	INT_PARAM damageId;
 	const int paramNum = 3;
+
+	virtual char* GetParamStaticBuff() override
+	{
+		static ET_TRACE_EFFECT ret;
+		ret.dmyPolyId[0] = (*dmyPolyId0.value);
+		ret.dmyPolyId[1] = (*dmyPolyId1.value);
+		ret.effectId = (*damageId.value);
+		return (char*)(&ret);
+	}
+	void Set(const ET_DAMAGE& param) {
+		dmyPolyId0.value = param.dmyPolyId[0];
+		dmyPolyId1.value = param.dmyPolyId[1];
+		damageId.value = param.damageId;
+	}
 };
 
 
@@ -67,39 +113,46 @@ struct ET_HEADER
 	int version;
 };
 
-struct ET_TRACE_EFFECT
-{
-	int dmyPolyId[2];
-	int effectId;
-};
-
-struct ET_DAMAGE
-{
-	int dmyPolyId[2];
-	int damageId;
-};
-
 //1バー
 struct ET_PARAM
 {
-	long long paramOffset;
 	int paramType;
 	float startTime;
 	float endTime;
+	union {
+		long long paramOffset;
+		ET_TRACE_EFFECT* pEffect;
+		ET_DAMAGE* pDamage;
+	};
 };
 
 //1アニメ
 struct ET_PARAM_SET
 {
-	long long animNameOffset;
-	long long paramsOffset;
+	int paramNum;
+	union {
+		long long animNameOffset;
+		char* pAnimName;
+	};
+	union {
+		long long paramsOffset;
+		ET_PARAM* pParams;
+	};
 };
 
 //全体
 struct ET_DATA
 {
 	ET_HEADER header;
-	long long paramSetOffset;
+	int paramSetNum;
+	union {
+		long long modelPathOffset;
+		char* pModelPath;
+	};
+	union {
+		long long paramSetOffset;
+		ET_PARAM_SET* pParamSet;
+	};
 };
 
 
@@ -117,6 +170,6 @@ ref struct EDIT_TRACK_SET : public System::Object
 //元データ全体
 ref struct EDIT_DATA : public System::Object
 {
-	System::String^ animPath;
+	System::String^ modelPath;
 	System::Collections::Generic::List<EDIT_TRACK_SET^>^ data = gcnew System::Collections::Generic::List<EDIT_TRACK_SET^>();
 };

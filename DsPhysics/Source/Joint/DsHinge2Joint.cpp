@@ -32,6 +32,7 @@ DsHinge2Joint::DsHinge2Joint(DsPhysicsWorld& world)
 
 DsHinge2Joint::~DsHinge2Joint()
 {
+	m_world.GetConstraintSolver()->RemoveConstraint(m_pConstarint);
 	delete m_pConstarint;
 	m_pConstarint = NULL;
 }

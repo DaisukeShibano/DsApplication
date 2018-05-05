@@ -9,6 +9,7 @@
 #include "TagData.h"
 #include "Setting.h"
 #include "DataFormat.h"
+#include "DataReadWriter.h"
 
 namespace EventTrackEditor {
 
@@ -64,7 +65,8 @@ namespace EventTrackEditor {
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column1;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  Column2;
 	private: System::Windows::Forms::MenuStrip^  menuStrip1;
-	private: System::Windows::Forms::ToolStripMenuItem^  ファイルToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^  FileToolStripMenuItem;
+
 	private: System::Windows::Forms::ToolStripMenuItem^  openToolStripMenuItem;
 	private: System::Windows::Forms::Panel^  panel2;
 	private: System::Windows::Forms::TextBox^  animPathTextBox;
@@ -85,9 +87,9 @@ namespace EventTrackEditor {
 
 	private:
 		int m_actionNum = 0;
-		String^ m_animPath = gcnew String("");
 		bool m_isPlayAnim = false;
-		EDIT_DATA^ m_data = gcnew EDIT_DATA();
+	private: System::Windows::Forms::ToolStripMenuItem^  SaveToolStripMenuItem;
+			 EDIT_DATA^ m_data = gcnew EDIT_DATA();
 
 #pragma endregion
 
@@ -99,7 +101,7 @@ namespace EventTrackEditor {
 		void InitializeComponent(void)
 		{
 			this->components = (gcnew System::ComponentModel::Container());
-			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle1 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+			System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle2 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(Form1::typeid));
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
@@ -111,8 +113,9 @@ namespace EventTrackEditor {
 			this->Column1 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->Column2 = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
-			this->ファイルToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->FileToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->openToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->SaveToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->panel2 = (gcnew System::Windows::Forms::Panel());
 			this->AnimListBox = (gcnew System::Windows::Forms::ListBox());
 			this->animPathOpenButton = (gcnew System::Windows::Forms::Button());
@@ -196,15 +199,15 @@ namespace EventTrackEditor {
 			this->dataGridView1->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
 			this->dataGridView1->BackgroundColor = System::Drawing::SystemColors::ButtonFace;
 			this->dataGridView1->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
-			dataGridViewCellStyle1->Alignment = System::Windows::Forms::DataGridViewContentAlignment::MiddleLeft;
-			dataGridViewCellStyle1->BackColor = System::Drawing::SystemColors::Control;
-			dataGridViewCellStyle1->Font = (gcnew System::Drawing::Font(L"MS UI Gothic", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+			dataGridViewCellStyle2->Alignment = System::Windows::Forms::DataGridViewContentAlignment::MiddleLeft;
+			dataGridViewCellStyle2->BackColor = System::Drawing::SystemColors::Control;
+			dataGridViewCellStyle2->Font = (gcnew System::Drawing::Font(L"MS UI Gothic", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(128)));
-			dataGridViewCellStyle1->ForeColor = System::Drawing::SystemColors::WindowText;
-			dataGridViewCellStyle1->SelectionBackColor = System::Drawing::SystemColors::Highlight;
-			dataGridViewCellStyle1->SelectionForeColor = System::Drawing::SystemColors::HighlightText;
-			dataGridViewCellStyle1->WrapMode = System::Windows::Forms::DataGridViewTriState::False;
-			this->dataGridView1->ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+			dataGridViewCellStyle2->ForeColor = System::Drawing::SystemColors::WindowText;
+			dataGridViewCellStyle2->SelectionBackColor = System::Drawing::SystemColors::Highlight;
+			dataGridViewCellStyle2->SelectionForeColor = System::Drawing::SystemColors::HighlightText;
+			dataGridViewCellStyle2->WrapMode = System::Windows::Forms::DataGridViewTriState::False;
+			this->dataGridView1->ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
 			this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
 			this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(2) {
 				this->Column1,
@@ -236,26 +239,36 @@ namespace EventTrackEditor {
 			// 
 			// menuStrip1
 			// 
-			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->ファイルToolStripMenuItem });
+			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->FileToolStripMenuItem });
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
 			this->menuStrip1->Size = System::Drawing::Size(932, 26);
 			this->menuStrip1->TabIndex = 3;
 			this->menuStrip1->Text = L"menuStrip1";
 			// 
-			// ファイルToolStripMenuItem
+			// FileToolStripMenuItem
 			// 
-			this->ファイルToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->openToolStripMenuItem });
-			this->ファイルToolStripMenuItem->Name = L"ファイルToolStripMenuItem";
-			this->ファイルToolStripMenuItem->Size = System::Drawing::Size(68, 22);
-			this->ファイルToolStripMenuItem->Text = L"ファイル";
+			this->FileToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+				this->openToolStripMenuItem,
+					this->SaveToolStripMenuItem
+			});
+			this->FileToolStripMenuItem->Name = L"FileToolStripMenuItem";
+			this->FileToolStripMenuItem->Size = System::Drawing::Size(68, 22);
+			this->FileToolStripMenuItem->Text = L"ファイル";
 			// 
 			// openToolStripMenuItem
 			// 
 			this->openToolStripMenuItem->Name = L"openToolStripMenuItem";
-			this->openToolStripMenuItem->Size = System::Drawing::Size(100, 22);
+			this->openToolStripMenuItem->Size = System::Drawing::Size(180, 22);
 			this->openToolStripMenuItem->Text = L"開く";
 			this->openToolStripMenuItem->Click += gcnew System::EventHandler(this, &Form1::openToolStripMenuItem_Click);
+			// 
+			// SaveToolStripMenuItem
+			// 
+			this->SaveToolStripMenuItem->Name = L"SaveToolStripMenuItem";
+			this->SaveToolStripMenuItem->Size = System::Drawing::Size(180, 22);
+			this->SaveToolStripMenuItem->Text = L"保存";
+			this->SaveToolStripMenuItem->Click += gcnew System::EventHandler(this, &Form1::SaveToolStripMenuItem_Click);
 			// 
 			// panel2
 			// 
@@ -490,6 +503,11 @@ namespace EventTrackEditor {
 
 
 #pragma region ActionBar
+	public: System::Void ClearActionBarNum()
+	{
+		m_actionNum = 0;
+	}
+
 	private: System::Void textBox1_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		TextBox^ textBox = (TextBox^)sender;
 		Drawing::Point mousePos = Drawing::Point(Forms::Cursor::Position.X, Forms::Cursor::Position.Y);
@@ -610,23 +628,20 @@ namespace EventTrackEditor {
 
 
 #pragma region ActionContextMenu
-			
-	private: System::Void AddToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
-		ToolStripMenuItem^ item = (ToolStripMenuItem^)sender;
-		
-		const ACTION_TYPE_NAME* pAct = NULL;
+	public: PARAM_BASE^ CreareBar(float startTime, float endTime, String^ barName, String^ targetAnimName, bool isAddForm)
+	{
+		PARAM_BASE^ ret = nullptr;
 
+		const ACTION_TYPE_NAME* pAct = NULL;
 		for (const ACTION_TYPE_NAME& act : ACTION_NAME_ARRAY) {
 			String^ str = gcnew String(act.name);
-			if (item->Name == str) {
+			if (barName == str) {
 				pAct = &act;
 				break;
 			}
 		}
 
 		if (pAct) {
-			float startTime = 0;
-			float endTime = 0.1f;
 			int barSize = static_cast<int>(FPSf * endTime * static_cast<float>(TICK_WDTH));
 
 			TextBox^ addBar = gcnew TextBox();
@@ -652,30 +667,41 @@ namespace EventTrackEditor {
 			switch (tag->actionType) {
 			case TRACE_EFFECT:
 				tag->param = gcnew TRACE_EFFECT_PARAM();
+				tag->paramSize = sizeof(ET_TRACE_EFFECT);
 				break;
 
 			case DAMAGE:
 				tag->param = gcnew DAMAGE_PARAM();
+				tag->paramSize = sizeof(ET_DAMAGE);
 				break;
 
 			default:
 				break;
 			}
+			ret = tag->param;
 			addBar->Tag = tag;
 
-			this->panel1->Controls->Add(addBar);
-			
+			if (isAddForm) {
+				this->panel1->Controls->Add(addBar);
+			}
+
 			//元データにバーを保存
 			for each(EDIT_TRACK_SET^ trackSet in this->m_data->data) {
-				String^  curAnimName = gcnew String(DsSimu::GetIns()->GetCurrentAnimName().c_str());
-				if(trackSet->animName == curAnimName) {
+				String^  curAnimName = targetAnimName;
+				if (trackSet->animName == curAnimName) {
 					trackSet->tracks->Add(addBar);
 					break;
 				}
 			}
 			++m_actionNum;
-
 		}
+		return ret;
+	}
+	private: System::Void AddToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+		ToolStripMenuItem^ item = (ToolStripMenuItem^)sender;
+		float startTime = 0;
+		float endTime = 0.1f;
+		CreareBar(startTime, endTime, item->Name, gcnew String(DsSimu::GetIns()->GetCurrentAnimName().c_str()), true);
 	}
 
 #pragma endregion
@@ -707,7 +733,28 @@ namespace EventTrackEditor {
 
 #pragma region MenuBar
 	private: System::Void openToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+		OpenFileDialog ^ openFileDialog = gcnew OpenFileDialog();
+		openFileDialog->Filter = L"イベント|*.devt";
+		openFileDialog->Title = L"イベント情報の読み込み";
+		if (openFileDialog->ShowDialog() == Forms::DialogResult::OK){
+			System::IO::FileStream ^ fs = safe_cast<System::IO::FileStream^>(openFileDialog->OpenFile());
+			ReadData(fs, this);
+			fs->Close();
+		}
 	}
+
+	private: System::Void SaveToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
+		SaveFileDialog ^ saveFileDialog = gcnew SaveFileDialog();
+		saveFileDialog->Filter = L"イベント|*.devt";
+		saveFileDialog->Title = L"イベント情報の保存";
+		saveFileDialog->ShowDialog();
+		if (saveFileDialog->FileName != ""){
+			System::IO::FileStream ^ fs = safe_cast<System::IO::FileStream^>(saveFileDialog->OpenFile());
+			WriteData(fs, m_data);
+			fs->Close();
+		}
+	}
+
 #pragma endregion
 
 #pragma region AnimList
@@ -715,32 +762,29 @@ namespace EventTrackEditor {
 		if (e->KeyCode == Keys::Enter) {
 			TextBox^ tbox = (TextBox^)sender;
 			if (IO::File::Exists(tbox->Text)) {
-				m_animPath = tbox->Text;
-				_CreateModel();
+				CreateModel(tbox->Text);
 			}
 		}
 	}
 	private: System::Void animPathOpenButton_Click(System::Object^  sender, System::EventArgs^  e) {
 		OpenFileDialog ^ openFileDialog = gcnew OpenFileDialog();
-		openFileDialog->Filter = L"アニメモデル|*.dmdl";
+		openFileDialog->Filter = L"モデル情報|*.dmdl";
 		openFileDialog->Title = L"アニメモデルの読み込み";
-		if (openFileDialog->ShowDialog() == Forms::DialogResult::OK)
-		{
-			m_animPath = openFileDialog->FileName;
-			_CreateModel();
+		if (openFileDialog->ShowDialog() == Forms::DialogResult::OK){
+			CreateModel(openFileDialog->FileName);
 		}
 	}
 
-	private: System::Void _CreateModel()
+	public: System::Void CreateModel(String^ moedlPath)
 	{
 		DsSimu::GetIns()->ClearObj();
-		const char* animPath = CreateCharArray(m_animPath);
+		const char* modelPathChar = CreateCharArray(moedlPath);
 		String^ current = IO::Directory::GetCurrentDirectory();
 		String^ tmp = current + L"\\" + L"dummyHit.txt";
 		const char* hitPath = CreateCharArray(tmp);
-		const std::vector<std::string> clips = DsSimu::GetIns()->RegisterObj(animPath, hitPath, 0, 0, 0, 0, 180, 0, DS_MAP_OBJ_TYPE::CONTROL, DS_MAP_FIELD_OBJ_TYPE::CHR);
+		const std::vector<std::string> clips = DsSimu::GetIns()->RegisterObj(modelPathChar, hitPath, 0, 0, 0, 0, 180, 0, DS_MAP_OBJ_TYPE::CONTROL, DS_MAP_FIELD_OBJ_TYPE::CHR);
 		if (!clips.empty()) {
-			animPathTextBox->Text = m_animPath;
+			animPathTextBox->Text = moedlPath;
 		}
 		else {
 			animPathTextBox->Text = L"";
@@ -753,7 +797,7 @@ namespace EventTrackEditor {
 		}
 
 		//元データを作成
-		this->m_data->animPath = m_animPath;
+		this->m_data->modelPath = moedlPath;
 		this->m_data->data->Clear();
 		for (std::string name : clips) {
 			EDIT_TRACK_SET^ trackSet = gcnew EDIT_TRACK_SET();
@@ -762,12 +806,16 @@ namespace EventTrackEditor {
 		}
 
 		//アクション数クリア
-		m_actionNum = 0;
+		ClearActionBarNum();
 
-		delete animPath;
+		delete modelPathChar;
 		delete hitPath;
 	}
 
+	public: System::Void ResetBarTime(){
+		this->trackBar1->Value = 0;
+		UpdateLocateTime(this->trackBar1);
+	}
 	private: System::Void AnimListBox_MouseDoubleClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 		ListBox^ listBox = (ListBox^)(sender);
 
@@ -777,8 +825,7 @@ namespace EventTrackEditor {
 			const char* name = CreateCharArray(item);
 			DsSimu::GetIns()->SetCurrentAnimName(name);
 
-			this->trackBar1->Value = 0;
-			UpdateLocateTime(this->trackBar1);
+			ResetBarTime();
 
 			//カレントアニメが変わったので対応するバーの種類を再セットする
 			List<TextBox^>^ removeList = gcnew List<TextBox^>();
@@ -795,10 +842,10 @@ namespace EventTrackEditor {
 			for each(TextBox^ removeItem in removeList) {
 				this->panel1->Controls->Remove(removeItem);
 			}
-			m_actionNum = 0;
+			ClearActionBarNum();
 
 			//既存の編集データがあるならそれを入れる
-			if (m_data->animPath == this->animPathTextBox->Text) {
+			if (m_data->modelPath == this->animPathTextBox->Text) {
 				for each(EDIT_TRACK_SET^ trackSet in this->m_data->data) {
 					if (trackSet->animName == item) {
 						for each(TextBox^ textBox in trackSet->tracks) {
@@ -808,9 +855,6 @@ namespace EventTrackEditor {
 					}
 				}
 			}
-			
-
-
 			delete name;
 		}
 	}

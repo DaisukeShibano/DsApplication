@@ -221,7 +221,7 @@ namespace SimuEditor {
 			// 
 			// ObjOpenFileDialog
 			// 
-			this->ObjOpenFileDialog->Filter = L"独自形式のモデル情報|*.dmdl";
+			this->ObjOpenFileDialog->Filter = L"モデル情報|*.dmdl";
 			// 
 			// pictureBox1
 			// 
@@ -416,7 +416,7 @@ private: System::Void ObjInsListView_KeyDown(System::Object^  sender, System::Wi
 //メニュー
 private: System::Void 開くToolStripMenuItem_Click(System::Object^  sender, System::EventArgs^  e) {
 	OpenFileDialog ^ openFileDialog = gcnew OpenFileDialog();
-	openFileDialog->Filter = L"独自形式のマップ情報|*.dmap";
+	openFileDialog->Filter = L"マップ情報|*.dmap";
 	openFileDialog->Title = L"マップ情報の読み込み";
 	if (openFileDialog->ShowDialog() == Windows::Forms::DialogResult::OK)
 	{

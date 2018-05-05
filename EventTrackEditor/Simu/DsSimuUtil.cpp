@@ -12,6 +12,7 @@
 using namespace System;
 using namespace System::ComponentModel;
 using namespace System::Collections;
+using namespace System::Windows;
 using namespace System::Windows::Forms;
 using namespace System::Data;
 using namespace System::Drawing;
@@ -30,4 +31,15 @@ char* CreateCharArray(String^ str)
 	char *ch = (char *)malloc(sizeInBytes);
 	err = wcstombs_s(&convertedChars, ch, sizeInBytes, wch, sizeInBytes);
 	return ch;
+}
+
+
+System::String^ GetActionBarTypeName(ACTION_TYPE type)
+{
+	if (type < ACTION_TYPE_NUM) {
+		return gcnew String(ACTION_NAME_ARRAY[type].name);
+	}
+	else {
+		return gcnew String("");
+	}
 }

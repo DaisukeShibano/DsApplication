@@ -35,6 +35,7 @@ DsBallJoint::DsBallJoint(DsPhysicsWorld& world)
 //virtual 
 DsBallJoint::~DsBallJoint()
 {
+	m_world.GetConstraintSolver()->RemoveConstraint(m_pConstarint);
 	delete m_pConstarint; m_pConstarint = NULL;
 }
 

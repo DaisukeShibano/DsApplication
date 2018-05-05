@@ -18,6 +18,11 @@ namespace DsPhysics
 		: m_world(world)
 		{}
 		virtual ~DsJoint(){}
+
+	public:
+		
+
+	protected:
 		DsPhysicsWorld& m_world;
 
 
