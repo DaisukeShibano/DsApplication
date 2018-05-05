@@ -628,6 +628,42 @@ namespace EventTrackEditor {
 
 
 #pragma region ActionContextMenu
+	private: System::Drawing::Point GetBarHeight()
+	{
+		return  System::Drawing::Point(0, m_actionNum*HEIGHT_BAR + this->trackBar1->Size.Height);
+	}
+
+	private: System::Void barTextBox_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+		if (e->KeyCode == Keys::Delete) {
+			TextBox^ tbox = dynamic_cast<TextBox^>(sender);
+			ActionBarTag^ bar = dynamic_cast<ActionBarTag^>(tbox->Tag);
+			if (bar) {
+				this->panel1->Controls->Remove(tbox);
+				
+				bool isEnd = false;
+				for each(EDIT_TRACK_SET^ trackSet in m_data->data) {
+					for each(TextBox^ bar in trackSet->tracks) {
+						if (bar == tbox) {
+							trackSet->tracks->Remove(bar);
+							break;
+						}
+					}
+
+					//ÉoÅ[Ç™è¡Ç¶ÇΩÇÃÇ≈çÇÇ≥Ççƒí≤êÆ
+					ClearActionBarNum();
+					for each(TextBox^ bar in trackSet->tracks) {
+						bar->Location = GetBarHeight();
+						++m_actionNum;
+					}
+
+					if (isEnd) {
+						break;
+					}
+				}
+			}
+			
+		}
+	}
 	public: PARAM_BASE^ CreareBar(float startTime, float endTime, String^ barName, String^ targetAnimName, bool isAddForm)
 	{
 		PARAM_BASE^ ret = nullptr;
@@ -650,13 +686,14 @@ namespace EventTrackEditor {
 			addBar->Font = (gcnew System::Drawing::Font(L"ÇlÇr ÉSÉVÉbÉN", 10.0F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(128)));
 			addBar->ForeColor = System::Drawing::SystemColors::HighlightText;
-			addBar->Location = System::Drawing::Point(0, m_actionNum*HEIGHT_BAR + this->trackBar1->Size.Height);
+			addBar->Location = GetBarHeight();
 			addBar->Name = L"TrackBar";
 			addBar->Size = System::Drawing::Size(barSize, HEIGHT_BAR);
 			addBar->Text = gcnew String(pAct->name);
 			addBar->ReadOnly = true;
 			addBar->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &Form1::textBox1_MouseMove);
 			addBar->Click += gcnew System::EventHandler(this, &Form1::textBox1_Click);
+			addBar->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &Form1::barTextBox_KeyDown);
 
 			ActionBarTag^ tag = gcnew ActionBarTag();
 			tag->actionType = pAct->type;
