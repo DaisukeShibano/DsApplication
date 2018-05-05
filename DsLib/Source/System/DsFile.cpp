@@ -42,8 +42,8 @@ DsFile::DsFile(const char *_Filename, ios_base::openmode _Mode, int _Prot)
 			struct stat st;
 			int fd = _fileno(fp);
 			fstat(fd, &st);
-			m_pBufTop = new char[st.st_size];
-			fread_s(m_pBufTop, st.st_size, sizeof(char), st.st_size, fp);
+			m_pBufTop = new ds_uint8[st.st_size];
+			fread_s(m_pBufTop, st.st_size, sizeof(ds_uint8), st.st_size, fp);
 			m_pReadBuf = m_pBufTop;
 			m_bufSize = st.st_size;
 			fclose(fp);
@@ -78,8 +78,8 @@ DsFile::DsFile(const wchar_t *_Filename, ios_base::openmode _Mode, int _Prot)
 		struct stat st;
 		int fd = _fileno(fp);
 		fstat(fd, &st);
-		m_pBufTop = new char[st.st_size];
-		fread_s(m_pBufTop, st.st_size, sizeof(char), st.st_size, fp);
+		m_pBufTop = new ds_uint8[st.st_size];
+		fread_s(m_pBufTop, st.st_size, sizeof(ds_uint8), st.st_size, fp);
 		m_pReadBuf = m_pBufTop;
 		m_bufSize = st.st_size;
 		fclose(fp);
@@ -99,7 +99,7 @@ DsFile::~DsFile()
 #endif
 }
 
-void DsFile::Read(char* pBuf, std::streamsize size)
+void DsFile::Read(ds_uint8* pBuf, std::streamsize size)
 {
 #if defined __USE_IFSTREAM0
 	m_ifstream.read(pBuf, size);
@@ -154,8 +154,8 @@ bool DsFile::GetLine(std::string& str)
 {
 	bool ret = false;
 
-	const char* end = m_pBufTop + m_bufSize;
-	const char* read = m_pReadBuf;
+	ds_uint8* end = m_pBufTop + m_bufSize;
+	ds_uint8* read = m_pReadBuf;
 	while (end != read)
 	{
 		if( ((*read) == '\n') ||
@@ -169,11 +169,18 @@ bool DsFile::GetLine(std::string& str)
 	}
 
 	if (ret) {
-		str.assign(m_pReadBuf, static_cast<ds_uint64>(read- m_pReadBuf) );
-		m_pReadBuf = (char*)read;
+		str.assign((char*)m_pReadBuf, static_cast<ds_uint64>(read- m_pReadBuf) );
+		m_pReadBuf = (ds_uint8*)read;
 		++m_pReadBuf;
 	}
 	
+	return ret;
+}
+
+ds_uint8* DsFile::MoveBufferTop()
+{
+	ds_uint8* ret = m_pBufTop;
+	m_pBufTop = NULL;
 	return ret;
 }
 
@@ -183,8 +190,8 @@ void DsFile::_Init()
 #if defined __USE_IFSTREAM0
 
 #elif defined __USE_IFSTREAM1
-	std::istreambuf_iterator<char> it(m_ifstream);
-	std::istreambuf_iterator<char> last;
+	std::istreambuf_iterator<ds_uint8> it(m_ifstream);
+	std::istreambuf_iterator<ds_uint8> last;
 	m_bufTop.assign(it, last);
 	m_pReadBuf = m_bufTop.data();
 	m_ifstream.close();

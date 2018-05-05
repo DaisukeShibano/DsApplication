@@ -64,13 +64,13 @@ namespace
 
 		{//version
 			long ver;
-			fs.Read((char*)(&ver), sizeof(long));
+			fs.Read((ds_uint8*)(&ver), sizeof(long));
 			pRes->version = ver;
 		}
 
 		int objNum = 0;
 		{//objNum
-			fs.Read((char*)(&objNum), sizeof(int));
+			fs.Read((ds_uint8*)(&objNum), sizeof(int));
 		}
 
 		for (int oi = 0; oi < objNum; ++oi)
@@ -80,36 +80,36 @@ namespace
 			int tmpCharNum = 0;
 			char* tmpChar = 0;
 
-			fs.Read((char*)(&tmpCharNum), sizeof(int));
+			fs.Read((ds_uint8*)(&tmpCharNum), sizeof(int));
 			tmpChar = new char[tmpCharNum+1];
-			fs.Read(tmpChar, tmpCharNum);
+			fs.Read((ds_uint8*)tmpChar, tmpCharNum);
 			tmpChar[tmpCharNum] = '\0';
 			obj->objInsName = tmpChar;
 			delete[] tmpChar;
 
-			fs.Read((char*)(&tmpCharNum), sizeof(int));
+			fs.Read((ds_uint8*)(&tmpCharNum), sizeof(int));
 			tmpChar = new char[tmpCharNum+1];
-			fs.Read(tmpChar, tmpCharNum);
+			fs.Read((ds_uint8*)tmpChar, tmpCharNum);
 			tmpChar[tmpCharNum] = '\0';
 			obj->drawModelPath = tmpChar;
 			delete[] tmpChar;
 
-			fs.Read((char*)(&tmpCharNum), sizeof(int));
+			fs.Read((ds_uint8*)(&tmpCharNum), sizeof(int));
 			tmpChar = new char[tmpCharNum+1];
-			fs.Read(tmpChar, tmpCharNum);
+			fs.Read((ds_uint8*)tmpChar, tmpCharNum);
 			tmpChar[tmpCharNum] = '\0';
 			obj->hitModelPath = tmpChar;
 			delete[] tmpChar;
 
-			fs.Read((char*)(&obj->posX), sizeof(double));
-			fs.Read((char*)(&obj->posY), sizeof(double));
-			fs.Read((char*)(&obj->posZ), sizeof(double));
-			fs.Read((char*)(&obj->angX), sizeof(double));
-			fs.Read((char*)(&obj->angY), sizeof(double));
-			fs.Read((char*)(&obj->angZ), sizeof(double));
+			fs.Read((ds_uint8*)(&obj->posX), sizeof(double));
+			fs.Read((ds_uint8*)(&obj->posY), sizeof(double));
+			fs.Read((ds_uint8*)(&obj->posZ), sizeof(double));
+			fs.Read((ds_uint8*)(&obj->angX), sizeof(double));
+			fs.Read((ds_uint8*)(&obj->angY), sizeof(double));
+			fs.Read((ds_uint8*)(&obj->angZ), sizeof(double));
 
-			fs.Read((char*)(&obj->objType), sizeof(int));
-			fs.Read((char*)(&obj->fieldObjType), sizeof(int));
+			fs.Read((ds_uint8*)(&obj->objType), sizeof(int));
+			fs.Read((ds_uint8*)(&obj->fieldObjType), sizeof(int));
 			
 			pRes->objs.push_back(obj);
 		}

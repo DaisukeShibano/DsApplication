@@ -40,6 +40,12 @@
     <Filter Include="Source\World\Field\Action">
       <UniqueIdentifier>{649328aa-dafb-4410-bec1-03de74441f97}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\World\Animation">
+      <UniqueIdentifier>{99f2f1fe-8a12-40d3-a2b3-7458c40baec4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\World\Animation\Event">
+      <UniqueIdentifier>{8a4e95da-abf3-46e5-8e08-12dfeb3cc7dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsAppPch.h">
@@ -117,6 +123,12 @@
     <ClInclude Include="Source\World\Field\Action\DsActionRequestManual.h">
       <Filter>Source\World\Field\Action</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Res\DsAnimEventTrackRes.h">
+      <Filter>Source\Res</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Res\DsAnimEventTrackFormat.h">
+      <Filter>Source\Res</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsAppPch.cpp">
@@ -175,6 +187,9 @@
     </ClCompile>
     <ClCompile Include="Source\World\Field\Action\DsActionRequestManual.cpp">
       <Filter>Source\World\Field\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Res\DsAnimEventTrackRes.cpp">
+      <Filter>Source\Res</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

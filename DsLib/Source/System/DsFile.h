@@ -24,7 +24,7 @@ namespace DsLib
 
 		virtual ~DsFile();
 
-		void Read(char* pBuf, std::streamsize size);
+		void Read(ds_uint8* pBuf, std::streamsize size);
 
 		bool IsFail() const;
 
@@ -34,9 +34,10 @@ namespace DsLib
 
 		size_t GetSize() const { return m_bufSize; }
 
-		char* GetBufferTop()const { return m_pBufTop; }
+		ds_uint8* GetBufferTop()const { return m_pBufTop; }
+		ds_uint8* MoveBufferTop();
 
-		char* GetReadBuffer()const { return m_pReadBuf; }
+		ds_uint8* GetReadBuffer()const { return m_pReadBuf; }
 
 	private:
 		void _Init();
@@ -49,8 +50,8 @@ namespace DsLib
 		std::string m_bufTop;
 		const char* m_pReadBuf;
 #elif defined __USE_IFSTREAM2
-		char* m_pBufTop;
-		char* m_pReadBuf;
+		ds_uint8* m_pBufTop;
+		ds_uint8* m_pReadBuf;
 		size_t m_bufSize;
 #endif
 	};

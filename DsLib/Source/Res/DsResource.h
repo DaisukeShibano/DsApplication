@@ -10,6 +10,21 @@ namespace DsLib
 
 namespace DsLib
 {
+	class DsResItem
+	{
+	public:
+		virtual void Initialize(const char* path) = 0;
+	};
+	class DsResItemFactory
+	{
+	public:
+		virtual DsResItem* CreateIns() const= 0;
+	};
+
+
+
+
+
 	class DsResource
 	{
 	public:
@@ -39,10 +54,14 @@ namespace DsLib
 		DsHitRes* RegisterHitRes(const char* name);
 		const DsHitRes* GetHitRes(const char* name) const;
 
+		DsResItem* RegisterItem(const char* name, const DsResItemFactory& factory);
+		const DsResItem* GetItem(const char* name)const;
+
 	private:
 		std::map<std::string, DsAnimRes*> m_animSet;
 		std::map<std::string, DsMapRes*> m_mapSet;
 		std::map<std::string, DsHitRes*> m_hitSet;
+		std::map<std::string, DsResItem* > m_resItemSet;
 	};
 }
 

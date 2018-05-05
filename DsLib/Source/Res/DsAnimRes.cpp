@@ -474,6 +474,8 @@ namespace
 
 	OutputRes* _LoadAnim(const char* path)
 	{
+		//DsAnimEventTrackRes のようにメモリ確保は一回で済ませたいけど面倒なのでこのまま。
+
 		OutputRes& res= *(new OutputRes());
 
 		DsFile fs(path, std::ios::out | std::ios::binary);
@@ -485,99 +487,99 @@ namespace
 
 		{//header
 			long ver;
-			fs.Read((char*)(&ver), sizeof(long));
+			fs.Read((ds_uint8*)(&ver), sizeof(long));
 
 			unsigned long long vertexOffset;
-			fs.Read((char*)(&vertexOffset), sizeof(vertexOffset));
+			fs.Read((ds_uint8*)(&vertexOffset), sizeof(vertexOffset));
 
 			unsigned long long faceOffset;
-			fs.Read((char*)(&faceOffset), sizeof(faceOffset));
+			fs.Read((ds_uint8*)(&faceOffset), sizeof(faceOffset));
 		}
 
 
 		///////////////////////////////ここからモデル
 		{//vertex
 			vari_size vn;
-			fs.Read((char*)(&vn), sizeof(vn));
+			fs.Read((ds_uint8*)(&vn), sizeof(vn));
 			res.dsAnimModel.vn = vn;
 
 			res.dsAnimModel.pVertex = new DS_VERTEX[vn];
-			fs.Read((char*)(res.dsAnimModel.pVertex), sizeof(DS_VERTEX)*vn);
+			fs.Read((ds_uint8*)(res.dsAnimModel.pVertex), sizeof(DS_VERTEX)*vn);
 		}
 		{//face
 			vari_size fn;
-			fs.Read((char*)(&fn), sizeof(fn));
+			fs.Read((ds_uint8*)(&fn), sizeof(fn));
 			res.dsAnimModel.fn = fn;
 
 			res.dsAnimModel.pFace = new DS_FACE[fn];
 			for (vari_size fIdx = 0; fIdx < fn; ++fIdx)
 			{
 				vari_size vn;
-				fs.Read((char*)(&vn), sizeof(vn));
+				fs.Read((ds_uint8*)(&vn), sizeof(vn));
 				res.dsAnimModel.pFace[fIdx].vn = vn;
 
-				fs.Read((char*)(res.dsAnimModel.pFace[fIdx].normal.v), sizeof(DS_VERTEX));
+				fs.Read((ds_uint8*)(res.dsAnimModel.pFace[fIdx].normal.v), sizeof(DS_VERTEX));
 
 				res.dsAnimModel.pFace[fIdx].pIndex = new vari_size[vn];
-				fs.Read((char*)(res.dsAnimModel.pFace[fIdx].pIndex), sizeof(vari_size)*vn);
+				fs.Read((ds_uint8*)(res.dsAnimModel.pFace[fIdx].pIndex), sizeof(vari_size)*vn);
 			}
 		}
 		{//dmypoly
 			vari_size dn;
-			fs.Read((char*)(&dn), sizeof(dn));
+			fs.Read((ds_uint8*)(&dn), sizeof(dn));
 			res.dsAnimModel.dn = dn;
 
 			res.dsAnimModel.pDmypoly = new DS_DMYPOLY[dn];
-			fs.Read((char*)(res.dsAnimModel.pDmypoly), sizeof(DS_DMYPOLY)*dn);
+			fs.Read((ds_uint8*)(res.dsAnimModel.pDmypoly), sizeof(DS_DMYPOLY)*dn);
 		}
 
 		{//material
 			vari_size mn;
-			fs.Read((char*)(&mn), sizeof(mn));
+			fs.Read((ds_uint8*)(&mn), sizeof(mn));
 			res.dsAnimModel.pMtr = new DS_MATERIAL[mn];
 			res.dsAnimModel.mn = mn;
 
 			for (vari_size mi = 0; mi < mn; ++mi)
 			{
 				vari_size tn;
-				fs.Read((char*)(&tn), sizeof(tn));
+				fs.Read((ds_uint8*)(&tn), sizeof(tn));
 				res.dsAnimModel.pMtr[mi].textureNum = tn;
 				res.dsAnimModel.pMtr[mi].texture = new DS_TEXTURE[tn];
 				
 				for (vari_size ti = 0; ti < tn; ++ti)
 				{
 					int nameSize;
-					fs.Read((char*)(&nameSize), sizeof(nameSize));
+					fs.Read((ds_uint8*)(&nameSize), sizeof(nameSize));
 					res.dsAnimModel.pMtr[mi].texture[ti].texPathSize = nameSize;
 					res.dsAnimModel.pMtr[mi].texture[ti].texPath = new char[nameSize+1];
-					fs.Read(res.dsAnimModel.pMtr[mi].texture[ti].texPath, nameSize);
+					fs.Read((ds_uint8*)res.dsAnimModel.pMtr[mi].texture[ti].texPath, nameSize);
 					res.dsAnimModel.pMtr[mi].texture[ti].texPath[nameSize] = '\0'; //終端文字が入ってないので。
 
 					int textureType;
-					fs.Read((char*)(&textureType), sizeof(textureType));
+					fs.Read((ds_uint8*)(&textureType), sizeof(textureType));
 					res.dsAnimModel.pMtr[mi].texture[ti].textType = textureType;
 
 					vari_size uvNum;
-					fs.Read((char*)(&uvNum), sizeof(uvNum));
+					fs.Read((ds_uint8*)(&uvNum), sizeof(uvNum));
 					res.dsAnimModel.pMtr[mi].texture[ti].uvNum = uvNum;
 					res.dsAnimModel.pMtr[mi].texture[ti].uv = new DS_TEXTURE::UV[uvNum];
-					fs.Read((char*)(res.dsAnimModel.pMtr[mi].texture[ti].uv), sizeof(DS_TEXTURE::UV)*uvNum);
+					fs.Read((ds_uint8*)(res.dsAnimModel.pMtr[mi].texture[ti].uv), sizeof(DS_TEXTURE::UV)*uvNum);
 
 					vari_size uvFaceNum;
-					fs.Read((char*)(&uvFaceNum), sizeof(uvFaceNum));
+					fs.Read((ds_uint8*)(&uvFaceNum), sizeof(uvFaceNum));
 					res.dsAnimModel.pMtr[mi].texture[ti].uvFaceNum = uvFaceNum;
 					res.dsAnimModel.pMtr[mi].texture[ti].uvFace = new DS_TEXTURE::UV_FACE[uvFaceNum];
 					for (vari_size uvfi = 0; uvfi < uvFaceNum; ++uvfi)
 					{
 						vari_size uvpNum;
-						fs.Read((char*)(&uvpNum), sizeof(uvpNum));
+						fs.Read((ds_uint8*)(&uvpNum), sizeof(uvpNum));
 						res.dsAnimModel.pMtr[mi].texture[ti].uvFace[uvfi].uvpNum = uvpNum;
 						vari_size refGeomFaceIndex;
-						fs.Read((char*)(&refGeomFaceIndex), sizeof(refGeomFaceIndex));
+						fs.Read((ds_uint8*)(&refGeomFaceIndex), sizeof(refGeomFaceIndex));
 						res.dsAnimModel.pMtr[mi].texture[ti].uvFace[uvfi].refGeomFaceIndex = refGeomFaceIndex;
 
 						res.dsAnimModel.pMtr[mi].texture[ti].uvFace[uvfi].uvpIndex = new int[uvpNum];
-						fs.Read((char*)(res.dsAnimModel.pMtr[mi].texture[ti].uvFace[uvfi].uvpIndex), sizeof(int)*uvpNum);
+						fs.Read((ds_uint8*)(res.dsAnimModel.pMtr[mi].texture[ti].uvFace[uvfi].uvpIndex), sizeof(int)*uvpNum);
 					}
 				}
 			}
@@ -588,50 +590,50 @@ namespace
 		/////////////////////////ここからキーフレームアニメ
 		{//bone
 			unsigned long boneNum;
-			fs.Read((char*)(&boneNum), sizeof(boneNum));
+			fs.Read((ds_uint8*)(&boneNum), sizeof(boneNum));
 			res.dsAnimBone.bn = boneNum;
 			res.dsAnimBone.pBone = new DS_BONE[boneNum];
 
 			for (unsigned long bIdx = 0; bIdx < boneNum; ++bIdx)
 			{
 				unsigned long nameSize;
-				fs.Read((char*)(&nameSize), sizeof(nameSize));
+				fs.Read((ds_uint8*)(&nameSize), sizeof(nameSize));
 				res.dsAnimBone.pBone[bIdx].nameSize = nameSize;
 				res.dsAnimBone.pBone[bIdx].name = new char[nameSize];
 
-				fs.Read(res.dsAnimBone.pBone[bIdx].name, nameSize);
+				fs.Read((ds_uint8*)res.dsAnimBone.pBone[bIdx].name, nameSize);
 
-				fs.Read((char*)(&res.dsAnimBone.pBone[bIdx].initMat.m[0][0]), DS_MAT::SIZE);
+				fs.Read((ds_uint8*)(&res.dsAnimBone.pBone[bIdx].initMat.m[0][0]), DS_MAT::SIZE);
 
 				long indexNum;
-				fs.Read((char*)(&indexNum), sizeof(indexNum));
+				fs.Read((ds_uint8*)(&indexNum), sizeof(indexNum));
 				res.dsAnimBone.pBone[bIdx].indexNum = indexNum;
 
 				//ボーンに紐づく頂点インデックス
 				res.dsAnimBone.pBone[bIdx].pIndex = new vari_size[indexNum];
-				fs.Read((char*)(res.dsAnimBone.pBone[bIdx].pIndex), sizeof(vari_size)*indexNum);
+				fs.Read((ds_uint8*)(res.dsAnimBone.pBone[bIdx].pIndex), sizeof(vari_size)*indexNum);
 				
 				//ボーンに紐づく頂点に対する重み
 				res.dsAnimBone.pBone[bIdx].pWeight = new float[indexNum];
-				fs.Read((char*)(res.dsAnimBone.pBone[bIdx].pWeight), sizeof(float)*indexNum);
+				fs.Read((ds_uint8*)(res.dsAnimBone.pBone[bIdx].pWeight), sizeof(float)*indexNum);
 
 				int parentIdx = -1;
-				fs.Read((char*)(&parentIdx), sizeof(parentIdx));
+				fs.Read((ds_uint8*)(&parentIdx), sizeof(parentIdx));
 				res.dsAnimBone.pBone[bIdx].parentIdx = parentIdx;
 				int childNum = 0;
-				fs.Read((char*)(&childNum), sizeof(childNum));
+				fs.Read((ds_uint8*)(&childNum), sizeof(childNum));
 				res.dsAnimBone.pBone[bIdx].childNum = childNum;
 				if (0 < childNum)
 				{
 					res.dsAnimBone.pBone[bIdx].pChildIdx = new int[childNum];
-					fs.Read((char*)(res.dsAnimBone.pBone[bIdx].pChildIdx), sizeof(int)*childNum);
+					fs.Read((ds_uint8*)(res.dsAnimBone.pBone[bIdx].pChildIdx), sizeof(int)*childNum);
 				}
 			}
 		}
 
 		{//anim
 			unsigned long animNum;
-			fs.Read((char*)(&animNum), sizeof(animNum));
+			fs.Read((ds_uint8*)(&animNum), sizeof(animNum));
 			res.dsAnimBone.an = animNum;
 			res.dsAnimBone.pAnim = new DS_ANIM[animNum];
 
@@ -639,14 +641,14 @@ namespace
 			for (unsigned long aIdx = 0; aIdx < animNum; ++aIdx)
 			{
 				unsigned long animNameSize;
-				fs.Read((char*)(&animNameSize), sizeof(animNameSize));
+				fs.Read((ds_uint8*)(&animNameSize), sizeof(animNameSize));
 				res.dsAnimBone.pAnim[aIdx].animNameSize = animNameSize;
 				res.dsAnimBone.pAnim[aIdx].animName = new char[animNameSize];
 
-				fs.Read(res.dsAnimBone.pAnim[aIdx].animName, animNameSize);
+				fs.Read((ds_uint8*)res.dsAnimBone.pAnim[aIdx].animName, animNameSize);
 
 				unsigned long poseNum;
-				fs.Read((char*)(&poseNum), sizeof(poseNum));
+				fs.Read((ds_uint8*)(&poseNum), sizeof(poseNum));
 				res.dsAnimBone.pAnim[aIdx].poseNum = poseNum;
 				res.dsAnimBone.pAnim[aIdx].pose = new DS_ANIM_POSE[poseNum];
 
@@ -655,77 +657,77 @@ namespace
 				{
 					{
 						long keyFrameNum;
-						fs.Read((char*)(&keyFrameNum), sizeof(keyFrameNum));
+						fs.Read((ds_uint8*)(&keyFrameNum), sizeof(keyFrameNum));
 						res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameNumTX = keyFrameNum;
 						res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameTX = new DS_KEY_FRAME[keyFrameNum];
-						fs.Read((char*)(res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameTX), sizeof(DS_KEY_FRAME)*keyFrameNum);
+						fs.Read((ds_uint8*)(res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameTX), sizeof(DS_KEY_FRAME)*keyFrameNum);
 					}
 					{
 						long keyFrameNum;
-						fs.Read((char*)(&keyFrameNum), sizeof(keyFrameNum));
+						fs.Read((ds_uint8*)(&keyFrameNum), sizeof(keyFrameNum));
 						res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameNumTY = keyFrameNum;
 						res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameTY = new DS_KEY_FRAME[keyFrameNum];
-						fs.Read((char*)(res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameTY), sizeof(DS_KEY_FRAME)*keyFrameNum);
+						fs.Read((ds_uint8*)(res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameTY), sizeof(DS_KEY_FRAME)*keyFrameNum);
 					}
 					{
 						long keyFrameNum;
-						fs.Read((char*)(&keyFrameNum), sizeof(keyFrameNum));
+						fs.Read((ds_uint8*)(&keyFrameNum), sizeof(keyFrameNum));
 						res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameNumTZ = keyFrameNum;
 						res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameTZ = new DS_KEY_FRAME[keyFrameNum];
-						fs.Read((char*)(res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameTZ), sizeof(DS_KEY_FRAME)*keyFrameNum);
+						fs.Read((ds_uint8*)(res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameTZ), sizeof(DS_KEY_FRAME)*keyFrameNum);
 					}
 
 
 					{
 						long keyFrameNum;
-						fs.Read((char*)(&keyFrameNum), sizeof(keyFrameNum));
+						fs.Read((ds_uint8*)(&keyFrameNum), sizeof(keyFrameNum));
 						res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameNumRX = keyFrameNum;
 						res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameRX = new DS_KEY_FRAME[keyFrameNum];
-						fs.Read((char*)(res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameRX), sizeof(DS_KEY_FRAME)*keyFrameNum);
+						fs.Read((ds_uint8*)(res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameRX), sizeof(DS_KEY_FRAME)*keyFrameNum);
 					}
 					{
 						long keyFrameNum;
-						fs.Read((char*)(&keyFrameNum), sizeof(keyFrameNum));
+						fs.Read((ds_uint8*)(&keyFrameNum), sizeof(keyFrameNum));
 						res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameNumRY = keyFrameNum;
 						res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameRY = new DS_KEY_FRAME[keyFrameNum];
-						fs.Read((char*)(res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameRY), sizeof(DS_KEY_FRAME)*keyFrameNum);
+						fs.Read((ds_uint8*)(res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameRY), sizeof(DS_KEY_FRAME)*keyFrameNum);
 					}
 					{
 						long keyFrameNum;
-						fs.Read((char*)(&keyFrameNum), sizeof(keyFrameNum));
+						fs.Read((ds_uint8*)(&keyFrameNum), sizeof(keyFrameNum));
 						res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameNumRZ = keyFrameNum;
 						res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameRZ = new DS_KEY_FRAME[keyFrameNum];
-						fs.Read((char*)(res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameRZ), sizeof(DS_KEY_FRAME)*keyFrameNum);
+						fs.Read((ds_uint8*)(res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameRZ), sizeof(DS_KEY_FRAME)*keyFrameNum);
 					}
 					{
 						long keyFrameNum;
-						fs.Read((char*)(&keyFrameNum), sizeof(keyFrameNum));
+						fs.Read((ds_uint8*)(&keyFrameNum), sizeof(keyFrameNum));
 						res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameNumRQ = keyFrameNum;
 						res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameRQ = new DS_KEY_FRAME[keyFrameNum];
-						fs.Read((char*)(res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameRQ), sizeof(DS_KEY_FRAME)*keyFrameNum);
+						fs.Read((ds_uint8*)(res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameRQ), sizeof(DS_KEY_FRAME)*keyFrameNum);
 					}
 
 
 					{
 						long keyFrameNum;
-						fs.Read((char*)(&keyFrameNum), sizeof(keyFrameNum));
+						fs.Read((ds_uint8*)(&keyFrameNum), sizeof(keyFrameNum));
 						res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameNumSX = keyFrameNum;
 						res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameSX = new DS_KEY_FRAME[keyFrameNum];
-						fs.Read((char*)(res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameSX), sizeof(DS_KEY_FRAME)*keyFrameNum);
+						fs.Read((ds_uint8*)(res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameSX), sizeof(DS_KEY_FRAME)*keyFrameNum);
 					}
 					{
 						long keyFrameNum;
-						fs.Read((char*)(&keyFrameNum), sizeof(keyFrameNum));
+						fs.Read((ds_uint8*)(&keyFrameNum), sizeof(keyFrameNum));
 						res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameNumSY = keyFrameNum;
 						res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameSY = new DS_KEY_FRAME[keyFrameNum];
-						fs.Read((char*)(res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameSY), sizeof(DS_KEY_FRAME)*keyFrameNum);
+						fs.Read((ds_uint8*)(res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameSY), sizeof(DS_KEY_FRAME)*keyFrameNum);
 					}
 					{
 						long keyFrameNum;
-						fs.Read((char*)(&keyFrameNum), sizeof(keyFrameNum));
+						fs.Read((ds_uint8*)(&keyFrameNum), sizeof(keyFrameNum));
 						res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameNumSZ = keyFrameNum;
 						res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameSZ = new DS_KEY_FRAME[keyFrameNum];
-						fs.Read((char*)(res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameSZ), sizeof(DS_KEY_FRAME)*keyFrameNum);
+						fs.Read((ds_uint8*)(res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameSZ), sizeof(DS_KEY_FRAME)*keyFrameNum);
 					}
 				}
 			}
@@ -734,12 +736,12 @@ namespace
 		////////////////////ここからカスタムプロパティ
 		{//ragdollParam
 			unsigned long ragdollParamNum=0;
-			fs.Read((char*)(&ragdollParamNum), sizeof(ragdollParamNum));
+			fs.Read((ds_uint8*)(&ragdollParamNum), sizeof(ragdollParamNum));
 			const long ragParaSize = ragdollParamNum * sizeof(DS_RAGDOLL_PARAM_ID);
 			res.dsCustomProperty.ragdollNum = ragdollParamNum;
 			if (0 < ragdollParamNum) {
 				DS_RAGDOLL_PARAM_ID* pRagdollaramId= new DS_RAGDOLL_PARAM_ID[ragdollParamNum];
-				fs.Read((char*)(pRagdollaramId), sizeof(DS_RAGDOLL_PARAM_ID)*ragdollParamNum);
+				fs.Read((ds_uint8*)(pRagdollaramId), sizeof(DS_RAGDOLL_PARAM_ID)*ragdollParamNum);
 				res.dsCustomProperty.pRagdollParamId = pRagdollaramId;
 			}
 

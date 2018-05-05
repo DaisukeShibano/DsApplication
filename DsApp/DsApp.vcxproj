@@ -194,6 +194,8 @@
     <ClInclude Include="Source\Evolve\Gene\DsGene.h" />
     <ClInclude Include="Source\NeuralNetwork\DsNeuron.h" />
     <ClInclude Include="Source\NeuralNetwork\DsNeuronCtrl.h" />
+    <ClInclude Include="Source\Res\DsAnimEventTrackFormat.h" />
+    <ClInclude Include="Source\Res\DsAnimEventTrackRes.h" />
     <ClInclude Include="Source\Res\Param\DsRagdollParam.h" />
     <ClInclude Include="Source\World\Field\Action\DsActionCtrl.h" />
     <ClInclude Include="Source\World\Field\Action\DsActionRequest.h" />
@@ -223,6 +225,7 @@
     <ClCompile Include="Source\Evolve\Gene\DsDecisionTreeOperator.cpp" />
     <ClCompile Include="Source\Evolve\Gene\DsGene.cpp" />
     <ClCompile Include="Source\NeuralNetwork\DsNeuronCtrl.cpp" />
+    <ClCompile Include="Source\Res\DsAnimEventTrackRes.cpp" />
     <ClCompile Include="Source\Res\Param\DsRagdollParam.cpp" />
     <ClCompile Include="Source\World\Field\Action\DsActionCtrl.cpp" />
     <ClCompile Include="Source\World\Field\Action\DsActionRequestManual.cpp" />

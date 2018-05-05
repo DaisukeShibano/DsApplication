@@ -28,6 +28,7 @@ DsResource::DsResource()
 	: m_animSet()
 	, m_mapSet()
 	, m_hitSet()
+	, m_resItemSet()
 {
 }
 
@@ -38,28 +39,32 @@ DsResource::~DsResource()
 
 void DsResource::Finalize()
 {
-	for each(auto pRes in m_animSet)
+	for(auto pRes : m_animSet)
 	{
 		delete pRes.second;
 	}
 	m_animSet.clear();
 
-	for each(auto pRes in m_mapSet)
+	for(auto pRes : m_mapSet)
 	{
 		delete pRes.second;
 	}
 	m_mapSet.clear();
 
-	for each(auto pRes in m_hitSet)
+	for(auto pRes : m_hitSet)
 	{
 		delete pRes.second;
 	}
 	m_hitSet.clear();
+
+	for (auto pRes : m_resItemSet) {
+		delete pRes.second;
+	}
+	m_resItemSet.clear();
 }
 
 DsAnimRes* DsResource::RegisterAnimRes(const char* name)
 {
-	std::string tmp = name;
 	const auto find = m_animSet.find(name);
 	if (find != m_animSet.end())
 	{
@@ -68,6 +73,7 @@ DsAnimRes* DsResource::RegisterAnimRes(const char* name)
 	else
 	{
 		DsAnimRes* res = new DsAnimRes();
+		DS_ASSERT(res, "ƒƒ‚ƒŠŠm•ÛŽ¸”s");
 		res->Initialize(name);
 		string tmpStr = name;
 		m_animSet.insert(map<string, DsAnimRes*>::value_type(tmpStr, res));
@@ -77,7 +83,6 @@ DsAnimRes* DsResource::RegisterAnimRes(const char* name)
 
 const DsAnimRes* DsResource::GetAnimRes(const char* name) const
 {
-	std::string tmp = name;
 	const auto find = m_animSet.find(name);
 	if (find != m_animSet.end())
 	{
@@ -91,7 +96,6 @@ const DsAnimRes* DsResource::GetAnimRes(const char* name) const
 
 DsMapRes* DsResource::RegisterMapRes(const char* name)
 {
-	std::string tmp = name;
 	const auto find = m_mapSet.find(name);
 	if (find != m_mapSet.end())
 	{
@@ -100,6 +104,7 @@ DsMapRes* DsResource::RegisterMapRes(const char* name)
 	else
 	{
 		DsMapRes* res = new DsMapRes();
+		DS_ASSERT(res, "ƒƒ‚ƒŠŠm•ÛŽ¸”s");
 		res->Initialize(name);
 		string tmpStr = name;
 		m_mapSet.insert(map<string, DsMapRes*>::value_type(tmpStr, res) );
@@ -109,7 +114,6 @@ DsMapRes* DsResource::RegisterMapRes(const char* name)
 
 const DsMapRes* DsResource::GetMapRes(const char* name)const
 {
-	std::string tmp = name;
 	const auto find = m_mapSet.find(name);
 	if (find != m_mapSet.end())
 	{
@@ -123,7 +127,6 @@ const DsMapRes* DsResource::GetMapRes(const char* name)const
 
 DsHitRes* DsResource::RegisterHitRes(const char* name)
 {
-	std::string tmp = name;
 	const auto find = m_hitSet.find(name);
 	if (find != m_hitSet.end())
 	{
@@ -132,6 +135,7 @@ DsHitRes* DsResource::RegisterHitRes(const char* name)
 	else
 	{
 		DsHitRes* res = new DsHitRes();
+		DS_ASSERT(res, "ƒƒ‚ƒŠŠm•ÛŽ¸”s");
 		res->Initialize(name, *this);
 		string tmpStr = name;
 		m_hitSet.insert(map<string, DsHitRes*>::value_type(tmpStr, res));
@@ -141,7 +145,6 @@ DsHitRes* DsResource::RegisterHitRes(const char* name)
 
 const DsHitRes* DsResource::GetHitRes(const char* name)const
 {
-	std::string tmp = name;
 	const auto find = m_hitSet.find(name);
 	if (find != m_hitSet.end())
 	{
@@ -153,3 +156,33 @@ const DsHitRes* DsResource::GetHitRes(const char* name)const
 	}
 }
 
+DsResItem* DsResource::RegisterItem(const char* name, const DsResItemFactory& factory)
+{
+	const auto find = m_resItemSet.find(name);
+	if (find != m_resItemSet.end())
+	{
+		return find->second;
+	}
+	else
+	{
+		DsResItem* pItem = factory.CreateIns();
+		DS_ASSERT(pItem, "ƒƒ‚ƒŠŠm•ÛŽ¸”s");
+		pItem->Initialize(name);
+		string tmpStr = name;
+		m_resItemSet.insert(map<string, DsResItem*>::value_type(tmpStr, pItem));
+		return NULL;
+	}
+}
+
+const DsResItem* DsResource::GetItem(const char* name)const
+{
+	const auto find = m_resItemSet.find(name);
+	if (find != m_resItemSet.end())
+	{
+		return find->second;
+	}
+	else
+	{
+		return NULL;
+	}
+}

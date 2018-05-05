@@ -37,15 +37,15 @@ namespace
 		unsigned short w;
 		unsigned short h;
 		ifs.Seekg(12, DsFile::SEEK_TYPE::BEG);
-		ifs.Read((char*)&w, 2);
-		ifs.Read((char*)&h, 2);
+		ifs.Read((ds_uint8*)&w, 2);
+		ifs.Read((ds_uint8*)&h, 2);
 
 		const int size = w*h * 4;
 		unsigned char* imgData = new unsigned char[size];
 
 		//画像データの取得(32bit圧縮なし)
 		ifs.Seekg(18, DsFile::SEEK_TYPE::BEG);
-		ifs.Read((char*)imgData, size);
+		ifs.Read((ds_uint8*)imgData, size);
 
 		//BGRAなので、RGBAに変換する
 		for (int i = 0; size > i; i += 4)
@@ -76,13 +76,13 @@ namespace
 		int w = 0;
 		int h = 0;
 		ifs.Seekg(18, DsFile::SEEK_TYPE::BEG);
-		ifs.Read((char*)&w, 4);
-		ifs.Read((char*)&h, 4);
+		ifs.Read((ds_uint8*)&w, 4);
+		ifs.Read((ds_uint8*)&h, 4);
 
 		//ビットカウント
 		unsigned short bitCount;
 		ifs.Seekg(28, DsFile::SEEK_TYPE::BEG);
-		ifs.Read((char*)&bitCount, 2);
+		ifs.Read((ds_uint8*)&bitCount, 2);
 
 		//カラーテーブルには対応しない
 		if (bitCount <= 8)
@@ -98,7 +98,7 @@ namespace
 
 		//画像データの取得
 		ifs.Seekg(54, DsFile::SEEK_TYPE::BEG);
-		ifs.Read((char*)imgData, fileSize);
+		ifs.Read((ds_uint8*)imgData, fileSize);
 
 		for (int i = 0, pix = 0; i<loadSize; i += 4, ++pix)
 		{
