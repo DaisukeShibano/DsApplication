@@ -171,6 +171,7 @@ void ReadData(System::IO::FileStream ^ fs, EventTrackEditor::Form1^ form)
 		}
 	}
 
+	form->SetCurrentAnim(nullptr);
 	form->CreateModel(gcnew String(rData->pModelPath));
 	for (int s = 0; s < rData->paramSetNum; ++s) {
 		
@@ -182,7 +183,7 @@ void ReadData(System::IO::FileStream ^ fs, EventTrackEditor::Form1^ form)
 			const ACTION_TYPE type = static_cast<ACTION_TYPE>(rData->pParamSet[s].pParams[p].paramType);
 			String^ barTypeName = GetActionBarTypeName(type);
 			String^ animName = gcnew String(rData->pParamSet[s].pAnimName);
-			PARAM_BASE^ barBase = form->CreareBar(startTime, endTime, barTypeName, animName, false);
+			PARAM_BASE^ barBase = form->CreareBar(startTime, endTime, barTypeName, animName);
 			switch (type)
 			{
 			case TRACE_EFFECT:
@@ -204,6 +205,7 @@ void ReadData(System::IO::FileStream ^ fs, EventTrackEditor::Form1^ form)
 			}
 		}
 	}
+	form->ClearBarOnlyUI();
 	form->ResetBarTime();
 	
 
