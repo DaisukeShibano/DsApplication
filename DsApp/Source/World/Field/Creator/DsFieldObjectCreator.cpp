@@ -68,7 +68,7 @@ void DsFieldObjectCreator::Create(const char* resPath, DsResource& res, DsPhysic
 			{
 			case DS_MAP_FIELD_OBJ_TYPE::CHR:
 				{
-					DsFieldChr* pChr = new DsFieldChr(m_sys, world);
+					DsFieldChr* pChr = new DsFieldChr(m_sys, world, res);
 					info.pObj = pChr;
 					m_requestChrs.push_back(info);
 					
@@ -77,7 +77,7 @@ void DsFieldObjectCreator::Create(const char* resPath, DsResource& res, DsPhysic
 
 			case DS_MAP_FIELD_OBJ_TYPE::OBJ:
 				{
-					DsFieldObj* pObj = new DsFieldObj(m_sys, world);
+					DsFieldObj* pObj = new DsFieldObj(m_sys, world, res);
 					info.pObj = pObj;
 					m_requestObjs.push_back(info);
 				}
@@ -85,7 +85,7 @@ void DsFieldObjectCreator::Create(const char* resPath, DsResource& res, DsPhysic
 
 			case DS_MAP_FIELD_OBJ_TYPE::HIT:
 				{
-					DsFieldHit* pHit = new DsFieldHit(m_sys, world);
+					DsFieldHit* pHit = new DsFieldHit(m_sys, world, res);
 					info.pObj = pHit;
 					m_requestHits.push_back(info);
 				}
@@ -93,7 +93,7 @@ void DsFieldObjectCreator::Create(const char* resPath, DsResource& res, DsPhysic
 
 			case DS_MAP_FIELD_OBJ_TYPE::PLAYER:
 			{
-				DsFieldPlayer* pChr = new DsFieldPlayer(m_sys, world);
+				DsFieldPlayer* pChr = new DsFieldPlayer(m_sys, world, res);
 				info.pObj = pChr;
 				m_requestChrs.push_back(info);
 			}

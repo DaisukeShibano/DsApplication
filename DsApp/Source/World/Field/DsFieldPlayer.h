@@ -14,7 +14,7 @@ namespace DsApp
 	class DsFieldPlayer : public DsFieldChr
 	{
 	public:
-		DsFieldPlayer(DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& world);
+		DsFieldPlayer(DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& world, DsLib::DsResource& resource);
 		virtual ~DsFieldPlayer();
 
 	public:

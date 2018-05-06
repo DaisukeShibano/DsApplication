@@ -21,6 +21,17 @@ namespace DsApp
 	private:
 		DS_ANIM_ET_DATA* m_pData;
 	};
+
+
+
+
+
+	class DsAnimEventTrackResFactory : public DsLib::DsResItemFactory
+	{
+	public:
+		virtual DsResItem* CreateIns() const;
+	};
+
 }
 
 #endif

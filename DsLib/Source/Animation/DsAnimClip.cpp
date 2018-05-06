@@ -43,6 +43,7 @@ void DsAnimClip::Update(double dt)
 		if (m_anim.IsEnd())
 		{
 			m_anim.Reset();
+			m_localTime = 0.0;
 		}
 	}
 	if (m_isActive)
@@ -52,7 +53,7 @@ void DsAnimClip::Update(double dt)
 	}
 	else
 	{
-		m_localTime = 0.0f;
+		m_localTime = 0.0;
 		m_blendRate = max(0.0, m_blendRate - dt / (BLEND_TIME));
 	}
 	
@@ -77,6 +78,11 @@ void DsAnimClip::SetLocalTime(double time)
 	m_blendRate = min(1.0, time / (BLEND_TIME));
 	m_anim.SetLocalTime(time);
 	m_isRequestEnd = m_anim.IsEnd();
+}
+
+double DsAnimClip::GetLocalTime()const
+{
+	return m_localTime;
 }
 
 bool DsAnimClip::IsEnd() const

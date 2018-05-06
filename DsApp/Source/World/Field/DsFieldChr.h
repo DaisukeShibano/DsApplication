@@ -27,7 +27,7 @@ namespace DsApp
 	class DsFieldChr : public DsFieldObj
 	{
 	public:
-		DsFieldChr(DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& world);
+		DsFieldChr(DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& world, DsLib::DsResource& resource);
 		virtual ~DsFieldChr();
 
 	public:

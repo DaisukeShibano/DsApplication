@@ -39,6 +39,7 @@ namespace DsLib
 		DsKeyframeAnimSet* GetKeyframeAnim() const { return m_pKeyframeAnim; }
 		void RequestPlayAnim(DsAnimClip* pAnim) { m_pRequestAnim = pAnim; }
 		std::vector<DsAnimClip*>& RefAnimClips() { return m_animClips; }
+		const DsAnimClip* GetPlayAnim()const { return m_pPlayAnim; }
 
 	private:
 		DsAnimModel* _GetAnimModel();

@@ -14,6 +14,9 @@
 #ifndef _DS_ANIM_MODEL_
 #include "Animation/DsAnimModel.h"
 #endif
+#ifndef _DS_ANIM_EVENT_CALLBACK_
+#include "World/Animation/Event/DsAnimEventCallback.h"
+#endif
 
 using namespace DsLib;
 using namespace DsPhysics;
@@ -21,12 +24,14 @@ using namespace DsApp;
 
 
 
-DsFieldObj::DsFieldObj(DsSys& sys, DsPhysicsWorld& world)
+DsFieldObj::DsFieldObj(DsSys& sys, DsPhysicsWorld& world, DsLib::DsResource& resource)
 	: m_sys(sys)
 	, m_name()
+	, m_resource(resource)
 	, m_pAnimation(NULL)
 	, m_actorId()
 	, m_world(world)
+	, m_pAnimEventCallback(NULL)
 	, m_reqestIsInit(false)
 	, m_isCompleteInit(false)
 	, m_isRequestDirectAnim(false)
@@ -38,6 +43,7 @@ DsFieldObj::~DsFieldObj()
 {
 	m_actorId = m_world.DeleteActor(m_actorId);
 	delete m_pAnimation; m_pAnimation = NULL;
+	delete m_pAnimEventCallback; m_pAnimEventCallback = NULL;
 }
 
 namespace
@@ -74,6 +80,9 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 	if (initInfo.pAnimRes)
 	{
 		m_pAnimation = new DsAnimation(*initInfo.pAnimRes, m_sys.RefRender().RefDrawCom());
+		DS_ASSERT(m_pAnimation, "ƒƒ‚ƒŠŠm•ÛŽ¸”s");
+		m_pAnimEventCallback = new DsAnimEventCallback(*this, m_resource);
+		DS_ASSERT(m_pAnimEventCallback, "ƒƒ‚ƒŠŠm•ÛŽ¸”s");
 	}
 
 	if (initInfo.pHitRes)
@@ -164,6 +173,10 @@ void DsFieldObj::Update(double dt)
 		m_isRequestDirectAnim = false;
 		const DsActor* pActor = m_world.GetActor(m_actorId);
 		m_pAnimation->SetRootMatrix(GetPosition(), GetRotation());
+	}
+
+	if (m_pAnimEventCallback) {
+		m_pAnimEventCallback->Call();
 	}
 }
 

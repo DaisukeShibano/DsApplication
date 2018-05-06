@@ -13,7 +13,19 @@ namespace DsLib
 	class DsResItem
 	{
 	public:
+		DsResItem() :m_resPath(), m_count(0) {}
 		virtual void Initialize(const char* path) = 0;
+
+	public:
+		void Ref() { ++m_count; }
+		void Unref() { --m_count; }
+		int GetCount()const { return m_count; }
+		const std::string& RefPath()const { return m_resPath; }
+		void SetPath(const char* path) { m_resPath = path; }
+
+	private:
+		std::string m_resPath;
+		int m_count;
 	};
 	class DsResItemFactory
 	{
@@ -45,6 +57,7 @@ namespace DsLib
 		void Finalize();
 
 	public:
+		//todo:Unregister—pˆÓ‚·‚é
 		DsAnimRes* RegisterAnimRes(const char* name);
 		const DsAnimRes* GetAnimRes(const char* name) const;
 
@@ -55,6 +68,8 @@ namespace DsLib
 		const DsHitRes* GetHitRes(const char* name) const;
 
 		DsResItem* RegisterItem(const char* name, const DsResItemFactory& factory);
+		//ŠJ•ú‚³‚ê‚é‚Ì‚ÅpItem‚Í‚à‚¤Žg‚Á‚¿‚á‚¢‚¯‚È‚¢
+		void UnregisterItem(DsResItem* pItem);
 		const DsResItem* GetItem(const char* name)const;
 
 	private:

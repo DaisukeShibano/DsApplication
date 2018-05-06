@@ -12,7 +12,8 @@ using namespace DsApp;
 
 
 DsAnimEventTrackRes::DsAnimEventTrackRes()
-	:m_pData(NULL)
+	: DsResItem()
+	, m_pData(NULL)
 {
 
 }
@@ -49,3 +50,12 @@ void DsAnimEventTrackRes::Initialize(const char* path)
 	m_pData = rData;
 }
 
+
+
+
+
+//virtual
+DsResItem* DsAnimEventTrackResFactory::CreateIns() const
+{
+	return new DsAnimEventTrackRes();
+}

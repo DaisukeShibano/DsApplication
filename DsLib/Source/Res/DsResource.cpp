@@ -167,12 +167,25 @@ DsResItem* DsResource::RegisterItem(const char* name, const DsResItemFactory& fa
 	{
 		DsResItem* pItem = factory.CreateIns();
 		DS_ASSERT(pItem, "ƒƒ‚ƒŠŠm•ÛŽ¸”s");
+		pItem->Ref();
+		pItem->SetPath(name);
 		pItem->Initialize(name);
-		string tmpStr = name;
-		m_resItemSet.insert(map<string, DsResItem*>::value_type(tmpStr, pItem));
+		m_resItemSet.insert(map<string, DsResItem*>::value_type(pItem->RefPath(), pItem));
 		return NULL;
 	}
 }
+
+void DsResource::UnregisterItem(DsResItem* pItem)
+{
+	if (pItem) {
+		pItem->Unref();
+		if (pItem->GetCount() <= 0) {
+			m_resItemSet.erase(pItem->RefPath());
+			delete pItem;
+		}
+	}
+}
+
 
 const DsResItem* DsResource::GetItem(const char* name)const
 {

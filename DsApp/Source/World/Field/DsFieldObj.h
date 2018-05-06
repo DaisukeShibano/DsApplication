@@ -16,13 +16,18 @@ namespace DsPhysics
 
 namespace DsApp
 {
+	class DsAnimEventCallback;
+}
+
+namespace DsApp
+{
 	class DsFieldObj
 	{
 	public:
 		
 
 	public:
-		DsFieldObj(DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& world);
+		DsFieldObj(DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& world, DsLib::DsResource& resource);
 		virtual ~DsFieldObj();
 		bool IsRequestInit() const { return m_reqestIsInit; }
 		bool IsCompleteInit() const { return m_isCompleteInit; }
@@ -56,9 +61,11 @@ namespace DsApp
 	protected:
 		DsLib::DsSys& m_sys;
 		std::string m_name;
+		DsLib::DsResource& m_resource;
 		DsLib::DsAnimation* m_pAnimation;
 		DsPhysics::DsActorId m_actorId;
 		DsPhysics::DsPhysicsWorld& m_world;
+		DsAnimEventCallback* m_pAnimEventCallback;
 		bool m_reqestIsInit;
 		bool m_isCompleteInit;
 

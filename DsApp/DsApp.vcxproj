@@ -197,6 +197,7 @@
     <ClInclude Include="Source\Res\DsAnimEventTrackFormat.h" />
     <ClInclude Include="Source\Res\DsAnimEventTrackRes.h" />
     <ClInclude Include="Source\Res\Param\DsRagdollParam.h" />
+    <ClInclude Include="Source\World\Animation\Event\DsAnimEventCallback.h" />
     <ClInclude Include="Source\World\Field\Action\DsActionCtrl.h" />
     <ClInclude Include="Source\World\Field\Action\DsActionRequest.h" />
     <ClInclude Include="Source\World\Field\Action\DsActionRequestManual.h" />
@@ -227,6 +228,7 @@
     <ClCompile Include="Source\NeuralNetwork\DsNeuronCtrl.cpp" />
     <ClCompile Include="Source\Res\DsAnimEventTrackRes.cpp" />
     <ClCompile Include="Source\Res\Param\DsRagdollParam.cpp" />
+    <ClCompile Include="Source\World\Animation\Event\DsAnimEventCallback.cpp" />
     <ClCompile Include="Source\World\Field\Action\DsActionCtrl.cpp" />
     <ClCompile Include="Source\World\Field\Action\DsActionRequestManual.cpp" />
     <ClCompile Include="Source\World\Field\Action\DsChrState.cpp" />

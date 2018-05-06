@@ -46,8 +46,8 @@ using namespace DsApp;
 
 
 
-DsFieldPlayer::DsFieldPlayer(DsSys& sys, DsPhysicsWorld& world)
-	: DsFieldChr(sys, world)
+DsFieldPlayer::DsFieldPlayer(DsSys& sys, DsPhysicsWorld& world, DsLib::DsResource& resource)
+	: DsFieldChr(sys, world, resource)
 	, m_cam(sys.RefCam())
 	, m_mouse(sys.RefMouse())
 	, m_window(sys.RefWindow())
