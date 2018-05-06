@@ -90,7 +90,7 @@ DsAnimation::DsAnimation(const DsAnimRes& anim, DsDrawCommand& com)
 	}
 
 	//モデルの座標を更新
-	DsAnimModel* pModel = _GetAnimModel();
+	DsAnimModel* pModel = GetModel();
 	if (pModel) {
 		pModel->SetPosition(m_pos);
 		pModel->SetRotation(m_rot);
@@ -99,7 +99,7 @@ DsAnimation::DsAnimation(const DsAnimRes& anim, DsDrawCommand& com)
 
 DsAnimation::~DsAnimation()
 {
-	m_com.RefAnimRender().UnRegister(_GetAnimModel());
+	m_com.RefAnimRender().UnRegister(GetModel());
 	delete m_pSkeleton; m_pSkeleton = NULL;
 	delete m_pKeyframeAnim; m_pKeyframeAnim = NULL;
 	delete m_pAnimModel; m_pAnimModel = NULL;
@@ -116,7 +116,7 @@ DsAnimation::~DsAnimation()
 void DsAnimation::RegisterDraw()
 {
 	//描画に登録
-	DsAnimModel* pModel = _GetAnimModel();
+	DsAnimModel* pModel = GetModel();
 	if (pModel) {
 		if (!pModel->IsCreateVertexNormal())
 		{
@@ -188,7 +188,7 @@ void DsAnimation::Update(double dt)
 	}
 
 	//モデルの座標を更新
-	DsAnimModel* pModel = _GetAnimModel();
+	DsAnimModel* pModel = GetModel();
 	if (pModel) {
 		pModel->SetPosition(m_pos);
 		pModel->SetRotation(m_rot);
@@ -215,7 +215,11 @@ const DsMat33d& DsAnimation::GetRotation() const
 	return m_rot;
 }
 
-DsAnimModel* DsAnimation::_GetAnimModel()
+const DsAnimModel* DsAnimation::GetModel() const
+{
+	return (m_pSkinMesh && m_pSkinMesh->GetSkinMeshModel()) ? (m_pSkinMesh->GetSkinMeshModel()) : (m_pAnimModel);
+}
+DsAnimModel* DsAnimation::GetModel()
 {
 	return (m_pSkinMesh && m_pSkinMesh->GetSkinMeshModel()) ? (m_pSkinMesh->GetSkinMeshModel()) : (m_pAnimModel);
 }

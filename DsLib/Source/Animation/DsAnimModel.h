@@ -29,6 +29,12 @@ namespace DsLib
 			DsVec3d normal;
 		};
 
+		struct Dmypoly
+		{
+			int index[3];
+			int id;
+		};
+
 		struct Material
 		{
 			struct Texture
@@ -100,11 +106,16 @@ namespace DsLib
 		void SetRotation(const DsMat33d& rot) { m_rot = rot; }
 		DsMat33d GetRotation()const { return m_rot; }
 
+	public:
+		DsMat44d GetDmypoly(int id)const;
+
 	private:
 		DsVec4d* m_pVertex;
 		int m_vn;
 		Face* m_pFace;
 		int m_fn;
+		Dmypoly* m_pDmypoly;
+		int m_dn;
 		Material* m_pMaterial;
 		int m_mn;
 

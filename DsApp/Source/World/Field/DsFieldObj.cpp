@@ -251,6 +251,19 @@ const DsActor* DsFieldObj::GetActor() const
 	return m_world.GetActor(m_actorId);
 }
 
+DsMat44d DsFieldObj::GetDmypoly(int id)const
+{
+	DsMat44d ret = DsMat44d::Identity();
+	const DsAnimation* pAnim = GetAnim();
+	if (pAnim) {
+		const DsAnimModel* pModel = pAnim->GetModel();
+		if (pModel) {
+			ret = pModel->GetDmypoly(id);
+		}
+	}
+	return ret;
+}
+
 //virtual
 void DsFieldObj::SetRequestAnim(std::string name)
 {

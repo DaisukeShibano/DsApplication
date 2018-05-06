@@ -784,6 +784,7 @@ void DsAnimRes::_CreateBone(DsAnimBone* pParent, const void* pParentSrcData, std
 		const DS_BONE* tmp = &pRes->dsAnimBone.pBone[tmpIdx];
 		
 		DsAnimBone* pBone = new DsAnimBone;
+		DS_ASSERT(pBone, "メモリ確保失敗");
 		pBone->pParent = pParent;
 		pBone->name = tmp->name;
 		
@@ -798,7 +799,9 @@ void DsAnimRes::_CreateBone(DsAnimBone* pParent, const void* pParentSrcData, std
 		pBone->arrayIdx = tmpIdx;	//配列でのインデックス保存
 		pBone->vIndexNum = tmp->indexNum;
 		pBone->pIndex = new int[tmp->indexNum];
+		DS_ASSERT(pBone->pIndex, "メモリ確保失敗");
 		pBone->pWeight = new double[tmp->indexNum];
+		DS_ASSERT(pBone->pWeight, "メモリ確保失敗");
 		for (int vIdx = 0; vIdx < tmp->indexNum; ++vIdx)
 		{
 			pBone->pIndex[vIdx] = tmp->pIndex[vIdx];
@@ -832,6 +835,7 @@ DsAnimSkeleton* DsAnimRes::CreateSkeleton() const
 		{
 			const DS_BONE* rootSrc = &pRes->dsAnimBone.pBone[bIdx];
 			DsAnimBone* root = new DsAnimBone;
+			DS_ASSERT(root, "メモリ確保失敗");
 			root->name = rootSrc->name;
 			root->localPose = DsMat44d::Identity();
 			root->modelPose = DsMat44d::Identity();
@@ -840,7 +844,9 @@ DsAnimSkeleton* DsAnimRes::CreateSkeleton() const
 			root->arrayIdx = bIdx;
 			root->vIndexNum = rootSrc->indexNum;
 			root->pIndex = new int[rootSrc->indexNum];
+			DS_ASSERT(root->pIndex, "メモリ確保失敗");
 			root->pWeight = new double[rootSrc->indexNum];
+			DS_ASSERT(root->pWeight, "メモリ確保失敗");
 			for (int vIdx = 0; vIdx < rootSrc->indexNum; ++vIdx)
 			{
 				root->pIndex[vIdx] = rootSrc->pIndex[vIdx];
@@ -853,6 +859,7 @@ DsAnimSkeleton* DsAnimRes::CreateSkeleton() const
 	}
 
 	DsAnimSkeleton* pSkeleton = new DsAnimSkeleton(roots, boneArray);
+	DS_ASSERT(pSkeleton, "メモリ確保失敗");
 	return pSkeleton;
 }
 
@@ -864,6 +871,7 @@ DsKeyframeAnimSet* DsAnimRes::CreateKeyframeAnim() const
 	if (0 >= pRes->dsAnimBone.bn) return NULL;//ボーンがない
 
 	DsKeyframeAnim* pKeyAnim = new DsKeyframeAnim[pRes->dsAnimBone.an];
+	DS_ASSERT(pKeyAnim, "メモリ確保失敗");
 	for (int aIdx = 0; aIdx < pRes->dsAnimBone.an; ++aIdx)
 	{
 		const DS_ANIM& anim = pRes->dsAnimBone.pAnim[aIdx];
@@ -871,6 +879,7 @@ DsKeyframeAnimSet* DsAnimRes::CreateKeyframeAnim() const
 
 		pKeyAnim[aIdx].m_name = anim.animName;
 		pKeyAnim[aIdx].m_pBone = new DsKeyframeAnim::Pose[anim.poseNum];
+		DS_ASSERT(pKeyAnim[aIdx].m_pBone, "メモリ確保失敗");
 		pKeyAnim[aIdx].m_boneNum = anim.poseNum;
 		
 		for (int bIdx = 0; bIdx < anim.poseNum; ++bIdx)
@@ -897,6 +906,7 @@ DsKeyframeAnimSet* DsAnimRes::CreateKeyframeAnim() const
 			//回転
 			pKeyAnim[aIdx].m_pBone[bIdx].m_keyFrameNumRot = anim.pose[bIdx].keyFrameNumRX;
 			pKeyAnim[aIdx].m_pBone[bIdx].m_pRot = new DsKeyframeAnim::Vec4Key[anim.pose[bIdx].keyFrameNumRX];
+			DS_ASSERT(pKeyAnim[aIdx].m_pBone[bIdx].m_pRot, "メモリ確保失敗");
 			for (int k = 0; k < anim.pose[bIdx].keyFrameNumRX; ++k)
 			{
 				if (anim.pose[bIdx].keyFrameRX[k].localTimeMs != anim.pose[bIdx].keyFrameRY[k].localTimeMs ||
@@ -917,6 +927,7 @@ DsKeyframeAnimSet* DsAnimRes::CreateKeyframeAnim() const
 			//位置
 			pKeyAnim[aIdx].m_pBone[bIdx].m_keyFrameNumPos = anim.pose[bIdx].keyFrameNumTX;
 			pKeyAnim[aIdx].m_pBone[bIdx].m_pPos = new DsKeyframeAnim::Vec3Key[anim.pose[bIdx].keyFrameNumTX];
+			DS_ASSERT(pKeyAnim[aIdx].m_pBone[bIdx].m_pPos, "メモリ確保失敗");
 			for (int k = 0; k < anim.pose[bIdx].keyFrameNumTX; ++k)
 			{
 				if (anim.pose[bIdx].keyFrameTX[k].localTimeMs != anim.pose[bIdx].keyFrameTY[k].localTimeMs ||
@@ -935,6 +946,7 @@ DsKeyframeAnimSet* DsAnimRes::CreateKeyframeAnim() const
 			//拡大
 			pKeyAnim[aIdx].m_pBone[bIdx].m_keyFrameNumScale = anim.pose[bIdx].keyFrameNumSX;
 			pKeyAnim[aIdx].m_pBone[bIdx].m_pScale = new DsKeyframeAnim::Vec3Key[anim.pose[bIdx].keyFrameNumSX];
+			DS_ASSERT(pKeyAnim[aIdx].m_pBone[bIdx].m_pScale, "メモリ確保失敗");
 			for (int k = 0; k < anim.pose[bIdx].keyFrameNumSX; ++k)
 			{
 				if (anim.pose[bIdx].keyFrameSX[k].localTimeMs != anim.pose[bIdx].keyFrameSY[k].localTimeMs ||
@@ -960,11 +972,13 @@ DsKeyframeAnimSet* DsAnimRes::CreateKeyframeAnim() const
 
 DsAnimModel* DsAnimRes::CreateAnimModel() const
 {
-	//頂点データを作成する
 	OutputRes* pRes = static_cast<OutputRes*>(m_resTop);
 	DsAnimModel* pAnimModel = new DsAnimModel();
+	DS_ASSERT(pAnimModel, "メモリ確保失敗");
 
+	//頂点データ
 	pAnimModel->m_pVertex = new DsVec4d[pRes->dsAnimModel.vn];
+	DS_ASSERT(pAnimModel->m_pVertex, "メモリ確保失敗");
 	pAnimModel->m_vn = pRes->dsAnimModel.vn;
 	for (unsigned int vIdx = 0; vIdx < pRes->dsAnimModel.vn; ++vIdx)
 	{
@@ -972,12 +986,15 @@ DsAnimModel* DsAnimRes::CreateAnimModel() const
 		pAnimModel->m_pVertex[vIdx] = DsVec4d::ToVec4(tmp.x, tmp.y, tmp.z, tmp.w);
 	}
 
+	//面
 	pAnimModel->m_pFace = new DsAnimModel::Face[pRes->dsAnimModel.fn];
+	DS_ASSERT(pAnimModel->m_pFace, "メモリ確保失敗");
 	pAnimModel->m_fn = pRes->dsAnimModel.fn;
 	for (unsigned int fIdx = 0; fIdx < pRes->dsAnimModel.fn; ++fIdx)
 	{
 		const DS_FACE& tmp = pRes->dsAnimModel.pFace[fIdx];
 		pAnimModel->m_pFace[fIdx].pIndex = new int[tmp.vn];
+		DS_ASSERT(pAnimModel->m_pFace[fIdx].pIndex, "メモリ確保失敗");
 		pAnimModel->m_pFace[fIdx].vn = tmp.vn;
 		for (unsigned int vIdx = 0; vIdx < tmp.vn; ++vIdx)
 		{
@@ -985,15 +1002,31 @@ DsAnimModel* DsAnimRes::CreateAnimModel() const
 		}
 		pAnimModel->m_pFace[fIdx].normal = DsVec3d::ToVec3(tmp.normal.x, tmp.normal.y, tmp.normal.z);//4vecあるけど使わないので3vec
 	}
-	
+
+	//ダミポリ
+	if (0 < pRes->dsAnimModel.dn) {
+		pAnimModel->m_pDmypoly = new DsAnimModel::Dmypoly[pRes->dsAnimModel.dn];
+		DS_ASSERT(pAnimModel->m_pDmypoly, "メモリ確保失敗");
+		pAnimModel->m_dn = pRes->dsAnimModel.dn;
+		for (unsigned int dIdx = 0; dIdx < pRes->dsAnimModel.dn; ++dIdx) {
+			pAnimModel->m_pDmypoly[dIdx].id = pRes->dsAnimModel.pDmypoly[dIdx].id;
+			const int dvNum = sizeof(pAnimModel->m_pDmypoly[dIdx].index)/sizeof(pAnimModel->m_pDmypoly[dIdx].index[0]);
+			for (int dvIdx = 0; dvIdx < dvNum; ++dvIdx) {
+				pAnimModel->m_pDmypoly[dIdx].index[dvIdx] = pRes->dsAnimModel.pDmypoly[dIdx].vIndex[dvIdx];
+			}
+		}
+	}
+
 	//マテリアル
 	pAnimModel->m_mn = pRes->dsAnimModel.mn;
 	pAnimModel->m_pMaterial = new DsAnimModel::Material[pAnimModel->m_mn];
+	DS_ASSERT(pAnimModel->m_pMaterial, "メモリ確保失敗");
 	for (int mi = 0; mi < pAnimModel->m_mn; ++mi)
 	{
 		const int tn = pRes->dsAnimModel.pMtr[mi].textureNum;
 		pAnimModel->m_pMaterial[mi].textureNum = tn;
 		pAnimModel->m_pMaterial[mi].pTexture = new DsAnimModel::Material::Texture[tn];
+		DS_ASSERT(pAnimModel->m_pMaterial[mi].pTexture, "メモリ確保失敗");
 		for (int ti = 0; ti < tn; ++ti)
 		{
 			DsAnimModel::Material::Texture& texture = pAnimModel->m_pMaterial[mi].pTexture[ti];
@@ -1001,6 +1034,7 @@ DsAnimModel* DsAnimRes::CreateAnimModel() const
 			texture.path = pRes->dsAnimModel.pMtr[mi].texture[ti].texPath;
 			texture.uvNum = uvn;
 			texture.pUV = new DsAnimModel::Material::Texture::UV[uvn];
+			DS_ASSERT(texture.pUV, "メモリ確保失敗");
 			for (int uvi = 0; uvi < uvn; ++uvi)
 			{
 				texture.pUV[uvi].x = pRes->dsAnimModel.pMtr[mi].texture[ti].uv[uvi].uv[0];

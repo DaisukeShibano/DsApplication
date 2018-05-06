@@ -40,9 +40,8 @@ namespace DsLib
 		void RequestPlayAnim(DsAnimClip* pAnim) { m_pRequestAnim = pAnim; }
 		std::vector<DsAnimClip*>& RefAnimClips() { return m_animClips; }
 		const DsAnimClip* GetPlayAnim()const { return m_pPlayAnim; }
-
-	private:
-		DsAnimModel* _GetAnimModel();
+		const DsAnimModel* GetModel() const;
+		DsAnimModel* GetModel();
 
 	private:
 		DsAnimSkeleton* m_pSkeleton;

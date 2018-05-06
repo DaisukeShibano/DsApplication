@@ -10,6 +10,8 @@ DsAnimModel::DsAnimModel()
 	, m_vn(0)
 	, m_pFace(0)
 	, m_fn(0)
+	, m_pDmypoly(NULL)
+	, m_dn(0)
 	, m_pMaterial(0)
 	, m_mn(0)
 	, m_pos(DsVec3d::Zero())
@@ -24,6 +26,7 @@ DsAnimModel::~DsAnimModel()
 {
 	delete[] m_pVertex; m_pVertex = NULL;
 	delete[] m_pFace; m_pFace = NULL;
+	delete[] m_pDmypoly; m_pDmypoly = NULL;
 	delete[] m_pMaterial; m_pMaterial = NULL;
 
 	delete[] m_pVertexNormalIdxs; m_pVertexNormalIdxs = NULL;
@@ -56,6 +59,15 @@ DsAnimModel* DsAnimModel::CreateClone() const
 		for (int vIdx = 0; vIdx < m_pFace[fIdx].vn; ++vIdx)
 		{
 			ret->m_pFace[fIdx].pIndex[vIdx] = m_pFace[fIdx].pIndex[vIdx];
+		}
+	}
+
+	if (0 < m_dn) {
+		ret->m_dn = m_dn;
+		ret->m_pDmypoly = new Dmypoly[m_dn];
+		DS_ASSERT(ret->m_pDmypoly, "メモリ確保失敗");
+		for (int dIdx = 0; dIdx < m_dn; ++dIdx) {
+			ret->m_pDmypoly[dIdx] = m_pDmypoly[dIdx];
 		}
 	}
 
@@ -156,4 +168,26 @@ void DsAnimModel::UpdateNormal()
 			m_pVertexNormals[vi] = DsVec3d::Normalize(normal);
 		}
 	}
+}
+
+
+DsMat44d DsAnimModel::GetDmypoly(int id)const
+{
+	DsMat44d ret = DsMat44d::Identity();
+
+	//数が増えるようならmapかsetで持ったほうがいいかな？
+	for (int i = 0; i < m_dn; ++i) {
+		if (m_pDmypoly[i].id == id) {
+			const DsVec3d pos = m_pVertex[m_pDmypoly[i].index[0]];
+			DsVec3d yDir = DsVec3d::Normalize(DsVec3d(m_pVertex[m_pDmypoly[i].index[1]]) - pos);
+			const DsVec3d zDir = DsVec3d::Normalize(DsVec3d(m_pVertex[m_pDmypoly[i].index[2]]) - pos);
+			const DsVec3d xDir = DsVec3d::Normalize(DsVec3d::Cross(yDir, zDir));
+			yDir = DsVec3d::Cross(zDir, xDir);//直行じゃないかもしれないのでy計算しなおす
+			const DsMat33d rot = DsMat33d::SetAxis(xDir, yDir, zDir);
+			ret = DsMat44d::SetAxisPos(xDir, yDir, zDir, pos);
+			break;
+		}
+	}
+
+	return ret;
 }

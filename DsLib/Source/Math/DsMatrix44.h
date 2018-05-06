@@ -215,6 +215,12 @@ namespace DsLib
 			DsVec3<TYPE> dst = { m03, m13, m23 };
 			return dst;
 		}
+		void SetPos(const DsVec3<TYPE>& v)
+		{
+			m03 = v.x;
+			m13 = v.y;
+			m23 = v.z;
+		}
 
 		DsVec3<TYPE> GetPosT() const
 		{
@@ -229,6 +235,17 @@ namespace DsLib
 				x.x, y.x, z.x, 0,
 				x.y, y.y, z.y, 0,
 				x.z, y.z, z.z, 0,
+				0, 0, 0, 1,
+			};
+			return dst;
+		}
+		static DsMat44<TYPE> SetAxisPos(const DsVec3<TYPE>& x, const DsVec3<TYPE>& y, const DsVec3<TYPE>& z, const DsVec3<TYPE>& p)
+		{
+			DsMat44<TYPE> dst =
+			{
+				x.x, y.x, z.x, p.x,
+				x.y, y.y, z.y, p.y,
+				x.z, y.z, z.z, p.z,
 				0, 0, 0, 1,
 			};
 			return dst;
