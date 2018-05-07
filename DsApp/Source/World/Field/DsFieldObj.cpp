@@ -17,6 +17,9 @@
 #ifndef _DS_ANIM_EVENT_CALLBACK_
 #include "World/Animation/Event/DsAnimEventCallback.h"
 #endif
+#ifndef _DS_COMPONENT_SYSTEM_
+#include "World/Component/DsComponentSystem.h"
+#endif
 
 using namespace DsLib;
 using namespace DsPhysics;
@@ -32,6 +35,7 @@ DsFieldObj::DsFieldObj(DsSys& sys, DsPhysicsWorld& world, DsLib::DsResource& res
 	, m_actorId()
 	, m_world(world)
 	, m_pAnimEventCallback(NULL)
+	, m_pComponentSystem(NULL)
 	, m_reqestIsInit(false)
 	, m_isCompleteInit(false)
 	, m_isRequestDirectAnim(false)
@@ -42,8 +46,9 @@ DsFieldObj::DsFieldObj(DsSys& sys, DsPhysicsWorld& world, DsLib::DsResource& res
 DsFieldObj::~DsFieldObj()
 {
 	m_actorId = m_world.DeleteActor(m_actorId);
-	delete m_pAnimation; m_pAnimation = NULL;
 	delete m_pAnimEventCallback; m_pAnimEventCallback = NULL;
+	delete m_pAnimation; m_pAnimation = NULL;
+	delete m_pComponentSystem; m_pComponentSystem = NULL;
 }
 
 namespace
@@ -76,6 +81,9 @@ namespace
 void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 {
 	m_name = initInfo.name;
+
+	m_pComponentSystem = new DsComponentSystem();
+	DS_ASSERT(m_pComponentSystem, "ƒƒ‚ƒŠŠm•ÛŽ¸”s");
 
 	if (initInfo.pAnimRes)
 	{
@@ -177,6 +185,11 @@ void DsFieldObj::Update(double dt)
 
 	if (m_pAnimEventCallback) {
 		m_pAnimEventCallback->Call();
+	}
+
+	if (m_pComponentSystem) {
+		COMPONENT_UPDATE_ARG arg(dt, *this, m_sys);
+		m_pComponentSystem->Update(arg);
 	}
 }
 

@@ -175,17 +175,19 @@ DsMat44d DsAnimModel::GetDmypoly(int id)const
 {
 	DsMat44d ret = DsMat44d::Identity();
 
-	//数が増えるようならmapかsetで持ったほうがいいかな？
-	for (int i = 0; i < m_dn; ++i) {
-		if (m_pDmypoly[i].id == id) {
-			const DsVec3d pos = m_pVertex[m_pDmypoly[i].index[0]];
-			DsVec3d yDir = DsVec3d::Normalize(DsVec3d(m_pVertex[m_pDmypoly[i].index[1]]) - pos);
-			const DsVec3d zDir = DsVec3d::Normalize(DsVec3d(m_pVertex[m_pDmypoly[i].index[2]]) - pos);
-			const DsVec3d xDir = DsVec3d::Normalize(DsVec3d::Cross(yDir, zDir));
-			yDir = DsVec3d::Cross(zDir, xDir);//直行じゃないかもしれないのでy計算しなおす
-			const DsMat33d rot = DsMat33d::SetAxis(xDir, yDir, zDir);
-			ret = DsMat44d::SetAxisPos(xDir, yDir, zDir, pos);
-			break;
+	if (0 <= id) {
+		//数が増えるようならmapかsetで持ったほうがいいかな？
+		for (int i = 0; i < m_dn; ++i) {
+			if (m_pDmypoly[i].id == id) {
+				const DsVec3d pos = m_pVertex[m_pDmypoly[i].index[0]];
+				DsVec3d yDir = DsVec3d::Normalize(DsVec3d(m_pVertex[m_pDmypoly[i].index[1]]) - pos);
+				const DsVec3d zDir = DsVec3d::Normalize(DsVec3d(m_pVertex[m_pDmypoly[i].index[2]]) - pos);
+				const DsVec3d xDir = DsVec3d::Normalize(DsVec3d::Cross(yDir, zDir));
+				yDir = DsVec3d::Cross(zDir, xDir);//直行じゃないかもしれないのでy計算しなおす
+				const DsMat33d rot = DsMat33d::SetAxis(xDir, yDir, zDir);
+				ret = DsMat44d::SetAxisPos(xDir, yDir, zDir, pos);
+				break;
+			}
 		}
 	}
 

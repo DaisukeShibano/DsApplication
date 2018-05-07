@@ -46,6 +46,9 @@
     <Filter Include="Source\World\Animation\Event">
       <UniqueIdentifier>{8a4e95da-abf3-46e5-8e08-12dfeb3cc7dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\World\Field\Component">
+      <UniqueIdentifier>{39a8dea6-ec74-4b07-9a60-ac877e4e85c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsAppPch.h">
@@ -132,6 +135,18 @@
     <ClInclude Include="Source\World\Animation\Event\DsAnimEventCallback.h">
       <Filter>Source\World\Animation\Event</Filter>
     </ClInclude>
+    <ClInclude Include="Source\World\Component\DsComponentSystem.h">
+      <Filter>Source\World\Field\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Component\DsComponent.h">
+      <Filter>Source\World\Field\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Component\DsTraceEffectComponent.h">
+      <Filter>Source\World\Field\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Component\DsComponentSystemDefine.h">
+      <Filter>Source\World\Field\Component</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsAppPch.cpp">
@@ -196,6 +211,12 @@
     </ClCompile>
     <ClCompile Include="Source\World\Animation\Event\DsAnimEventCallback.cpp">
       <Filter>Source\World\Animation\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Component\DsComponentSystem.cpp">
+      <Filter>Source\World\Field\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Component\DsTraceEffectComponent.cpp">
+      <Filter>Source\World\Field\Component</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

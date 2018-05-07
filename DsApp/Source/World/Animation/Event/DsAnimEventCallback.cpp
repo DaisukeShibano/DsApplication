@@ -12,6 +12,9 @@
 #ifndef _DS_FIELD_OBJ_H_
 #include "World/Field/DsFieldObj.h"
 #endif
+#ifndef _DS_COMPONENT_SYSTEM_
+#include "World/Component/DsComponentSystem.h"
+#endif
 
 using namespace DsLib;
 using namespace DsApp;
@@ -104,7 +107,11 @@ void DsAnimEventCallback::_Call(const DS_ANIM_ET_PARAM& param)
 
 void DsAnimEventCallback::_TraceEffect(const DS_ANIM_ET_TRACE_EFFECT* pParam)
 {
-	
+	DsComponentSystem* pComSys =m_owner.GetComponentSystem();
+	if (pComSys) {
+		const ds_uint64 key = (ds_uint64)(pParam);
+		pComSys->RequestTraceEffect(key, pParam->effectId, pParam->dmyPolyId[0], pParam->dmyPolyId[1]);
+	}
 }
 
 void DsAnimEventCallback::_Damage(const DS_ANIM_ET_DAMAGE* pParam)

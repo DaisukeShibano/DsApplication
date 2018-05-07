@@ -513,5 +513,8 @@
     <ClInclude Include="Source\Graphics\Render\DsParticleRender.h">
       <Filter>Source\Graphics\Render</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Graphics\Effect\DsEffect.h">
+      <Filter>Source\Graphics\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -266,6 +266,7 @@
     <ClInclude Include="Source\Error\DsError.h" />
     <ClInclude Include="Source\Graphics\Camera\DsCamera.h" />
     <ClInclude Include="Source\Graphics\Command\DsDrawCommand.h" />
+    <ClInclude Include="Source\Graphics\Effect\DsEffect.h" />
     <ClInclude Include="Source\Graphics\Effect\Particle\DsParticle.h" />
     <ClInclude Include="Source\Graphics\Effect\Particle\DsTraceParticleEmitter.h" />
     <ClInclude Include="Source\Graphics\GL\DsGLFunc.h" />

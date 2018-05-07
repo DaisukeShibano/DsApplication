@@ -98,6 +98,10 @@
 #ifndef _DS_ANIM_RES_
 #include "Res/DsAnimRes.h"
 #endif
+#ifndef _DS_EFFECT_
+#include"Graphics/Effect/DsEffect.h"
+#endif
+
 
 
 

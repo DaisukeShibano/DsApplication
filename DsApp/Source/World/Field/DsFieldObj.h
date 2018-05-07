@@ -17,6 +17,7 @@ namespace DsPhysics
 namespace DsApp
 {
 	class DsAnimEventCallback;
+	class DsComponentSystem;
 }
 
 namespace DsApp
@@ -56,6 +57,9 @@ namespace DsApp
 
 		void SetRequestAnim(std::string name);
 
+	public:
+		DsComponentSystem* GetComponentSystem() { return m_pComponentSystem; }
+
 	protected:
 		bool IsRequestDirectAnim()const { return m_isRequestDirectAnim; }
 
@@ -67,6 +71,7 @@ namespace DsApp
 		DsPhysics::DsActorId m_actorId;
 		DsPhysics::DsPhysicsWorld& m_world;
 		DsAnimEventCallback* m_pAnimEventCallback;
+		DsComponentSystem* m_pComponentSystem;
 		bool m_reqestIsInit;
 		bool m_isCompleteInit;
 

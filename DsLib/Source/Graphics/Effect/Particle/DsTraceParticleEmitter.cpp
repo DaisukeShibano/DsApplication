@@ -180,8 +180,9 @@ void DsTraceParticleEmitter::Update(double dt)
 	m_isRequestEmit = false;
 }
 
-void DsTraceParticleEmitter::SetPosition(const DsVec3d& pos1, const DsVec3d& pos2)
+void DsTraceParticleEmitter::RequestEmit(const DsVec3d& pos1, const DsVec3d& pos2)
 {
+	m_isRequestEmit = true;//–ˆƒtƒŒƒNƒŠƒA‚³‚ê‚é
 	m_emitPos[0] = pos1;
 	m_emitPos[1] = pos2;
 }
@@ -191,5 +192,8 @@ double DsTraceParticleEmitter::GetParticleMaxLifeTime()const
 	return PARTICLE_LIFE_TIME;
 }
 
-
+bool DsTraceParticleEmitter::IsEmpty()const
+{
+	return m_particle.empty();
+}
 

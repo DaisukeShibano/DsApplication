@@ -5,10 +5,6 @@
 #include "World/Field/DsFieldChr.h"
 #endif
 
-#ifndef _DS_TRACE_PARTICLE_EMITTER_
-#include "Graphics/Effect/Particle/DsTraceParticleEmitter.h"
-#endif
-
 namespace DsApp
 {
 	class DsFieldPlayer : public DsFieldChr
@@ -35,10 +31,6 @@ namespace DsApp
 
 	public:
 		virtual void DbgDraw(DsLib::DsDrawCommand& com);
-
-
-	private:
-		DsTraceParticleEmitter m_testEmitter;
 	};
 }
 
