@@ -1,10 +1,20 @@
 #ifndef _DS_ACTION_REQUEST_
 #define _DS_ACTION_REQUEST_
 
+/*
+#ifndef _DS_ACTION_REQUEST_
+#include "World/Field/Action/DsActionRequest.h"
+#endif
+*/
+
 namespace DsApp
 {
 	enum class ACTION_TYPE
 	{
+		NONE,
+		ATTACK,
+		CHANGE_WEP,
+		NUM,
 	};
 
 
@@ -17,6 +27,7 @@ namespace DsApp
 	public:
 		virtual void Update(double dt) {};
 		virtual DsVec3d GetMoveVec()const { return DsVec3d::Zero(); }
+		virtual bool IsAction(ACTION_TYPE type)const { return false; }
 	};
 
 }

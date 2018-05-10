@@ -5,7 +5,9 @@
 enum ACTION_TYPE
 {
 	TRACE_EFFECT,
+	SOUND_EFFECT,
 	DAMAGE,
+	CANCEL_ACTION_TIMING,
 	ACTION_TYPE_NUM,
 };
 
@@ -17,8 +19,10 @@ struct ACTION_TYPE_NAME
 
 static const ACTION_TYPE_NAME ACTION_NAME_ARRAY[]=
 {
-	{ TRACE_EFFECT,		L"軌跡エフェクト" },
-	{ DAMAGE,			L"ダメージ" },
+	{ TRACE_EFFECT,				L"軌跡エフェクト" },
+	{ SOUND_EFFECT,				L"SE" },
+	{ DAMAGE,					L"ダメージ" },
+	{ CANCEL_ACTION_TIMING,		L"キャンセル可能タイミング" },
 };
 
 ref struct INT_PARAM : public System::Object
@@ -70,6 +74,37 @@ ref struct TRACE_EFFECT_PARAM : PARAM_BASE
 	}
 };
 
+struct ET_SOUND_EFFECT
+{
+	int dmyPolyId;
+	int soundId;
+};
+ref struct SOUND_EFFECT_PARAM : PARAM_BASE
+{
+	SOUND_EFFECT_PARAM()
+	{
+		dmyPolyId.name = gcnew System::String(L"dmyPolyId");
+		dmyPolyId.value = gcnew System::Int32(-1);
+		soundId.name = gcnew System::String(L"soundId");
+		soundId.value = gcnew System::Int32(-1);
+	}
+	INT_PARAM dmyPolyId;
+	INT_PARAM soundId;
+	const int paramNum = 2;
+
+	virtual char* GetParamStaticBuff() override
+	{
+		static ET_SOUND_EFFECT ret;
+		ret.dmyPolyId = (*dmyPolyId.value);
+		ret.soundId = (*soundId.value);
+		return (char*)(&ret);
+	}
+	void Set(const ET_SOUND_EFFECT& param) {
+		dmyPolyId.value = param.dmyPolyId;
+		soundId.value = param.soundId;
+	}
+};
+
 
 struct ET_DAMAGE
 {
@@ -107,6 +142,25 @@ ref struct DAMAGE_PARAM : PARAM_BASE
 	}
 };
 
+struct ET_CANCEL_ACTION_TIMING
+{
+};
+ref struct CANCEL_ACTION_TIMING_PARAM : PARAM_BASE
+{
+	CANCEL_ACTION_TIMING_PARAM()
+	{
+	}
+	const int paramNum = 0;
+
+	virtual char* GetParamStaticBuff() override
+	{
+		static ET_CANCEL_ACTION_TIMING ret;
+		return (char*)(&ret);
+	}
+	void Set(const ET_CANCEL_ACTION_TIMING& param) {
+	}
+};
+
 
 struct ET_HEADER
 {
@@ -122,7 +176,9 @@ struct ET_PARAM
 	union {
 		long long paramOffset;
 		ET_TRACE_EFFECT* pEffect;
+		ET_SOUND_EFFECT* pSound;
 		ET_DAMAGE* pDamage;
+		ET_CANCEL_ACTION_TIMING* pCancelTiming;
 	};
 };
 

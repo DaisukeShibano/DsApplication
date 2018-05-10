@@ -49,6 +49,15 @@
     <Filter Include="Source\World\Field\Component">
       <UniqueIdentifier>{39a8dea6-ec74-4b07-9a60-ac877e4e85c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\World\Field\Equip">
+      <UniqueIdentifier>{7c690768-7205-4648-88f1-fbdf14c1db5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\World\Field\Component\Effect">
+      <UniqueIdentifier>{26990b48-20fc-4323-b3f8-56aaf28ad18e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\World\Field\Component\Equip">
+      <UniqueIdentifier>{0e5fb1e8-a110-45ad-a16d-c096c9cfa82d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsAppPch.h">
@@ -141,11 +150,14 @@
     <ClInclude Include="Source\World\Component\DsComponent.h">
       <Filter>Source\World\Field\Component</Filter>
     </ClInclude>
-    <ClInclude Include="Source\World\Component\DsTraceEffectComponent.h">
-      <Filter>Source\World\Field\Component</Filter>
-    </ClInclude>
     <ClInclude Include="Source\World\Component\DsComponentSystemDefine.h">
       <Filter>Source\World\Field\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Component\Effect\DsTraceEffectComponent.h">
+      <Filter>Source\World\Field\Component\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Component\Equip\DsEquipComponent.h">
+      <Filter>Source\World\Field\Component\Equip</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -215,8 +227,11 @@
     <ClCompile Include="Source\World\Component\DsComponentSystem.cpp">
       <Filter>Source\World\Field\Component</Filter>
     </ClCompile>
-    <ClCompile Include="Source\World\Component\DsTraceEffectComponent.cpp">
-      <Filter>Source\World\Field\Component</Filter>
+    <ClCompile Include="Source\World\Component\Effect\DsTraceEffectComponent.cpp">
+      <Filter>Source\World\Field\Component\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Component\Equip\DsEquipComponent.cpp">
+      <Filter>Source\World\Field\Component\Equip</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

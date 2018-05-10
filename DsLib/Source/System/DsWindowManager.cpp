@@ -124,8 +124,8 @@ namespace
 			case WM_KEYDOWN:
 			{
 				if (s_pSys) {
-					int key = GET_KEYSTATE_WPARAM(wp);
-					s_pSys->RefWindow().Keyboard(key, 0, 0);
+					const ds_uint8 key = static_cast<ds_uint8>(GET_KEYSTATE_WPARAM(wp));
+					s_pSys->RefWindow().KeyboardDown(key, 0, 0);
 				}
 			}
 			break;
@@ -133,7 +133,7 @@ namespace
 			case WM_KEYUP:
 			{
 				if (s_pSys) {
-					int key = GET_KEYSTATE_WPARAM(wp);
+					const ds_uint8 key = static_cast<ds_uint8>(GET_KEYSTATE_WPARAM(wp));
 					s_pSys->RefWindow().KeyboardUp(key, 0, 0);
 				}
 			}

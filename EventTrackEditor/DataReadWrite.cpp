@@ -193,10 +193,24 @@ void ReadData(System::IO::FileStream ^ fs, EventTrackEditor::Form1^ form)
 				bar->Set(*pTmp);
 			}
 			break;
+			case SOUND_EFFECT:
+			{
+				ET_SOUND_EFFECT* pTmp = rData->pParamSet[s].pParams[p].pSound;
+				SOUND_EFFECT_PARAM^ bar = dynamic_cast<SOUND_EFFECT_PARAM^>(barBase);
+				bar->Set(*pTmp);
+			}
+			break;
 			case DAMAGE:
 			{
 				ET_DAMAGE* pTmp = rData->pParamSet[s].pParams[p].pDamage;
 				DAMAGE_PARAM^ bar = dynamic_cast<DAMAGE_PARAM^>(barBase);
+				bar->Set(*pTmp);
+			}
+			break;
+			case CANCEL_ACTION_TIMING:
+			{
+				ET_CANCEL_ACTION_TIMING* pTmp = rData->pParamSet[s].pParams[p].pCancelTiming;
+				CANCEL_ACTION_TIMING_PARAM^ bar = dynamic_cast<CANCEL_ACTION_TIMING_PARAM^>(barBase);
 				bar->Set(*pTmp);
 			}
 			break;

@@ -39,9 +39,10 @@ namespace DsLib
 		virtual void Drag(int x, int y) override;
 		virtual void Click(int button, int state, int x, int y) override;
 		virtual void Wheel(int wheel, int x, int y) override;
-		virtual void Keyboard(unsigned char key, int x, int y) override;
-		virtual void KeyboardUp(unsigned char key, int x, int y) override;
-		virtual void KeyboardSp(int key, int x, int y) override;
+		virtual void KeyboardDown(ds_uint8 key, int x, int y) override;
+		virtual void KeyboardUp(ds_uint8 key, int x, int y) override;
+		virtual void KeyboardSpDown(int key, int x, int y) override;
+		virtual void KeyboardSpUp(int key, int x, int y) override;
 
 	private:
 		void _SetHandle(ds_uint64 handle);

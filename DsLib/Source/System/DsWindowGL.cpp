@@ -133,19 +133,24 @@ void DsWindowGL::Wheel(int wheel, int x, int y)
 	m_pMouse->OnWheel(wheel, x, y);
 }
 
-void DsWindowGL::Keyboard(unsigned char key, int x, int y)
+void DsWindowGL::KeyboardDown(ds_uint8 key, int x, int y)
 {
 	m_pKeyboard->OnKey(key, true);
 }
 
-void DsWindowGL::KeyboardUp(unsigned char key, int x, int y)
+void DsWindowGL::KeyboardUp(ds_uint8 key, int x, int y)
 {
 	m_pKeyboard->OnKey(key, false);
 }
 
-void DsWindowGL::KeyboardSp(int key, int x, int y)
+void DsWindowGL::KeyboardSpDown(int key, int x, int y)
 {
-	m_pKeyboard->OnKey(key, true);
+	m_pKeyboard->OnKeySp(key, true);
+}
+
+void DsWindowGL::KeyboardSpUp(int key, int x, int y)
+{
+	m_pKeyboard->OnKeySp(key, false);
 }
 
 void DsWindowGL::_SetHandle(ds_uint64 handle)

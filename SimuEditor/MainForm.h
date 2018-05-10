@@ -299,13 +299,13 @@ namespace SimuEditor {
 	private: System::Void MainForm_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 		if (DsSimu::GetIns() && DsSimu::GetIns()->IsInit())
 		{
-			DsSimu::GetIns()->RefWindow().Keyboard(e->KeyValue, 0, 0);
+			DsSimu::GetIns()->RefWindow().KeyboardDown(static_cast<ds_uint8>(e->KeyValue), 0, 0);
 		}
 	}
 	private: System::Void MainForm_KeyUp(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
 		if (DsSimu::GetIns() && DsSimu::GetIns()->IsInit())
 		{
-			DsSimu::GetIns()->RefWindow().KeyboardUp(e->KeyValue, 0, 0);
+			DsSimu::GetIns()->RefWindow().KeyboardUp( static_cast<ds_uint8>(e->KeyValue), 0, 0);
 		}
 	}
 	private: System::Void pictureBox1_PreviewKeyDown(System::Object^  sender, System::Windows::Forms::PreviewKeyDownEventArgs^  e) {

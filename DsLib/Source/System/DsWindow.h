@@ -64,9 +64,10 @@ namespace DsLib
 		virtual void Drag(int x, int y) {};
 		virtual void Click(int button, int state, int x, int y) {};
 		virtual void Wheel(int wheel, int x, int y) {};
-		virtual void Keyboard(unsigned char key, int x, int y) {};
-		virtual void KeyboardUp(unsigned char key, int x, int y) {};
-		virtual void KeyboardSp(int key, int x, int y) {};
+		virtual void KeyboardDown(ds_uint8 key, int x, int y) {};
+		virtual void KeyboardUp(ds_uint8 key, int x, int y) {};
+		virtual void KeyboardSpDown(int key, int x, int y) {};
+		virtual void KeyboardSpUp(int key, int x, int y) {};
 
 	public:
 		int GetWindowW() const { return m_windowW; }

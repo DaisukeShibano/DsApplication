@@ -607,7 +607,26 @@ namespace EventTrackEditor {
 			this->dataGridView1->Rows[2]->Cells[1] = cell21;
 		}
 		break;
-
+		case SOUND_EFFECT:
+		{
+			SOUND_EFFECT_PARAM^ param = (SOUND_EFFECT_PARAM^)tag->param;
+			this->dataGridView1->Rows->Add(param->paramNum);
+			DataGridViewTextBoxCell^ cell00 = gcnew DataGridViewTextBoxCell();
+			DataGridViewTextBoxCell^ cell01 = gcnew DataGridViewTextBoxCell();
+			cell00->Value = param->dmyPolyId.name;
+			cell01->Value = param->dmyPolyId.value;
+			cell01->Tag = param->dmyPolyId.value;
+			this->dataGridView1->Rows[0]->Cells[0] = cell00;
+			this->dataGridView1->Rows[0]->Cells[1] = cell01;
+			DataGridViewTextBoxCell^ cell10 = gcnew DataGridViewTextBoxCell();
+			DataGridViewTextBoxCell^ cell11 = gcnew DataGridViewTextBoxCell();
+			cell10->Value = param->soundId.name;
+			cell11->Value = param->soundId.value;
+			cell11->Tag = param->soundId.value;
+			this->dataGridView1->Rows[1]->Cells[0] = cell10;
+			this->dataGridView1->Rows[1]->Cells[1] = cell11;
+		}
+		break;
 		case DAMAGE:
 		{
 			DAMAGE_PARAM^ param = (DAMAGE_PARAM^)tag->param;
@@ -635,7 +654,12 @@ namespace EventTrackEditor {
 			this->dataGridView1->Rows[2]->Cells[1] = cell21;
 		}
 		break;
-
+		case CANCEL_ACTION_TIMING:
+		{
+			//ƒf[ƒ^‚ª–³‚¢‚Ì‚Å‚·‚é‚±‚Æ‚È‚µ
+			//CANCEL_ACTION_TIMING_PARAM^ param = (CANCEL_ACTION_TIMING_PARAM^)tag->param;
+		}
+		break;
 		default:
 			break;
 		}
@@ -736,12 +760,18 @@ namespace EventTrackEditor {
 				tag->param = gcnew TRACE_EFFECT_PARAM();
 				tag->paramSize = sizeof(ET_TRACE_EFFECT);
 				break;
-
+			case SOUND_EFFECT:
+				tag->param = gcnew SOUND_EFFECT_PARAM();
+				tag->paramSize = sizeof(ET_SOUND_EFFECT);
+				break;
 			case DAMAGE:
 				tag->param = gcnew DAMAGE_PARAM();
 				tag->paramSize = sizeof(ET_DAMAGE);
 				break;
-
+			case CANCEL_ACTION_TIMING:
+				tag->param = gcnew CANCEL_ACTION_TIMING_PARAM();
+				tag->paramSize = sizeof(ET_CANCEL_ACTION_TIMING);
+				break;
 			default:
 				break;
 			}

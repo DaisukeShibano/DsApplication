@@ -1,6 +1,6 @@
 #include "DsAppPch.h"
 #ifndef _DS_TRACE_EFFECT_COMPONENT_
-#include "World/Component/DsTraceEffectComponent.h"
+#include "World/Component/Effect/DsTraceEffectComponent.h"
 #endif
 //‘¼‚Ìƒwƒbƒ_
 #ifndef _DS_FIELD_OBJ_H_

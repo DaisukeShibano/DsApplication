@@ -18,15 +18,13 @@ namespace DsApp
 {
 	class DsAnimEventCallback;
 	class DsComponentSystem;
+	class DsActionRequest;
 }
 
 namespace DsApp
 {
 	class DsFieldObj
 	{
-	public:
-		
-
 	public:
 		DsFieldObj(DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& world, DsLib::DsResource& resource);
 		virtual ~DsFieldObj();
@@ -40,6 +38,9 @@ namespace DsApp
 		virtual void Initialize(const DsFieldInitInfo& initInfo);
 	protected:
 		virtual void _SetActorCoord(DsPhysics::DsActorCoordFactory& factory, const DsFieldInitInfo& initInfo);
+
+	protected:
+		virtual const DsActionRequest* _GetActionRequest() const { return NULL; }
 
 	public:
 		virtual void SetPosition(const DsVec3d& pos);

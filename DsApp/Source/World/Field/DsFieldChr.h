@@ -40,6 +40,7 @@ namespace DsApp
 
 	protected:
 		virtual DsActionRequest* _CreareActionRequest();
+		virtual const DsActionRequest* _GetActionRequest() const override { return m_pActReq; }
 
 	public:
 		virtual DsVec3d GetPosition() const override;

@@ -6,28 +6,18 @@ namespace DsLib
 	class DsKeyboard
 	{
 	public:
-		enum KEY
-		{
-			FORWARD,
-			BACK,
-			LEFT,
-			RIGHT,
-			KEY_NUM,
-		};
-		
-
-	public:
 		DsKeyboard();
 		virtual ~DsKeyboard();
 
 	public:
-		void OnKey(int key, bool push);
+		void OnKey(ds_uint8 key, bool push);
+		void OnKeySp(int key, bool push);
 
 	public:
-		bool IsPush(KEY key) const { return m_keyPush[key]; }
+		bool IsPush(ds_uint8 key) const { return m_keyPush[key]; }
 
 	private:
-		bool m_keyPush[KEY_NUM];
+		bool m_keyPush[256];
 	};
 }
 

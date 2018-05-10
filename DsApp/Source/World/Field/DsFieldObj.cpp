@@ -188,7 +188,7 @@ void DsFieldObj::Update(double dt)
 	}
 
 	if (m_pComponentSystem) {
-		COMPONENT_UPDATE_ARG arg(dt, *this, m_sys);
+		COMPONENT_UPDATE_ARG arg(dt, *this, m_sys, _GetActionRequest());
 		m_pComponentSystem->Update(arg);
 	}
 }

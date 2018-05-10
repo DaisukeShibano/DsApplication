@@ -6,11 +6,8 @@
 using namespace DsLib;
 
 DsKeyboard::DsKeyboard()
+	:m_keyPush{}
 {
-	for each(bool& push in m_keyPush)
-	{
-		push = false;
-	}
 }
 
 DsKeyboard::~DsKeyboard()
@@ -18,28 +15,12 @@ DsKeyboard::~DsKeyboard()
 
 }
 
-void DsKeyboard::OnKey(int key, bool push)
+void DsKeyboard::OnKey(ds_uint8 key, bool push)
 {
-	switch (key)
-	{
-	case 'w':
-	case 'W':
-		m_keyPush[FORWARD] = push;
-		break;
+	m_keyPush[key] = push;
+}
 
-	case 's':
-	case 'S':
-		m_keyPush[BACK] = push;
-		break;
+void DsKeyboard::OnKeySp(int key, bool push)
+{
 
-	case 'a':
-	case 'A':
-		m_keyPush[LEFT] = push;
-		break;
-
-	case 'd':
-	case 'D':
-		m_keyPush[RIGHT] = push;
-		break;
-	}
 }
