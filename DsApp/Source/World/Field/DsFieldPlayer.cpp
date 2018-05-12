@@ -10,7 +10,7 @@
 #include "Res/DsHitRes.h"
 #endif
 #ifndef _DS_MODEL_
-#include "Animation/DsModel.h"
+#include "Model/DsModel.h"
 #endif
 #ifndef _DS_MOUSE_H_
 #include "Mouse/DsMouse.h"

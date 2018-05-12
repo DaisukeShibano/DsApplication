@@ -3,7 +3,7 @@
 #include "Actor/DsRigidMesh.h"
 #endif
 #ifndef _DS_MODEL_
-#include "Animation/DsModel.h"
+#include "Model/DsModel.h"
 #endif
 #ifndef __DS_BOUNDING_TREE_BASE__
 #include "Collision/BoundingTree/DsBoundingTreeAabb.h"

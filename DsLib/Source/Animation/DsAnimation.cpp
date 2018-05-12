@@ -16,7 +16,7 @@
 #include "Animation/SkinMesh/DsSkinMesh.h"
 #endif
 #ifndef _DS_MODEL_
-#include "Animation/DsModel.h"
+#include "Model/DsModel.h"
 #endif
 #ifndef _DS_DRAW_COMMAND_H_
 #include "Graphics/Command/DsDrawCommand.h"

@@ -190,7 +190,6 @@
     <ClCompile Include="Source\Animation\Blend\DsAnimBlend.cpp" />
     <ClCompile Include="Source\Animation\DsAnimation.cpp" />
     <ClCompile Include="Source\Animation\DsAnimClip.cpp" />
-    <ClCompile Include="Source\Animation\DsModel.cpp" />
     <ClCompile Include="Source\Animation\DsAnimSkeleton.cpp" />
     <ClCompile Include="Source\Animation\DsAnimSkeletonModifier.cpp" />
     <ClCompile Include="Source\Animation\DsKeyframeAnim.cpp" />
@@ -230,6 +229,7 @@
     <ClCompile Include="Source\Keyboard\DsKeyboard.cpp" />
     <ClCompile Include="Source\Math\DsAabb.cpp" />
     <ClCompile Include="Source\Math\DsMathUtil.cpp" />
+    <ClCompile Include="Source\Model\DsModel.cpp" />
     <ClCompile Include="Source\Mouse\DsMouse.cpp" />
     <ClCompile Include="Source\Res\DsAnimRes.cpp" />
     <ClCompile Include="Source\Res\DsHitRes.cpp" />
@@ -250,7 +250,6 @@
     <ClInclude Include="Source\Animation\Blend\DsAnimBlend.h" />
     <ClInclude Include="Source\Animation\DsAnimation.h" />
     <ClInclude Include="Source\Animation\DsAnimClip.h" />
-    <ClInclude Include="Source\Animation\DsModel.h" />
     <ClInclude Include="Source\Animation\DsAnimCustomProperty.h" />
     <ClInclude Include="Source\Animation\DsAnimSkeleton.h" />
     <ClInclude Include="Source\Animation\DsAnimSkeletonModifier.h" />
@@ -309,6 +308,7 @@
     <ClInclude Include="Source\Math\DsVector4.h" />
     <ClInclude Include="Source\Math\DsVector4d.h" />
     <ClInclude Include="Source\Math\DsVector4f.h" />
+    <ClInclude Include="Source\Model\DsModel.h" />
     <ClInclude Include="Source\Mouse\DsMouse.h" />
     <ClInclude Include="Source\Res\DsAnimRes.h" />
     <ClInclude Include="Source\Res\DsHitRes.h" />

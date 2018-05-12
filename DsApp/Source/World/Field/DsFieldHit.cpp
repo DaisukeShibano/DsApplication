@@ -10,7 +10,7 @@
 #include "Res/DsHitRes.h"
 #endif
 #ifndef _DS_MODEL_
-#include "Animation/DsModel.h"
+#include "Model/DsModel.h"
 #endif
 #ifndef __DS_APP_COLLISION_FILTER__
 #include "World/Physics/DsAppCollisionFilter.h"

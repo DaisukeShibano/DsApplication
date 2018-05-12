@@ -113,6 +113,9 @@
     <Filter Include="Source\Graphics\Effect\Particle">
       <UniqueIdentifier>{18bc64ce-47cb-48a5-ab0a-0d8d614734ed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Model">
+      <UniqueIdentifier>{a7973de5-12db-4e8c-a429-ad1d65f7b573}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsPch.cpp">
@@ -268,11 +271,11 @@
     <ClCompile Include="Source\Graphics\Render\DsParticleRender.cpp">
       <Filter>Source\Graphics\Render</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Animation\DsModel.cpp">
-      <Filter>Source\Animation</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Graphics\Render\DsModelRender.cpp">
       <Filter>Source\Graphics\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Model\DsModel.cpp">
+      <Filter>Source\Model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -513,11 +516,11 @@
     <ClInclude Include="Source\Res\DsResItem.h">
       <Filter>Source\Res</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Animation\DsModel.h">
-      <Filter>Source\Animation</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Graphics\Render\DsModelRender.h">
       <Filter>Source\Graphics\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Model\DsModel.h">
+      <Filter>Source\Model</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -12,7 +12,7 @@
 #include "Res/DsMapRes.h"
 #endif
 #ifndef _DS_MODEL_
-#include "Animation/DsModel.h"
+#include "Model/DsModel.h"
 #endif
 #ifndef _DS_ANIM_EVENT_CALLBACK_
 #include "World/Animation/Event/DsAnimEventCallback.h"

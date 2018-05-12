@@ -9,7 +9,7 @@
 #include "Res/DsHitRes.h"
 #endif
 #ifndef _DS_MODEL_
-#include "Animation/DsModel.h"
+#include "Model/DsModel.h"
 #endif
 #ifndef _DS_AMIM_CUSTOM_PROPERTY_
 #include "Animation/DsAnimCustomProperty.h"

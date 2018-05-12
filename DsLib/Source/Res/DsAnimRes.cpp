@@ -14,7 +14,7 @@
 #include "Animation/DsKeyframeAnimSet.h"
 #endif
 #ifndef _DS_MODEL_
-#include "Animation/DsModel.h"
+#include "Model/DsModel.h"
 #endif
 #ifndef _DS_AMIM_RAGDOLL_INFO_
 #include "Animation/DsAnimCustomProperty.h"

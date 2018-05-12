@@ -5,7 +5,7 @@
 #include "Graphics/Render/DsModelRender.h"
 #endif
 #ifndef _DS_MODEL_
-#include "Animation/DsModel.h"
+#include "Model/DsModel.h"
 #endif
 
 using namespace DsLib;
