@@ -760,14 +760,14 @@ namespace
 }
 
 //static
-DsDrawCommand& DsDrawCommand::Create(DsAnimModelRender& animRender, DsRender& render)
+DsDrawCommand& DsDrawCommand::Create(DsModelRender& animRender, DsRender& render)
 {
 	DsDrawCommand* ret = new DsDrawCommand(animRender, render);
 	DS_ASSERT(ret, "ÉÅÉÇÉäämï€é∏îs");
 	return *ret;
 }
 
-DsDrawCommand::DsDrawCommand(DsAnimModelRender& animRender, DsRender& render)
+DsDrawCommand::DsDrawCommand(DsModelRender& animRender, DsRender& render)
 : m_coms()
 , m_pBuffer(NULL)
 , m_useMemory(0)

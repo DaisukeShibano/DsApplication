@@ -8,8 +8,8 @@
 #ifndef _DS_IMAGE_H_
 #include "Graphics/Image/DsImage.h"
 #endif
-#ifndef _DS_ANIM_MODEL_
-#include "Animation/DsAnimModel.h"
+#ifndef _DS_MODEL_
+#include "Animation/DsModel.h"
 #endif
 
 using namespace DsLib;
@@ -29,13 +29,13 @@ DsTexture::~DsTexture()
 	m_imgs.clear();
 }
 
-void DsTexture::Load(const DsAnimModel& model)
+void DsTexture::Load(const DsModel& model)
 {
-	const DsAnimModel::Material* pMaterial = model.GetMaterial();
+	const DsModel::Material* pMaterial = model.GetMaterial();
 	const int mn = model.GetMaterialNum();
 	for (int mi = 0; mi < mn; ++mi)
 	{
-		const DsAnimModel::Material::Texture* pTexture = pMaterial[mi].pTexture;
+		const DsModel::Material::Texture* pTexture = pMaterial[mi].pTexture;
 		const int tn = pMaterial[mi].textureNum;
 		for (int ti = 0; ti < tn; ++ti)
 		{
@@ -44,13 +44,13 @@ void DsTexture::Load(const DsAnimModel& model)
 	}
 }
 
-void DsTexture::UnLoad(const DsAnimModel& model)
+void DsTexture::UnLoad(const DsModel& model)
 {
-	const DsAnimModel::Material* pMaterial = model.GetMaterial();
+	const DsModel::Material* pMaterial = model.GetMaterial();
 	const int mn = model.GetMaterialNum();
 	for (int mi = 0; mi < mn; ++mi)
 	{
-		const DsAnimModel::Material::Texture* pTexture = pMaterial[mi].pTexture;
+		const DsModel::Material::Texture* pTexture = pMaterial[mi].pTexture;
 		const int tn = pMaterial[mi].textureNum;
 		for (int ti = 0; ti < tn; ++ti)
 		{

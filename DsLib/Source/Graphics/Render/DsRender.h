@@ -1,8 +1,8 @@
 #ifndef _DS_RENDER_H_
 #define _DS_RENDER_H_
 
-#ifndef _DS_ANIM_MODEL_RENDER_H_
-#include "Graphics/Render/DsAnimModelRender.h"
+#ifndef _DS_MODEL_RENDER_H_
+#include "Graphics/Render/DsModelRender.h"
 #endif
 
 #ifndef _DS_PARTICLE_RENDER_
@@ -50,7 +50,7 @@ namespace DsLib
 		const DsLight& RefLight() const { return m_light; }
 		double GetWidth() const;
 		double GetHeight() const;
-		DsAnimModelRender& RefAnimRender() { return m_animRender; }
+		DsModelRender& RefAnimRender() { return m_animRender; }
 		DsParticleRender& RefParticleRender() { return m_particleRender; }
 
 	public:
@@ -78,7 +78,7 @@ namespace DsLib
 		DsSys& m_sys;
 
 	private:
-		DsAnimModelRender m_animRender;
+		DsModelRender m_animRender;
 		DsParticleRender m_particleRender;
 
 	private:

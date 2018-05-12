@@ -9,7 +9,7 @@ namespace DsLib
 {
 	class DsAnimSkeleton;
 	class DsKeyframeAnimSet;
-	class DsAnimModel;
+	class DsModel;
 	class DsSkinMesh;
 	class DsDrawCommand;
 	class DsAnimRes;
@@ -40,13 +40,13 @@ namespace DsLib
 		void RequestPlayAnim(DsAnimClip* pAnim) { m_pRequestAnim = pAnim; }
 		std::vector<DsAnimClip*>& RefAnimClips() { return m_animClips; }
 		const DsAnimClip* GetPlayAnim()const { return m_pPlayAnim; }
-		const DsAnimModel* GetModel() const;
-		DsAnimModel* GetModel();
+		const DsModel* GetModel() const;
+		DsModel* GetModel();
 
 	private:
 		DsAnimSkeleton* m_pSkeleton;
 		DsKeyframeAnimSet* m_pKeyframeAnim;
-		DsAnimModel* m_pAnimModel;
+		DsModel* m_pAnimModel;
 		DsSkinMesh* m_pSkinMesh;
 		DsAnimCustomProperty* m_pCustomProperty;
 		DsAnimSkeletonModifier* m_animModifier;

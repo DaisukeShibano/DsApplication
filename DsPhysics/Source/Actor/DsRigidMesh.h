@@ -7,7 +7,7 @@
 
 namespace DsLib
 {
-	class DsAnimModel;
+	class DsModel;
 }
 
 namespace DsPhysics
@@ -24,7 +24,7 @@ namespace DsPhysics
 		class DsRigidMeshFactory : public DsActorCoordFactory
 		{
 		public:
-			DsRigidMeshFactory(const DsAnimModel& anim, const char* name)
+			DsRigidMeshFactory(const DsModel& anim, const char* name)
 				: DsActorCoordFactory()
 				, m_anim(anim)
 				, m_initOption(Option::Default())
@@ -37,7 +37,7 @@ namespace DsPhysics
 			void SetOption(const Option& option){ m_initOption = option; }
 
 		private:
-			const DsAnimModel& m_anim;
+			const DsModel& m_anim;
 			Option m_initOption;
 			std::string m_name;
 		};
@@ -54,7 +54,7 @@ namespace DsPhysics
 		virtual void Draw(DsDrawCommand& com) override;
 
 	public:
-		void Create(const DsAnimModel& animModel);
+		void Create(const DsModel& animModel);
 
 	private:
 		virtual void _Update(const DsVec3d& deltaPos, const DsMat33d& deltaRot);

@@ -2,8 +2,8 @@
 #ifndef _DS_RIGID_MESH_H_
 #include "Actor/DsRigidMesh.h"
 #endif
-#ifndef _DS_ANIM_MODEL_
-#include "Animation/DsAnimModel.h"
+#ifndef _DS_MODEL_
+#include "Animation/DsModel.h"
 #endif
 #ifndef __DS_BOUNDING_TREE_BASE__
 #include "Collision/BoundingTree/DsBoundingTreeAabb.h"
@@ -27,7 +27,7 @@ DsRigidMesh::~DsRigidMesh()
 }
 
 //三角形のみなことが保障されているならモデルと頂点とか共有できるかも。
-void DsRigidMesh::Create(const DsAnimModel& animModel)
+void DsRigidMesh::Create(const DsModel& animModel)
 {
 	m_geomInfo.vn = animModel.GetVertexNum();
 	m_geomInfo.pVertex = new DsVec3d[m_geomInfo.vn];

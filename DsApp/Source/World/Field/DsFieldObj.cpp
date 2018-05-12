@@ -11,8 +11,8 @@
 #ifndef _DS_MAP_RES_H_
 #include "Res/DsMapRes.h"
 #endif
-#ifndef _DS_ANIM_MODEL_
-#include "Animation/DsAnimModel.h"
+#ifndef _DS_MODEL_
+#include "Animation/DsModel.h"
 #endif
 #ifndef _DS_ANIM_EVENT_CALLBACK_
 #include "World/Animation/Event/DsAnimEventCallback.h"
@@ -108,7 +108,7 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 		if (pHitRes->GetAnimRes())
 		{
 			//ƒqƒbƒgƒ‚ƒfƒ‹‚ª‚ ‚Á‚½‚Ì‚Å‚»‚±‚©‚çì¬
-			const DsAnimModel* pHitModel = pHitRes->GetAnimRes()->CreateAnimModel();
+			const DsModel* pHitModel = pHitRes->GetAnimRes()->CreateAnimModel();
 			if (pHitModel)
 			{
 				DsRigidMesh::DsRigidMeshFactory factory(*pHitModel, m_name.c_str());
@@ -278,7 +278,7 @@ DsMat44d DsFieldObj::GetDmypoly(int id)const
 	DsMat44d ret = DsMat44d::Identity();
 	const DsAnimation* pAnim = GetAnim();
 	if (pAnim) {
-		const DsAnimModel* pModel = pAnim->GetModel();
+		const DsModel* pModel = pAnim->GetModel();
 		if (pModel) {
 			ret = pModel->GetDmypoly(id);
 		}

@@ -10,7 +10,7 @@ namespace DsLib
 	class DsAnimSkeleton;
 	struct DsAnimBone;
 	class DsKeyframeAnimSet;
-	class DsAnimModel;
+	class DsModel;
 	struct DsAnimCustomProperty;
 }
 
@@ -28,7 +28,7 @@ namespace DsLib
 	public:
 		DsAnimSkeleton* CreateSkeleton() const;
 		DsKeyframeAnimSet* CreateKeyframeAnim() const;
-		DsAnimModel* CreateAnimModel() const;
+		DsModel* CreateAnimModel() const;
 		int GetAnimNum() const;
 		DsAnimCustomProperty* CustomProperty()const;
 

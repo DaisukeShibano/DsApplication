@@ -172,14 +172,8 @@
     <ClCompile Include="Source\Mouse\DsMouse.cpp">
       <Filter>Source\Mouse</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Animation\DsAnimModel.cpp">
-      <Filter>Source\Animation</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Animation\SkinMesh\DsSkinMesh.cpp">
       <Filter>Source\Animation\SkinMesh</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Graphics\Render\DsAnimModelRender.cpp">
-      <Filter>Source\Graphics\Render</Filter>
     </ClCompile>
     <ClCompile Include="Source\Graphics\Image\DsImage.cpp">
       <Filter>Source\Graphics\Image</Filter>
@@ -272,6 +266,12 @@
       <Filter>Source\Graphics\Effect\Particle</Filter>
     </ClCompile>
     <ClCompile Include="Source\Graphics\Render\DsParticleRender.cpp">
+      <Filter>Source\Graphics\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Animation\DsModel.cpp">
+      <Filter>Source\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Render\DsModelRender.cpp">
       <Filter>Source\Graphics\Render</Filter>
     </ClCompile>
   </ItemGroup>
@@ -369,14 +369,8 @@
     <ClInclude Include="Source\Math\DsVector4.h">
       <Filter>Source\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Animation\DsAnimModel.h">
-      <Filter>Source\Animation</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Math\DsMath.h">
       <Filter>Source\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Graphics\Render\DsAnimModelRender.h">
-      <Filter>Source\Graphics\Render</Filter>
     </ClInclude>
     <ClInclude Include="Source\Graphics\Image\DsImage.h">
       <Filter>Source\Graphics\Image</Filter>
@@ -518,6 +512,12 @@
     </ClInclude>
     <ClInclude Include="Source\Res\DsResItem.h">
       <Filter>Source\Res</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Animation\DsModel.h">
+      <Filter>Source\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Render\DsModelRender.h">
+      <Filter>Source\Graphics\Render</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -4,7 +4,7 @@
 namespace DsLib
 {
 	class DsImage;
-	class DsAnimModel;
+	class DsModel;
 }
 
 namespace DsLib
@@ -31,8 +31,8 @@ namespace DsLib
 		virtual ~DsTexture();
 
 	public:
-		void Load(const DsAnimModel& model);
-		void UnLoad(const DsAnimModel& model);
+		void Load(const DsModel& model);
+		void UnLoad(const DsModel& model);
 
 		void Load(const std::string& path);
 		void UnLoad(const std::string& path);

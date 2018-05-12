@@ -3,8 +3,8 @@
 #include "Animation/SkinMesh/DsSkinMesh.h"
 #endif
 
-#ifndef _DS_ANIM_MODEL_
-#include "Animation/DsAnimModel.h"
+#ifndef _DS_MODEL_
+#include "Animation/DsModel.h"
 #endif
 #ifndef _DS_AMIM_SKELETON_
 #include "Animation/DsAnimSkeleton.h"
@@ -15,7 +15,7 @@
 
 using namespace DsLib;
 
-DsSkinMesh::DsSkinMesh(const DsAnimModel& model)
+DsSkinMesh::DsSkinMesh(const DsModel& model)
 	:m_srcModel(model)
 	,m_pModel(NULL)
 {
@@ -110,7 +110,7 @@ void DsSkinMesh::DbgDraw() const
 	const int fn = m_pModel->GetFaceNum();
 	for (int fIdx = 0; fIdx < fn; ++fIdx)
 	{
-		const DsAnimModel:: Face* pFace = m_pModel->GetFace();
+		const DsModel:: Face* pFace = m_pModel->GetFace();
 		const int vn = pFace[fIdx].vn;
 		for (int vIdx = 0; vIdx < vn; ++vIdx)
 		{

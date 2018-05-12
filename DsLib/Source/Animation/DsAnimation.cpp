@@ -15,8 +15,8 @@
 #ifndef _DS_SKINMESH_
 #include "Animation/SkinMesh/DsSkinMesh.h"
 #endif
-#ifndef _DS_ANIM_MODEL_
-#include "Animation/DsAnimModel.h"
+#ifndef _DS_MODEL_
+#include "Animation/DsModel.h"
 #endif
 #ifndef _DS_DRAW_COMMAND_H_
 #include "Graphics/Command/DsDrawCommand.h"
@@ -90,7 +90,7 @@ DsAnimation::DsAnimation(const DsAnimRes& anim, DsDrawCommand& com)
 	}
 
 	//モデルの座標を更新
-	DsAnimModel* pModel = GetModel();
+	DsModel* pModel = GetModel();
 	if (pModel) {
 		pModel->SetPosition(m_pos);
 		pModel->SetRotation(m_rot);
@@ -116,7 +116,7 @@ DsAnimation::~DsAnimation()
 void DsAnimation::RegisterDraw()
 {
 	//描画に登録
-	DsAnimModel* pModel = GetModel();
+	DsModel* pModel = GetModel();
 	if (pModel) {
 		if (!pModel->IsCreateVertexNormal())
 		{
@@ -188,7 +188,7 @@ void DsAnimation::Update(double dt)
 	}
 
 	//モデルの座標を更新
-	DsAnimModel* pModel = GetModel();
+	DsModel* pModel = GetModel();
 	if (pModel) {
 		pModel->SetPosition(m_pos);
 		pModel->SetRotation(m_rot);
@@ -215,11 +215,11 @@ const DsMat33d& DsAnimation::GetRotation() const
 	return m_rot;
 }
 
-const DsAnimModel* DsAnimation::GetModel() const
+const DsModel* DsAnimation::GetModel() const
 {
 	return (m_pSkinMesh && m_pSkinMesh->GetSkinMeshModel()) ? (m_pSkinMesh->GetSkinMeshModel()) : (m_pAnimModel);
 }
-DsAnimModel* DsAnimation::GetModel()
+DsModel* DsAnimation::GetModel()
 {
 	return (m_pSkinMesh && m_pSkinMesh->GetSkinMeshModel()) ? (m_pSkinMesh->GetSkinMeshModel()) : (m_pAnimModel);
 }

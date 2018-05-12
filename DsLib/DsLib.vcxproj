@@ -190,7 +190,7 @@
     <ClCompile Include="Source\Animation\Blend\DsAnimBlend.cpp" />
     <ClCompile Include="Source\Animation\DsAnimation.cpp" />
     <ClCompile Include="Source\Animation\DsAnimClip.cpp" />
-    <ClCompile Include="Source\Animation\DsAnimModel.cpp" />
+    <ClCompile Include="Source\Animation\DsModel.cpp" />
     <ClCompile Include="Source\Animation\DsAnimSkeleton.cpp" />
     <ClCompile Include="Source\Animation\DsAnimSkeletonModifier.cpp" />
     <ClCompile Include="Source\Animation\DsKeyframeAnim.cpp" />
@@ -213,7 +213,7 @@
     <ClCompile Include="Source\Graphics\Light\DsLight.cpp" />
     <ClCompile Include="Source\Graphics\Light\DsLightMan.cpp" />
     <ClCompile Include="Source\Graphics\Light\DsSunLight.cpp" />
-    <ClCompile Include="Source\Graphics\Render\DsAnimModelRender.cpp" />
+    <ClCompile Include="Source\Graphics\Render\DsModelRender.cpp" />
     <ClCompile Include="Source\Graphics\Render\DsParticleRender.cpp" />
     <ClCompile Include="Source\Graphics\Render\DsRender.cpp" />
     <ClCompile Include="Source\Graphics\Render\DsRenderCamCaptureImage.cpp" />
@@ -250,7 +250,7 @@
     <ClInclude Include="Source\Animation\Blend\DsAnimBlend.h" />
     <ClInclude Include="Source\Animation\DsAnimation.h" />
     <ClInclude Include="Source\Animation\DsAnimClip.h" />
-    <ClInclude Include="Source\Animation\DsAnimModel.h" />
+    <ClInclude Include="Source\Animation\DsModel.h" />
     <ClInclude Include="Source\Animation\DsAnimCustomProperty.h" />
     <ClInclude Include="Source\Animation\DsAnimSkeleton.h" />
     <ClInclude Include="Source\Animation\DsAnimSkeletonModifier.h" />
@@ -274,7 +274,7 @@
     <ClInclude Include="Source\Graphics\Light\DsLight.h" />
     <ClInclude Include="Source\Graphics\Light\DsLightMan.h" />
     <ClInclude Include="Source\Graphics\Light\DsSunLight.h" />
-    <ClInclude Include="Source\Graphics\Render\DsAnimModelRender.h" />
+    <ClInclude Include="Source\Graphics\Render\DsModelRender.h" />
     <ClInclude Include="Source\Graphics\Render\DsParticleRender.h" />
     <ClInclude Include="Source\Graphics\Render\DsRender.h" />
     <ClInclude Include="Source\Graphics\Render\DsRenderCamCaptureImage.h" />

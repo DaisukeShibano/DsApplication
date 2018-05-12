@@ -1,5 +1,5 @@
-#ifndef _DS_ANIM_MODEL_
-#define _DS_ANIM_MODEL_
+#ifndef _DS_MODEL_
+#define _DS_MODEL_
 
 namespace DsLib
 {
@@ -8,7 +8,7 @@ namespace DsLib
 
 namespace DsLib
 {
-	class DsAnimModel
+	class DsModel
 	{
 		friend DsAnimRes;
 
@@ -77,12 +77,12 @@ namespace DsLib
 		};
 
 	public:
-		DsAnimModel();
-		virtual ~DsAnimModel();
+		DsModel();
+		virtual ~DsModel();
 
 	public:
 		//自分と同じ内容の別インスタンスを作成
-		DsAnimModel* CreateClone() const;
+		DsModel* CreateClone() const;
 
 	public:
 		const DsVec4d* GetVertex() const { return m_pVertex; }

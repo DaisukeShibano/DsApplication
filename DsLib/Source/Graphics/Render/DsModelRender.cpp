@@ -1,28 +1,28 @@
 #include "DsPch.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
-#ifndef _DS_ANIM_MODEL_RENDER_H_
-#include "Graphics/Render/DsAnimModelRender.h"
+#ifndef _DS_MODEL_RENDER_H_
+#include "Graphics/Render/DsModelRender.h"
 #endif
-#ifndef _DS_ANIM_MODEL_
-#include "Animation/DsAnimModel.h"
+#ifndef _DS_MODEL_
+#include "Animation/DsModel.h"
 #endif
 
 using namespace DsLib;
 
-DsAnimModelRender::DsAnimModelRender()
+DsModelRender::DsModelRender()
 : m_drawList()
 , m_texture()
 {
 
 }
 
-DsAnimModelRender::~DsAnimModelRender()
+DsModelRender::~DsModelRender()
 {
 
 }
 
-void DsAnimModelRender::Register(const DsAnimModel* pModel)
+void DsModelRender::Register(const DsModel* pModel)
 {
 	if (pModel)
 	{
@@ -33,7 +33,7 @@ void DsAnimModelRender::Register(const DsAnimModel* pModel)
 	}
 }
 
-void DsAnimModelRender::UnRegister(const DsAnimModel* pModel)
+void DsModelRender::UnRegister(const DsModel* pModel)
 {
 	if (pModel)
 	{
@@ -42,9 +42,9 @@ void DsAnimModelRender::UnRegister(const DsAnimModel* pModel)
 	}
 }
 
-void DsAnimModelRender::RenderPolygon() const
+void DsModelRender::RenderPolygon() const
 {
-	for each(const DsAnimModel* pModel in m_drawList)
+	for each(const DsModel* pModel in m_drawList)
 	{
 #ifndef		USE_OLD_MODEL_COOD
 		const DsMat44d modelMat = DsMat44d::GetTranspose(pModel->GetRotation(), pModel->GetPosition());
@@ -53,7 +53,7 @@ void DsAnimModelRender::RenderPolygon() const
 #endif
 		const int fn = pModel->GetFaceNum();
 		const DsVec4d* pVertex = pModel->GetVertex();
-		const DsAnimModel::Face* pFace = pModel->GetFace();
+		const DsModel::Face* pFace = pModel->GetFace();
 
 		for (int fi = 0; fi < fn; ++fi, ++pFace)
 		{
@@ -75,9 +75,9 @@ void DsAnimModelRender::RenderPolygon() const
 	}
 }
 
-void DsAnimModelRender::RenderNonMaterial() const
+void DsModelRender::RenderNonMaterial() const
 {
-	for each(const DsAnimModel* pModel in m_drawList)
+	for each(const DsModel* pModel in m_drawList)
 	{
 #ifndef		USE_OLD_MODEL_COOD
 		//座標
@@ -89,11 +89,11 @@ void DsAnimModelRender::RenderNonMaterial() const
 		bool isUseTexture = false;
 		{
 			const int mn = pModel->GetMaterialNum();
-			const DsAnimModel::Material* pMtr = pModel->GetMaterial();
+			const DsModel::Material* pMtr = pModel->GetMaterial();
 			for (int mi = 0; mi < mn; ++mi, ++pMtr)
 			{
 				const int tn = pMtr->textureNum;
-				DsAnimModel::Material::Texture* pTex = pMtr->pTexture;
+				DsModel::Material::Texture* pTex = pMtr->pTexture;
 				isUseTexture = (0 < tn);
 				if (isUseTexture)break;
 			}
@@ -104,7 +104,7 @@ void DsAnimModelRender::RenderNonMaterial() const
 		{
 			const int fn = pModel->GetFaceNum();
 			const DsVec4d* pVertex = pModel->GetVertex();
-			const DsAnimModel::Face* pFace = pModel->GetFace();
+			const DsModel::Face* pFace = pModel->GetFace();
 
 			//頂点法線
 			const bool isUseVertexNormal = pModel->IsCreateVertexNormal();
@@ -149,12 +149,12 @@ void DsAnimModelRender::RenderNonMaterial() const
 	}
 }
 
-void DsAnimModelRender::Render() const
+void DsModelRender::Render() const
 {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
-	for(const DsAnimModel* pModel : m_drawList) 
+	for(const DsModel* pModel : m_drawList) 
 	{
 #ifndef		USE_OLD_MODEL_COOD
 		//座標
@@ -177,24 +177,24 @@ void DsAnimModelRender::Render() const
 		//頂点、面
 		const int fn = pModel->GetFaceNum();
 		const DsVec4d* pVertex = pModel->GetVertex();
-		const DsAnimModel::Face* pFace = pModel->GetFace();
+		const DsModel::Face* pFace = pModel->GetFace();
 		
 		//マテリアル
 		const int mn = pModel->GetMaterialNum();
-		const DsAnimModel::Material* pMtr = pModel->GetMaterial();
+		const DsModel::Material* pMtr = pModel->GetMaterial();
 		
 		for (int mi = 0; mi < mn; ++mi, ++pMtr)
 		{
 			const int tn = pMtr->textureNum;
-			const DsAnimModel::Material::Texture* pTex = pMtr->pTexture;
+			const DsModel::Material::Texture* pTex = pMtr->pTexture;
 			for (int ti = 0; ti < tn; ++ti, ++pTex)
 			{
 				const GLuint texId = m_texture.GetTexId(pTex->path);
 				glBindTexture(GL_TEXTURE_2D, texId);
 				
 				int uvIdx = 0;
-				const DsAnimModel::Material::Texture::UV *pUV = pTex->pUV;
-				for(const DsAnimModel::Face* pFace : pTex->refGeomFaces)
+				const DsModel::Material::Texture::UV *pUV = pTex->pUV;
+				for(const DsModel::Face* pFace : pTex->refGeomFaces)
 				{
 					//材質の色は適当
 					const GLfloat col[] = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -216,7 +216,7 @@ void DsAnimModelRender::Render() const
 					for (int vi = 0; vi < vn; ++vi)
 					{
 						DS_ASSERT(uvIdx < pTex->uvNum, "uv座標のインデックオーバー");
-						const DsAnimModel::Material::Texture::UV& uv = pUV[uvIdx];
+						const DsModel::Material::Texture::UV& uv = pUV[uvIdx];
 						const int vIdx = uv.vertexIdx;
 						if (isUseVertexNormal)
 						{

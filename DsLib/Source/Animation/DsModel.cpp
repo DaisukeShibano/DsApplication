@@ -1,11 +1,11 @@
 #include "DsPch.h"
-#ifndef _DS_ANIM_MODEL_
-#include "Animation/DsAnimModel.h"
+#ifndef _DS_MODEL_
+#include "Animation/DsModel.h"
 #endif
 
 using namespace DsLib;
 
-DsAnimModel::DsAnimModel() 
+DsModel::DsModel() 
 	: m_pVertex(0)
 	, m_vn(0)
 	, m_pFace(0)
@@ -22,7 +22,7 @@ DsAnimModel::DsAnimModel()
 
 }
 
-DsAnimModel::~DsAnimModel()
+DsModel::~DsModel()
 {
 	delete[] m_pVertex; m_pVertex = NULL;
 	delete[] m_pFace; m_pFace = NULL;
@@ -34,9 +34,9 @@ DsAnimModel::~DsAnimModel()
 }
 
 //自分と同じ内容の別インスタンスを作成
-DsAnimModel* DsAnimModel::CreateClone() const 
+DsModel* DsModel::CreateClone() const 
 {
-	DsAnimModel* ret = new DsAnimModel();
+	DsModel* ret = new DsModel();
 	DS_ASSERT(ret, "メモリ確保失敗");
 
 	ret->m_vn = m_vn;
@@ -108,7 +108,7 @@ DsAnimModel* DsAnimModel::CreateClone() const
 	return ret;
 }
 
-void DsAnimModel::CreateVertexNormal()
+void DsModel::CreateVertexNormal()
 {
 	//１つの頂点に隣接している複数の面インデックスを全頂点分用意する
 
@@ -141,7 +141,7 @@ void DsAnimModel::CreateVertexNormal()
 	}
 }
 
-void DsAnimModel::UpdateNormal()
+void DsModel::UpdateNormal()
 {
 	Face* pFace = GetFace();
 	const DsVec4d* pVertex = GetVertex();
@@ -149,7 +149,7 @@ void DsAnimModel::UpdateNormal()
 	for (int fi = 0; fi < fn; ++fi)
 	{
 		const int fvn = pFace[fi].vn;
-		DS_ASSERT((3 <= fvn), "DsAnimModelの面の頂点数が３未満");
+		DS_ASSERT((3 <= fvn), "DsModelの面の頂点数が３未満");
 		pFace[fi].normal = DsVec4d::CalcNormal(pVertex[pFace[fi].pIndex[0]], pVertex[pFace[fi].pIndex[1]], pVertex[pFace[fi].pIndex[2]]);
 	}
 
@@ -171,7 +171,7 @@ void DsAnimModel::UpdateNormal()
 }
 
 
-DsMat44d DsAnimModel::GetDmypoly(int id)const
+DsMat44d DsModel::GetDmypoly(int id)const
 {
 	DsMat44d ret = DsMat44d::Identity();
 

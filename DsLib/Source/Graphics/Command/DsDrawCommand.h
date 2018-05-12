@@ -1,8 +1,8 @@
 #ifndef _DS_DRAW_COMMAND_H_
 #define _DS_DRAW_COMMAND_H_
 
-#ifndef _DS_ANIM_MODEL_RENDER_H_
-#include "Graphics/Render/DsAnimModelRender.h"
+#ifndef _DS_MODEL_RENDER_H_
+#include "Graphics/Render/DsModelRender.h"
 #endif
 
 namespace DsLib
@@ -30,10 +30,10 @@ namespace DsLib
 		};
 
 	public:
-		static DsDrawCommand& Create(DsAnimModelRender& animRender, DsRender& render);
+		static DsDrawCommand& Create(DsModelRender& animRender, DsRender& render);
 
 	private:
-		DsDrawCommand(DsAnimModelRender& animRender, DsRender& render);
+		DsDrawCommand(DsModelRender& animRender, DsRender& render);
 
 	public:
 		virtual ~DsDrawCommand();
@@ -72,14 +72,14 @@ namespace DsLib
 		DsDrawCommand& DrawTextScreen(const DsVec2d& pos, const wchar_t* pText, ...);//ç¿ïWÇÕè„â∫Ç≈-0.5,0.5ÇÃîÕàÕ
 
 	public:
-		DsAnimModelRender& RefAnimRender() { return m_animRender; }
+		DsModelRender& RefAnimRender() { return m_animRender; }
 		DsRender& RefRender() { return m_render; }
 
 	private:
 		std::vector<DsDrawComBase*> m_coms;
 		char* m_pBuffer;
 		size_t m_useMemory;
-		DsAnimModelRender& m_animRender;
+		DsModelRender& m_animRender;
 		DsRender& m_render;
 		unsigned int m_dummyTexId;
 		std::map< const unsigned char*, unsigned int> m_texIdMap;

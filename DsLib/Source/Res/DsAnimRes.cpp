@@ -13,8 +13,8 @@
 #ifndef _DS_KEYFRAME_ANIM_SET_
 #include "Animation/DsKeyframeAnimSet.h"
 #endif
-#ifndef _DS_ANIM_MODEL_
-#include "Animation/DsAnimModel.h"
+#ifndef _DS_MODEL_
+#include "Animation/DsModel.h"
 #endif
 #ifndef _DS_AMIM_RAGDOLL_INFO_
 #include "Animation/DsAnimCustomProperty.h"
@@ -970,10 +970,10 @@ DsKeyframeAnimSet* DsAnimRes::CreateKeyframeAnim() const
 	return ret;
 }
 
-DsAnimModel* DsAnimRes::CreateAnimModel() const
+DsModel* DsAnimRes::CreateAnimModel() const
 {
 	OutputRes* pRes = static_cast<OutputRes*>(m_resTop);
-	DsAnimModel* pAnimModel = new DsAnimModel();
+	DsModel* pAnimModel = new DsModel();
 	DS_ASSERT(pAnimModel, "メモリ確保失敗");
 
 	//頂点データ
@@ -987,7 +987,7 @@ DsAnimModel* DsAnimRes::CreateAnimModel() const
 	}
 
 	//面
-	pAnimModel->m_pFace = new DsAnimModel::Face[pRes->dsAnimModel.fn];
+	pAnimModel->m_pFace = new DsModel::Face[pRes->dsAnimModel.fn];
 	DS_ASSERT(pAnimModel->m_pFace, "メモリ確保失敗");
 	pAnimModel->m_fn = pRes->dsAnimModel.fn;
 	for (unsigned int fIdx = 0; fIdx < pRes->dsAnimModel.fn; ++fIdx)
@@ -1005,7 +1005,7 @@ DsAnimModel* DsAnimRes::CreateAnimModel() const
 
 	//ダミポリ
 	if (0 < pRes->dsAnimModel.dn) {
-		pAnimModel->m_pDmypoly = new DsAnimModel::Dmypoly[pRes->dsAnimModel.dn];
+		pAnimModel->m_pDmypoly = new DsModel::Dmypoly[pRes->dsAnimModel.dn];
 		DS_ASSERT(pAnimModel->m_pDmypoly, "メモリ確保失敗");
 		pAnimModel->m_dn = pRes->dsAnimModel.dn;
 		for (unsigned int dIdx = 0; dIdx < pRes->dsAnimModel.dn; ++dIdx) {
@@ -1019,21 +1019,21 @@ DsAnimModel* DsAnimRes::CreateAnimModel() const
 
 	//マテリアル
 	pAnimModel->m_mn = pRes->dsAnimModel.mn;
-	pAnimModel->m_pMaterial = new DsAnimModel::Material[pAnimModel->m_mn];
+	pAnimModel->m_pMaterial = new DsModel::Material[pAnimModel->m_mn];
 	DS_ASSERT(pAnimModel->m_pMaterial, "メモリ確保失敗");
 	for (int mi = 0; mi < pAnimModel->m_mn; ++mi)
 	{
 		const int tn = pRes->dsAnimModel.pMtr[mi].textureNum;
 		pAnimModel->m_pMaterial[mi].textureNum = tn;
-		pAnimModel->m_pMaterial[mi].pTexture = new DsAnimModel::Material::Texture[tn];
+		pAnimModel->m_pMaterial[mi].pTexture = new DsModel::Material::Texture[tn];
 		DS_ASSERT(pAnimModel->m_pMaterial[mi].pTexture, "メモリ確保失敗");
 		for (int ti = 0; ti < tn; ++ti)
 		{
-			DsAnimModel::Material::Texture& texture = pAnimModel->m_pMaterial[mi].pTexture[ti];
+			DsModel::Material::Texture& texture = pAnimModel->m_pMaterial[mi].pTexture[ti];
 			const int uvn = pRes->dsAnimModel.pMtr[mi].texture[ti].uvNum;
 			texture.path = pRes->dsAnimModel.pMtr[mi].texture[ti].texPath;
 			texture.uvNum = uvn;
-			texture.pUV = new DsAnimModel::Material::Texture::UV[uvn];
+			texture.pUV = new DsModel::Material::Texture::UV[uvn];
 			DS_ASSERT(texture.pUV, "メモリ確保失敗");
 			for (int uvi = 0; uvi < uvn; ++uvi)
 			{
@@ -1047,7 +1047,7 @@ DsAnimModel* DsAnimRes::CreateAnimModel() const
 			{
 				const int refGeomFaceIndex = pRes->dsAnimModel.pMtr[mi].texture[ti].uvFace[uvfi].refGeomFaceIndex;
 				DS_ASSERT(refGeomFaceIndex < pAnimModel->m_fn, "UVへの面への参照インデックスがオーバー");
-				DsAnimModel::Face* pRefFace = &pAnimModel->m_pFace[refGeomFaceIndex];
+				DsModel::Face* pRefFace = &pAnimModel->m_pFace[refGeomFaceIndex];
 				texture.refGeomFaces.push_back(pRefFace);
 				texture.refGeomFacesIndex.push_back(refGeomFaceIndex);
 			}
