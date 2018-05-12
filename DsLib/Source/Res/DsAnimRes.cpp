@@ -3,7 +3,7 @@
 #ifndef _DS_ANIM_RES_
 #include "Res/DsAnimRes.h"
 #endif
-
+//‘¼‚Ìƒwƒbƒ_
 #ifndef _DS_AMIM_SKELETON_
 #include "Animation/DsAnimSkeleton.h"
 #endif
@@ -753,7 +753,7 @@ namespace
 }
 
 
-void DsAnimRes::Initialize(const char* path)
+void DsAnimRes::Initialize(const char* path, DsResource& resource)
 {
 	OutputRes* pRes = _LoadAnim(path);
 	m_resTop = pRes;

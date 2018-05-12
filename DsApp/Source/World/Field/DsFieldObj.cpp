@@ -38,6 +38,8 @@ DsFieldObj::DsFieldObj(DsSys& sys, DsPhysicsWorld& world, DsLib::DsResource& res
 	, m_pComponentSystem(NULL)
 	, m_reqestIsInit(false)
 	, m_isCompleteInit(false)
+	, m_animName()
+	, m_hitName()
 	, m_isRequestDirectAnim(false)
 {
 	
@@ -49,6 +51,10 @@ DsFieldObj::~DsFieldObj()
 	delete m_pAnimEventCallback; m_pAnimEventCallback = NULL;
 	delete m_pAnimation; m_pAnimation = NULL;
 	delete m_pComponentSystem; m_pComponentSystem = NULL;
+
+	m_resource.UnregisterItem<DsHitRes>(m_hitName.c_str());
+	m_resource.UnregisterItem<DsAnimRes>(m_animName.c_str());
+
 }
 
 namespace
@@ -81,24 +87,28 @@ namespace
 void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 {
 	m_name = initInfo.name;
+	m_animName = initInfo.animName;
+	m_hitName = initInfo.hitName;
 
 	m_pComponentSystem = new DsComponentSystem(*this, m_sys);
 	DS_ASSERT(m_pComponentSystem, "メモリ確保失敗");
 
-	if (initInfo.pAnimRes)
+	const DsAnimRes* pAnimRes = m_resource.RegisterItem<DsAnimRes>(m_animName.c_str());
+	if (pAnimRes)
 	{
-		m_pAnimation = new DsAnimation(*initInfo.pAnimRes, m_sys.RefRender().RefDrawCom());
+		m_pAnimation = new DsAnimation(*pAnimRes, m_sys.RefRender().RefDrawCom());
 		DS_ASSERT(m_pAnimation, "メモリ確保失敗");
 		m_pAnimEventCallback = new DsAnimEventCallback(*this, m_resource);
 		DS_ASSERT(m_pAnimEventCallback, "メモリ確保失敗");
 	}
 
-	if (initInfo.pHitRes)
+	const DsHitRes* pHitRes = m_resource.RegisterItem<DsHitRes>(m_hitName.c_str());
+	if (pHitRes)
 	{
-		if (initInfo.pHitRes->GetAnimRes())
+		if (pHitRes->GetAnimRes())
 		{
 			//ヒットモデルがあったのでそこから作成
-			const DsAnimModel* pHitModel = initInfo.pHitRes->GetAnimRes()->CreateAnimModel();
+			const DsAnimModel* pHitModel = pHitRes->GetAnimRes()->CreateAnimModel();
 			if (pHitModel)
 			{
 				DsRigidMesh::DsRigidMeshFactory factory(*pHitModel, m_name.c_str());
@@ -126,7 +136,7 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 		{
 			//ヒットモデルがないので形状情報から作成
 			DsVec3d vertex[8];
-			const DsHitRes::Shape& shape = initInfo.pHitRes->RefSpahe();
+			const DsHitRes::Shape& shape = pHitRes->RefSpahe();
 			DsRigidBox::GetVertex(vertex, shape.sizeX, shape.sizeY, shape.sizeZ);
 			{
 				DsRigidBox::DsRigidBoxFactory factory(vertex, shape.weight, m_name.c_str());

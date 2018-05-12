@@ -3,9 +3,13 @@
 #ifndef _DS_HITRES_H_
 #include "Res/DsHitRes.h"
 #endif
+#ifndef _DS_ANIM_RES_
+#include "Res/DsAnimRes.h"
+#endif
 #ifndef _DS_RESOURCE_
 #include "Res/DsResource.h"
 #endif
+
 
 using namespace std;
 using namespace DsLib;
@@ -99,13 +103,15 @@ namespace
 }
 
 DsHitRes::DsHitRes()
-	: m_pAnimRes(NULL)
+	: DsResItem()
+	, m_pAnimRes(NULL)
 	, m_shape()
 {
 }
 
 DsHitRes::DsHitRes(const Shape& shape)
-	: m_pAnimRes(NULL)
+	: DsResItem()
+	, m_pAnimRes(NULL)
 	, m_shape(shape)
 {
 
@@ -115,13 +121,14 @@ DsHitRes::~DsHitRes()
 {
 }
 
+//virtual
 void DsHitRes::Initialize(const char* path, DsResource& resource)
 {
 	string tmpStr = path;
 	if (tmpStr.find(".dmdl") != string::npos)
 	{
 		//アニメモデルからヒット作成
-		m_pAnimRes = resource.RegisterAnimRes(path);
+		m_pAnimRes = resource.RegisterItem<DsAnimRes>(path);
 	}
 	else if (tmpStr.find(".txt") != string::npos)
 	{

@@ -199,8 +199,6 @@ void DsSimu::Update(double dt)
 std::vector<std::string> DsSimu::RegisterObj(const char* drawModelPath, const char* hitModelPath, double px, double py, double pz, double rx, double ry, double rz, DS_MAP_OBJ_TYPE physicsType, DS_MAP_FIELD_OBJ_TYPE fieldObjType)
 {
 	std::vector<std::string> ret;
-	DsAnimRes* pAnim = m_resource.RegisterAnimRes(drawModelPath);
-	DsHitRes* pHit = m_resource.RegisterHitRes(hitModelPath);
 
 	DsFieldObj* pObj = NULL;
 
@@ -225,8 +223,8 @@ std::vector<std::string> DsSimu::RegisterObj(const char* drawModelPath, const ch
 	info.name = drawModelPath;
 	info.pos = DsVec3d(px, py, pz);
 	info.ang = DsVec3d(DegToRad(rx), DegToRad(ry), DegToRad(rz));
-	info.pHitRes = pHit;
-	info.pAnimRes = pAnim;
+	info.hitName = hitModelPath;
+	info.animName = drawModelPath;
 	info.physicsType = physicsType;
 	pObj->Initialize(info);
 
@@ -235,7 +233,6 @@ std::vector<std::string> DsSimu::RegisterObj(const char* drawModelPath, const ch
 
 	m_fieldObjs.push_back(pObj);
 	m_pChrIns = pObj;
-
 
 	if (m_pChrIns) {
 		DsAnimation* pAnim = m_pChrIns->GetAnim();

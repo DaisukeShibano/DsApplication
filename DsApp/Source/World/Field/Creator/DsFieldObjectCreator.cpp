@@ -2,15 +2,9 @@
 #ifndef _DS_FIELD_OBJECT_CREATOR_H_
 #include "World/Field/Creator/DsFieldObjectCreator.h"
 #endif
-
-#ifndef _DS_RESOURCE_
-#include "Res/DsResource.h"
-#endif
+//他のヘッダ
 #ifndef _DS_MAP_RES_H_
 #include "Res/DsMapRes.h"
-#endif
-#ifndef _DS_HITRES_H_
-#include "Res/DsHitRes.h"
 #endif
 #ifndef _DS_APP_H_
 #include "DsApp.h"
@@ -40,73 +34,65 @@ DsFieldObjectCreator::~DsFieldObjectCreator()
 
 void DsFieldObjectCreator::Create(const char* resPath, DsResource& res, DsPhysicsWorld& world)
 {
-	const DsMapRes* pMapRes = res.RegisterMapRes(resPath);
+	const DsMapRes* pMapRes = res.RegisterItem<DsMapRes>(resPath);
 	if (NULL == pMapRes) {
 		return;
 	}
 
 	//配置情報で生成
-	for(const DsMapRes::Data& mapInfo : pMapRes->GetData())
+	for (const DsMapRes::Data& mapInfo : pMapRes->GetData())
 	{
-		const DsAnimRes* pAnimRes = res.RegisterAnimRes(mapInfo.pAnimPath);
-		const DsHitRes* pHitRes = res.RegisterHitRes(mapInfo.pHitPath);
 
-		if (pAnimRes && pHitRes)
+
+		DsFieldInitInfo reqInitInfo;
+		reqInitInfo.name = mapInfo.pName;
+		reqInitInfo.pos = mapInfo.pos;
+		reqInitInfo.ang = mapInfo.ang;
+		reqInitInfo.hitName = mapInfo.pHitPath;
+		reqInitInfo.animName = mapInfo.pAnimPath;
+		reqInitInfo.physicsType = mapInfo.objType;
+
+		INIT_INFO info;
+		info.initInfo = reqInitInfo;
+
+		switch (mapInfo.fieldObjType)
 		{
-			DsFieldInitInfo reqInitInfo;
-			reqInitInfo.name = mapInfo.pName;
-			reqInitInfo.pos = mapInfo.pos;
-			reqInitInfo.ang = mapInfo.ang;
-			reqInitInfo.pHitRes = pHitRes;
-			reqInitInfo.pAnimRes = pAnimRes;
-			reqInitInfo.physicsType = mapInfo.objType;
+		case DS_MAP_FIELD_OBJ_TYPE::CHR:
+		{
+			DsFieldChr* pChr = new DsFieldChr(m_sys, world, res);
+			info.pObj = pChr;
+			m_requestChrs.push_back(info);
 
-			_InitInfo info;
-			info.initInfo = reqInitInfo;
-
-			switch (mapInfo.fieldObjType)
-			{
-			case DS_MAP_FIELD_OBJ_TYPE::CHR:
-				{
-					DsFieldChr* pChr = new DsFieldChr(m_sys, world, res);
-					info.pObj = pChr;
-					m_requestChrs.push_back(info);
-					
-				}
-				break;
-
-			case DS_MAP_FIELD_OBJ_TYPE::OBJ:
-				{
-					DsFieldObj* pObj = new DsFieldObj(m_sys, world, res);
-					info.pObj = pObj;
-					m_requestObjs.push_back(info);
-				}
-				break;
-
-			case DS_MAP_FIELD_OBJ_TYPE::HIT:
-				{
-					DsFieldHit* pHit = new DsFieldHit(m_sys, world, res);
-					info.pObj = pHit;
-					m_requestHits.push_back(info);
-				}
-				break;
-
-			case DS_MAP_FIELD_OBJ_TYPE::PLAYER:
-			{
-				DsFieldPlayer* pChr = new DsFieldPlayer(m_sys, world, res);
-				info.pObj = pChr;
-				m_requestChrs.push_back(info);
-			}
-			break;
-
-			default:
-				DS_LOG("見知らぬFieldObjタイプ");
-				break;
-			}
 		}
-		else
+		break;
+
+		case DS_MAP_FIELD_OBJ_TYPE::OBJ:
 		{
-			DS_LOG("DsFieldObjectCreatorでAnimResorHitResがなかった %s %s", mapInfo.pAnimPath, mapInfo.pHitPath);
+			DsFieldObj* pObj = new DsFieldObj(m_sys, world, res);
+			info.pObj = pObj;
+			m_requestObjs.push_back(info);
+		}
+		break;
+
+		case DS_MAP_FIELD_OBJ_TYPE::HIT:
+		{
+			DsFieldHit* pHit = new DsFieldHit(m_sys, world, res);
+			info.pObj = pHit;
+			m_requestHits.push_back(info);
+		}
+		break;
+
+		case DS_MAP_FIELD_OBJ_TYPE::PLAYER:
+		{
+			DsFieldPlayer* pChr = new DsFieldPlayer(m_sys, world, res);
+			info.pObj = pChr;
+			m_requestChrs.push_back(info);
+		}
+		break;
+
+		default:
+			DS_LOG("見知らぬFieldObjタイプ");
+			break;
 		}
 	}
 }
@@ -114,7 +100,7 @@ void DsFieldObjectCreator::Create(const char* resPath, DsResource& res, DsPhysic
 void DsFieldObjectCreator::Update(double dt)
 {
 	bool isHitOk = true;
-	for (_InitInfo& iniInfo : m_requestHits) {
+	for (INIT_INFO& iniInfo : m_requestHits) {
 		if ( !iniInfo.pObj->IsRequestInit()) {
 			iniInfo.pObj->Initialize(iniInfo.initInfo);
 			m_hits.push_back( static_cast<DsFieldHit*>(iniInfo.pObj));
@@ -130,7 +116,7 @@ void DsFieldObjectCreator::Update(double dt)
 	//ヒットが準備終わってから配置物
 	bool isObjOk = true;
 	if (isHitOk) {
-		for (_InitInfo& iniInfo : m_requestObjs) {
+		for (INIT_INFO& iniInfo : m_requestObjs) {
 			if (!iniInfo.pObj->IsRequestInit()) {
 				iniInfo.pObj->Initialize(iniInfo.initInfo);
 				m_objs.push_back(static_cast<DsFieldObj*>(iniInfo.pObj));
@@ -145,7 +131,7 @@ void DsFieldObjectCreator::Update(double dt)
 
 	//オブジェが準備終わってから配置物
 	if (isObjOk) {
-		for (_InitInfo& iniInfo : m_requestChrs) {
+		for (INIT_INFO& iniInfo : m_requestChrs) {
 			if (!iniInfo.pObj->IsRequestInit()) {
 				iniInfo.pObj->Initialize(iniInfo.initInfo);
 				m_chrs.push_back(static_cast<DsFieldChr*>(iniInfo.pObj));

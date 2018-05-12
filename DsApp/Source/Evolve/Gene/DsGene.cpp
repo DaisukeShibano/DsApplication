@@ -18,6 +18,9 @@
 #ifndef _DS_HITRES_H_
 #include "Res/DsHitRes.h"
 #endif
+#ifndef _DS_ANIM_RES_
+#include "Res/DsAnimRes.h"
+#endif
 #ifndef _DS_EVO_DEFINE_H_
 #include "Evolve/DsEvoDefine.h"
 #endif
@@ -59,8 +62,8 @@ void DsGene::Initialize(DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& world, DsL
 	initInfo.name = "GPƒLƒƒƒ‰";
 	initInfo.pos = DsVec3d::Zero();
 	initInfo.ang = DsVec3d::Zero();
-	initInfo.pHitRes = &hitRes;
-	initInfo.pAnimRes = res.RegisterAnimRes(EVO_CHR_ANIM_RES_PATH);
+	initInfo.hitName = EVO_CHR_HIT_RES_PATH;
+	initInfo.animName = EVO_CHR_ANIM_RES_PATH;
 	initInfo.physicsType = DS_MAP_OBJ_TYPE::DYNAMIC;
 	m_pChr->Initialize(initInfo);
 }

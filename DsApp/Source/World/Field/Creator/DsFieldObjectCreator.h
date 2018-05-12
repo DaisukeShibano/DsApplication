@@ -27,7 +27,7 @@ namespace DsApp
 	class DsFieldObjectCreator
 	{
 	private:
-		struct _InitInfo
+		struct INIT_INFO
 		{
 			DsFieldInitInfo initInfo;
 			DsFieldObj* pObj;
@@ -53,9 +53,9 @@ namespace DsApp
 		std::vector<DsFieldObj*> m_objs;
 		std::vector<DsFieldChr*> m_chrs;
 
-		std::vector<_InitInfo> m_requestHits;
-		std::vector<_InitInfo> m_requestObjs;
-		std::vector<_InitInfo> m_requestChrs;
+		std::vector<INIT_INFO> m_requestHits;
+		std::vector<INIT_INFO> m_requestObjs;
+		std::vector<INIT_INFO> m_requestChrs;
 	};
 }
 

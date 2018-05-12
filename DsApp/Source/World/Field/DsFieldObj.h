@@ -76,6 +76,10 @@ namespace DsApp
 		bool m_reqestIsInit;
 		bool m_isCompleteInit;
 
+	protected://リソース関連
+		std::string m_animName;
+		std::string m_hitName;
+
 	private:
 		bool m_isRequestDirectAnim;
 

@@ -4,6 +4,7 @@
 namespace DsApp
 {
 	static const char* EVO_CHR_ANIM_RES_PATH = "";
+	static const char* EVO_CHR_HIT_RES_PATH = "";
 
 }
 

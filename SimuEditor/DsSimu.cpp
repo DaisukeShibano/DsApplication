@@ -295,25 +295,22 @@ void DsSimu::Update(double dt)
 
 DsFieldObj* DsSimu::RegisterObj(const char* drawModelPath, const char* hitModelPath, double px, double py, double pz, double rx, double ry, double rz, DS_MAP_OBJ_TYPE physicsType, DS_MAP_FIELD_OBJ_TYPE fieldObjType)
 {
-	DsAnimRes* pAnim = m_resource.RegisterAnimRes(drawModelPath);
-	DsHitRes* pHit = m_resource.RegisterHitRes(hitModelPath);
-
 	DsFieldObj* pObj = NULL;
 
 	switch (fieldObjType)
 	{
 	case DsLib::DS_MAP_FIELD_OBJ_TYPE::CHR:
 	case DsLib::DS_MAP_FIELD_OBJ_TYPE::PLAYER:
-		pObj = new DsFieldChr(*m_pSys, *DsPhysicsManager::GetDefaultWorld());
+		pObj = new DsFieldChr(*m_pSys, *DsPhysicsManager::GetDefaultWorld(), m_resource);
 		break;
 	case DsLib::DS_MAP_FIELD_OBJ_TYPE::OBJ:
-		pObj = new DsFieldObj(*m_pSys, *DsPhysicsManager::GetDefaultWorld());
+		pObj = new DsFieldObj(*m_pSys, *DsPhysicsManager::GetDefaultWorld(), m_resource);
 		break;
 	case DsLib::DS_MAP_FIELD_OBJ_TYPE::HIT:
-		pObj = new DsFieldHit(*m_pSys, *DsPhysicsManager::GetDefaultWorld());
+		pObj = new DsFieldHit(*m_pSys, *DsPhysicsManager::GetDefaultWorld(), m_resource);
 		break;
 	default:
-		pObj = new DsFieldObj(*m_pSys, *DsPhysicsManager::GetDefaultWorld());
+		pObj = new DsFieldObj(*m_pSys, *DsPhysicsManager::GetDefaultWorld(), m_resource);
 		break;
 	}
 	
@@ -321,8 +318,8 @@ DsFieldObj* DsSimu::RegisterObj(const char* drawModelPath, const char* hitModelP
 	info.name = drawModelPath;
 	info.pos = DsVec3d(px, py, pz);
 	info.ang = DsVec3d(DegToRad(rx), DegToRad(ry), DegToRad(rz));
-	info.pHitRes = pHit;
-	info.pAnimRes = pAnim;
+	info.hitName = hitModelPath;
+	info.animName = drawModelPath;
 	info.physicsType = physicsType;
 	pObj->Initialize(info);
 

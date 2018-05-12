@@ -24,7 +24,7 @@ DsAnimEventTrackRes::~DsAnimEventTrackRes()
 
 
 //virtual
-void DsAnimEventTrackRes::Initialize(const char* path)
+void DsAnimEventTrackRes::Initialize(const char* path, DsResource& resource)
 {
 	DsFile fs(path);
 	if (fs.IsFail()) {
@@ -48,14 +48,4 @@ void DsAnimEventTrackRes::Initialize(const char* path)
 		}
 	}
 	m_pData = rData;
-}
-
-
-
-
-
-//virtual
-DsResItem* DsAnimEventTrackResFactory::CreateIns() const
-{
-	return new DsAnimEventTrackRes();
 }

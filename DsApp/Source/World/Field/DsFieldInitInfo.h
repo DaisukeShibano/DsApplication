@@ -3,8 +3,6 @@
 
 namespace DsLib
 {
-	class DsHitRes;
-	class DsMapRes;
 	enum class DS_MAP_OBJ_TYPE : char;
 	enum class DS_MAP_FIELD_OBJ_TYPE : char;
 }
@@ -17,16 +15,16 @@ namespace DsApp
 			: pos()
 			, ang()
 			, name(NULL)
-			, pHitRes(NULL)
-			, pAnimRes(NULL)
+			, hitName()
+			, animName()
 			, physicsType()
 			, boundCoef(0.0)
 		{}
 		DsVec3d pos;
 		DsVec3d ang;
 		const char* name;
-		const DsLib::DsHitRes* pHitRes;
-		const DsLib::DsAnimRes* pAnimRes;
+		std::string hitName;
+		std::string animName;
 		DS_MAP_OBJ_TYPE physicsType;
 		double boundCoef;
 	};

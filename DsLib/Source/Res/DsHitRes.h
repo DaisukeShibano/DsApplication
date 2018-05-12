@@ -1,6 +1,10 @@
 #ifndef _DS_HITRES_H_
 #define _DS_HITRES_H_
 
+#ifndef _DS_RES_ITEM_
+#include "Res/DsResItem.h"
+#endif
+
 namespace DsLib
 {
 	class DsAnimRes;
@@ -9,7 +13,7 @@ namespace DsLib
 
 namespace DsLib
 {
-	class DsHitRes
+	class DsHitRes : public DsResItem
 	{
 
 	public:
@@ -42,7 +46,7 @@ namespace DsLib
 		~DsHitRes();
 
 	public:
-		void Initialize(const char* path, DsResource& resource);
+		virtual void Initialize(const char* path, DsResource& resource) override;
 		const DsAnimRes* GetAnimRes() const{ return m_pAnimRes; }
 		const Shape& RefSpahe() const{ return m_shape; }
 

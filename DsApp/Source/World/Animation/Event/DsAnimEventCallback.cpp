@@ -34,20 +34,18 @@ DsAnimEventCallback::DsAnimEventCallback(DsFieldObj& owner, DsLib::DsResource& r
 
 DsAnimEventCallback::~DsAnimEventCallback()
 {
-	m_resource.UnregisterItem(m_pRes);
-	m_pRes = NULL;
+	m_pRes = m_resource.UnregisterItem<DsAnimEventTrackRes>(m_pRes);
 }
 
 void DsAnimEventCallback::Initialize(const DsAnimRes& animRes)
 {
-	//m_owner.GetAnim()->
 	std::string resName = animRes.RefName();
 	for (size_t i = resName.length(); 0 <= i; ++i) {
 		if ('.' == resName[i]) {
 			resName.replace(i, resName.length() - i + i, ".devt");
 		}
 	}
-	m_pRes = static_cast<DsAnimEventTrackRes*>(m_resource.RegisterItem(resName.c_str(), DsAnimEventTrackResFactory()));
+	m_pRes = m_resource.RegisterItem<DsAnimEventTrackRes>(resName.c_str());
 }
 
 void DsAnimEventCallback::Call()

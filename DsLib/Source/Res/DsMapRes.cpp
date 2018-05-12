@@ -118,15 +118,15 @@ namespace
 }
 
 DsMapRes::DsMapRes()
-	: m_resTop(NULL)
-	, m_path()
+	: DsResItem()
+	, m_resTop(NULL)
 	, m_data()
 {
 }
 
-void DsMapRes::Initialize(const char* path)
+//virtual
+void DsMapRes::Initialize(const char* path, DsResource& resource)
 {
-	m_path = path;
 	OutputRes* pRes = _LoadRes(path);
 	m_resTop = pRes;
 

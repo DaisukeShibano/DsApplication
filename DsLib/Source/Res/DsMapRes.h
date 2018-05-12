@@ -1,6 +1,10 @@
 #ifndef _DS_MAP_RES_H_
 #define _DS_MAP_RES_H_
 
+#ifndef _DS_RES_ITEM_
+#include "Res/DsResItem.h"
+#endif
+
 namespace DsLib
 {
 	class DsAnimRes;
@@ -24,7 +28,7 @@ namespace DsLib
 		PLAYER,
 	};
 
-	class DsMapRes
+	class DsMapRes : public DsResItem
 	{
 	public:
 		struct Data
@@ -43,12 +47,11 @@ namespace DsLib
 		virtual ~DsMapRes();
 
 	public:
-		void Initialize(const char* path);
+		virtual void Initialize(const char* path, DsResource& resource) override;
 		const std::vector<Data>& GetData() const { return m_data; }
 
 	private:
 		void* m_resTop;
-		std::string m_path;
 		std::vector<Data> m_data;
 	};
 

@@ -1,6 +1,10 @@
 #ifndef _DS_AMIM_RES_
 #define _DS_AMIM_RES_
 
+#ifndef _DS_RES_ITEM_
+#include "Res/DsResItem.h"
+#endif
+
 namespace DsLib
 {
 	class DsAnimSkeleton;
@@ -12,15 +16,16 @@ namespace DsLib
 
 namespace DsLib
 {
-	class DsAnimRes
+	class DsAnimRes : public DsResItem
 	{
 	public:
-		DsAnimRes() :m_resTop(0), m_name(){}
+		DsAnimRes() :DsResItem(), m_resTop(0), m_name(){}
 		virtual ~DsAnimRes();
 
-		void Initialize(const char* path);
-		const std::string& RefName() const { return m_name; }
+	public:
+		void Initialize(const char* path, DsResource& resource);
 
+	public:
 		DsAnimSkeleton* CreateSkeleton() const;
 		DsKeyframeAnimSet* CreateKeyframeAnim() const;
 		DsAnimModel* CreateAnimModel() const;
