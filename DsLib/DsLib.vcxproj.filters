@@ -516,5 +516,8 @@
     <ClInclude Include="Source\Graphics\Effect\DsEffect.h">
       <Filter>Source\Graphics\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Res\DsResItem.h">
+      <Filter>Source\Res</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

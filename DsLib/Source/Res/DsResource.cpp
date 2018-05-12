@@ -2,7 +2,10 @@
 #ifndef _DS_RESOURCE_
 #include "Res/DsResource.h"
 #endif
-
+//‘¼‚Ìƒwƒbƒ_
+#ifndef _DS_RES_ITEM_
+#include "Res/DsResItem.h"
+#endif
 #ifndef _DS_MAP_RES_H_
 #include "Res/DsMapRes.h"
 #endif

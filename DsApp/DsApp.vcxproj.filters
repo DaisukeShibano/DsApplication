@@ -49,14 +49,17 @@
     <Filter Include="Source\World\Field\Component">
       <UniqueIdentifier>{39a8dea6-ec74-4b07-9a60-ac877e4e85c2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\World\Field\Equip">
-      <UniqueIdentifier>{7c690768-7205-4648-88f1-fbdf14c1db5a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\World\Field\Component\Effect">
       <UniqueIdentifier>{26990b48-20fc-4323-b3f8-56aaf28ad18e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source\World\Field\Component\Equip">
       <UniqueIdentifier>{0e5fb1e8-a110-45ad-a16d-c096c9cfa82d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\World\Field\Component\Item">
+      <UniqueIdentifier>{c1d58579-2a2d-4eff-8446-ff5523007fa3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\World\Field\Component\Attach">
+      <UniqueIdentifier>{50384dce-f5f3-405b-9816-8880b58b36df}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -159,6 +162,15 @@
     <ClInclude Include="Source\World\Component\Equip\DsEquipComponent.h">
       <Filter>Source\World\Field\Component\Equip</Filter>
     </ClInclude>
+    <ClInclude Include="Source\World\Component\Item\DsItemBoxComponent.h">
+      <Filter>Source\World\Field\Component\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Component\Effect\DsSoundEffectComponent.h">
+      <Filter>Source\World\Field\Component\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Component\Attach\DsAttachComponent.h">
+      <Filter>Source\World\Field\Component\Attach</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsAppPch.cpp">
@@ -232,6 +244,15 @@
     </ClCompile>
     <ClCompile Include="Source\World\Component\Equip\DsEquipComponent.cpp">
       <Filter>Source\World\Field\Component\Equip</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Component\Item\DsItemBoxComponent.cpp">
+      <Filter>Source\World\Field\Component\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Component\Effect\DsSoundEffectComponent.cpp">
+      <Filter>Source\World\Field\Component\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Component\Attach\DsAttachComponent.cpp">
+      <Filter>Source\World\Field\Component\Attach</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

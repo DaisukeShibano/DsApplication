@@ -82,7 +82,7 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 {
 	m_name = initInfo.name;
 
-	m_pComponentSystem = new DsComponentSystem();
+	m_pComponentSystem = new DsComponentSystem(*this, m_sys);
 	DS_ASSERT(m_pComponentSystem, "ƒƒ‚ƒŠŠm•ÛŽ¸”s");
 
 	if (initInfo.pAnimRes)
@@ -188,8 +188,7 @@ void DsFieldObj::Update(double dt)
 	}
 
 	if (m_pComponentSystem) {
-		COMPONENT_UPDATE_ARG arg(dt, *this, m_sys, _GetActionRequest());
-		m_pComponentSystem->Update(arg);
+		m_pComponentSystem->Update(dt);
 	}
 }
 

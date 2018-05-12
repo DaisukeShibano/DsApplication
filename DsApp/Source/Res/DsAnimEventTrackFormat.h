@@ -9,24 +9,35 @@
 
 namespace DsApp
 {
-	enum DS_ANIM_ET_ACTION_TYPE
+	enum class DS_ANIM_ET_ACTION_TYPE : int
 	{
 		TRACE_EFFECT,
+		SOUND_EFFECT,
 		DAMAGE,
+		CANCEL_ACTION_TIMING,
 		ACTION_TYPE_NUM,
 	};
-
 	struct DS_ANIM_ET_TRACE_EFFECT
 	{
 		int dmyPolyId[2];
 		int effectId;
 	};
-
+	struct DS_ANIM_ET_SOUND_EFFECT
+	{
+		int dmyPolyId;
+		int soundId;
+	};
 	struct DS_ANIM_ET_DAMAGE
 	{
 		int dmyPolyId[2];
 		int damageId;
 	};
+	struct DS_ANIM_ET_CANCEL_ACTION_TIMING
+	{
+	};
+
+
+
 
 	struct DS_ANIM_ET_HEADER
 	{
@@ -42,7 +53,9 @@ namespace DsApp
 		union {
 			long long paramOffset;
 			DS_ANIM_ET_TRACE_EFFECT* pEffect;
+			DS_ANIM_ET_TRACE_EFFECT* pSound;
 			DS_ANIM_ET_DAMAGE* pDamage;
+			DS_ANIM_ET_CANCEL_ACTION_TIMING* pCancel;
 		};
 	};
 

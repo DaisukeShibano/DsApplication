@@ -10,8 +10,10 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <unordered_map>
 #include <algorithm>
 #include <fstream>
+#include <typeindex>
 
 #ifdef _WIN32
 #include <Windows.h>
@@ -70,6 +72,9 @@
 #endif
 #ifndef _DS_RESOURCE_
 #include "Res/DsResource.h"
+#endif
+#ifndef _DS_RES_ITEM_
+#include "Res/DsResItem.h"
 #endif
 #ifndef _DS_KEYBOARD_H_
 #include "Keyboard/DsKeyboard.h"

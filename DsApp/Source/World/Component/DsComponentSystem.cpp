@@ -6,11 +6,22 @@
 #ifndef _DS_TRACE_EFFECT_COMPONENT_
 #include "World/Component/Effect/DsTraceEffectComponent.h"
 #endif
+#ifndef _DS_SOUND_EFFECT_COMPONENT_
+#include "World/Component/Effect/DsSoundEffectComponent.h"
+#endif
+#ifndef _DS_EQUIP_COMPONENT_
+#include "World/Component/Equip/DsEquipComponent.h"
+#endif
+#ifndef _DS_ITEM_BOX_COMPONENT_
+#include "World/Component/Item/DsItemBoxComponent.h"
+#endif
 
 using namespace DsApp;
 
-DsComponentSystem::DsComponentSystem()
+DsComponentSystem::DsComponentSystem(DsFieldObj& owner, DsLib::DsSys& sys)
 	: m_components()
+	, m_owner(owner)
+	, m_sys(sys)
 {
 }
 
@@ -22,9 +33,11 @@ DsComponentSystem::~DsComponentSystem()
 	m_components.clear();
 }
 
-void DsComponentSystem::Update(const COMPONENT_UPDATE_ARG& arg)
+void DsComponentSystem::Update(double dt)
 {
-	std::vector<ds_uint64> eraseList;
+	const COMPONENT_UPDATE_ARG arg(dt, m_owner, m_sys);
+
+	std::vector<KEY> eraseList;
 	for (auto c : m_components) {
 		const bool isAlive = c.second->Update(arg);
 		if (!isAlive) {
@@ -32,26 +45,69 @@ void DsComponentSystem::Update(const COMPONENT_UPDATE_ARG& arg)
 			eraseList.push_back(c.first);
 		}
 	}
-	for (ds_uint64 key : eraseList) {
+	for (const KEY& key : eraseList) {
 		m_components.erase(key);
 	}
 }
 
-void DsComponentSystem::RequestTraceEffect(ds_int64 key, int effectId, int dmypolyId0, int dmypolyId1)
+template<class CLASS>
+CLASS* DsComponentSystem::_CreateGetComponent(ds_int64 key)
 {
-	DsTraceEffectComponent* pComponent = NULL;
-	auto it = m_components.find(key);
+	CLASS* pComponent = NULL;
+	const KEY k(typeid(CLASS), key);
+	auto it = m_components.find(k);
 	if (m_components.end() == it) {
-		DsTraceEffectComponent* pNew = new DsTraceEffectComponent();
+		CLASS* pNew = new CLASS();
 		DS_ASSERT(pNew, "ÉÅÉÇÉäämï€é∏îs");
-		m_components[key] = pNew;
+		m_components[k] = pNew;
 		pComponent = pNew;
 	}
 	else {
-		pComponent = dynamic_cast<DsTraceEffectComponent*>(it->second);
+		pComponent = dynamic_cast<CLASS*>(it->second);
 	}
+	
+	return pComponent;
+}
 
+template<class CLASS>
+CLASS* DsComponentSystem::_GetComponent(ds_int64 key)const
+{
+	CLASS* pComponent = NULL;
+	const KEY k(typeid(CLASS), key);
+	auto it = m_components.find(k);
+	if (m_components.end() != it) {
+		pComponent = dynamic_cast<CLASS*>(it->second);
+	}
+	return pComponent;
+}
+
+void DsComponentSystem::RequestTraceEffect(ds_int64 key, int effectId, int dmypolyId0, int dmypolyId1)
+{
+	DsTraceEffectComponent* pComponent = _CreateGetComponent<DsTraceEffectComponent>(key);
 	if (pComponent) {
 		pComponent->Request(effectId, dmypolyId0, dmypolyId1);
 	}
+}
+
+void DsComponentSystem::RequestSoundEffect(ds_int64 key, int soundId, int dmypolyId)
+{
+	DsSoundEffectComponent* pComponent = _CreateGetComponent<DsSoundEffectComponent>(key);
+	if (pComponent) {
+		pComponent->Request(soundId, dmypolyId);
+	}
+}
+
+void DsComponentSystem::RequestEquip()
+{
+	_CreateGetComponent<DsEquipComponent>((ds_uint64)(&m_owner));
+}
+
+void DsComponentSystem::RequestItemBox()
+{
+	_CreateGetComponent<DsItemBoxComponent>((ds_uint64)(&m_owner));
+}
+
+DsItemBoxComponent * DsComponentSystem::GetItemBox()const
+{
+	return _GetComponent<DsItemBoxComponent>( (ds_uint64)(&m_owner) );
 }

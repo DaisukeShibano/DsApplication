@@ -15,10 +15,12 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <unordered_map>
 #include <algorithm>
 #include <fstream>
 #include <regex>
 #include <locale>
+#include <typeindex>
 
 #ifdef _WIN32
 #include <Windows.h>

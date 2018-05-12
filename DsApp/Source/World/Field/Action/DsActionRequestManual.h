@@ -16,17 +16,23 @@ namespace DsApp
 	public:
 		virtual void Update(double dt) override;
 	private:
-		void _UpdateAction(ACTION_TYPE type, bool isReq);
+		void _UpdateAction();
 	public:
 		virtual DsVec3d GetMoveVec()const override;
 		virtual bool IsAction(ACTION_TYPE type)const override;
+		virtual void SetRequest(ACTION_TYPE type) override;
+		virtual void SetCancel(ACTION_TYPE type) override;
 
 	private:
 		const DsLib::DsKeyboard& m_key;
 		DsVec3d m_moveVec;
 		double m_moveDir[4];
-		bool m_action[static_cast<int>(ACTION_TYPE::NUM)];
-		bool m_actionPre[static_cast<int>(ACTION_TYPE::NUM)];
+		ds_uint64 m_request;
+		ds_uint64 m_requestPre;
+		ds_uint64 m_moment;
+		ds_uint64 m_cancel;
+		ds_uint64 m_action;
+
 	};
 
 }

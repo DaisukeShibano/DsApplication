@@ -15,6 +15,10 @@
 #ifndef _DS_COMPONENT_SYSTEM_
 #include "World/Component/DsComponentSystem.h"
 #endif
+#ifndef _DS_ACTION_REQUEST_
+#include "World/Field/Action/DsActionRequest.h"
+#endif
+
 
 using namespace DsLib;
 using namespace DsApp;
@@ -93,11 +97,15 @@ void DsAnimEventCallback::_Call(const DS_ANIM_ET_PARAM& param)
 	const DS_ANIM_ET_ACTION_TYPE type = static_cast<DS_ANIM_ET_ACTION_TYPE>(param.paramType);
 	switch (type)
 	{
-	case TRACE_EFFECT:
+	case DS_ANIM_ET_ACTION_TYPE::TRACE_EFFECT:
 		_TraceEffect(param.pEffect);
 		break;
-	case DAMAGE:
+	case DS_ANIM_ET_ACTION_TYPE::SOUND_EFFECT:
+		break;
+	case DS_ANIM_ET_ACTION_TYPE::DAMAGE:
 		_Damage(param.pDamage);
+		break;
+	case DS_ANIM_ET_ACTION_TYPE::CANCEL_ACTION_TIMING:
 		break;
 	default:
 		break;
@@ -114,6 +122,25 @@ void DsAnimEventCallback::_TraceEffect(const DS_ANIM_ET_TRACE_EFFECT* pParam)
 	}
 }
 
+void DsAnimEventCallback::_SoundEffect(const DS_ANIM_ET_SOUND_EFFECT* pParam)
+{
+	DsComponentSystem* pComSys = m_owner.GetComponentSystem();
+	if (pComSys) {
+		const ds_uint64 key = (ds_uint64)(pParam);
+		pComSys->RequestSoundEffect(key, pParam->soundId, pParam->dmyPolyId);
+	}
+}
+
 void DsAnimEventCallback::_Damage(const DS_ANIM_ET_DAMAGE* pParam)
 {
+}
+
+void DsAnimEventCallback::_Cancel(const DS_ANIM_ET_CANCEL_ACTION_TIMING* pParam)
+{
+	DsActionRequest* pReq = m_owner.GetActionRequest();
+	if (pReq) {
+		for (int i = 0; i < static_cast<int>(ACTION_TYPE::NUM); ++i) {
+			pReq->SetCancel(static_cast<ACTION_TYPE>(i));
+		}
+	}
 }

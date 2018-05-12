@@ -9,8 +9,11 @@ DsActionRequestManual::DsActionRequestManual(const DsLib::DsSys& sys)
 	: m_key(sys.RefKeyboard())
 	, m_moveVec(DsVec3d::Zero())
 	, m_moveDir{}
-	, m_action{}
-	, m_actionPre{}
+	, m_request(0)
+	, m_requestPre(0)
+	, m_moment(0)
+	, m_cancel(0)
+	, m_action(0)
 {
 
 }
@@ -70,17 +73,22 @@ void DsActionRequestManual::Update(double dt)
 	m_moveVec.x = m_moveDir[2] + m_moveDir[3];
 
 
+	if (m_key.IsPush('r') || m_key.IsPush('R')) {
+		SetRequest(ACTION_TYPE::CHANGE_WEP);
+	}
+
+
 	//アクションの更新
-	_UpdateAction(ACTION_TYPE::CHANGE_WEP, m_key.IsPush('r') || m_key.IsPush('R'));
+	_UpdateAction();
 }
 
-void DsActionRequestManual::_UpdateAction(ACTION_TYPE type, bool isReq)
+void DsActionRequestManual::_UpdateAction()
 {
-	const int idx = static_cast<int>(type);
-	if (idx < static_cast<int>(ACTION_TYPE::NUM)) {
-		m_action[idx] = isReq && (!m_actionPre[idx]);
-		m_actionPre[idx] = isReq;
-	}
+	m_moment = m_request & (~m_requestPre);
+	m_requestPre = m_request;
+	m_action = m_moment & m_cancel;
+	m_request = 0;
+	m_cancel = 0;
 }
 
 //virtual
@@ -92,10 +100,17 @@ DsVec3d DsActionRequestManual::GetMoveVec()const
 //virtual
 bool DsActionRequestManual::IsAction(ACTION_TYPE type)const
 {
-	bool ret = false;
-	const int idx = static_cast<int>(type);
-	if (idx < static_cast<int>(ACTION_TYPE::NUM)) {
-		ret = m_action[idx];
-	}
-	return ret;
+	return (0ULL != (m_action & (1ULL << static_cast<ds_uint64>(type))));
+}
+
+//virtual
+void DsActionRequestManual::SetRequest(ACTION_TYPE type)
+{
+	m_request |= 1ULL << static_cast<ds_uint64>(type);
+}
+
+//virtual
+void DsActionRequestManual::SetCancel(ACTION_TYPE type)
+{
+	m_cancel |= 1ULL << static_cast<ds_uint64>(type);
 }

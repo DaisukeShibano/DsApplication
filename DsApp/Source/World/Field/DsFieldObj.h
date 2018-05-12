@@ -39,8 +39,8 @@ namespace DsApp
 	protected:
 		virtual void _SetActorCoord(DsPhysics::DsActorCoordFactory& factory, const DsFieldInitInfo& initInfo);
 
-	protected:
-		virtual const DsActionRequest* _GetActionRequest() const { return NULL; }
+	public:
+		virtual DsActionRequest* GetActionRequest() const { return NULL; }
 
 	public:
 		virtual void SetPosition(const DsVec3d& pos);

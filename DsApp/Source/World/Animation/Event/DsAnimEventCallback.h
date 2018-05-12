@@ -11,9 +11,6 @@ namespace DsLib
 namespace DsApp
 {
 	class DsFieldObj;
-	struct DS_ANIM_ET_PARAM;
-	struct DS_ANIM_ET_TRACE_EFFECT;
-	struct DS_ANIM_ET_DAMAGE;
 }
 
 namespace DsApp
@@ -34,9 +31,11 @@ namespace DsApp
 		void Call();
 
 	private:
-		void _Call(const DS_ANIM_ET_PARAM& param);
-		void _TraceEffect(const DS_ANIM_ET_TRACE_EFFECT* pParam);
-		void _Damage(const DS_ANIM_ET_DAMAGE* pParam);
+		void _Call(const struct DS_ANIM_ET_PARAM& param);
+		void _TraceEffect(const struct DS_ANIM_ET_TRACE_EFFECT* pParam);
+		void _SoundEffect(const struct DS_ANIM_ET_SOUND_EFFECT* pParam);
+		void _Damage(const struct DS_ANIM_ET_DAMAGE* pParam);
+		void _Cancel(const struct DS_ANIM_ET_CANCEL_ACTION_TIMING* pParam);
 
 	private:
 		double m_preLocalTime;

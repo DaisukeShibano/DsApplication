@@ -7,6 +7,10 @@
 
 namespace DsApp
 {
+}
+
+namespace DsApp
+{
 	class DsEquipComponent : public DsComponent
 	{
 	public:
@@ -18,7 +22,7 @@ namespace DsApp
 
 	private:
 		int m_wepIndex;
-
+		DsLib::DsAnimation* m_pWep;
 	};
 
 

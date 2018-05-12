@@ -198,11 +198,14 @@
     <ClInclude Include="Source\Res\DsAnimEventTrackRes.h" />
     <ClInclude Include="Source\Res\Param\DsRagdollParam.h" />
     <ClInclude Include="Source\World\Animation\Event\DsAnimEventCallback.h" />
+    <ClInclude Include="Source\World\Component\Attach\DsAttachComponent.h" />
     <ClInclude Include="Source\World\Component\DsComponent.h" />
     <ClInclude Include="Source\World\Component\DsComponentSystem.h" />
     <ClInclude Include="Source\World\Component\DsComponentSystemDefine.h" />
+    <ClInclude Include="Source\World\Component\Effect\DsSoundEffectComponent.h" />
     <ClInclude Include="Source\World\Component\Effect\DsTraceEffectComponent.h" />
     <ClInclude Include="Source\World\Component\Equip\DsEquipComponent.h" />
+    <ClInclude Include="Source\World\Component\Item\DsItemBoxComponent.h" />
     <ClInclude Include="Source\World\Field\Action\DsActionCtrl.h" />
     <ClInclude Include="Source\World\Field\Action\DsActionRequest.h" />
     <ClInclude Include="Source\World\Field\Action\DsActionRequestManual.h" />
@@ -234,9 +237,12 @@
     <ClCompile Include="Source\Res\DsAnimEventTrackRes.cpp" />
     <ClCompile Include="Source\Res\Param\DsRagdollParam.cpp" />
     <ClCompile Include="Source\World\Animation\Event\DsAnimEventCallback.cpp" />
+    <ClCompile Include="Source\World\Component\Attach\DsAttachComponent.cpp" />
     <ClCompile Include="Source\World\Component\DsComponentSystem.cpp" />
+    <ClCompile Include="Source\World\Component\Effect\DsSoundEffectComponent.cpp" />
     <ClCompile Include="Source\World\Component\Effect\DsTraceEffectComponent.cpp" />
     <ClCompile Include="Source\World\Component\Equip\DsEquipComponent.cpp" />
+    <ClCompile Include="Source\World\Component\Item\DsItemBoxComponent.cpp" />
     <ClCompile Include="Source\World\Field\Action\DsActionCtrl.cpp" />
     <ClCompile Include="Source\World\Field\Action\DsActionRequestManual.cpp" />
     <ClCompile Include="Source\World\Field\Action\DsChrState.cpp" />

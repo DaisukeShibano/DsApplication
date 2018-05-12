@@ -5,9 +5,16 @@
 #include "World\/Component/DsComponentSystemDefine.h"
 #endif
 
+namespace  DsLib
+{
+	class DsSys;
+}
+
 namespace DsApp
 {
+	class DsFieldObj;
 	class DsComponent;
+	class DsItemBoxComponent;
 }
 
 namespace DsApp
@@ -15,17 +22,59 @@ namespace DsApp
 	class DsComponentSystem
 	{
 	public:
-		DsComponentSystem();
+		//別のコンポーネントとキーが被らないよう、型+任意の数値でキーを表現する
+		struct KEY
+		{
+			KEY(const std::type_info& _type, ds_uint64 _key)
+				:type(_type)
+				,key(_key)
+			{}
+
+			bool operator == (const KEY& r) const{
+				return (type == r.type) && (key == r.key);
+			}
+
+			std::type_index type;
+			ds_uint64 key;
+		};
+
+		class KeyHash
+		{
+		public:
+			std::size_t operator()(const KEY& key) const {
+				return key.type.hash_code() + key.key;
+			}
+		};
+
+	public:
+		DsComponentSystem(DsFieldObj& owner, DsLib::DsSys& sys);
 		virtual ~DsComponentSystem();
 
 	public:
-		void Update(const COMPONENT_UPDATE_ARG& arg);
-
-	public:
-		void RequestTraceEffect(ds_int64 key, int effectId, int dmypolyId0, int dmypolyId1);
+		void Update(double dt);
 
 	private:
-		std::map<ds_uint64, DsComponent*> m_components;
+		template<class CLASS>
+		CLASS* _CreateGetComponent(ds_int64 key);
+
+		template<class CLASS>
+		CLASS* _GetComponent(ds_int64 key)const;
+
+	public:
+		//リクエストした人が処理する訳じゃなく、余計なincludeしたくないので関数用意する方針
+		void RequestTraceEffect(ds_int64 key, int effectId, int dmypolyId0, int dmypolyId1);
+		void RequestSoundEffect(ds_int64 key, int soundId, int dmypolyId);
+		void RequestEquip();
+		void RequestItemBox();
+
+	public:
+		DsItemBoxComponent * GetItemBox()const;
+
+	private:
+		std::unordered_map<KEY, DsComponent*, KeyHash> m_components;
+		DsFieldObj& m_owner;
+		DsLib::DsSys& m_sys;
+
 	};
 
 
