@@ -42,7 +42,6 @@ private:
 	DsMainLoop* m_pLoop;
 	bool m_isInit;
 	std::list<DsApp::DsFieldObj*> m_fieldObjs;
-	DsResource m_resource;
 };
 
 

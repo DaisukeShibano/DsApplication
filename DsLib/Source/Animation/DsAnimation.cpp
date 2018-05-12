@@ -2,7 +2,7 @@
 #ifndef _DS_ANIMATION_H_
 #include "Animation/DsAnimation.h"
 #endif
-
+//他のヘッダ
 #ifndef _DS_AMIM_SKELETON_
 #include "Animation/DsAnimSkeleton.h"
 #endif
@@ -30,13 +30,17 @@
 #ifndef _DS_ANIM_SKELETON_MODIFIER_
 #include "Animation/DsAnimSkeletonModifier.h"
 #endif
-
+#ifndef _DS_RESOURCE_
+#include "Res/DsResource.h"
+#endif
 
 
 using namespace DsLib;
 
-DsAnimation::DsAnimation(const DsAnimRes& anim, DsDrawCommand& com)
-	: m_pSkeleton(NULL)
+DsAnimation::DsAnimation(const std::string& resName, DsDrawCommand& com, DsResource& resource)
+	: m_resource(resource)
+	, m_pAnimRes(NULL)
+	, m_pSkeleton(NULL)
 	, m_pKeyframeAnim(NULL)
 	, m_pAnimModel(NULL)
 	, m_pSkinMesh(NULL)
@@ -51,49 +55,53 @@ DsAnimation::DsAnimation(const DsAnimRes& anim, DsDrawCommand& com)
 	, m_pPlayAnimPre(NULL)
 	, m_com(com)
 {
-	m_pSkeleton = anim.CreateSkeleton();
-	m_pKeyframeAnim = anim.CreateKeyframeAnim();
-	m_pAnimModel = anim.CreateAnimModel();
-	m_pCustomProperty = anim.CustomProperty();
+	m_pAnimRes =m_resource.RegisterItem<DsAnimRes>(resName.c_str());
+	if (m_pAnimRes) {
 
-	if (m_pKeyframeAnim && m_pSkeleton && m_pAnimModel)
-	{
-		const int animNum = m_pKeyframeAnim->GetKeyframeAnimNum();
-		DsKeyframeAnim* pAnims = m_pKeyframeAnim->GetKeyframeAnims();
-		m_animClips.reserve(animNum);
-		for (int idx = 0; idx < animNum; ++idx) {
-			DsAnimClip* pClip = new DsAnimClip(pAnims[idx]);
-			DS_ASSERT(pClip, "メモリ確保失敗");
-			m_animClips.push_back(pClip);
+		m_pSkeleton = m_pAnimRes->CreateSkeleton();
+		m_pKeyframeAnim = m_pAnimRes->CreateKeyframeAnim();
+		m_pAnimModel = m_pAnimRes->CreateAnimModel();
+		m_pCustomProperty = m_pAnimRes->CustomProperty();
+
+		if (m_pKeyframeAnim && m_pSkeleton && m_pAnimModel)
+		{
+			const int animNum = m_pKeyframeAnim->GetKeyframeAnimNum();
+			DsKeyframeAnim* pAnims = m_pKeyframeAnim->GetKeyframeAnims();
+			m_animClips.reserve(animNum);
+			for (int idx = 0; idx < animNum; ++idx) {
+				DsAnimClip* pClip = new DsAnimClip(pAnims[idx]);
+				DS_ASSERT(pClip, "メモリ確保失敗");
+				m_animClips.push_back(pClip);
+			}
+
+
+			//キーフレームアニメないならスキンメッシュモデルは無駄。
+			m_pSkinMesh = new DsSkinMesh(*m_pAnimModel);
+			DS_ASSERT(m_pSkinMesh, "メモリ確保失敗");
+			m_pSkinMesh->Initialize();
 		}
 
+		//ここはアニメじゃなくてスケルトンで初期化したい
+		if (!m_animClips.empty()) {
+			m_blend.Initialize(m_animClips[0]->RefAnim());
+		}
 
-		//キーフレームアニメないならスキンメッシュモデルは無駄。
-		m_pSkinMesh = new DsSkinMesh(*m_pAnimModel);
-		DS_ASSERT(m_pSkinMesh, "メモリ確保失敗");
-		m_pSkinMesh->Initialize();
-	}
+		if (m_pSkeleton) {
+			m_pSkeleton->UpdatePose();
+		}
 
-	//ここはアニメじゃなくてスケルトンで初期化したい
-	if (!m_animClips.empty()){
-		m_blend.Initialize(m_animClips[0]->RefAnim());
-	}
+		//ボーンの結果を頂点に適用。
+		if (m_pSkinMesh && m_pSkeleton)
+		{
+			m_pSkinMesh->ApplySkeleton(*m_pSkeleton);
+		}
 
-	if (m_pSkeleton) {
-		m_pSkeleton->UpdatePose();
-	}
-
-	//ボーンの結果を頂点に適用。
-	if (m_pSkinMesh && m_pSkeleton)
-	{
-		m_pSkinMesh->ApplySkeleton(*m_pSkeleton);
-	}
-
-	//モデルの座標を更新
-	DsModel* pModel = GetModel();
-	if (pModel) {
-		pModel->SetPosition(m_pos);
-		pModel->SetRotation(m_rot);
+		//モデルの座標を更新
+		DsModel* pModel = GetModel();
+		if (pModel) {
+			pModel->SetPosition(m_pos);
+			pModel->SetRotation(m_rot);
+		}
 	}
 }
 

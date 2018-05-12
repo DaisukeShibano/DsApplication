@@ -12,8 +12,9 @@ namespace DsApp
 	public:
 		struct ITEM
 		{
-			ITEM(const std::string& _name) :name(_name) {}
-			std::string name;
+			ITEM(const std::string& _dispName, const std::string& _resName) :dispName(_dispName), resName(_resName){}
+			std::string dispName;
+			std::string resName;
 		};
 
 	public:
@@ -24,7 +25,7 @@ namespace DsApp
 		virtual bool Update(const COMPONENT_UPDATE_ARG& arg) override { return true; };
 
 	public:
-		void AddWep(const std::string& name);
+		void AddWep(const std::string& dispName, const std::string& resName);
 		const DsItemBoxComponent::ITEM* GetWepItem(int index)const;
 
 	private:

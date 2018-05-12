@@ -22,6 +22,7 @@ DsSys::DsSys()
 , m_pWindow(NULL)
 , m_pRender(NULL)
 , m_pCam(NULL)
+, m_pRes(NULL)
 {
 }
 
@@ -30,6 +31,7 @@ DsSys::~DsSys()
 	delete m_pWindow; m_pWindow = NULL;
 	delete m_pRender; m_pRender = NULL;
 	delete m_pCam; m_pCam = NULL;
+	delete m_pRes; m_pRes = NULL;
 	DsDbgSys::Finalize();
 }
 
@@ -39,6 +41,8 @@ void DsSys::Setup( DsSysArgs& args )
 	m_pWindow = DsWindowManager::Create(static_cast<DS_WINDOW_SYSTEM_TYPE>(args.windowType));
 	m_pCam = new DsCamera();
 	DS_ASSERT(m_pCam , "DsSysÇÃèâä˙âªÇ…Ç…é∏îs");
+	m_pRes = new DsResource();
+	DS_ASSERT(m_pRes, "DsSysÇÃèâä˙âªÇ…Ç…é∏îs");
 
 	DsWindow::InitArgs winArgs;
 	winArgs.argc = args.argc;

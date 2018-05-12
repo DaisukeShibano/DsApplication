@@ -26,7 +26,7 @@ namespace DsApp
 	class DsFieldObj
 	{
 	public:
-		DsFieldObj(DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& world, DsLib::DsResource& resource);
+		DsFieldObj(DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& world);
 		virtual ~DsFieldObj();
 		bool IsRequestInit() const { return m_reqestIsInit; }
 		bool IsCompleteInit() const { return m_isCompleteInit; }
@@ -67,7 +67,6 @@ namespace DsApp
 	protected:
 		DsLib::DsSys& m_sys;
 		std::string m_name;
-		DsLib::DsResource& m_resource;
 		DsLib::DsAnimation* m_pAnimation;
 		DsPhysics::DsActorId m_actorId;
 		DsPhysics::DsPhysicsWorld& m_world;
@@ -77,7 +76,6 @@ namespace DsApp
 		bool m_isCompleteInit;
 
 	protected://リソース関連
-		std::string m_animName;
 		std::string m_hitName;
 
 	private:

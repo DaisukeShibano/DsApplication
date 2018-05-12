@@ -12,7 +12,6 @@ public:
 	TestMainLoop()
 		: DsMainLoop()
 		, m_pCreator(NULL)
-		, m_resource()
 	{
 
 	}
@@ -29,7 +28,6 @@ public:
 
 private:
 	DsFieldObjectCreator* m_pCreator;
-	DsResource m_resource;
 	DsHinge2Joint* m_joint;
 	DsHinge2Joint* m_joint2;
 	DsAppCollisionCallback m_callback;
@@ -111,7 +109,7 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 
 			const char* dataPath = "C:\\Users\\SIVA2\\Documents\\Visual Studio 2017\\Projects\\DsApplication\\Test\\Asset\\testmap.dmap";
 			m_pCreator = new DsFieldObjectCreator(args.sys);
-			m_pCreator->Create(dataPath, m_resource, *pWorld);
+			m_pCreator->Create(dataPath, *pWorld);
 		}
 	}
 

@@ -56,7 +56,8 @@ bool DsEquipComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 				const DsItemBox::ITEM* pItem = pItemBox->GetWepItem(m_wepIndex);
 				if (pItem) {
 					delete m_pWep;
-					//m_pWep = new DsAnimation();
+					m_pWep = new DsAnimation(pItem->resName, arg.sys.RefRender().RefDrawCom(), arg.sys.RefResource());
+					DS_ASSERT(m_pWep, "ƒƒ‚ƒŠŠm•Û¸”s");
 				}
 			}
 		}

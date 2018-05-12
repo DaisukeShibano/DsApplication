@@ -34,14 +34,6 @@ namespace DsLib
 			}
 		};
 
-
-	public:
-		static DsResource& GetIns()
-		{
-			static DsResource ins;
-			return ins;
-		}
-
 		//ファイル拡張子取得
 		static std::string GetExt(const std::string& path);
 

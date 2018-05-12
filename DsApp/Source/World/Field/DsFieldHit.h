@@ -10,7 +10,7 @@ namespace DsApp
 	class DsFieldHit : public DsFieldObj
 	{
 	public:
-		DsFieldHit(DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& world, DsLib::DsResource& resource);
+		DsFieldHit(DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& world);
 		virtual ~DsFieldHit();
 
 	public:

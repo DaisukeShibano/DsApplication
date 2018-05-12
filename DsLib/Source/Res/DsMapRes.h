@@ -31,7 +31,7 @@ namespace DsLib
 	class DsMapRes : public DsResItem
 	{
 	public:
-		struct Data
+		struct DATA
 		{
 			const char* pName;
 			const char* pAnimPath;
@@ -48,11 +48,11 @@ namespace DsLib
 
 	public:
 		virtual void Initialize(const char* path, DsResource& resource) override;
-		const std::vector<Data>& GetData() const { return m_data; }
+		const std::vector<DATA>& GetData() const { return m_data; }
 
 	private:
 		void* m_resTop;
-		std::vector<Data> m_data;
+		std::vector<DATA> m_data;
 	};
 
 }

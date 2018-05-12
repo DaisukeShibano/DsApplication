@@ -10,7 +10,7 @@ namespace DsApp
 	class DsFieldPlayer : public DsFieldChr
 	{
 	public:
-		DsFieldPlayer(DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& world, DsLib::DsResource& resource);
+		DsFieldPlayer(DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& world);
 		virtual ~DsFieldPlayer();
 
 	public:

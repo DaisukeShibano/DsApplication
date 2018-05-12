@@ -20,8 +20,8 @@ using namespace DsLib;
 using namespace DsPhysics;
 using namespace DsApp;
 
-DsFieldHit::DsFieldHit(DsSys& sys, DsPhysicsWorld& world, DsLib::DsResource& resource)
-	: DsFieldObj(sys, world, resource)
+DsFieldHit::DsFieldHit(DsSys& sys, DsPhysicsWorld& world)
+	: DsFieldObj(sys, world)
 {
 	
 }

@@ -27,10 +27,9 @@ using namespace DsApp;
 
 
 
-DsFieldObj::DsFieldObj(DsSys& sys, DsPhysicsWorld& world, DsLib::DsResource& resource)
+DsFieldObj::DsFieldObj(DsSys& sys, DsPhysicsWorld& world)
 	: m_sys(sys)
 	, m_name()
-	, m_resource(resource)
 	, m_pAnimation(NULL)
 	, m_actorId()
 	, m_world(world)
@@ -38,7 +37,6 @@ DsFieldObj::DsFieldObj(DsSys& sys, DsPhysicsWorld& world, DsLib::DsResource& res
 	, m_pComponentSystem(NULL)
 	, m_reqestIsInit(false)
 	, m_isCompleteInit(false)
-	, m_animName()
 	, m_hitName()
 	, m_isRequestDirectAnim(false)
 {
@@ -52,8 +50,7 @@ DsFieldObj::~DsFieldObj()
 	delete m_pAnimation; m_pAnimation = NULL;
 	delete m_pComponentSystem; m_pComponentSystem = NULL;
 
-	m_resource.UnregisterItem<DsHitRes>(m_hitName.c_str());
-	m_resource.UnregisterItem<DsAnimRes>(m_animName.c_str());
+	m_sys.RefResource().UnregisterItem<DsHitRes>(m_hitName.c_str());
 
 }
 
@@ -87,22 +84,17 @@ namespace
 void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 {
 	m_name = initInfo.name;
-	m_animName = initInfo.animName;
 	m_hitName = initInfo.hitName;
 
 	m_pComponentSystem = new DsComponentSystem(*this, m_sys);
 	DS_ASSERT(m_pComponentSystem, "ÉÅÉÇÉäämï€é∏îs");
 
-	const DsAnimRes* pAnimRes = m_resource.RegisterItem<DsAnimRes>(m_animName.c_str());
-	if (pAnimRes)
-	{
-		m_pAnimation = new DsAnimation(*pAnimRes, m_sys.RefRender().RefDrawCom());
-		DS_ASSERT(m_pAnimation, "ÉÅÉÇÉäämï€é∏îs");
-		m_pAnimEventCallback = new DsAnimEventCallback(*this, m_resource);
-		DS_ASSERT(m_pAnimEventCallback, "ÉÅÉÇÉäämï€é∏îs");
-	}
+	m_pAnimation = new DsAnimation(initInfo.animName, m_sys.RefRender().RefDrawCom(), m_sys.RefResource());
+	DS_ASSERT(m_pAnimation, "ÉÅÉÇÉäämï€é∏îs");
+	m_pAnimEventCallback = new DsAnimEventCallback(*this, m_sys.RefResource());
+	DS_ASSERT(m_pAnimEventCallback, "ÉÅÉÇÉäämï€é∏îs");
 
-	const DsHitRes* pHitRes = m_resource.RegisterItem<DsHitRes>(m_hitName.c_str());
+	const DsHitRes* pHitRes = m_sys.RefResource().RegisterItem<DsHitRes>(m_hitName.c_str());
 	if (pHitRes)
 	{
 		if (pHitRes->GetAnimRes())

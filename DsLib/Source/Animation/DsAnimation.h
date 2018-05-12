@@ -16,6 +16,7 @@ namespace DsLib
 	struct DsAnimCustomProperty;
 	class DsAnimSkeletonModifier;
 	class DsAnimClip;
+	class DsResource;
 }
 
 namespace DsLib
@@ -23,7 +24,7 @@ namespace DsLib
 	class DsAnimation
 	{
 	public:
-		DsAnimation(const DsAnimRes& anim, DsDrawCommand& com);
+		DsAnimation(const std::string& resName, DsDrawCommand& com, DsResource& resource);
 		virtual ~DsAnimation();
 
 	public:
@@ -44,6 +45,8 @@ namespace DsLib
 		DsModel* GetModel();
 
 	private:
+		DsLib::DsResource& m_resource;
+		DsAnimRes* m_pAnimRes;
 		DsAnimSkeleton* m_pSkeleton;
 		DsKeyframeAnimSet* m_pKeyframeAnim;
 		DsModel* m_pAnimModel;

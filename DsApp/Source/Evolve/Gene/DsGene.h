@@ -24,7 +24,7 @@ namespace DsApp
 		DsDecisionTreeData* GetData(){ return m_pData; }
 
 	public:
-		void Initialize(DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& world, DsLib::DsResource& res);
+		void Initialize(DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& world);
 		bool Evaluation(double dt, double evalTime, int trialNum);
 
 	private:

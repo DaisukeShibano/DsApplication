@@ -36,8 +36,8 @@ using namespace DsApp;
 
 
 
-DsFieldChr::DsFieldChr(DsSys& sys, DsPhysicsWorld& world, DsLib::DsResource& resource)
-	: DsFieldObj(sys, world, resource)
+DsFieldChr::DsFieldChr(DsSys& sys, DsPhysicsWorld& world)
+	: DsFieldObj(sys, world)
 	, m_vel(DsVec3d::Zero())
 	, m_ang(DsVec3d::Zero())
 	, m_pRagdoll(NULL)

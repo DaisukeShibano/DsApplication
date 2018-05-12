@@ -132,7 +132,7 @@ void DsMapRes::Initialize(const char* path, DsResource& resource)
 
 	for(const ObjInsFormat* obj : pRes->objs)
 	{
-		Data data;
+		DATA data;
 		data.pName = obj->objInsName.c_str();
 		data.pAnimPath = obj->drawModelPath.c_str();
 		data.pHitPath = obj->hitModelPath.c_str();

@@ -47,7 +47,6 @@ private:
 	DsMainLoop* m_pLoop;
 	std::list<DsApp::DsFieldObj*> m_fieldObjs;
 	std::string m_selectAnimName;
-	DsResource m_resource;
 	DsApp::DsFieldObj* m_pChrIns;
 	bool m_isInit;
 };

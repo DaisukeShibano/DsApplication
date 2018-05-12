@@ -14,9 +14,10 @@ DsItemBoxComponent::~DsItemBoxComponent()
 {
 }
 
-void DsItemBoxComponent::AddWep(const std::string& name)
+void DsItemBoxComponent::AddWep(const std::string& dispName, const std::string& resName)
 {
-	m_wepItems.push_back(ITEM(name));
+
+	m_wepItems.push_back(ITEM(dispName, resName));
 }
 
 const DsItemBoxComponent::ITEM* DsItemBoxComponent::GetWepItem(int index)const

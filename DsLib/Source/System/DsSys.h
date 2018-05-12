@@ -59,12 +59,15 @@ namespace DsLib
 		const DsKeyboard& RefKeyboard() const;
 		DsWindow& RefWindow(){ return *m_pWindow; }
 		const DsWindow& RefWindow() const { return *m_pWindow; }
+		DsResource& RefResource() { return *m_pRes; }
+		const DsResource& RefResource() const { return *m_pRes; }
 
 	private:
 		bool m_isSetUp;
 		DsWindow* m_pWindow;
 		DsRender* m_pRender;
 		DsCamera* m_pCam;
+		DsResource* m_pRes;
 
 	};
 }

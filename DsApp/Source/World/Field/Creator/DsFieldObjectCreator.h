@@ -38,7 +38,7 @@ namespace DsApp
 		virtual ~DsFieldObjectCreator();
 
 	public:
-		void Create(const char* resPath, DsLib::DsResource& res, DsPhysics::DsPhysicsWorld& world);
+		void Create(const char* resPath, DsPhysics::DsPhysicsWorld& world);
 		void Update(double dt);
 		void Destoroy();
 

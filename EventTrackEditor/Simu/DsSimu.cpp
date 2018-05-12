@@ -144,7 +144,6 @@ DsSimu::DsSimu()
 	,m_pLoop(NULL)
 	,m_fieldObjs()
 	,m_selectAnimName()
-	,m_resource()
 	,m_pChrIns(NULL)
 	,m_isInit(false)
 
@@ -206,16 +205,16 @@ std::vector<std::string> DsSimu::RegisterObj(const char* drawModelPath, const ch
 	{
 	case DsLib::DS_MAP_FIELD_OBJ_TYPE::CHR:
 	case DsLib::DS_MAP_FIELD_OBJ_TYPE::PLAYER:
-		pObj = new DsFieldChr(*m_pSys, *DsPhysicsManager::GetDefaultWorld(), m_resource);
+		pObj = new DsFieldChr(*m_pSys, *DsPhysicsManager::GetDefaultWorld());
 		break;
 	case DsLib::DS_MAP_FIELD_OBJ_TYPE::OBJ:
-		pObj = new DsFieldObj(*m_pSys, *DsPhysicsManager::GetDefaultWorld(), m_resource);
+		pObj = new DsFieldObj(*m_pSys, *DsPhysicsManager::GetDefaultWorld());
 		break;
 	case DsLib::DS_MAP_FIELD_OBJ_TYPE::HIT:
-		pObj = new DsFieldHit(*m_pSys, *DsPhysicsManager::GetDefaultWorld(), m_resource);
+		pObj = new DsFieldHit(*m_pSys, *DsPhysicsManager::GetDefaultWorld());
 		break;
 	default:
-		pObj = new DsFieldObj(*m_pSys, *DsPhysicsManager::GetDefaultWorld(), m_resource);
+		pObj = new DsFieldObj(*m_pSys, *DsPhysicsManager::GetDefaultWorld());
 		break;
 	}
 	

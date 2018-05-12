@@ -46,9 +46,9 @@ DsGene::~DsGene()
 	m_pData = NULL;
 }
 
-void DsGene::Initialize(DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& world, DsLib::DsResource& res)
+void DsGene::Initialize(DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& world)
 {
-	m_pChr = new DsFieldChr(sys, world, res);
+	m_pChr = new DsFieldChr(sys, world);
 
 	DsHitRes::Shape shape;
 	shape.sizeX=0.5;
