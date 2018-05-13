@@ -11,7 +11,7 @@ DsActionRequestManual::DsActionRequestManual(const DsLib::DsSys& sys)
 	, m_moveDir{}
 	, m_request(0)
 	, m_requestPre(0)
-	, m_moment(0)
+	, m_requestToggle(0)
 	, m_cancel(0)
 	, m_action(0)
 {
@@ -84,9 +84,9 @@ void DsActionRequestManual::Update(double dt)
 
 void DsActionRequestManual::_UpdateAction()
 {
-	m_moment = m_request & (~m_requestPre);
+	m_requestToggle = m_request & (~m_requestPre);
 	m_requestPre = m_request;
-	m_action = m_moment & m_cancel;
+	m_action = m_requestToggle & m_cancel;
 	m_request = 0;
 	m_cancel = 0;
 }

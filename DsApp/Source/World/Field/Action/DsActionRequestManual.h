@@ -30,7 +30,7 @@ namespace DsApp
 		double m_moveDir[4];
 		ds_uint64 m_request;
 		ds_uint64 m_requestPre;
-		ds_uint64 m_moment;
+		ds_uint64 m_requestToggle;
 		ds_uint64 m_cancel;
 		ds_uint64 m_action;
 

@@ -136,11 +136,19 @@ void DsTraceParticleEmitter::Update(double dt)
 			//フリーリストを消費
 			pFreeBlock->pFreeTail = pFreeBlock->pFreeTail->pNext;
 
-			//使用中に追加
+			//もし使用中先頭が消えてしまっていたら新規追加したこれが先頭
+			if (NULL == pFreeBlock->pUseHead) {
+				pFreeBlock->pUseHead = pParticle;
+			}
+
+			//使用中の末尾+1に追加
 			if (pFreeBlock->pUseTail) {
 				pFreeBlock->pUseTail->pNext = pParticle;
 			}
+			
+			//使用中末尾を更新
 			pFreeBlock->pUseTail = pParticle;
+			//末尾の次はNULL
 			pParticle->pNext = NULL;
 
 			m_nextEmitTime = INTERVAL_TIME;
