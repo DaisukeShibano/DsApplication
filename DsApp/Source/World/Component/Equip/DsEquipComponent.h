@@ -38,6 +38,7 @@ namespace DsApp
 		int m_wepIndex;
 		DsLib::DsAnimation* m_pWep;
 		DsAnimAttachEntity m_attachEntity;
+		int m_attachDmypolyId;
 	};
 
 

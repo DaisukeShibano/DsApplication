@@ -38,9 +38,10 @@ void DsAnimAttachEntity::SetTransform(const DsMat44d& transform)
 }
 
 DsEquipComponent::DsEquipComponent()
-	: m_wepIndex(0)
+	: m_wepIndex(-1)
 	, m_pWep(NULL)
 	, m_attachEntity()
+	, m_attachDmypolyId(-1)
 {
 }
 
@@ -61,12 +62,14 @@ bool DsEquipComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 	const DsActionRequest* pActReq = arg.owner.GetActionRequest();
 	if (pActReq) {
 		if (pActReq->IsAction(ACTION_TYPE::CHANGE_WEP)) {
-			m_wepIndex = (++m_wepIndex) % MAX_WEP_NUM;
+			++m_wepIndex;
+			if (MAX_WEP_NUM <= m_wepIndex) {
+				m_wepIndex = -1;
+			}
 			isChange = true;
 		}
 	}
 
-	std::vector<DsMat44d> attachMat;
 	if (isChange) {
 		delete m_pWep; m_pWep = NULL;
 		const DsItemBoxComponent* pItemBox = pComSys->GetItemBox();
@@ -75,18 +78,21 @@ bool DsEquipComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 			if (pItem) {
 				DsWepParam param(pItem->itemId);
 				if (param.IsValid()) {
-					if (arg.owner.GetDmypoly(param.GetAttachDmypolyId(), attachMat)) {
-						m_pWep = new DsAnimation(param.GetResName(), arg.sys.RefRender().RefDrawCom(), arg.sys.RefResource());
-						DS_ASSERT(m_pWep, "ÉÅÉÇÉäämï€é∏îs");
-					}
+					m_attachDmypolyId = param.GetAttachDmypolyId();
+					m_pWep = new DsAnimation(param.GetResName(), arg.sys.RefRender().RefDrawCom(), arg.sys.RefResource());
+					DS_ASSERT(m_pWep, "ÉÅÉÇÉäämï€é∏îs");
+					m_pWep->RegisterDraw();
 				}
 			}
 		}
 	}
 
-	if (m_pWep && (!attachMat.empty())) {
-		m_attachEntity.SetAnim(m_pWep);
-		pComSys->RequestAttach(attachMat[0], &m_attachEntity);
+	m_attachEntity.SetAnim(m_pWep);
+	if (m_pWep) {
+		DsMat44d mat = DsMat44d::Identity();
+		arg.owner.GetDmypoly(m_attachDmypolyId, mat);
+		pComSys->RequestAttach(mat, &m_attachEntity);
+		m_pWep->Update(arg.dt);
 	}
 
 	//èÌíìÇ»ÇÃÇ≈èÌÇ…true

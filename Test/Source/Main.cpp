@@ -107,7 +107,7 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 				}
 			}
 
-			const char* dataPath = "C:\\Users\\SIVA2\\Documents\\Visual Studio 2017\\Projects\\DsApplication\\Test\\Asset\\testmap.dmap";
+			const char* dataPath = "testmap.dmap";
 			m_pCreator = new DsFieldObjectCreator(args.sys);
 			m_pCreator->Create(dataPath, *pWorld);
 		}

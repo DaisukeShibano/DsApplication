@@ -62,7 +62,6 @@ namespace DsApp
 		CLASS* _GetComponent(ds_int64 key)const;
 
 	public:
-		//リクエストした人が処理する訳じゃなく、余計なincludeしたくないので関数用意する方針
 		void RequestTraceEffect(ds_int64 key, int effectId, int dmypolyId0, int dmypolyId1);
 		void RequestSoundEffect(ds_int64 key, int soundId, int dmypolyId);
 		void RequestEquip();

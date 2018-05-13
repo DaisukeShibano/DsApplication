@@ -42,6 +42,9 @@
 #ifndef _DS_COMPONENT_SYSTEM_
 #include "World/Component/DsComponentSystem.h"
 #endif
+#ifndef _DS_ITEM_BOX_COMPONENT_
+#include "World/Component/Item/DsItemBoxComponent.h"
+#endif
 
 using namespace DsLib;
 using namespace DsPhysics;
@@ -74,6 +77,13 @@ void DsFieldPlayer::Initialize(const DsFieldInitInfo& initInfo)
 	if (pComSys) {
 		pComSys->RequestItemBox();
 		pComSys->RequestEquip();
+
+		//‰¼‰Šú‘•”õ
+		DsItemBox* pItemBox = pComSys->GetItemBox();
+		if (pItemBox) {
+			pItemBox->AddItem(0);
+		}
+
 	}
 }
 

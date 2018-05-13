@@ -179,13 +179,15 @@ bool DsModel::GetDmypoly(int id, std::vector<DsMat44d>& outMat)const
 		//”‚ª‘‚¦‚é‚æ‚¤‚È‚çmap‚©set‚Å‚Á‚½‚Ù‚¤‚ª‚¢‚¢‚©‚ÈH
 		for (int i = 0; i < m_dn; ++i) {
 			if (m_pDmypoly[i].id == id) {
-				const DsVec3d pos = m_pVertex[m_pDmypoly[i].index[0]];
+				DsVec3d pos = m_pVertex[m_pDmypoly[i].index[0]];
 				DsVec3d yDir = DsVec3d::Normalize(DsVec3d(m_pVertex[m_pDmypoly[i].index[1]]) - pos);
 				const DsVec3d zDir = DsVec3d::Normalize(DsVec3d(m_pVertex[m_pDmypoly[i].index[2]]) - pos);
 				const DsVec3d xDir = DsVec3d::Normalize(DsVec3d::Cross(yDir, zDir));
 				yDir = DsVec3d::Cross(zDir, xDir);//’¼s‚¶‚á‚È‚¢‚©‚à‚µ‚ê‚È‚¢‚Ì‚ÅyŒvZ‚µ‚È‚¨‚·
-				const DsMat33d rot = DsMat33d::SetAxis(xDir, yDir, zDir);
-				const DsMat44d mat = DsMat44d::SetAxisPos(xDir, yDir, zDir, pos);
+				
+				pos = GetRotation()*pos + GetPosition();
+				DsMat33d rot = GetRotation()*DsMat33d::SetAxis(xDir, yDir, zDir);
+				const DsMat44d mat = DsMat44d::Get(rot, pos);
 				outMat.push_back(mat);
 				ret = true;
 			}

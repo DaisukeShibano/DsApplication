@@ -38,7 +38,7 @@ void DsItemBoxComponent::AddWep(int itemId)
 const DsItemBoxComponent::ITEM* DsItemBoxComponent::GetWep(int index)const
 {
 	const ITEM* ret = NULL;
-	if (index < m_wepItems.size()) {
+	if( (0 <= index) && (index < m_wepItems.size()) ){
 		ret = &m_wepItems[index];
 	}
 	return ret;
