@@ -125,11 +125,12 @@ DsMapRes::DsMapRes()
 }
 
 //virtual
-void DsMapRes::Initialize(const char* path, DsResource& resource)
+bool DsMapRes::Initialize(const char* path, DsResource& resource)
 {
 	OutputRes* pRes = _LoadRes(path);
 	m_resTop = pRes;
 
+	
 	for(const ObjInsFormat* obj : pRes->objs)
 	{
 		DATA data;
@@ -142,6 +143,8 @@ void DsMapRes::Initialize(const char* path, DsResource& resource)
 		data.ang = DsVec3d(DegToRad(obj->angX), DegToRad(obj->angY), DegToRad(obj->angZ));
 		m_data.push_back(data);
 	}
+
+	return true;
 }
 
 DsMapRes::~DsMapRes()

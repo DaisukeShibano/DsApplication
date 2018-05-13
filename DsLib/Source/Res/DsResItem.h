@@ -18,7 +18,7 @@ namespace DsLib
 	{
 	public:
 		DsResItem() :m_resName(), m_count(0){}
-		virtual void Initialize(const char* path, DsResource& resource) = 0;
+		virtual bool Initialize(const char* path, DsResource& resource) = 0;
 
 	public:
 		void Ref() { ++m_count; }

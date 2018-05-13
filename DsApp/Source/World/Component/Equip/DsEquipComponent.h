@@ -33,6 +33,7 @@ namespace DsApp
 
 	public:
 		virtual bool Update(const COMPONENT_UPDATE_ARG& arg) override;
+		DsLib::DsAnimation* GetWep()const { return m_pWep; }
 
 	private:
 		int m_wepIndex;

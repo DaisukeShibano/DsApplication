@@ -23,6 +23,13 @@ namespace DsApp
 
 namespace DsApp
 {
+	enum class DMYPOLY_SLOT
+	{
+		MAIN_BODY,
+		WEP,
+	};
+
+
 	class DsFieldObj
 	{
 	public:
@@ -54,13 +61,13 @@ namespace DsApp
 
 		const DsLib::DsAnimation* GetAnim() const { return m_pAnimation; }
 		DsLib::DsAnimation* GetAnim() { return m_pAnimation; }
-		bool GetDmypoly(int id, std::vector<DsMat44d>& outMat)const;
-		bool GetDmypoly(int id, DsMat44d& outMat)const;
+		bool GetDmypoly(int id, std::vector<DsMat44d>& outMat, DMYPOLY_SLOT slot)const;
+		bool GetDmypoly(int id, DsMat44d& outMat, DMYPOLY_SLOT slot)const;
 
 		void SetRequestAnim(std::string name);
 
 	public:
-		DsComponentSystem* GetComponentSystem() { return m_pComponentSystem; }
+		DsComponentSystem* GetComponentSystem() const { return m_pComponentSystem; }
 
 	protected:
 		bool IsRequestDirectAnim()const { return m_isRequestDirectAnim; }

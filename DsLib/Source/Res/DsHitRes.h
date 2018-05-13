@@ -46,7 +46,7 @@ namespace DsLib
 		~DsHitRes();
 
 	public:
-		virtual void Initialize(const char* path, DsResource& resource) override;
+		virtual bool Initialize(const char* path, DsResource& resource) override;
 		const DsAnimRes* GetAnimRes() const{ return m_pAnimRes; }
 		const Shape& RefSpahe() const{ return m_shape; }
 

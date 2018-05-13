@@ -123,3 +123,8 @@ DsItemBoxComponent * DsComponentSystem::GetItemBox()const
 {
 	return _GetComponent<DsItemBoxComponent>( (ds_uint64)(&m_owner) );
 }
+
+DsEquipComponent* DsComponentSystem::GetEquip() const
+{
+	return _GetComponent<DsEquipComponent>((ds_uint64)(&m_owner));
+}

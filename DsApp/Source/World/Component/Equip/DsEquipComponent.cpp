@@ -90,7 +90,7 @@ bool DsEquipComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 	m_attachEntity.SetAnim(m_pWep);
 	if (m_pWep) {
 		DsMat44d mat = DsMat44d::Identity();
-		arg.owner.GetDmypoly(m_attachDmypolyId, mat);
+		arg.owner.GetDmypoly(m_attachDmypolyId, mat, DMYPOLY_SLOT::MAIN_BODY);
 		pComSys->RequestAttach(mat, &m_attachEntity);
 		m_pWep->Update(arg.dt);
 	}

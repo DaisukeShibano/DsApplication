@@ -20,6 +20,9 @@
 #ifndef _DS_COMPONENT_SYSTEM_
 #include "World/Component/DsComponentSystem.h"
 #endif
+#ifndef _DS_EQUIP_COMPONENT_
+#include "World/Component/Equip/DsEquipComponent.h"
+#endif
 
 using namespace DsLib;
 using namespace DsPhysics;
@@ -93,6 +96,7 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 	DS_ASSERT(m_pAnimation, "メモリ確保失敗");
 	m_pAnimEventCallback = new DsAnimEventCallback(*this, m_sys.RefResource());
 	DS_ASSERT(m_pAnimEventCallback, "メモリ確保失敗");
+	m_pAnimEventCallback->Initialize(initInfo.animName.c_str());
 
 	const DsHitRes* pHitRes = m_sys.RefResource().RegisterItem<DsHitRes>(m_hitName.c_str());
 	if (pHitRes)
@@ -265,25 +269,45 @@ const DsActor* DsFieldObj::GetActor() const
 	return m_world.GetActor(m_actorId);
 }
 
-bool DsFieldObj::GetDmypoly(int id, std::vector<DsMat44d>& outMat)const
+bool DsFieldObj::GetDmypoly(int id, std::vector<DsMat44d>& outMat, DMYPOLY_SLOT slot)const
 {
 	bool ret = false;
-	const DsAnimation* pAnim = GetAnim();
-	if (pAnim) {
-		const DsModel* pModel = pAnim->GetModel();
-		if (pModel) {
-			ret = pModel->GetDmypoly(id, outMat);
+	
+	const DsModel* pModel = NULL;
+
+	if (DMYPOLY_SLOT::MAIN_BODY == slot) {//本体モデルから
+		const DsAnimation* pAnim = GetAnim();
+		if (pAnim) {
+			pModel = pAnim->GetModel();
 		}
 	}
+	else if(DMYPOLY_SLOT::WEP == slot){//武器モデルから
+		const DsComponentSystem* pComSys = GetComponentSystem();
+		if (pComSys) {
+			DsEquipComponent* pEquip = pComSys->GetEquip();
+			if (pEquip) {
+				DsAnimation* pAnim = pEquip->GetWep();
+				if (pAnim) {
+					pModel = pAnim->GetModel();
+				}
+			}
+		}
+	}
+
+	if (pModel) {
+		ret = pModel->GetDmypoly(id, outMat);
+	}
+
 	return ret;
 }
 
-bool DsFieldObj::GetDmypoly(int id, DsMat44d& outMat)const
+bool DsFieldObj::GetDmypoly(int id, DsMat44d& outMat, DMYPOLY_SLOT slot)const
 {
 	bool ret = false;
 	std::vector<DsMat44d> tmp;
-	if (GetDmypoly(id, tmp)) {
+	if (GetDmypoly(id, tmp, slot)) {
 		outMat = tmp[0];
+		ret = true;
 	}
 	return ret;
 }

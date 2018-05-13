@@ -58,8 +58,12 @@ namespace DsLib
 				DS_ASSERT(pItem, "ƒƒ‚ƒŠŠm•ÛŽ¸”s");
 				pItem->Ref();
 				pItem->SetResName(name);
-				pItem->Initialize(name, *this);
-				m_resItems[key] = pItem;
+				if (pItem->Initialize(name, *this)) {
+					m_resItems[key] = pItem;
+				}
+				else {
+					delete pItem; pItem = NULL;
+				}
 				return pItem;
 			}
 		}

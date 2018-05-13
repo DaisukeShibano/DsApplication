@@ -52,8 +52,8 @@ bool DsTraceEffectComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 		bool isDmypolyOk= false;
 		DsMat44d mat0 = DsMat44d::Identity();
 		DsMat44d mat1 = DsMat44d::Identity();
-		if (arg.owner.GetDmypoly(m_dmypolyId0, mat0) &&
-			arg.owner.GetDmypoly(m_dmypolyId1, mat1)) {
+		if (arg.owner.GetDmypoly(m_dmypolyId0, mat0, DMYPOLY_SLOT::WEP) &&
+			arg.owner.GetDmypoly(m_dmypolyId1, mat1, DMYPOLY_SLOT::WEP)) {
 			m_pEmitter->RequestEmit(mat0.GetPos(), mat1.GetPos());
 		}
 	}

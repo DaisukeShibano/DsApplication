@@ -753,7 +753,7 @@ namespace
 }
 
 
-void DsAnimRes::Initialize(const char* path, DsResource& resource)
+bool DsAnimRes::Initialize(const char* path, DsResource& resource)
 {
 	OutputRes* pRes = _LoadAnim(path);
 	m_resTop = pRes;
@@ -770,6 +770,8 @@ void DsAnimRes::Initialize(const char* path, DsResource& resource)
 	if (pos1 != std::string::npos){
 		m_name = m_name.substr(pos1 + 1, m_name.size() - pos1 - 1);
 	}
+
+	return true;
 }
 
 //éqÉ{Å[Éì

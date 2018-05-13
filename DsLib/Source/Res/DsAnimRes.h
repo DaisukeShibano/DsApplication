@@ -23,7 +23,7 @@ namespace DsLib
 		virtual ~DsAnimRes();
 
 	public:
-		void Initialize(const char* path, DsResource& resource);
+		virtual bool Initialize(const char* path, DsResource& resource) override;
 
 	public:
 		DsAnimSkeleton* CreateSkeleton() const;

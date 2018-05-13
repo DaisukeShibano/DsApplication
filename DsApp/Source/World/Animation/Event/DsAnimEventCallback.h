@@ -27,7 +27,7 @@ namespace DsApp
 		virtual ~DsAnimEventCallback();
 
 	public:
-		void Initialize(const DsAnimRes& animRes);
+		void Initialize(const char* pAnimName);
 		void Call();
 
 	private:

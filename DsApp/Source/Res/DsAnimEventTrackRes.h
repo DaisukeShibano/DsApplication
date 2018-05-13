@@ -15,7 +15,7 @@ namespace DsApp
 		virtual ~DsAnimEventTrackRes();
 
 	public:
-		virtual void Initialize(const char* path, DsResource& resource) override;
+		virtual bool Initialize(const char* path, DsResource& resource) override;
 		const DS_ANIM_ET_DATA* GetData() const { return m_pData; }
 
 	private:

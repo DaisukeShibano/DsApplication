@@ -122,21 +122,27 @@ DsHitRes::~DsHitRes()
 }
 
 //virtual
-void DsHitRes::Initialize(const char* path, DsResource& resource)
+bool DsHitRes::Initialize(const char* path, DsResource& resource)
 {
+	bool ret = false;
 	string tmpStr = path;
 	if (tmpStr.find(".dmdl") != string::npos)
 	{
 		//アニメモデルからヒット作成
 		m_pAnimRes = resource.RegisterItem<DsAnimRes>(path);
+		ret = true;
 	}
 	else if (tmpStr.find(".txt") != string::npos)
 	{
 		m_shape = _LoadRes(path);
 		m_pAnimRes = NULL;
+		ret = true;
 	}
 	else
 	{
 		DS_ASSERT(false, "HitResで未知の拡張子");
+		ret = false;
 	}
+
+	return ret;
 }

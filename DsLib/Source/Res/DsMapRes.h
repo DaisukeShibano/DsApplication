@@ -47,7 +47,7 @@ namespace DsLib
 		virtual ~DsMapRes();
 
 	public:
-		virtual void Initialize(const char* path, DsResource& resource) override;
+		virtual bool Initialize(const char* path, DsResource& resource) override;
 		const std::vector<DATA>& GetData() const { return m_data; }
 
 	private:

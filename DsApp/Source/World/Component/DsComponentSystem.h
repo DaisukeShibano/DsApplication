@@ -16,6 +16,7 @@ namespace DsApp
 	class DsComponent;
 	class DsItemBoxComponent;
 	class DsAttachEntity;
+	class DsEquipComponent;
 }
 
 namespace DsApp
@@ -70,6 +71,7 @@ namespace DsApp
 
 	public:
 		DsItemBoxComponent * GetItemBox()const;
+		DsEquipComponent* GetEquip() const;
 
 	private:
 		std::unordered_map<KEY, DsComponent*, KeyHash> m_components;

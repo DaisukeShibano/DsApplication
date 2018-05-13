@@ -24,11 +24,11 @@ DsAnimEventTrackRes::~DsAnimEventTrackRes()
 
 
 //virtual
-void DsAnimEventTrackRes::Initialize(const char* path, DsResource& resource)
+bool DsAnimEventTrackRes::Initialize(const char* path, DsResource& resource)
 {
 	DsFile fs(path);
 	if (fs.IsFail()) {
-		return;
+		return false;
 	}
 	const ds_uint8* pBufTop = fs.MoveBufferTop();
 
@@ -48,4 +48,6 @@ void DsAnimEventTrackRes::Initialize(const char* path, DsResource& resource)
 		}
 	}
 	m_pData = rData;
+
+	return true;
 }

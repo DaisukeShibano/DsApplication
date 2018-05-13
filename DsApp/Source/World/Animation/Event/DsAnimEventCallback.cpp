@@ -37,10 +37,10 @@ DsAnimEventCallback::~DsAnimEventCallback()
 	m_pRes = m_resource.UnregisterItem<DsAnimEventTrackRes>(m_pRes);
 }
 
-void DsAnimEventCallback::Initialize(const DsAnimRes& animRes)
+void DsAnimEventCallback::Initialize(const char* pAnimName)
 {
-	std::string resName = animRes.RefName();
-	for (size_t i = resName.length(); 0 <= i; ++i) {
+	std::string resName = pAnimName;
+	for (int i = static_cast<int>(resName.length())-1; 0 <= i; --i) {
 		if ('.' == resName[i]) {
 			resName.replace(i, resName.length() - i + i, ".devt");
 		}
@@ -65,10 +65,10 @@ void DsAnimEventCallback::Call()
 	int paramNum = 0;
 
 	if (m_pRes && m_pRes->GetData()) {
-		std::string curAnimName = pClip->RefAnimName();
+		const std::string curAnimName = pClip->RefAnimName();
 		const DS_ANIM_ET_DATA* pData = m_pRes->GetData();
 		for (int i = 0; i < pData->paramSetNum; ++i) {
-			std::string name = pData->pParamSet[i].pAnimName;
+			const std::string name = pData->pParamSet[i].pAnimName;
 			if (name == curAnimName) {
 				pParams = pData->pParamSet[i].pParams;
 				paramNum = pData->pParamSet[i].paramNum;
