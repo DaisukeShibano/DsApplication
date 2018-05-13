@@ -2,7 +2,7 @@
 #ifndef _DS_FIELD_PLAYER_H_
 #include "World/Field/DsFieldPlayer.h"
 #endif
-
+//他のヘッダ
 #ifndef _DS_ANIM_RES_
 #include "Res/DsAnimRes.h"
 #endif
@@ -39,6 +39,9 @@
 #ifndef _DS_ACTION_REQUEST_MANUAL_
 #include "World/Field/Action/DsActionRequestManual.h"
 #endif
+#ifndef _DS_COMPONENT_SYSTEM_
+#include "World/Component/DsComponentSystem.h"
+#endif
 
 using namespace DsLib;
 using namespace DsPhysics;
@@ -65,6 +68,13 @@ void DsFieldPlayer::Initialize(const DsFieldInitInfo& initInfo)
 	const DsVec3d pos = DsVec3d(0, 1.5f, -3.5f) + GetPosition();
 	m_cam.SetPos(pos);
 	m_cam.SetRot(GetRotation());
+	
+	//プレイヤー限定装備
+	DsComponentSystem* pComSys = GetComponentSystem();
+	if (pComSys) {
+		pComSys->RequestItemBox();
+		pComSys->RequestEquip();
+	}
 }
 
 

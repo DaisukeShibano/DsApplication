@@ -8,6 +8,7 @@
 namespace DsApp
 {
 	class DsFieldObj;
+	class DsAttachEntity;
 }
 
 namespace DsApp
@@ -20,11 +21,11 @@ namespace DsApp
 
 	public:
 		virtual bool Update(const COMPONENT_UPDATE_ARG& arg) override;
-		void Request(const DsMat44d target, DsFieldObj* pMove);
+		void Request(const DsMat44d target, DsAttachEntity* pMove);
 
 	private:
 		DsMat44d m_target;
-		DsFieldObj* m_pMove;
+		DsAttachEntity* m_pMove;
 		bool m_reqAttach;
 
 	};

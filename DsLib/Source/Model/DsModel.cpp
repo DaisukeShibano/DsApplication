@@ -171,9 +171,9 @@ void DsModel::UpdateNormal()
 }
 
 
-DsMat44d DsModel::GetDmypoly(int id)const
+bool DsModel::GetDmypoly(int id, std::vector<DsMat44d>& outMat)const
 {
-	DsMat44d ret = DsMat44d::Identity();
+	bool ret = false;
 
 	if (0 <= id) {
 		//”‚ª‘‚¦‚é‚æ‚¤‚È‚çmap‚©set‚ÅŽ‚Á‚½‚Ù‚¤‚ª‚¢‚¢‚©‚ÈH
@@ -185,8 +185,9 @@ DsMat44d DsModel::GetDmypoly(int id)const
 				const DsVec3d xDir = DsVec3d::Normalize(DsVec3d::Cross(yDir, zDir));
 				yDir = DsVec3d::Cross(zDir, xDir);//’¼s‚¶‚á‚È‚¢‚©‚à‚µ‚ê‚È‚¢‚Ì‚ÅyŒvŽZ‚µ‚È‚¨‚·
 				const DsMat33d rot = DsMat33d::SetAxis(xDir, yDir, zDir);
-				ret = DsMat44d::SetAxisPos(xDir, yDir, zDir, pos);
-				break;
+				const DsMat44d mat = DsMat44d::SetAxisPos(xDir, yDir, zDir, pos);
+				outMat.push_back(mat);
+				ret = true;
 			}
 		}
 	}

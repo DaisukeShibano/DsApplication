@@ -89,7 +89,7 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 	m_pComponentSystem = new DsComponentSystem(*this, m_sys);
 	DS_ASSERT(m_pComponentSystem, "ÉÅÉÇÉäämï€é∏îs");
 
-	m_pAnimation = new DsAnimation(initInfo.animName, m_sys.RefRender().RefDrawCom(), m_sys.RefResource());
+	m_pAnimation = new DsAnimation(initInfo.animName.c_str(), m_sys.RefRender().RefDrawCom(), m_sys.RefResource());
 	DS_ASSERT(m_pAnimation, "ÉÅÉÇÉäämï€é∏îs");
 	m_pAnimEventCallback = new DsAnimEventCallback(*this, m_sys.RefResource());
 	DS_ASSERT(m_pAnimEventCallback, "ÉÅÉÇÉäämï€é∏îs");
@@ -265,15 +265,25 @@ const DsActor* DsFieldObj::GetActor() const
 	return m_world.GetActor(m_actorId);
 }
 
-DsMat44d DsFieldObj::GetDmypoly(int id)const
+bool DsFieldObj::GetDmypoly(int id, std::vector<DsMat44d>& outMat)const
 {
-	DsMat44d ret = DsMat44d::Identity();
+	bool ret = false;
 	const DsAnimation* pAnim = GetAnim();
 	if (pAnim) {
 		const DsModel* pModel = pAnim->GetModel();
 		if (pModel) {
-			ret = pModel->GetDmypoly(id);
+			ret = pModel->GetDmypoly(id, outMat);
 		}
+	}
+	return ret;
+}
+
+bool DsFieldObj::GetDmypoly(int id, DsMat44d& outMat)const
+{
+	bool ret = false;
+	std::vector<DsMat44d> tmp;
+	if (GetDmypoly(id, tmp)) {
+		outMat = tmp[0];
 	}
 	return ret;
 }

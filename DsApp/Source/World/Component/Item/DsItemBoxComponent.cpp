@@ -14,13 +14,28 @@ DsItemBoxComponent::~DsItemBoxComponent()
 {
 }
 
-void DsItemBoxComponent::AddWep(const std::string& dispName, const std::string& resName)
+void DsItemBoxComponent::AddItem(int itemId)
 {
 
-	m_wepItems.push_back(ITEM(dispName, resName));
+	m_wepItems.push_back(ITEM(itemId));
 }
 
-const DsItemBoxComponent::ITEM* DsItemBoxComponent::GetWepItem(int index)const
+const DsItemBoxComponent::ITEM* DsItemBoxComponent::GetItem(int index)const
+{
+	const ITEM* ret = NULL;
+	if (index < m_items.size()) {
+		ret = &m_items[index];
+	}
+	return ret;
+}
+
+void DsItemBoxComponent::AddWep(int itemId)
+{
+
+	m_wepItems.push_back(ITEM(itemId));
+}
+
+const DsItemBoxComponent::ITEM* DsItemBoxComponent::GetWep(int index)const
 {
 	const ITEM* ret = NULL;
 	if (index < m_wepItems.size()) {

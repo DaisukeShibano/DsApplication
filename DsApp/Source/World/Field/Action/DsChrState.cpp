@@ -71,6 +71,9 @@ namespace
 		{
 			m_nextState = GetMyState();
 
+			//いつでもキャンセル可能
+			m_actReq.SetCancelAll();
+
 			if (_IsMove(m_actReq)) {
 				m_nextState = CHR_STATE::RUN;
 			}
@@ -96,6 +99,9 @@ namespace
 		virtual void Update(double dt) override
 		{
 			m_nextState = GetMyState();
+
+			//いつでもキャンセル可能
+			m_actReq.SetCancelAll();
 
 			if (!_IsMove(m_actReq)) {
 				m_nextState = CHR_STATE::IDLE;

@@ -137,8 +137,6 @@ void DsAnimEventCallback::_Cancel(const DS_ANIM_ET_CANCEL_ACTION_TIMING* pParam)
 {
 	DsActionRequest* pReq = m_owner.GetActionRequest();
 	if (pReq) {
-		for (int i = 0; i < static_cast<int>(ACTION_TYPE::NUM); ++i) {
-			pReq->SetCancel(static_cast<ACTION_TYPE>(i));
-		}
+		pReq->SetCancelAll();
 	}
 }

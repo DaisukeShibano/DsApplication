@@ -37,7 +37,7 @@
 
 using namespace DsLib;
 
-DsAnimation::DsAnimation(const std::string& resName, DsDrawCommand& com, DsResource& resource)
+DsAnimation::DsAnimation(const char* pResName, DsDrawCommand& com, DsResource& resource)
 	: m_resource(resource)
 	, m_pAnimRes(NULL)
 	, m_pSkeleton(NULL)
@@ -55,7 +55,7 @@ DsAnimation::DsAnimation(const std::string& resName, DsDrawCommand& com, DsResou
 	, m_pPlayAnimPre(NULL)
 	, m_com(com)
 {
-	m_pAnimRes =m_resource.RegisterItem<DsAnimRes>(resName.c_str());
+	m_pAnimRes =m_resource.RegisterItem<DsAnimRes>(pResName);
 	if (m_pAnimRes) {
 
 		m_pSkeleton = m_pAnimRes->CreateSkeleton();
@@ -107,6 +107,7 @@ DsAnimation::DsAnimation(const std::string& resName, DsDrawCommand& com, DsResou
 
 DsAnimation::~DsAnimation()
 {
+	m_pAnimRes = m_resource.UnregisterItem<DsAnimRes>(m_pAnimRes);
 	m_com.RefAnimRender().UnRegister(GetModel());
 	delete m_pSkeleton; m_pSkeleton = NULL;
 	delete m_pKeyframeAnim; m_pKeyframeAnim = NULL;

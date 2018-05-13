@@ -18,6 +18,9 @@
 #ifndef _DS_ATTACH_COMPONENT_
 #include "World/Component/Attach/DsAttachComponent.h"
 #endif
+#ifndef _DS_WEP_PARAM_
+#include "Res/Param/DsWepParam.h"
+#endif
 
 using namespace DsLib;
 using namespace DsApp;
@@ -26,19 +29,34 @@ using namespace DsApp;
 static int MAX_WEP_NUM = 1;
 
 
+//virtual
+void DsAnimAttachEntity::SetTransform(const DsMat44d& transform)
+{
+	if (m_pAnim) {
+		m_pAnim->SetRootMatrix(transform.GetPos(), transform.ToMat33());
+	}
+}
+
 DsEquipComponent::DsEquipComponent()
 	: m_wepIndex(0)
 	, m_pWep(NULL)
+	, m_attachEntity()
 {
 }
 
 DsEquipComponent::~DsEquipComponent()
 {
+	delete m_pWep; m_pWep = NULL;
 }
 
 //virtual
 bool DsEquipComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 {
+	DsComponentSystem* pComSys = arg.owner.GetComponentSystem();
+	if (!pComSys) {
+		return true;
+	}
+
 	bool isChange = false;
 	const DsActionRequest* pActReq = arg.owner.GetActionRequest();
 	if (pActReq) {
@@ -48,19 +66,27 @@ bool DsEquipComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 		}
 	}
 
+	std::vector<DsMat44d> attachMat;
 	if (isChange) {
-		const DsComponentSystem* pComSys = arg.owner.GetComponentSystem();
-		if (pComSys) {
-			const DsItemBoxComponent* pItemBox = pComSys->GetItemBox();
-			if (pItemBox) {
-				const DsItemBox::ITEM* pItem = pItemBox->GetWepItem(m_wepIndex);
-				if (pItem) {
-					delete m_pWep;
-					m_pWep = new DsAnimation(pItem->resName, arg.sys.RefRender().RefDrawCom(), arg.sys.RefResource());
-					DS_ASSERT(m_pWep, "ÉÅÉÇÉäämï€é∏îs");
+		delete m_pWep; m_pWep = NULL;
+		const DsItemBoxComponent* pItemBox = pComSys->GetItemBox();
+		if (pItemBox) {
+			const DsItemBox::ITEM* pItem = pItemBox->GetWep(m_wepIndex);
+			if (pItem) {
+				DsWepParam param(pItem->itemId);
+				if (param.IsValid()) {
+					if (arg.owner.GetDmypoly(param.GetAttachDmypolyId(), attachMat)) {
+						m_pWep = new DsAnimation(param.GetResName(), arg.sys.RefRender().RefDrawCom(), arg.sys.RefResource());
+						DS_ASSERT(m_pWep, "ÉÅÉÇÉäämï€é∏îs");
+					}
 				}
 			}
 		}
+	}
+
+	if (m_pWep && (!attachMat.empty())) {
+		m_attachEntity.SetAnim(m_pWep);
+		pComSys->RequestAttach(attachMat[0], &m_attachEntity);
 	}
 
 	//èÌíìÇ»ÇÃÇ≈èÌÇ…true

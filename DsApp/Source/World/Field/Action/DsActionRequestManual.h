@@ -22,6 +22,7 @@ namespace DsApp
 		virtual bool IsAction(ACTION_TYPE type)const override;
 		virtual void SetRequest(ACTION_TYPE type) override;
 		virtual void SetCancel(ACTION_TYPE type) override;
+		virtual void SetCancelAll() override;
 
 	private:
 		const DsLib::DsKeyboard& m_key;

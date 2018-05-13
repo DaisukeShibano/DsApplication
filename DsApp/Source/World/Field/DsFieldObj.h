@@ -54,7 +54,8 @@ namespace DsApp
 
 		const DsLib::DsAnimation* GetAnim() const { return m_pAnimation; }
 		DsLib::DsAnimation* GetAnim() { return m_pAnimation; }
-		DsMat44d GetDmypoly(int id)const;
+		bool GetDmypoly(int id, std::vector<DsMat44d>& outMat)const;
+		bool GetDmypoly(int id, DsMat44d& outMat)const;
 
 		void SetRequestAnim(std::string name);
 

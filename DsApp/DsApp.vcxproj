@@ -196,9 +196,12 @@
     <ClInclude Include="Source\NeuralNetwork\DsNeuronCtrl.h" />
     <ClInclude Include="Source\Res\DsAnimEventTrackFormat.h" />
     <ClInclude Include="Source\Res\DsAnimEventTrackRes.h" />
+    <ClInclude Include="Source\Res\Param\DsItemParam.h" />
     <ClInclude Include="Source\Res\Param\DsRagdollParam.h" />
+    <ClInclude Include="Source\Res\Param\DsWepParam.h" />
     <ClInclude Include="Source\World\Animation\Event\DsAnimEventCallback.h" />
     <ClInclude Include="Source\World\Component\Attach\DsAttachComponent.h" />
+    <ClInclude Include="Source\World\Component\Attach\DsAttachEntity.h" />
     <ClInclude Include="Source\World\Component\DsComponent.h" />
     <ClInclude Include="Source\World\Component\DsComponentSystem.h" />
     <ClInclude Include="Source\World\Component\DsComponentSystemDefine.h" />
@@ -235,7 +238,9 @@
     <ClCompile Include="Source\Evolve\Gene\DsGene.cpp" />
     <ClCompile Include="Source\NeuralNetwork\DsNeuronCtrl.cpp" />
     <ClCompile Include="Source\Res\DsAnimEventTrackRes.cpp" />
+    <ClCompile Include="Source\Res\Param\DsItemParam.cpp" />
     <ClCompile Include="Source\Res\Param\DsRagdollParam.cpp" />
+    <ClCompile Include="Source\Res\Param\DsWepParam.cpp" />
     <ClCompile Include="Source\World\Animation\Event\DsAnimEventCallback.cpp" />
     <ClCompile Include="Source\World\Component\Attach\DsAttachComponent.cpp" />
     <ClCompile Include="Source\World\Component\DsComponentSystem.cpp" />

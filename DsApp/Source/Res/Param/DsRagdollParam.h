@@ -16,7 +16,7 @@ namespace DsApp
 	};
 
 
-	struct DsRagdollParamST
+	struct DS_RAGDOLL_PARAN_FORMAT
 	{
 		double mass;
 		int animType; //DS_RAGDOLL_PARAM_ANIM_TYPE
@@ -40,7 +40,7 @@ namespace DsApp
 		INSIDE_COLLISION_GROUP GetCollisionGroup() const { return  static_cast<INSIDE_COLLISION_GROUP>( (m_pParam) ? (m_pParam->collisionGroup) : (0) ); }
 
 	private:
-		DsRagdollParamST* m_pParam;
+		DS_RAGDOLL_PARAN_FORMAT* m_pParam;
 
 	};
 }

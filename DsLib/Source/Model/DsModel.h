@@ -107,7 +107,7 @@ namespace DsLib
 		DsMat33d GetRotation()const { return m_rot; }
 
 	public:
-		DsMat44d GetDmypoly(int id)const;
+		bool GetDmypoly(int id, std::vector<DsMat44d>& outMat)const;
 
 	private:
 		DsVec4d* m_pVertex;

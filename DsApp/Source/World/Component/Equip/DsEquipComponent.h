@@ -4,6 +4,9 @@
 #ifndef _DS_COMPONENT_
 #include "World/Component/DsComponent.h"
 #endif
+#ifndef _DS_ATTACH_ENTITY_
+#include "World/Component/Attach/DsAttachEntity.h"
+#endif
 
 namespace DsApp
 {
@@ -11,6 +14,17 @@ namespace DsApp
 
 namespace DsApp
 {
+	class DsAnimAttachEntity : public DsAttachEntity
+	{
+	public:
+		DsAnimAttachEntity():m_pAnim(NULL){}
+	public:
+		virtual void SetTransform(const DsMat44d& transform) override;
+		void SetAnim(DsLib::DsAnimation* pAnim) { m_pAnim = pAnim; }
+	private:
+		DsLib::DsAnimation* m_pAnim;
+	};
+
 	class DsEquipComponent : public DsComponent
 	{
 	public:
@@ -23,6 +37,7 @@ namespace DsApp
 	private:
 		int m_wepIndex;
 		DsLib::DsAnimation* m_pWep;
+		DsAnimAttachEntity m_attachEntity;
 	};
 
 

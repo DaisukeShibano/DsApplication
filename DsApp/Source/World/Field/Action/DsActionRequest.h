@@ -30,6 +30,7 @@ namespace DsApp
 		virtual bool IsAction(ACTION_TYPE type)const { return false; }
 		virtual void SetRequest(ACTION_TYPE type){};
 		virtual void SetCancel(ACTION_TYPE type){};
+		virtual void SetCancelAll() {};
 	};
 
 }

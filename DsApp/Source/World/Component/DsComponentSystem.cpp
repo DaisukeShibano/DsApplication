@@ -15,6 +15,9 @@
 #ifndef _DS_ITEM_BOX_COMPONENT_
 #include "World/Component/Item/DsItemBoxComponent.h"
 #endif
+#ifndef _DS_ATTACH_COMPONENT_
+#include "World/Component/Attach/DsAttachComponent.h"
+#endif
 
 using namespace DsApp;
 
@@ -106,6 +109,15 @@ void DsComponentSystem::RequestItemBox()
 {
 	_CreateGetComponent<DsItemBoxComponent>((ds_uint64)(&m_owner));
 }
+
+void DsComponentSystem::RequestAttach(const DsMat44d& target, DsAttachEntity* pMove)
+{
+	DsAttachComponent* pComponent = _CreateGetComponent<DsAttachComponent>((ds_uint64)(&m_owner));
+	if (pComponent) {
+		pComponent->Request(target, pMove);
+	}
+}
+
 
 DsItemBoxComponent * DsComponentSystem::GetItemBox()const
 {

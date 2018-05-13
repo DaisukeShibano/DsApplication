@@ -114,3 +114,9 @@ void DsActionRequestManual::SetCancel(ACTION_TYPE type)
 {
 	m_cancel |= 1ULL << static_cast<ds_uint64>(type);
 }
+
+//virtual
+void DsActionRequestManual::SetCancelAll()
+{
+	m_cancel = 0xFFFFFFFFFFFFFFFFULL;
+}

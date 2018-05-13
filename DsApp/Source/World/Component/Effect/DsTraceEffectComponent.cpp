@@ -49,9 +49,13 @@ bool DsTraceEffectComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 			m_pSys = &arg.sys;
 		}
 
-		const DsVec3d pos0 = arg.owner.GetDmypoly(m_dmypolyId0).GetPos();
-		const DsVec3d pos1 = arg.owner.GetDmypoly(m_dmypolyId1).GetPos();
-		m_pEmitter->RequestEmit(pos0, pos1);
+		bool isDmypolyOk= false;
+		DsMat44d mat0 = DsMat44d::Identity();
+		DsMat44d mat1 = DsMat44d::Identity();
+		if (arg.owner.GetDmypoly(m_dmypolyId0, mat0) &&
+			arg.owner.GetDmypoly(m_dmypolyId1, mat1)) {
+			m_pEmitter->RequestEmit(mat0.GetPos(), mat1.GetPos());
+		}
 	}
 	else {
 		bool isEmpty = true;

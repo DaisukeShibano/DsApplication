@@ -13,7 +13,7 @@ static const char* IDEL_ANIM_NAME = "idle";
 static const char* RUN_ANIM_NAME = "run";
 
 
-DsActionCtrl::DsActionCtrl(const DsActionRequest& actReq, const std::vector<DsLib::DsAnimClip*>& animClip)
+DsActionCtrl::DsActionCtrl(DsActionRequest& actReq, const std::vector<DsLib::DsAnimClip*>& animClip)
 	: m_pASCtrl(NULL)
 	, m_actReq(actReq)
 	, m_state()

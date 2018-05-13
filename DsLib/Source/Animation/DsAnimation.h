@@ -24,7 +24,7 @@ namespace DsLib
 	class DsAnimation
 	{
 	public:
-		DsAnimation(const std::string& resName, DsDrawCommand& com, DsResource& resource);
+		DsAnimation(const char* pResName, DsDrawCommand& com, DsResource& resource);
 		virtual ~DsAnimation();
 
 	public:

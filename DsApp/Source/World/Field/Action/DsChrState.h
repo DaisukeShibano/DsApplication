@@ -28,7 +28,7 @@ namespace DsApp
 	public:
 		struct INIT_ARG
 		{
-			INIT_ARG(DsLib::DsAnimClip* arg1, const DsActionRequest& arg2, StateMap& arg3, CHR_STATE arg4)
+			INIT_ARG(DsLib::DsAnimClip* arg1, DsActionRequest& arg2, StateMap& arg3, CHR_STATE arg4)
 				: pAnimClip(arg1)
 				, actReq(arg2)
 				, allState(arg3)
@@ -36,7 +36,7 @@ namespace DsApp
 
 			{}
 			DsLib::DsAnimClip* pAnimClip;
-			const DsActionRequest& actReq;
+			DsActionRequest& actReq;
 			StateMap& allState;
 			CHR_STATE myState;
 		};
@@ -78,7 +78,7 @@ namespace DsApp
 	protected:
 		DsLib::DsAnimClip* m_pAnimClip;
 		CHR_STATE m_nextState;
-		const DsActionRequest& m_actReq;
+		DsActionRequest& m_actReq;
 
 	private:
 		StateMap& m_allState;

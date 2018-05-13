@@ -15,6 +15,7 @@ namespace DsApp
 	class DsFieldObj;
 	class DsComponent;
 	class DsItemBoxComponent;
+	class DsAttachEntity;
 }
 
 namespace DsApp
@@ -66,6 +67,7 @@ namespace DsApp
 		void RequestSoundEffect(ds_int64 key, int soundId, int dmypolyId);
 		void RequestEquip();
 		void RequestItemBox();
+		void RequestAttach(const DsMat44d& target, DsAttachEntity* pMove);
 
 	public:
 		DsItemBoxComponent * GetItemBox()const;
