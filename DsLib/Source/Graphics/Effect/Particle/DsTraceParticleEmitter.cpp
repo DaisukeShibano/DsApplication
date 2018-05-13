@@ -10,7 +10,7 @@ using namespace DsLib;
 
 //パラメータでもいいかもだけど今はとりあえず決め打ち
 static const double INTERVAL_TIME = 0.01;//発生間隔[秒]
-static const double PARTICLE_LIFE_TIME = 1.5f;//パーティクル寿命
+static const double PARTICLE_LIFE_TIME = 0.10f;//パーティクル寿命
 
 
 
@@ -25,6 +25,7 @@ DsTraceParticleEmitter::DsTraceParticleEmitter()
 	, m_texPath()
 	, m_nextEmitTime(0)
 	, m_isRequestEmit(false)
+	, m_isRequestEmitPre(false)
 {
 	m_texPath = "TestParticle.tga";
 }
@@ -86,9 +87,8 @@ void DsTraceParticleEmitter::Update(double dt)
 		}
 	}
 
-
-	//リクエストが止まったので軌跡も途切れる
-	if (!m_isRequestEmit) {
+	//リクエストが止まってたので一つ前とは繋がらないように
+	if (!m_isRequestEmitPre) {
 		m_emitPrePos[0] = m_emitPos[0];
 		m_emitPrePos[1] = m_emitPos[1];
 	}
@@ -174,9 +174,9 @@ void DsTraceParticleEmitter::Update(double dt)
 				++it;
 			}
 		}
-
 	}
 
+	m_isRequestEmitPre = m_isRequestEmit;
 	m_isRequestEmit = false;
 }
 
@@ -194,6 +194,11 @@ double DsTraceParticleEmitter::GetParticleMaxLifeTime()const
 
 bool DsTraceParticleEmitter::IsEmpty()const
 {
-	return m_particle.empty();
+	for (const ParticleBlock& block : m_particle) {
+		if (block.pUseTail != NULL) {
+			return false;
+		}
+	}
+	return true;
 }
 

@@ -54,6 +54,7 @@ namespace DsLib
 		std::string m_texPath;
 		double m_nextEmitTime;
 		bool m_isRequestEmit;
+		bool m_isRequestEmitPre;
 	};
 
 }
