@@ -88,7 +88,7 @@ void DsTraceParticleEmitter::Update(double dt)
 	}
 
 	//リクエストが止まってたので一つ前とは繋がらないように
-	if (!m_isRequestEmitPre) {
+	if (!m_isRequestEmitPre ) {
 		m_emitPrePos[0] = m_emitPos[0];
 		m_emitPrePos[1] = m_emitPos[1];
 	}

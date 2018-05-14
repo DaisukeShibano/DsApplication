@@ -44,11 +44,12 @@ void DsComponentSystem::Update(double dt)
 	for (auto c : m_components) {
 		const bool isAlive = c.second->Update(arg);
 		if (!isAlive) {
-			delete c.second;
 			eraseList.push_back(c.first);
 		}
 	}
 	for (const KEY& key : eraseList) {
+		DsComponent* pCom = m_components[key];
+		delete pCom;
 		m_components.erase(key);
 	}
 }
@@ -110,10 +111,13 @@ void DsComponentSystem::RequestItemBox()
 	_CreateGetComponent<DsItemBoxComponent>((ds_uint64)(&m_owner));
 }
 
-void DsComponentSystem::RequestAttach(const DsMat44d& target, DsAttachEntity* pMove)
+void DsComponentSystem::RequestAttachWithUpdate(const DsMat44d& target, DsAttachEntity* pMove, double dt)
 {
 	DsAttachComponent* pComponent = _CreateGetComponent<DsAttachComponent>((ds_uint64)(&m_owner));
 	if (pComponent) {
+		pComponent->Request(target, pMove);
+		const COMPONENT_UPDATE_ARG arg(dt, m_owner, m_sys);
+		pComponent->Update(arg);
 		pComponent->Request(target, pMove);
 	}
 }

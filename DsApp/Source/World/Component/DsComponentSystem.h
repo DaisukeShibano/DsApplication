@@ -67,7 +67,7 @@ namespace DsApp
 		void RequestSoundEffect(ds_int64 key, int soundId, int dmypolyId);
 		void RequestEquip();
 		void RequestItemBox();
-		void RequestAttach(const DsMat44d& target, DsAttachEntity* pMove);
+		void RequestAttachWithUpdate(const DsMat44d& target, DsAttachEntity* pMove, double dt);
 
 	public:
 		DsItemBoxComponent * GetItemBox()const;
