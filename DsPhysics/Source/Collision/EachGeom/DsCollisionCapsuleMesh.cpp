@@ -30,7 +30,7 @@ namespace
 	{
 	public:
 		_TrimeshCapsuleCollider(const DsCollisionGeometry* s)
-			:m_pSphere(s)
+			:m_pCapsule(s)
 		{
 
 		}
@@ -54,8 +54,9 @@ namespace
 			// create plane from triangle
 			const double plDistance = DsVec3d::Dot(m_pV[0], m_vN);
 			// calculate capsule distance to plane
-			const double fDistanceCapsuleCenterToPlane = DsVec3d::Dot(m_vN, m_pSphere->GetBasePos()) - plDistance;
+			const double fDistanceCapsuleCenterToPlane = DsVec3d::Dot(m_vN, m_pCapsule->GetBasePos()) - plDistance;
 
+			//中心よりめり込んでるのは何もしない
 			// Capsule must be over positive side of triangle
 			if (fDistanceCapsuleCenterToPlane < 0.0)
 			{
@@ -70,13 +71,13 @@ namespace
 			m_iBestAxis = 0;
 
 
-			const DsVec3d vCapsulePosition = m_pSphere->GetBasePos();
+			const DsVec3d vCapsulePosition = m_pCapsule->GetBasePos();
 			// Translate triangle to Cc cord.
 			m_vV0 = m_pV[0] - vCapsulePosition;
 			m_vV1 = m_pV[1] - vCapsulePosition;
 			m_vV2 = m_pV[2] - vCapsulePosition;
 			
-			m_vCapsuleAxis = m_pSphere->GetRot().GetAxisY();
+			m_vCapsuleAxis = m_pCapsule->GetRot().GetAxisY();
 
 			m_vE0 = m_pV[1] - m_pV[0];
 			m_vE1 = m_pV[2] - m_pV[1];
@@ -95,8 +96,8 @@ namespace
 			}
 
 
-			const double vCapsuleRadius = m_pSphere->GetSide().x;
-			const double fCapsuleSize = m_pSphere->GetSide().y;
+			const double vCapsuleRadius = m_pCapsule->GetSide().x;
+			const double fCapsuleSize = m_pCapsule->GetSide().y;
 			//三角形を貫通してるカプセルのベクトルを求める
 			// vCposTransは多分だが、カプセルの両端は球なので、この部分に関してはどれだけ分離軸方面にめり込んでるかは、常に半径分で一定。
 			// m_vCapsuleAxis[0] * (m_fCapsuleSize*REAL(0.5) - m_vCapsuleRadius); は端の球の部分を除いた、円柱の中心を通る線
@@ -177,9 +178,9 @@ namespace
 
 		bool _cldTestSeparatingAxesOfCapsule()
 		{
-			const double vCapsuleRadius = m_pSphere->GetSide().x;
-			const double fCapsuleSize = m_pSphere->GetSide().y;
-			const DsVec3d vCapsulePosition = m_pSphere->GetBasePos();
+			const double vCapsuleRadius = m_pCapsule->GetSide().x;
+			const double fCapsuleSize = m_pCapsule->GetSide().y;
+			const DsVec3d vCapsulePosition = m_pCapsule->GetBasePos();
 
 			//円柱の上
 			const DsVec3d vCp0 = vCapsulePosition + m_vCapsuleAxis * (fCapsuleSize*(0.5) - vCapsuleRadius);
@@ -395,8 +396,8 @@ namespace
 
 			vAxis = vAxis / fL;
 
-			const double capsuleRadius = m_pSphere->GetSide().x;
-			const double capsuleSize = m_pSphere->GetSide().y;
+			const double capsuleRadius = m_pCapsule->GetSide().x;
+			const double capsuleSize = m_pCapsule->GetSide().y;
 
 			// project capsule on vAxis
 			//vAxisにカプセルを投影
@@ -507,7 +508,7 @@ namespace
 
 	private:
 		//最初から最後まで変わらなく、予め分かってるの
-		const DsCollisionGeometry* m_pSphere;
+		const DsCollisionGeometry* m_pCapsule;
 		const DsVec3d* m_pV;
 		DsVec3d m_vN;
 		//割と最初の方に分かり、以降変わらないの

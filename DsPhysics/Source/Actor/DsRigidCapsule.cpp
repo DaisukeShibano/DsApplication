@@ -8,7 +8,6 @@ using namespace DsPhysics;
 
 DsRigidCapsule::DsRigidCapsule(const DsActorId& id, const char* name )
 :DsRigidBody(id, name)
-,m_pCollisionGeometry(NULL)
 {
 }
 

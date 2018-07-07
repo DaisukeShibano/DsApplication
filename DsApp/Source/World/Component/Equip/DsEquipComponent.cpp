@@ -91,7 +91,8 @@ bool DsEquipComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 	if (m_pWep) {
 		DsMat44d mat = DsMat44d::Identity();
 		arg.owner.GetDmypoly(m_attachDmypolyId, mat, DMYPOLY_SLOT::MAIN_BODY);
-		pComSys->RequestAttachWithUpdate(mat, &m_attachEntity, arg.dt);
+		m_pWep->SetRootMatrix(mat.GetPos(), mat.ToMat33());
+		//pComSys->RequestAttachWithUpdate(mat, &m_attachEntity, arg.dt);
 		m_pWep->Update(arg.dt);
 	}
 

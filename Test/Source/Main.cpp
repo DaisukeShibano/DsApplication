@@ -86,9 +86,9 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 				m_joint2->AttachJoint(act2, act3, act2.GetActor()->GetPosition() + DsVec3d(-0.5, 0, 0), DsVec3d(0, 0, 1), DsVec3d(1, 0, 0));
 			}
 
-			if(0){//衝突テスト
+			if(1){//衝突テスト
 				DsRigidBox::GetVertex(vertex, 1.5, 0.5, 1.5);
-				for(int i=0; i<30; ++i){
+				for(int i=0; i<0; ++i){
 					DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, "箱１");
 					factory.InitPos(DsVec3d(0.0, 0.0 + (0.5)*(double)i, 0.0));
 					factory.SetOption(option);
@@ -96,7 +96,7 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 					DsActor* pActor = actorId.GetActor();
 					pActor->SetMaterial(DsActorMaterial::Aluminum());
 				}
-				for (int i = 0; i<0; ++i) {
+				for (int i = 0; i<1; ++i) {
 					DsRigidCapsule::DsRigidCapsuleFactory factory(0.5, 1.0, 1.0, "箱１");
 					factory.InitPos(DsVec3d(-1.0, 1.6 + (0.6)*(double)i, 4.0));
 					factory.InitRot(DsMat33d::RotateZ(0.3));
@@ -131,7 +131,7 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 	{
 		pWorld->Update(args.dt);
 		int color = 0;
-		for each(DsActor* actor in pWorld->GetActors())
+		for(DsActor* actor : pWorld->GetActors())
 		{
 			std::string tmp = actor->GetName();
 			//if( (tmp != "robo_0") && (tmp!="ragdoll") )
@@ -164,15 +164,15 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 
 	m_pCreator->Update(args.dt);
 
-	for each(DsFieldHit* obj in m_pCreator->RefHits())
+	for(DsFieldHit* obj : m_pCreator->RefHits())
 	{
 		obj->Update(args.dt);
 	}
-	for each(DsFieldChr* obj in m_pCreator->RefChrs())
+	for(DsFieldChr* obj : m_pCreator->RefChrs())
 	{
 		obj->Update(args.dt);
 	}
-	for each(DsFieldObj* obj in m_pCreator->RefObjs())
+	for(DsFieldObj* obj : m_pCreator->RefObjs())
 	{
 		obj->Update(args.dt);
 	}

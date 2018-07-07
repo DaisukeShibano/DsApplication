@@ -60,12 +60,6 @@ namespace DsPhysics
 
 	public: //•`‰æ‚Ì‚½‚ß‚Ìƒƒ\ƒbƒh
 		virtual void Draw(DsDrawCommand& com) override;
-		
-
-
-	private:
-		DsCollisionGeometry* m_pCollisionGeometry;
-
 	};
 }
 
