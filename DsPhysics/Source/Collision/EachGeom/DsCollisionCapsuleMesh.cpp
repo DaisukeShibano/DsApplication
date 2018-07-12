@@ -42,14 +42,14 @@ namespace
 			m_vN = normal;
 		}
 
-		bool IsColide(DsVec3d& resultColPos, DsVec3d& resultNormal, double& resultDepth)
+		void Colide(DsCollisionResult& result, const DsActorId& o1, const DsActorId& o2)
 		{
-			return _cldTestOneTriangleVSCapsule(resultColPos, resultNormal, resultDepth);
+			_cldTestOneTriangleVSCapsule(result, o1, o2);
 		}
 
 	private:
 
-		bool _cldTestOneTriangleVSCapsule(DsVec3d& resultColPos, DsVec3d& resultNormal, double& resultDepth)
+		void _cldTestOneTriangleVSCapsule(DsCollisionResult& result, const DsActorId& o1, const DsActorId& o2)
 		{
 			// create plane from triangle
 			const double plDistance = DsVec3d::Dot(m_pV[0], m_vN);
@@ -61,7 +61,7 @@ namespace
 			if (fDistanceCapsuleCenterToPlane < 0.0)
 			{
 				// if not don't generate contacts
-				return false;
+				return;
 			}
 
 			m_iBestAxis = 0;
@@ -87,17 +87,17 @@ namespace
 			if (!_cldTestSeparatingAxesOfCapsule())
 			{
 				// if not found do nothing
-				return false;
+				return;
 			}
 
 			if (m_iBestAxis == 0)
 			{
-				return false;
+				return;
 			}
 
 
 			const double vCapsuleRadius = m_pCapsule->GetSide().x;
-			const double fCapsuleSize = m_pCapsule->GetSide().y;
+			const double fCapsuleSize = m_pCapsule->GetSide().y;//既に半径になってる
 			//三角形を貫通してるカプセルのベクトルを求める
 			// vCposTransは多分だが、カプセルの両端は球なので、この部分に関してはどれだけ分離軸方面にめり込んでるかは、常に半径分で一定。
 			// m_vCapsuleAxis[0] * (m_fCapsuleSize*REAL(0.5) - m_vCapsuleRadius); は端の球の部分を除いた、円柱の中心を通る線
@@ -107,10 +107,10 @@ namespace
 			vCposTrans = vCapsulePosition + m_vNormal * vCapsuleRadius;
 
 			DsVec3d vCEdgePoint0;
-			vCEdgePoint0 = vCposTrans + m_vCapsuleAxis * (fCapsuleSize*(0.5) - vCapsuleRadius);
+			vCEdgePoint0 = vCposTrans + m_vCapsuleAxis * (fCapsuleSize - vCapsuleRadius);
 
 			DsVec3d vCEdgePoint1;
-			vCEdgePoint1 = vCposTrans - m_vCapsuleAxis * (fCapsuleSize*(0.5) - vCapsuleRadius);
+			vCEdgePoint1 = vCposTrans - m_vCapsuleAxis * (fCapsuleSize - vCapsuleRadius);
 
 			// transform capsule edge points into triangle space
 			vCEdgePoint0 -= m_pV[0];
@@ -118,11 +118,11 @@ namespace
 
 			DsVec4d plPlane;
 			// triangle plane
-			plPlane.Set(- m_vN, 0.0);
+			plPlane.Set(-m_vN, 0.0);
 
 			if (!_cldClipEdgeToPlane(vCEdgePoint0, vCEdgePoint1, plPlane))
 			{
-				return false;
+				return;
 			}
 
 			// plane with edge 0
@@ -131,20 +131,20 @@ namespace
 			plPlane.Set(vTemp, (1e-5));
 			if (!_cldClipEdgeToPlane(vCEdgePoint0, vCEdgePoint1, plPlane))
 			{
-				return false;
+				return;
 			}
 
 			vTemp = DsVec3d::Cross( m_vN, m_vE1);
 			plPlane.Set( vTemp, -(DsVec3d::Dot(m_vE0, vTemp) - (1e-5)));
 			if (!_cldClipEdgeToPlane(vCEdgePoint0, vCEdgePoint1, plPlane))
 			{
-				return false;
+				return;
 			}
 
 			vTemp = DsVec3d::Cross( m_vN, m_vE2);
 			plPlane.Set( vTemp,(1e-5));
 			if (!_cldClipEdgeToPlane(vCEdgePoint0, vCEdgePoint1, plPlane)) {
-				return false;
+				return;
 			}
 
 			// return capsule edge points into absolute space
@@ -168,24 +168,21 @@ namespace
 				fDepth1 = 0.0;
 			}
 
-			resultColPos = vCEdgePoint1;
-			resultNormal = m_vNormal;
-			resultDepth = fDepth1;
-
-			return true;
+			result.AddInfo(vCEdgePoint0, -m_vNormal, fDepth0, o1, o2);
+			result.AddInfo(vCEdgePoint1, -m_vNormal, fDepth1, o1, o2);
 		}
 
 
 		bool _cldTestSeparatingAxesOfCapsule()
 		{
 			const double vCapsuleRadius = m_pCapsule->GetSide().x;
-			const double fCapsuleSize = m_pCapsule->GetSide().y;
+			const double fCapsuleSize = m_pCapsule->GetSide().y;//既に半分の長さになってる
 			const DsVec3d vCapsulePosition = m_pCapsule->GetBasePos();
 
 			//円柱の上
-			const DsVec3d vCp0 = vCapsulePosition + m_vCapsuleAxis * (fCapsuleSize*(0.5) - vCapsuleRadius);
+			const DsVec3d vCp0 = vCapsulePosition + m_vCapsuleAxis * (fCapsuleSize - vCapsuleRadius);
 			//円柱の下
-			const DsVec3d vCp1 = vCapsulePosition - m_vCapsuleAxis * (fCapsuleSize*(0.5) - vCapsuleRadius);
+			const DsVec3d vCp1 = vCapsulePosition - m_vCapsuleAxis * (fCapsuleSize - vCapsuleRadius);
 
 			// reset best axis
 			int iBestAxis = 0;
@@ -397,11 +394,11 @@ namespace
 			vAxis = vAxis / fL;
 
 			const double capsuleRadius = m_pCapsule->GetSide().x;
-			const double capsuleSize = m_pCapsule->GetSide().y;
+			const double capsuleSize = m_pCapsule->GetSide().y;//既に半径になっている
 
 			// project capsule on vAxis
 			//vAxisにカプセルを投影
-			const double frc = fabs(DsVec3d::Dot(m_vCapsuleAxis, vAxis))*(capsuleSize*0.5 - capsuleRadius) + capsuleRadius;
+			const double frc = fabs(DsVec3d::Dot(m_vCapsuleAxis, vAxis))*(capsuleSize - capsuleRadius) + capsuleRadius;
 
 			// project triangle on vAxis
 			// 頂点をvAxisに投影
@@ -457,7 +454,7 @@ namespace
 		}
 
 		/*
-			v1-v2 と v3 の成す平面の、v3側の外へ向かうベクトル
+			v1-v2 ベクトルのv3と垂直な成分が分離軸
 		*/
 		inline void _CalculateAxis(const DsVec3d& v1, const DsVec3d& v2, const DsVec3d& v3, DsVec3d& r)
 		{
@@ -474,23 +471,23 @@ namespace
 			const double fDistance1 = DsVec4d::PointDistance(plPlane, vEpnt1);
 
 			// if both points are behind the plane
-			if (fDistance0 < 0 && fDistance1 < 0)
+			if (fDistance0 < 0.0 && fDistance1 < 0.0)
 			{
 				// do nothing
 				return false;
 				// if both points in front of the plane
 			}
-			else if (fDistance0 > 0 && fDistance1 > 0)
+			else if (fDistance0 > 0.0 && fDistance1 > 0.0)
 			{
 				// accept them
 				return true;
 				// if we have edge/plane intersection
 			}
-			else if ((fDistance0 > 0 && fDistance1 < 0) || (fDistance0 < 0 && fDistance1 > 0))
+			else if ((fDistance0 > 0.0 && fDistance1 < 0.0) || (fDistance0 < 0.0 && fDistance1 > 0.0))
 			{
 				//交差点
 				// find intersection point of edge and plane
-				const DsVec3d vIntersectionPoint = vEpnt0 - (vEpnt0 - vEpnt1)*fDistance0 / (fDistance0 - fDistance1);
+				const DsVec3d vIntersectionPoint = vEpnt0 - (vEpnt0 - vEpnt1) * (fDistance0 / (fDistance0 - fDistance1));
 
 				// clamp correct edge to intersection point
 				if (fDistance0 < 0.0)
@@ -556,12 +553,7 @@ DsCollisionResult& DsCollisionCapsuleMesh::Collide()
 			};
 
 			colider.Initialize(v, pFace->normal);
-			DsVec3d colPos;
-			DsVec3d normal;
-			double depth;
-			if (colider.IsColide(colPos, normal, depth)) {
-				m_info.AddInfo(colPos, normal, depth, o1, o2);
-			}
+			colider.Colide(m_info, o1, o2);
 		}
 
 	}

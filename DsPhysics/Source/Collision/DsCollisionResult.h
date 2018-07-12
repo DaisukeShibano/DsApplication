@@ -113,7 +113,10 @@ namespace DsPhysics
 				id2 = m_ownerId_2[ idx ];
 			}
 		}
-
+		/*
+		normal‚Íid1‚ª’µ‚Ë•Ô‚é•ûŒü‚É‚·‚é‚æ‚¤‚É
+		depth‚Íƒvƒ‰ƒX‚ª‘O’ñ
+		*/
 		void AddInfo(const DsVec3d& pos, const DsVec3d& normal, const double depth, const DsActorId& id1, const DsActorId& id2)
 		{
 			if( DEFAULT_COL_NUM > m_colCounter )

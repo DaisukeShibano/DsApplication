@@ -50,8 +50,8 @@ namespace DsLib
 		void Set(const DsVec3d& _v, const double _w)
 		{
 			x = _v.x;
-			y = _v.x;
-			z = _v.x;
+			y = _v.y;
+			z = _v.z;
 			w = _w;
 		}
 

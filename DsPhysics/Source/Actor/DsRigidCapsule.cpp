@@ -101,6 +101,7 @@ void DsRigidCapsule::Draw(DsDrawCommand& com)
 	const DsVec3d p1 = GetRotation().GetAxisY()*(m_sideSize.y-r) + GetPosition();
 	const DsVec3d p2 = GetRotation().GetAxisY()*(-(m_sideSize.y-r)) + GetPosition();
 	com.DrawCapsule(p2, p1, r);
+	m_aabb.Draw(com);
 }
 
 

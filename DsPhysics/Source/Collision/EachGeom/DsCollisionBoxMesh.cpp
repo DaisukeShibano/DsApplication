@@ -591,7 +591,7 @@ namespace
 				}
 				const DsVec3d vPntTmp = avTempArray2[i] + v0;
 				//–@ü‚Íbox‚ª’µ‚Ë•Ô‚é•ûŒü‚É‚·‚é‚Ì‚Å”½“]‚³‚¹‚é
-				out.AddInfo(vPntTmp, -spa.normal, spa.depth, box.pContext->RefOwnerId(), tri.pContext->RefOwnerId());
+				out.AddInfo(vPntTmp, -spa.normal, -fTempDepth, box.pContext->RefOwnerId(), tri.pContext->RefOwnerId());
 			}
 		}
 		else if ( (2 <= spa.axisType) && (spa.axisType <= 4) ) {
@@ -665,7 +665,7 @@ namespace
 				// generate contact data
 				const DsVec3d vPntTmp = avTempArray1[i]+box.pos;
 				//–@ü‚Íbox‚ª’µ‚Ë•Ô‚é•ûŒü‚É‚·‚é‚Ì‚Å”½“]‚³‚¹‚é
-				out.AddInfo(vPntTmp, -spa.normal, spa.depth, box.pContext->RefOwnerId(), tri.pContext->RefOwnerId());
+				out.AddInfo(vPntTmp, -spa.normal, -fTempDepth, box.pContext->RefOwnerId(), tri.pContext->RefOwnerId());
 			}
 		}
 		else{
