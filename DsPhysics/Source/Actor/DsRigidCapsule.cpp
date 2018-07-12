@@ -79,15 +79,9 @@ void DsRigidCapsule::Create(const double r, const double halfLen, const double m
 //virtual 
 void DsRigidCapsule::_UpdateAabb()
 {
-	const DsVec3d tmpX = GetRotation()*DsVec3d(m_sideSize.x, 0, 0);
-	const DsVec3d tmpY = GetRotation()*DsVec3d(0, m_sideSize.y, 0);
-	const DsVec3d tmpZ = GetRotation()*DsVec3d(0, 0, m_sideSize.z);
-	const double maxX = max(fabs(tmpX.x), max(fabs(tmpY.x), fabs(tmpZ.x)));
-	const double maxY = max(fabs(tmpX.y), max(fabs(tmpY.y), fabs(tmpZ.y)));
-	const double maxZ = max(fabs(tmpX.z), max(fabs(tmpY.z), fabs(tmpZ.z)));
-
-	const DsVec3d max = GetPosition() + DsVec3d(maxX, maxY, maxZ);
-	const DsVec3d min = GetPosition() - DsVec3d(maxX, maxY, maxZ);
+	const DsVec3d len = DsVec3d::Abs( GetRotation().GetAxisY()*(m_sideSize.y - m_sideSize.x) ) + DsVec3d(m_sideSize.x, m_sideSize.x, m_sideSize.x);
+	const DsVec3d max = GetPosition() + len;
+	const DsVec3d min = GetPosition() - len;
 	m_aabb.Setup(max, min);
 }
 

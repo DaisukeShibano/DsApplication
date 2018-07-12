@@ -98,11 +98,9 @@ namespace
 
 			const double vCapsuleRadius = m_pCapsule->GetSide().x;
 			const double fCapsuleSize = m_pCapsule->GetSide().y;//既に半径になってる
-			//三角形を貫通してるカプセルのベクトルを求める
-			// vCposTransは多分だが、カプセルの両端は球なので、この部分に関してはどれだけ分離軸方面にめり込んでるかは、常に半径分で一定。
-			// m_vCapsuleAxis[0] * (m_fCapsuleSize*REAL(0.5) - m_vCapsuleRadius); は端の球の部分を除いた、円柱の中心を通る線
-			// それを球の半径分分離軸方面にオフセットすることで、三角形を貫通する、分離軸方面に一番深い、カプセルのベクトルになるのだと思う。
-			// ※分離軸の採用基準は一番浅いもので、それを採用したとき、カプセルのどこが一番(分離軸方向に)深くめり込んでいるベクトルなのかを知りたいってこと
+			
+			//vCEdgePoint0-vCEdgePoint1は分離軸方向に端球半径分歩み寄ったベクトル
+			//どっちかは分離軸方向に一番めり込んでる座標になる
 			DsVec3d vCposTrans;
 			vCposTrans = vCapsulePosition + m_vNormal * vCapsuleRadius;
 
