@@ -35,11 +35,11 @@ namespace DsPhysics
 
 	public:
 		DsCollisionResult()
-			: m_colPos(DEFAULT_COL_NUM)
-			, m_colNormal(DEFAULT_COL_NUM)
-			, m_depth(DEFAULT_COL_NUM)
-			, m_ownerId_1(DEFAULT_COL_NUM)
-			, m_ownerId_2(DEFAULT_COL_NUM)
+			: m_colPos()
+			, m_colNormal()
+			, m_depth()
+			, m_ownerId_1()
+			, m_ownerId_2()
 			, m_colCounter(0)
 			, m_infos()
 		{
@@ -49,25 +49,6 @@ namespace DsPhysics
 			//m_ownerId_1.clear();
 			//m_ownerId_2.clear();
 			//m_infos.clear();
-		}
-
-		DsCollisionResult(const DsCollisionResult& src)
-		{
-			(*this) = src;
-		}
-		
-		void operator =(const DsCollisionResult& src )
-		{
-			//実際に使われてる衝突点外はコピーしなくていい
-			m_colCounter = src.m_colCounter;
-			{
-				m_colPos = src.m_colPos;
-				m_colNormal = src.m_colNormal;
-				m_depth = src.m_depth;
-				m_ownerId_1 = src.m_ownerId_1;
-				m_ownerId_2 = src.m_ownerId_2;
-				//m_infosはコピーしなくていい。コピーしたくないから参照で返す用の衝突点情報
-			}
 		}
 
 		virtual ~DsCollisionResult(){}
@@ -142,18 +123,12 @@ namespace DsPhysics
 
 		void Clear()
 		{
-			//m_colPos.clear();
-			//m_colNormal.clear();
-			//m_depth.clear();
-			//m_ownerId_1.clear();
-			//m_ownerId_2.clear();
-			//m_infos.clear();
 			m_colCounter = 0;
 		}
 
 		const DsActorId GetHitActorId_1() const
 		{
-			if (m_ownerId_1.empty())
+			if (0== m_colCounter)
 			{
 				return DsActorId();
 			}
@@ -165,7 +140,7 @@ namespace DsPhysics
 
 		const DsActorId GetHitActorId_2() const
 		{
-			if (m_ownerId_2.empty())
+			if (0== m_colCounter)
 			{
 				return DsActorId();
 			}
@@ -175,11 +150,18 @@ namespace DsPhysics
 			}
 		}
 
-		const std::vector<DsVec3d>& RefPos() const{ return m_colPos; }
-		const std::vector<DsVec3d>& RefNormal() const{ return m_colNormal; }//owner1を跳ね返す方向
-		const std::vector<double>&	RefDepth() const { return m_depth; }//必ずプラス
-		const std::vector<DsActorId>& RefOwnerId1() const { return m_ownerId_1; }
-		const std::vector<DsActorId>& RefOwnerId2() const { return m_ownerId_2; }
+		//const std::vector<DsVec3d>& RefPos() const{ return m_colPos; }
+		//const std::vector<DsVec3d>& RefNormal() const{ return m_colNormal; }//owner1を跳ね返す方向
+		//const std::vector<double>&	RefDepth() const { return m_depth; }//必ずプラス
+		//const std::vector<DsActorId>& RefOwnerId1() const { return m_ownerId_1; }
+		//const std::vector<DsActorId>& RefOwnerId2() const { return m_ownerId_2; }
+
+		const DsVec3d* GefPos() const{ return m_colPos; }
+		const DsVec3d* GefNormal() const{ return m_colNormal; }//owner1を跳ね返す方向
+		const double*	GefDepth() const { return m_depth; }//必ずプラス
+		const DsActorId* GefOwnerId1() const { return m_ownerId_1; }
+		const DsActorId* GefOwnerId2() const { return m_ownerId_2; }
+
 
 		
 		//basePosに一番近い衝突点を取得。衝突点がなければfalseを返す
@@ -201,30 +183,12 @@ namespace DsPhysics
 			return true;
 		}
 
-		//衝突点を整理する
-		void ModefyInfo();
-
-		//衝突点の情報を得る
-		ColInfos& MakeInfos();
-
-		//加工せず全ての衝突点を得る
-		ColInfos& MakeInfosAll()
-		{
-			m_infos.clear();
-			for (int i = 0; i < m_colCounter; ++i)
-			{
-				ColInfo info(m_colPos[i], m_colNormal[i], m_depth[i], m_ownerId_1[i], m_ownerId_2[i]);
-				m_infos.push_back(info);
-			}
-			return m_infos;
-		}
-
 	public:
-		std::vector<DsVec3d> m_colPos;
-		std::vector<DsVec3d> m_colNormal;
-		std::vector<double>	m_depth;
-		std::vector<DsActorId> m_ownerId_1;
-		std::vector<DsActorId> m_ownerId_2;
+		DsVec3d m_colPos[DEFAULT_COL_NUM];
+		DsVec3d m_colNormal[DEFAULT_COL_NUM];
+		double	m_depth[DEFAULT_COL_NUM];
+		DsActorId m_ownerId_1[DEFAULT_COL_NUM];
+		DsActorId m_ownerId_2[DEFAULT_COL_NUM];
 		int m_colCounter;
 		ColInfos m_infos;
 	};

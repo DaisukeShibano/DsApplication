@@ -216,6 +216,9 @@
     <ClInclude Include="Source\Constraint\ConstraintSolver\DsPositionDepthSolver.h">
       <Filter>Source\Constraint\ConstraintSolver</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionBoxCapsule.h">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsPhysicsManager.cpp">
@@ -355,6 +358,9 @@
     </ClCompile>
     <ClCompile Include="Source\Constraint\ConstraintSolver\DsPositionDepthSolver.cpp">
       <Filter>Source\Constraint\ConstraintSolver</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionBoxCapsule.cpp">
+      <Filter>Source\Collision\EachGeom</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -86,7 +86,7 @@ void DsConstraintSolver::AddCollision(const DsCollisionResult& colResult)
 		//DsCollisionConstraint* c = new(m_colConstraintBuff + m_colConstraintBuffUseSize)
 		//	DsCollisionConstraint(colResult.RefOwnerId1()[i], colResult.RefOwnerId2()[i], &m_world, colResult.RefPos()[i], colResult.RefNormal()[i], m_world.GetDt(), colResult.RefDepth()[i]);
 		DsCollisionConstraint* c = reinterpret_cast<DsCollisionConstraint*>(m_colConstraintBuff + m_colConstraintBuffUseSize);
-		c->Initialize(colResult.RefOwnerId1()[i], colResult.RefOwnerId2()[i], &m_world, colResult.RefPos()[i], colResult.RefNormal()[i], m_world.GetDt(), colResult.RefDepth()[i]);
+		c->Initialize(colResult.GefOwnerId1()[i], colResult.GefOwnerId2()[i], &m_world, colResult.GefPos()[i], colResult.GefNormal()[i], m_world.GetDt(), colResult.GefDepth()[i]);
 		m_colConstraintBuffUseSize += sizeof(DsCollisionConstraint);
 	}
 #else

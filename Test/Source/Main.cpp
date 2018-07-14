@@ -88,9 +88,9 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 
 			if(1){//è’ìÀÉeÉXÉg
 				DsRigidBox::GetVertex(vertex, 1.5, 0.5, 1.5);
-				for(int i=0; i<0; ++i){
+				for(int i=0; i<300; ++i){
 					DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, "î†ÇP");
-					factory.InitPos(DsVec3d(0.0, 0.0 + (0.5)*(double)i, 0.0));
+					factory.InitPos(DsVec3d(0.0, 0.0 + (0.5)*(double)i, 2.0));
 					factory.SetOption(option);
 					DsActorId actorId = pWorld->CreateActor(factory);
 					DsActor* pActor = actorId.GetActor();
