@@ -1,6 +1,14 @@
 #ifndef __DS_COLLISION_EXECUTER__
 #define __DS_COLLISION_EXECUTER__
-
+#ifndef __DS_ACTOR__
+#include "Actor/DsActor.h"
+#endif
+#ifndef __DS_COLLISION_GEOMETRY__
+#include "Collision/DsCollisionGeometry.h"
+#endif
+#ifndef __DS_COLLISION_RESULT__
+#include "Collision/DsCollisionResult.h"
+#endif
 #ifndef __DS_COLLISION_BOX_BOX__
 #include "Collision/EachGeom/DsCollisionBoxBox.h"
 #endif
@@ -22,23 +30,15 @@
 #ifndef _DS_COLLISION_MESH_MESH_H_
 #include "Collision/EachGeom/DsCollisionMeshMesh.h"
 #endif
-
-#ifndef __DS_ACTOR__
-#include "Actor/DsActor.h"
-#endif
-#ifndef __DS_COLLISION_GEOMETRY__
-#include "Collision/DsCollisionGeometry.h"
-#endif
-#ifndef __DS_COLLISION_RESULT__
-#include "Collision/DsCollisionResult.h"
-#endif
 #ifndef _DS_COLLISION_SPHERE_SPHERE_H_
 #include "Collision/EachGeom/DsCollisionSphereSphere.h"
 #endif
 #ifndef _DS_COLLISION_CAPSULE_MESH_H_
 #include "Collision/EachGeom/DsCollisionCapsuleMesh.h"
 #endif
-
+#ifndef _DS_COLLISION_BOX_CAPSULE_
+#include "Collision/EachGeom/DsCollisionBoxCapsule.h"
+#endif
 
 namespace DsPhysics
 {
@@ -65,6 +65,7 @@ namespace DsPhysics
 			, m_sphereSphere(world)
 			, m_capsuleMesh(world)
 			, m_meshMesh(world)
+			, m_boxCapsule(world)
 		{}
 		virtual ~DsCollisionExecuter()
 		{}
@@ -102,6 +103,18 @@ namespace DsPhysics
 			{
 				m_boxMesh.Initialize(actor2.GetCollisionGeometry(), actor1.GetCollisionGeometry());
 				return m_boxMesh.Collide();
+			}
+
+			//キューブとカプセル
+			else if ((actor1.GetType() == DsActor::RIGID_BOX) && (actor2.GetType() == DsActor::RIGID_CAPSULE))
+			{
+				m_boxCapsule.Initialize(actor1.GetCollisionGeometry(), actor2.GetCollisionGeometry());
+				return m_boxCapsule.Collide();
+			}
+			else if ((actor2.GetType() == DsActor::RIGID_BOX) && (actor1.GetType() == DsActor::RIGID_CAPSULE))
+			{
+				m_boxCapsule.Initialize(actor2.GetCollisionGeometry(), actor1.GetCollisionGeometry());
+				return m_boxCapsule.Collide();
 			}
 
 			//メッシュとレイ
@@ -171,7 +184,7 @@ namespace DsPhysics
 		}
 
 	private:
-		//一時的なクラスとして使ってたがインスタンス生成に時間かかってたので、メンバで持っとく
+		//todo:呼び出す処理は予め分かってるので登録しておいて呼ぶだけにする。ifの判定回数分お得
 		DsCollisionBoxBox m_boxBox;
 		DsCollisionBoxRay m_rayBox;
 		DsCollisionBoxMesh m_boxMesh;
@@ -181,6 +194,7 @@ namespace DsPhysics
 		DsCollisionSphereSphere m_sphereSphere;
 		DsCollisionCapsuleMesh m_capsuleMesh;
 		DsCollisionMeshMesh m_meshMesh;
+		DsCollisionBoxCapsule m_boxCapsule;
 	};
 }
 
