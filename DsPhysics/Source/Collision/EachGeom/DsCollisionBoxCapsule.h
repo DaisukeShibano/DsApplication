@@ -39,6 +39,9 @@ namespace DsPhysics
 	public:
 		virtual DsCollisionResult& Collide() override;
 
+	private:
+		int _dCollideSpheres(const DsVec3d& p1, double r1, const DsVec3d& p2, double r2, DsCollisionResult& c) const;
+		int _dCollideCapsuleBox();
 
 	private:
 		const DsCollisionGeometry* m_pBox;

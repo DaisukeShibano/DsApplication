@@ -41,6 +41,15 @@ namespace DsLib
 			z = setZ;
 		}
 
+		float& operator[](int i)
+		{
+			return  v[i];
+		}
+		float operator[](int i) const
+		{
+			return  v[i];
+		}
+
 		DsVec3f operator +(const DsVec3f& src) const
 		{
 			const DsVec3f dst = { x + src.x, y + src.y, z + src.z };

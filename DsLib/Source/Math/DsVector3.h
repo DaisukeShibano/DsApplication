@@ -61,6 +61,15 @@ namespace DsLib
 			z = setZ;
 		}
 
+		TYPE& operator[](int i)
+		{
+			return  v[i];
+		}
+		TYPE operator[](int i) const
+		{
+			return  v[i];
+		}
+
 		DsVec3<TYPE> operator +(const DsVec3<TYPE>& src) const
 		{
 			const DsVec3<TYPE> dst = { x + src.x, y + src.y, z + src.z };

@@ -48,6 +48,15 @@ namespace DsLib
 			z = setZ;
 		}
 
+		double& operator[](int i)
+		{
+			return  v[i];
+		}
+		double operator[](int i) const
+		{
+			return  v[i];
+		}
+
 		DsVec3d operator +(const DsVec3d& src) const
 		{
 #ifdef DS_SYS_USE_SIMD_

@@ -57,6 +57,7 @@ namespace DsLib
 			w = _w;
 		}
 
+
 		DsVec4f operator +(const DsVec4f& src) const
 		{
 			const DsVec4f dst = { x + src.x, y + src.y, z + src.z, w + src.w };
@@ -129,13 +130,13 @@ namespace DsLib
 
 		float& operator[](const int index)
 		{
-			assert((index < 4) && "indexの値がサイズを超えています\n");
+			DS_ASSERT((index < 4), "indexの値がサイズを超えています\n");
 			return v[index];
 		}
 
-		const float& operator[](const int index) const
+		float operator[](const int index) const
 		{
-			assert((index < 4) && "indexの値がサイズを超えています\n");
+			DS_ASSERT((index < 4), "indexの値がサイズを超えています\n");
 			return v[index];
 		}
 

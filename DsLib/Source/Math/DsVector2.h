@@ -42,6 +42,15 @@ namespace DsLib
 			y = setY;
 		}
 
+		TYPE& operator[](int i)
+		{
+			return  v[i];
+		}
+		TYPE operator[](int i) const
+		{
+			return  v[i];
+		}
+
 		DsVec2<TYPE> operator +(const DsVec2<TYPE>& src) const
 		{
 			const DsVec2<TYPE> dst = { x + src.x, y + src.y };

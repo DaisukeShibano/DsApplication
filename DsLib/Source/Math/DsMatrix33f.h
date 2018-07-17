@@ -26,13 +26,13 @@ namespace DsLib
 
 		float& operator[](const int index )
 		{
-			assert( (index < 9) && "indexの値がサイズを超えています\n" );
+			DS_ASSERT( (index < 9), "indexの値がサイズを超えています\n" );
 			return mat[ index ];
 		}
 
 		const float& operator[](const int index ) const
 		{
-			assert( (index < 9) && "indexの値がサイズを超えています\n" );
+			DS_ASSERT( (index < 9), "indexの値がサイズを超えています\n" );
 			return mat[ index ];
 		}
 

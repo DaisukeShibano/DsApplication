@@ -42,13 +42,13 @@ namespace DsLib
 
 		DsVec4f& operator[](const int index)
 		{
-			assert((index < 4) && "indexの値がサイズを超えています\n");
+			DS_ASSERT(index < 4, "indexの値がサイズを超えています\n");
 			return v[index];
 		}
 
 		const DsVec4f& operator[](const int index) const
 		{
-			assert((index < 4) && "indexの値がサイズを超えています\n");
+			DS_ASSERT(index < 4, "indexの値がサイズを超えています\n");
 			return v[index];
 		}
 

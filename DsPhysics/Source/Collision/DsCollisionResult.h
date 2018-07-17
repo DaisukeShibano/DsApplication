@@ -150,12 +150,6 @@ namespace DsPhysics
 			}
 		}
 
-		//const std::vector<DsVec3d>& RefPos() const{ return m_colPos; }
-		//const std::vector<DsVec3d>& RefNormal() const{ return m_colNormal; }//owner1を跳ね返す方向
-		//const std::vector<double>&	RefDepth() const { return m_depth; }//必ずプラス
-		//const std::vector<DsActorId>& RefOwnerId1() const { return m_ownerId_1; }
-		//const std::vector<DsActorId>& RefOwnerId2() const { return m_ownerId_2; }
-
 		const DsVec3d* GefPos() const{ return m_colPos; }
 		const DsVec3d* GefNormal() const{ return m_colNormal; }//owner1を跳ね返す方向
 		const double*	GefDepth() const { return m_depth; }//必ずプラス

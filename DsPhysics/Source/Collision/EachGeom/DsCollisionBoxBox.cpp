@@ -188,6 +188,12 @@ DsCollisionResult& DsCollisionBoxBox::Collide()
 	return m_info;
 }
 
+DsCollisionResult& DsCollisionBoxBox::CollideDirect()
+{
+	m_info.Clear();
+	return _ColideFinal();
+}
+
 DsCollisionResult& DsCollisionBoxBox::_ColideFinal()
 {
 	/*

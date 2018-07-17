@@ -36,6 +36,7 @@ namespace DsPhysics
 		virtual ~DsCollisionBoxBox(){}
 
 		virtual DsCollisionResult& Collide() override;
+		DsCollisionResult& CollideDirect();
 
 	private:
 		DsCollisionResult& _ColideFinal();
