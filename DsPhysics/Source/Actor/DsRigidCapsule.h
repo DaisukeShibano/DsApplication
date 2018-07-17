@@ -27,12 +27,14 @@ namespace DsPhysics
 		,m_mass(mass)
 		,m_initOption(Option::Default())
 		,m_name(name)
+		,m_biasI(DsVec3d::Zero())
 		{}
 
 		virtual DsActor* CreateIns( const DsActorId& id ) const override;
 
 	public:
 		void SetOption(const Option& option){ m_initOption = option; }
+		void SetBiasI(const DsVec3d& bias) { m_biasI = bias; }
 
 	private:
 		const double m_r;
@@ -40,6 +42,7 @@ namespace DsPhysics
 		const double m_mass;
 		Option m_initOption;
 		std::string m_name;
+		DsVec3d m_biasI;
 	};
 	/////////////Factoryここまで////////////
 
@@ -55,7 +58,7 @@ namespace DsPhysics
 
 	public:	
 		//vertexは引数を内部で持ってるメンバにコピー
-		void Create(const double r, const double halfLen, const double mass );
+		void Create(double r, double halfLen, double mass );
 		virtual void _UpdateAabb() override;
 
 	public: //描画のためのメソッド

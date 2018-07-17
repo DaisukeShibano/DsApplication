@@ -12,6 +12,9 @@
 #ifndef __DS_RIGID_BOX__
 #include "Actor/DsRigidBox.h"
 #endif
+#ifndef __DS_RIGID_CAPSULE__
+#include "Actor/DsRigidCapsule.h"
+#endif
 #ifndef __DS_PHYSICS_WORLD__
 #include "DsPhysicsWorld.h"
 #endif
@@ -77,10 +80,16 @@ void DsRagdoll::_ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActo
 
 			const DsVec3d rigidPos = (parentPos + childPos)*0.5;
 			const DsVec3d dist = childPos - parentPos;
-			DsVec3d vertex[8];
-			DsRigidBox::GetVertex(vertex, 0.1, dist.Length(), 0.1);//Yがボーンの向きっぽい。//太さは後でパラメータ化する
-			DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, pBone->name.c_str());
-			factory.SetBiasI(DsVec3d(0.0, 4.0, 0.0));
+			
+			//DsVec3d vertex[8];
+			//DsRigidBox::GetVertex(vertex, 0.1, dist.Length(), 0.1);//Yがボーンの向きっぽい。//太さは後でパラメータ化する
+			//DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, pBone->name.c_str());
+			//factory.SetBiasI(DsVec3d(0.0, 4.0, 0.0));
+
+			const double radius = 0.05;
+			DsRigidCapsule::DsRigidCapsuleFactory factory(radius, dist.Length()*0.5- radius, 1.0, pBone->name.c_str());
+			factory.SetBiasI(DsVec3d(8.0, 16.0, 8.0));
+
 			factory.InitPos(rigidPos);
 			factory.InitRot(pBone->initWorldPose.ToMat33());
 			factory.SetOption(DsActor::Option::Default());

@@ -16,10 +16,15 @@ DsRigidCapsule::~DsRigidCapsule()
 	delete m_pCollisionGeometry; m_pCollisionGeometry = NULL;
 }
 
-void DsRigidCapsule::Create(const double r, const double halfLen, const double mass)
+void DsRigidCapsule::Create(double r, double halfLen, double mass)
 {
 	DS_ASSERT(!( 0.0 >= mass), "d‚³‚ª0ˆÈ‰º‚Å‚·");
 
+	r = max(r, 0.0);
+	halfLen = max(halfLen, 0.0);
+
+	DS_ASSERT(!(0.0 >= r), "”¼Œa‚ª0ˆÈ‰º‚Å‚·");
+	
 	{
 		DsRigidPhysicsInfo& pi = m_physicsInfo;
 
@@ -95,7 +100,6 @@ void DsRigidCapsule::Draw(DsDrawCommand& com)
 	const DsVec3d p1 = GetRotation().GetAxisY()*(m_sideSize.y-r) + GetPosition();
 	const DsVec3d p2 = GetRotation().GetAxisY()*(-(m_sideSize.y-r)) + GetPosition();
 	com.DrawCapsule(p2, p1, r);
-	m_aabb.Draw(com);
 }
 
 
@@ -106,6 +110,7 @@ DsActor* DsRigidCapsule::DsRigidCapsuleFactory::CreateIns( const DsActorId& id )
 	DsRigidCapsule* pRet = new DsRigidCapsule(id, m_name.c_str());
 	if(pRet)
 	{
+		pRet->SetInertiaBias(m_biasI);
 		pRet->m_option = m_initOption;
 		pRet->m_initPos = m_initPos;
 		pRet->m_initRot = m_initRot;

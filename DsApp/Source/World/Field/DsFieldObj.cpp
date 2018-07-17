@@ -134,21 +134,21 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 			DsVec3d vertex[8];
 			const DsHitRes::Shape& shape = pHitRes->RefSpahe();
 			DsRigidBox::GetVertex(vertex, shape.sizeX, shape.sizeY, shape.sizeZ);
-			{
-				DsRigidBox::DsRigidBoxFactory factory(vertex, shape.weight, m_name.c_str());
-				_SetActorCoord(factory, initInfo);
-				const DsActor::Option option = _GetActorOption(initInfo.physicsType);
-				factory.SetOption(option);
+			DsRigidBox::DsRigidBoxFactory factory(vertex, shape.weight, m_name.c_str());
+			//const double len = sqrt(pow(shape.sizeX*0.5, 2.0) + pow(shape.sizeZ*0.5, 2.0));
+			//DsRigidCapsule::DsRigidCapsuleFactory factory(len, shape.sizeY*0.5, shape.weight, m_name.c_str());
+			_SetActorCoord(factory, initInfo);
+			const DsActor::Option option = _GetActorOption(initInfo.physicsType);
+			factory.SetOption(option);
 				
-				m_actorId = m_world.CreateActor(factory);
-				DsActor* pActor = m_world.GetActor(m_actorId);
-				if (pActor)
+			m_actorId = m_world.CreateActor(factory);
+			DsActor* pActor = m_world.GetActor(m_actorId);
+			if (pActor)
+			{
+				pActor->SetMaterial(DsActorMaterial::Aluminum());
+				if (m_pAnimation)
 				{
-					pActor->SetMaterial(DsActorMaterial::Aluminum());
-					if (m_pAnimation)
-					{
-						m_pAnimation->SetRootMatrix(GetPosition(), GetRotation());
-					}
+					m_pAnimation->SetRootMatrix(GetPosition(), GetRotation());
 				}
 			}
 		}

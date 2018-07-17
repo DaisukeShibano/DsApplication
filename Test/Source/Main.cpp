@@ -86,7 +86,7 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 				m_joint2->AttachJoint(act2, act3, act2.GetActor()->GetPosition() + DsVec3d(-0.5, 0, 0), DsVec3d(0, 0, 1), DsVec3d(1, 0, 0));
 			}
 
-			if(1){//衝突テスト
+			if(0){//衝突テスト
 				DsRigidBox::GetVertex(vertex, 1.5, 0.5, 1.5);
 				for(int i=0; i<300; ++i){
 					DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, "箱１");
@@ -136,7 +136,7 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 			std::string tmp = actor->GetName();
 			//if( (tmp != "robo_0") && (tmp!="ragdoll") )
 			if ((tmp == "箱１") || (tmp == "箱２") || (tmp == "箱３"))
-				//if (actor->GetType() == DsActor::RIGID_MESH)
+			//if (actor->GetType() == DsActor::RIGID_CAPSULE)
 			{
 				const double rC = (actor->IsRest()) ? (0.5) : (1.0);
 				if (color == 0) {
