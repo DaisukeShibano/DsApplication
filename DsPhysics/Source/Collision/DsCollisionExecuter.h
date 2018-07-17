@@ -39,6 +39,9 @@
 #ifndef _DS_COLLISION_BOX_CAPSULE_
 #include "Collision/EachGeom/DsCollisionBoxCapsule.h"
 #endif
+#ifndef _DS_COLLISION_CAPSULE_CAPSULE_
+#include "Collision/EachGeom/DsCollisionCapsuleCapsule.h"
+#endif
 
 namespace DsPhysics
 {
@@ -66,6 +69,7 @@ namespace DsPhysics
 			, m_capsuleMesh(world)
 			, m_meshMesh(world)
 			, m_boxCapsule(world)
+			, m_capsuleCapsule(world)
 		{}
 		virtual ~DsCollisionExecuter()
 		{}
@@ -179,6 +183,12 @@ namespace DsPhysics
 				return m_capsuleMesh.Collide();
 			}
 
+			//カプセルとカプセル
+			if ((actor1.GetType() == DsActor::RIGID_CAPSULE) && (actor2.GetType() == DsActor::RIGID_CAPSULE))
+			{
+				m_capsuleCapsule.Initialize(actor1.GetCollisionGeometry(), actor2.GetCollisionGeometry());
+				return m_capsuleCapsule.Collide();
+			}
 
 			return m_noCollide;
 		}
@@ -195,6 +205,7 @@ namespace DsPhysics
 		DsCollisionCapsuleMesh m_capsuleMesh;
 		DsCollisionMeshMesh m_meshMesh;
 		DsCollisionBoxCapsule m_boxCapsule;
+		DsCollisionCapsuleCapsule m_capsuleCapsule;
 	};
 }
 

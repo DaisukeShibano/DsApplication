@@ -203,6 +203,7 @@
     <ClInclude Include="Source\Collision\DsCollisionListener.h" />
     <ClInclude Include="Source\Collision\DsCollisionResult.h" />
     <ClInclude Include="Source\Collision\EachGeom\DsCollisionBoxCapsule.h" />
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionCapsuleCapsule.h" />
     <ClInclude Include="Source\Collision\EachGeom\DsCollisionCapsuleMesh.h" />
     <ClInclude Include="Source\Collision\EachGeom\DsCollisionBoxBox.h" />
     <ClInclude Include="Source\Collision\EachGeom\DsCollisionBoxMesh.h" />
@@ -259,6 +260,7 @@
     <ClCompile Include="Source\Collision\DsCollisionListener.cpp" />
     <ClCompile Include="Source\Collision\DsCollisionResult.cpp" />
     <ClCompile Include="Source\Collision\EachGeom\DsCollisionBoxCapsule.cpp" />
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionCapsuleCapsule.cpp" />
     <ClCompile Include="Source\Collision\EachGeom\DsCollisionCapsuleMesh.cpp" />
     <ClCompile Include="Source\Collision\EachGeom\DsCollisionBoxBox.cpp" />
     <ClCompile Include="Source\Collision\EachGeom\DsCollisionBoxMesh.cpp" />
