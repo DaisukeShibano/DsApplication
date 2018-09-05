@@ -37,9 +37,9 @@ DsAnimEventCallback::~DsAnimEventCallback()
 	m_pRes = m_resource.UnregisterItem<DsAnimEventTrackRes>(m_pRes);
 }
 
-void DsAnimEventCallback::Initialize(const char* pAnimName)
+void DsAnimEventCallback::Initialize(const char* pAnimResName)
 {
-	std::string resName = pAnimName;
+	std::string resName = pAnimResName;
 	for (int i = static_cast<int>(resName.length())-1; 0 <= i; --i) {
 		if ('.' == resName[i]) {
 			resName.replace(i, resName.length() - i + i, ".devt");
