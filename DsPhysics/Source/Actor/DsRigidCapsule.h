@@ -1,5 +1,4 @@
-#ifndef __DS_RIGID_CAPSULE__
-#define __DS_RIGID_CAPSULE__
+#pragma once
 
 #ifndef __DS_RIGID_BODY__
 #include "Actor/DsRigidBody.h"
@@ -65,5 +64,3 @@ namespace DsPhysics
 		virtual void Draw(DsDrawCommand& com) override;
 	};
 }
-
-#endif

@@ -1,7 +1,5 @@
 #include "DsPhysicsPch.h"
-#ifndef __DS_RIGID_CAPSULE__
 #include "Actor/DsRigidCapsule.h"
-#endif
 
 using namespace DsPhysics;
 

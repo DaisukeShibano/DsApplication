@@ -43,6 +43,9 @@
     <Filter Include="Source\Ragdoll">
       <UniqueIdentifier>{fb3ed74b-f053-4cc9-ba6b-c8bcfb485c19}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\ChrProxy">
+      <UniqueIdentifier>{cb5f0d52-3b45-4e37-871a-d1a110ac7f52}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsMass.h">
@@ -222,6 +225,12 @@
     <ClInclude Include="Source\Collision\EachGeom\DsCollisionCapsuleCapsule.h">
       <Filter>Source\Collision\EachGeom</Filter>
     </ClInclude>
+    <ClInclude Include="Source\ChrProxy\DsChrProxy.h">
+      <Filter>Source\ChrProxy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Actor\DsActorId.h">
+      <Filter>Source\Actor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsPhysicsManager.cpp">
@@ -367,6 +376,9 @@
     </ClCompile>
     <ClCompile Include="Source\Collision\EachGeom\DsCollisionCapsuleCapsule.cpp">
       <Filter>Source\Collision\EachGeom</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ChrProxy\DsChrProxy.cpp">
+      <Filter>Source\ChrProxy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

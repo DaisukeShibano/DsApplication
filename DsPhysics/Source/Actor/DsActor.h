@@ -4,7 +4,8 @@
 #ifndef __DS_ACTOR_MATERIAL__
 #include "Actor/DsActorMaterial.h"
 #endif //__DS_ACTOR_MATERIAL__
-
+#include "DsPhysicsDefine.h"
+#include "Actor/DsActorId.h"
 
 namespace DsPhysics
 {
@@ -17,36 +18,6 @@ namespace DsPhysics
 
 namespace DsPhysics
 {
-	typedef unsigned long long int DsCollisionFilter;
-
-
-	class DsActorId
-	{
-		friend DsActor;
-	private:
-		enum
-		{
-			INVALID = -1,
-		};
-
-	public:
-		DsActorId()
-			:m_pActor(NULL)
-		{}
-		DsActorId(DsActor* pActor) :m_pActor(pActor){}
-		bool IsValid()const{ return (NULL != m_pActor); }
-		bool operator ==(const DsActorId& id)const{ return (m_pActor == id.m_pActor); }
-		bool operator !=(const DsActorId& id)const{ return (m_pActor != id.m_pActor); }
-		const DsActor* GetActor() const { return m_pActor; }
-		DsActor* GetActor() { return m_pActor; }
-
-	private:
-		void _SetActor(DsActor* actor){ m_pActor = actor; }
-
-	private:
-		DsActor* m_pActor;
-	};
-
 	class DsActor
 	{
 	public:

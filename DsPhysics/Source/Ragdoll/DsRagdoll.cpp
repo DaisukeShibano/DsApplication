@@ -12,9 +12,7 @@
 #ifndef __DS_RIGID_BOX__
 #include "Actor/DsRigidBox.h"
 #endif
-#ifndef __DS_RIGID_CAPSULE__
 #include "Actor/DsRigidCapsule.h"
-#endif
 #ifndef __DS_PHYSICS_WORLD__
 #include "DsPhysicsWorld.h"
 #endif

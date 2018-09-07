@@ -30,9 +30,7 @@ using namespace DsLib;
 #ifndef __DS_RIGID_SPHERE__
 #include "Actor/DsRigidSphere.h"
 #endif
-#ifndef __DS_RIGID_CAPSULE__
 #include "Actor/DsRigidCapsule.h"
-#endif
 #ifndef __DS_RAY__
 #include "Actor/DsRay.h"
 #endif

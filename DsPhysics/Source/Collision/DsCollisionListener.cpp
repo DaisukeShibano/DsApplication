@@ -60,6 +60,24 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 		//actorの所属空間更新
 		m_pBoundingTree->Update(pActors, totalActTNum, minPos, maxPos);
 
+#if 1
+		auto func = [&executer, pSolver](const DsActor& a, const DsActor& b) {
+			const bool isSkip = (((a.IsRest()) && (b.IsRest())) ||
+				((a.IsRest()) && (b.RefOption().isStatic)) ||
+				((a.RefOption().isStatic) && (b.IsRest())) ||
+				((a.RefOption().isStatic) && (b.RefOption().isStatic))
+				);
+			if (!isSkip) {
+				const DsCollisionResult& result = executer.Exe(a, b);
+				if (0 < result.GetColNum()) {
+					//拘束への追加までやってしまっているのでスレッドセーフでない。外に出したい
+					pSolver->AddCollision(result);
+				}
+			}
+		};
+		_Query(func, totalActTNum);
+
+#else //動作が安定したら消す
 		//分かりやすい解説
 		//http://marupeke296.com/COL_2D_No8_QuadTree.html
 		std::vector < const DsActor* > colideStack;
@@ -143,6 +161,8 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 				isBack = true;
 			}
 		}
+#endif
+
 	}
 	else{//空間分割を使わない総当り判定。数が少ないときは所属空間の割り振り・探索しない分こちらの方が速い（それくらいだったらもう無視してもいいのかも）
 		for (int actIdx_1 = 0; actIdx_1 < totalActTNum - 1; ++actIdx_1)
