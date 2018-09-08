@@ -277,8 +277,8 @@ namespace DsLib
 			const DsMat44f dst =
 			{
 				1, 0, 0, 0,
-				0, cos(ang), -sin(ang), 0,
-				0, sin(ang), cos(ang), 0,
+				0, cosf(ang), -sinf(ang), 0,
+				0, sinf(ang), cosf(ang), 0,
 				0, 0, 0, 1,
 			};
 			return dst;
@@ -288,9 +288,9 @@ namespace DsLib
 		{
 			const DsMat44f dst =
 			{
-				cos(ang), 0, sin(ang), 0,
+				cosf(ang), 0, sinf(ang), 0,
 				0, 1, 0, 0,
-				-sin(ang), 0, cos(ang), 0,
+				-sinf(ang), 0, cosf(ang), 0,
 				0, 0, 0, 1,
 			};
 			return dst;
@@ -300,8 +300,8 @@ namespace DsLib
 		{
 			const DsMat44f dst =
 			{
-				cos(ang), -sin(ang), 0, 0,
-				sin(ang), cos(ang), 0, 0,
+				cosf(ang), -sinf(ang), 0, 0,
+				sinf(ang), cosf(ang), 0, 0,
 				0, 0, 1, 0,
 				0, 0, 0, 1, 
 			};
@@ -314,9 +314,22 @@ namespace DsLib
 			const float r = vec.Length();
 			const DsMat44f dst =
 			{
-				(n.x*n.x*(1.0f - cos(r)) + cos(r)),     (n.x*n.y*(1.0f - cos(r)) - n.z*sin(r)), (n.z*n.x*(1.0f - cos(r)) + n.y*sin(r)), 0,
-				(n.x*n.y*(1.0f - cos(r)) + n.z*sin(r)), (n.y*n.y*(1.0f - cos(r)) + cos(r)),     (n.y*n.z*(1.0f - cos(r)) - n.x*sin(r)), 0,
-				(n.z*n.x*(1.0f - cos(r)) - n.y*sin(r)), (n.y*n.z*(1.0f - cos(r)) + n.x*sin(r)), (n.z*n.z*(1.0f - cos(r)) + cos(r)), 0,
+				(n.x*n.x*(1.0f - cosf(r)) + cosf(r)),     (n.x*n.y*(1.0f - cosf(r)) - n.z*sinf(r)), (n.z*n.x*(1.0f - cosf(r)) + n.y*sinf(r)), 0,
+				(n.x*n.y*(1.0f - cosf(r)) + n.z*sinf(r)), (n.y*n.y*(1.0f - cosf(r)) + cosf(r)),     (n.y*n.z*(1.0f - cosf(r)) - n.x*sinf(r)), 0,
+				(n.z*n.x*(1.0f - cosf(r)) - n.y*sinf(r)), (n.y*n.z*(1.0f - cosf(r)) + n.x*sinf(r)), (n.z*n.z*(1.0f - cosf(r)) + cosf(r)), 0,
+				0, 0, 0, 1,
+			};
+			return dst;
+		}
+
+		//nÇÕê≥ãKâªçœÇ›
+		static DsMat44f RotateAxis(const DsVec3f& n, float r)
+		{
+			const DsMat44f dst =
+			{
+				(n.x*n.x*(1.0f - cosf(r)) + cosf(r)),     (n.x*n.y*(1.0f - cosf(r)) - n.z*sinf(r)), (n.z*n.x*(1.0f - cosf(r)) + n.y*sinf(r)), 0,
+				(n.x*n.y*(1.0f - cosf(r)) + n.z*sinf(r)), (n.y*n.y*(1.0f - cosf(r)) + cosf(r)),     (n.y*n.z*(1.0f - cosf(r)) - n.x*sinf(r)), 0,
+				(n.z*n.x*(1.0f - cosf(r)) - n.y*sinf(r)), (n.y*n.z*(1.0f - cosf(r)) + n.x*sinf(r)), (n.z*n.z*(1.0f - cosf(r)) + cosf(r)), 0,
 				0, 0, 0, 1,
 			};
 			return dst;

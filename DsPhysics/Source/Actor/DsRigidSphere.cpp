@@ -12,7 +12,6 @@ using namespace DsPhysics;
 
 DsRigidSphere::DsRigidSphere(const DsActorId& id, const char* name )
 :DsRigidBody(id, name)
-,m_pCollisionGeometry(NULL)
 {
 }
 
@@ -116,6 +115,22 @@ DsActor* DsRigidSphere::DsRigidSphereFactory::CreateIns(const DsActorId& id) con
 {
 	DsRigidSphere* pRet = new DsRigidSphere(id, m_name.c_str());
 	if(pRet)
+	{
+		pRet->m_option = m_initOption;
+		pRet->m_initPos = m_initPos;
+		pRet->m_initRot = m_initRot;
+		pRet->Create(m_r, m_mass);
+		return pRet;
+	}
+	else
+	{
+		return NULL;
+	}
+}
+DsActor* DsRigidSphere::DsRigidSphereFactory::CreateIns(const DsActorId& id, void* pBuffer) const
+{
+	DsRigidSphere* pRet = new(pBuffer) DsRigidSphere(id, m_name.c_str());
+	if (pRet)
 	{
 		pRet->m_option = m_initOption;
 		pRet->m_initPos = m_initPos;

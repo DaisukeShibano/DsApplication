@@ -67,8 +67,11 @@ void DsRigidCapsule::Create(double r, double halfLen, double mass)
 	_Update(DsVec3d::Zero(), DsMat33d::Identity());
 
 	m_sideSize.x = r;
-	m_sideSize.y = r + halfLen;
+	m_sideSize.y = r;
 	m_sideSize.z = r;
+
+	m_sideSize += GetInitExtendDir()*halfLen;
+
 	//AABB
 	const DsVec3d max = GetPosition()+m_sideSize;
 	const DsVec3d min = GetPosition()-m_sideSize;
@@ -87,6 +90,16 @@ void DsRigidCapsule::_UpdateAabb()
 	const DsVec3d min = GetPosition() - len;
 	m_aabb.Setup(max, min);
 }
+
+
+//カプセルの伸びてる方向のデフォ値
+//static 
+DsVec3d DsRigidCapsule::GetInitExtendDir()
+{
+	return DsVec3d::GetY();
+}
+
+
 
 /*
 	デバッグ用描画
@@ -107,6 +120,24 @@ DsActor* DsRigidCapsule::DsRigidCapsuleFactory::CreateIns( const DsActorId& id )
 {
 	DsRigidCapsule* pRet = new DsRigidCapsule(id, m_name.c_str());
 	if(pRet)
+	{
+		pRet->SetInertiaBias(m_biasI);
+		pRet->m_option = m_initOption;
+		pRet->m_initPos = m_initPos;
+		pRet->m_initRot = m_initRot;
+		pRet->Create(m_r, m_halfLen, m_mass);
+		return pRet;
+	}
+	else
+	{
+		return NULL;
+	}
+}
+
+DsActor* DsRigidCapsule::DsRigidCapsuleFactory::CreateIns(const DsActorId& id, void* pBuffer) const
+{
+	DsRigidCapsule* pRet = new(pBuffer) DsRigidCapsule(id, m_name.c_str());
+	if (pRet)
 	{
 		pRet->SetInertiaBias(m_biasI);
 		pRet->m_option = m_initOption;

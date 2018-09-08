@@ -324,6 +324,17 @@ namespace DsLib
 			};
 			return dst;
 		}
+		//nÇÕê≥ãKâªÇ∏Ç›
+		static DsMat33d RotateAxis(const DsVec3d& n, double r)
+		{
+			const DsMat33d dst =
+			{
+				(n.x*n.x*(1.0 - cos(r)) + cos(r)),	   (n.x*n.y*(1.0 - cos(r)) - n.z*sin(r)),	(n.z*n.x*(1.0 - cos(r)) + n.y*sin(r)),
+				(n.x*n.y*(1.0 - cos(r)) + n.z*sin(r)), (n.y*n.y*(1.0 - cos(r)) + cos(r)),		(n.y*n.z*(1.0 - cos(r)) - n.x*sin(r)),
+				(n.z*n.x*(1.0 - cos(r)) - n.y*sin(r)), (n.y*n.z*(1.0 - cos(r)) + n.x*sin(r)),   (n.z*n.z*(1.0 - cos(r)) + cos(r)),
+			};
+			return dst;
+		}
 
 		static DsMat33d ToMat33( const double mat16[16] )
 		{

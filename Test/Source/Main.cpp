@@ -96,7 +96,7 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 					DsActor* pActor = actorId.GetActor();
 					pActor->SetMaterial(DsActorMaterial::Aluminum());
 				}
-				for (int i = 0; i<300; ++i) {
+				for (int i = 0; i<3; ++i) {
 					DsRigidCapsule::DsRigidCapsuleFactory factory(0.5, 1.0, 1000.0, "” ‚P");
 					factory.InitPos(DsVec3d(-1.0, 1.6 + (2.0)*(double)i, 4.0));
 					factory.InitRot(DsMat33d::RotateZ(0.3));

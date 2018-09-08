@@ -134,49 +134,6 @@ void DsFieldPlayer::Update(double dt)
 
 		const double vel = (moveVec.Length()) * 0.3 * dt * 1000.0;
 		m_vel.Set(0, 0, vel);
-
-
-		if(0.001 < m_vel.LengthSq())
-		{//障害物乗り越え
-			DsRay ray;
-			ray.SetUserData(this);
-			ray.SetCollisionFilter(DsAppCollisionFilter::CalcFilterInsideAllGroup());
-			ray.Create(GetPosition() + DsVec3d(0, 0.1, 0), GetPosition() + DsVec3d(0, -0.1, 0));
-			if (m_world.RayCast_CollectNear(ray)){//レイ重すぎ！！
-				//接地している
-
-				const DsMat33d rot = DsMat33d::RotateY(m_ang.y)*DsMat33d::RotateX(m_ang.x);
-				const DsVec3d vel = rot*m_vel;
-
-				DsActor* pActor = m_actorId.GetActor();
-				if (pActor) {
-					const DsVec3d aabbLen = pActor->RefAabb().GetMax();
-					const double radius = sqrt(aabbLen.x*aabbLen.x + aabbLen.z*aabbLen.z);
-					const DsVec3d targetPos = DsVec3d::Normalize(vel)*radius + vel*dt + GetPosition();//大体の移動先
-					const DsVec3d begin = targetPos + DsVec3d::Up()*aabbLen.y*0.5;
-
-					double depth = 0;
-					DsVec3d hitPos;
-					DsRay ray2;
-					ray2.SetUserData(this);
-					ray2.SetCollisionFilter(DsAppCollisionFilter::CalcFilterInsideAllGroup());
-					ray2.Create(begin, targetPos);
-					if (m_world.RayCast_CollectNear(ray2, &depth, &hitPos)) {
-						const double upHeight = hitPos.y - GetPosition().y;
-						const double rideVel = max(upHeight,0.0)/dt;
-						const double velGain = 200.0f;//加速ゲイン
-						const double targetVelF = (rideVel - pActor->GetVelocity().y)*velGain;
-
-						//上に飛ぶことがある・・・
-						//pActor->AddForce(DsVec3d(0, targetVelF, 0));
-
-						//DsDbgSys::GetIns().RefDrawCom().SetColor(DsVec3d(1, 0, 0)).DrawSphere(hitPos, 0.1);
-					}
-				}
-
-			}
-
-		}
 	}
 
 	DsFieldChr::Update(dt);

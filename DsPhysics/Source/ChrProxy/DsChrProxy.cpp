@@ -15,7 +15,6 @@ DsChrProxy::DsChrProxy(DsPhysicsWorld& world)
 	: m_world(world)
 	, m_actorId()
 	, m_pos(DsVec3d::Zero())
-	, m_rot(DsMat33d::Identity())
 {
 }
 
@@ -32,7 +31,7 @@ void DsChrProxy::Initialize(double r, double height, double mass, DsVec3d pos, D
 	height = max(height, 0.0);
 	DsRigidCapsule::DsRigidCapsuleFactory factory(r, height, mass, "ChrProxy");
 	factory.InitPos(pos);
-	factory.InitRot(rot);
+	factory.InitRot(DsMat33d::Identity());//カプセルに回転は要らない
 	m_actorId = m_world.CreateActor(factory);
 	m_actorId.GetActor()->SetMaterial(DsActorMaterial::Aluminum());
 }
@@ -61,4 +60,9 @@ void DsChrProxy::SetCollisionFilter(DsCollisionFilter filter)
 	if (pActor) {
 		pActor->SetCollisionFilter(filter);
 	}
+}
+
+void DsChrProxy::Drive(DsVec3d move)
+{
+
 }

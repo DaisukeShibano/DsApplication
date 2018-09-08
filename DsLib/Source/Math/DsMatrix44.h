@@ -320,6 +320,19 @@ namespace DsLib
 			return dst;
 		}
 
+		//nÇÕê≥ãKâªçœÇ›
+		static DsMat44<TYPE> RotateAxis(const DsVec3<TYPE>& n, TYPE r)
+		{
+			const DsMat44<TYPE> dst =
+			{
+				static_cast<TYPE>(n.x*n.x*(1.0 - cos(r)) + cos(r)),     static_cast<TYPE>(n.x*n.y*(1.0 - cos(r)) - n.z*sin(r)), static_cast<TYPE>(n.z*n.x*(1.0 - cos(r)) + n.y*sin(r)), 0,
+				static_cast<TYPE>(n.x*n.y*(1.0 - cos(r)) + n.z*sin(r)), static_cast<TYPE>(n.y*n.y*(1.0 - cos(r)) + cos(r)),     static_cast<TYPE>(n.y*n.z*(1.0 - cos(r)) - n.x*sin(r)), 0,
+				static_cast<TYPE>(n.z*n.x*(1.0 - cos(r)) - n.y*sin(r)), static_cast<TYPE>(n.y*n.z*(1.0 - cos(r)) + n.x*sin(r)), static_cast<TYPE>(n.z*n.z*(1.0 - cos(r)) + cos(r)), 0,
+				0, 0, 0, 1,
+			};
+			return dst;
+		}
+
 		static DsMat44<TYPE> Get(const DsMat33<TYPE>& rot, const DsVec3d& pos)
 		{
 			const DsMat44<TYPE> dst =

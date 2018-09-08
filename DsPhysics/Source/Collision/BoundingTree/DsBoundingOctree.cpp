@@ -156,21 +156,21 @@ void DsBoundingOctree::CreateTree(const int resolution)
 
 							//子供たちの兄弟関係と親を設定
 							DsBdOctreeNode* tmp = pSetNode->child;
-							tmp->parent = pSetNode; tmp->brother = pChild + (xOffset0 + yOffset0 + zOffset1); tmp = tmp->brother;
-							tmp->parent = pSetNode; tmp->brother = pChild + (xOffset0 + yOffset1 + zOffset0); tmp = tmp->brother;
-							tmp->parent = pSetNode; tmp->brother = pChild + (xOffset0 + yOffset1 + zOffset1); tmp = tmp->brother;
-							tmp->parent = pSetNode; tmp->brother = pChild + (xOffset1 + yOffset0 + zOffset0); tmp = tmp->brother;
-							tmp->parent = pSetNode; tmp->brother = pChild + (xOffset1 + yOffset0 + zOffset1); tmp = tmp->brother;
-							tmp->parent = pSetNode; tmp->brother = pChild + (xOffset1 + yOffset1 + zOffset0); tmp = tmp->brother;
-							tmp->parent = pSetNode; tmp->brother = pChild + (xOffset1 + yOffset1 + zOffset1); tmp = tmp->brother;
-							tmp->parent = pSetNode; tmp->brother = NULL;
+							tmp->parent = pSetNode; tmp->right = pChild + (xOffset0 + yOffset0 + zOffset1); tmp = tmp->right;
+							tmp->parent = pSetNode; tmp->right = pChild + (xOffset0 + yOffset1 + zOffset0); tmp = tmp->right;
+							tmp->parent = pSetNode; tmp->right = pChild + (xOffset0 + yOffset1 + zOffset1); tmp = tmp->right;
+							tmp->parent = pSetNode; tmp->right = pChild + (xOffset1 + yOffset0 + zOffset0); tmp = tmp->right;
+							tmp->parent = pSetNode; tmp->right = pChild + (xOffset1 + yOffset0 + zOffset1); tmp = tmp->right;
+							tmp->parent = pSetNode; tmp->right = pChild + (xOffset1 + yOffset1 + zOffset0); tmp = tmp->right;
+							tmp->parent = pSetNode; tmp->right = pChild + (xOffset1 + yOffset1 + zOffset1); tmp = tmp->right;
+							tmp->parent = pSetNode; tmp->right = NULL;
 						}
 					}
 				}
 			}
 			else{
 				pParent->parent = NULL;
-				pParent->brother = NULL;
+				pParent->right = NULL;
 				break;
 			}
 		}
@@ -267,6 +267,8 @@ void DsBoundingOctree::GetContainAreaActors(const DsActor& actor, std::vector<co
 
 	//actorが完全に含まれる空間を求め、その空間に所属する全てのactroをoutActorsとして返す
 
+	//↓actorが格子ノードを覚えていれば所属ノードを求める処理は丸々省ける
+
 	const DsVec3d gridSize = DsVec3d::Abs(m_allActorMaxPos - m_allActorMinPos) / static_cast<double>(m_resolution);
 	const DsAabb aabb = actor.RefAabb();
 	const DsVec3d maxPos = DsVec3d::Clamp3(aabb.GetMax(), m_allActorMinPos, m_allActorMaxPos);//新規actorかもしれないので最大座標でクランプ
@@ -303,13 +305,13 @@ void DsBoundingOctree::GetContainAreaActors(const DsActor& actor, std::vector<co
 
 
 	bool isBack = false;
-	const DsBdOctreeNode* pSearch = pMaxParent->child;//兄弟も含む探索なので子から
+	const DsBdOctreeNode* pSearch = pMaxParent->child;//まず子から
 
 	//pSearch以下の子ノードを探索
 	while (pSearch){
 		if (!isBack) {//階層を新しく降りたときだけ。isBackがtureということは既に巡回済み
 			const DsActor* pOutActor = pSearch->actor;
-			while (pOutActor) {
+			while (pOutActor) {//この空間の人たち
 				outActors.push_back(pOutActor);
 				pOutActor = pOutActor->GetOctreeNodeNext();
 			}
@@ -319,8 +321,8 @@ void DsBoundingOctree::GetContainAreaActors(const DsActor& actor, std::vector<co
 		if (pSearch->child && (!isBack)) {
 			pSearch = pSearch->child;
 		}
-		else if (pSearch->brother) {
-			pSearch = pSearch->brother;
+		else if (pSearch->right) {
+			pSearch = pSearch->right;
 			isBack = false;
 		}
 		else {
@@ -338,7 +340,7 @@ void DsBoundingOctree::GetContainAreaActors(const DsActor& actor, std::vector<co
 	//pSearch以上はpSearchを完全に含むので必ず衝突候補
 	while (pSearch) {
 		const DsActor* pOutActor = pSearch->actor;
-		while (pOutActor) {
+		while (pOutActor) {//同空間の人たち
 			outActors.push_back(pOutActor);
 			pOutActor = pOutActor->GetOctreeNodeNext();
 		}

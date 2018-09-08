@@ -400,6 +400,14 @@ namespace DsLib
 			return dst;
 		}
 
+		//両者の相対角[rad]。正規化されていることが前提
+		static double GetRelativeAng(const DsVec3d& a, const DsVec3d& b)
+		{
+			const double dot = Dot(a, b);
+			const double rad = acos( min(1.0, max(dot, -1.0)) );
+			return rad;
+		}
+
 		/*
 		@param s1 線分１の始点座標
 		@param v1 線分１のベクトル

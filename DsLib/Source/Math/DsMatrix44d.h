@@ -324,6 +324,19 @@ namespace DsLib
 			return dst;
 		}
 
+		//nÇÕê≥ãKâªçœÇ›
+		static DsMat44d RotateAxis(const DsVec3d& n, double r)
+		{
+			const DsMat44d dst =
+			{
+				(n.x*n.x*(1.0 - cos(r)) + cos(r)),     (n.x*n.y*(1.0 - cos(r)) - n.z*sin(r)), (n.z*n.x*(1.0 - cos(r)) + n.y*sin(r)), 0,
+				(n.x*n.y*(1.0 - cos(r)) + n.z*sin(r)), (n.y*n.y*(1.0 - cos(r)) + cos(r)),     (n.y*n.z*(1.0 - cos(r)) - n.x*sin(r)), 0,
+				(n.z*n.x*(1.0 - cos(r)) - n.y*sin(r)), (n.y*n.z*(1.0 - cos(r)) + n.x*sin(r)), (n.z*n.z*(1.0 - cos(r)) + cos(r)), 0,
+				0, 0, 0, 1,
+			};
+			return dst;
+		}
+
 		static DsMat44d Get(const DsMat33d& rot, const DsVec3d& pos)
 		{
 			const DsMat44d dst =

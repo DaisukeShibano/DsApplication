@@ -20,10 +20,11 @@ namespace DsPhysics
 		void Collide( DsCollisionGroup& group );
 
 		void Cast( const DsActor& actor, const DsCollisionGroup& group, std::vector<DsCollisionResult>& resultVec ) const;
+		bool Cast(const DsActor& actor, const DsCollisionGroup& group) const;
 
 	private:
 		template<typename FUNC>
-		void _Query(FUNC func, size_t reserveActorNum )
+		void _Query(FUNC func, size_t reserveActorNum ) const
 		{
 			//•ª‚©‚è‚â‚·‚¢‰ðà
 			//http://marupeke296.com/COL_2D_No8_QuadTree.html
@@ -109,8 +110,8 @@ namespace DsPhysics
 				if (pNode->child && (!isBack)) {
 					pNode = pNode->child;
 				}
-				else if (pNode->brother) {
-					pNode = pNode->brother;
+				else if (pNode->right) {
+					pNode = pNode->right;
 					isBack = false;
 				}
 				else {

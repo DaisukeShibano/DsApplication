@@ -6,6 +6,8 @@
 #include "Actor/DsActorFactory.h"
 #include "Collision/DsCollisionResult.h"
 #include "Actor/DsRay.h"
+#include "Actor/DsRigidCapsule.h"
+#include "Actor/DsRigidSphere.h"
 #include "DsMass.h"
 #include "Tool/DsActorSelector.h"
 #ifndef _DS_JOINT_
@@ -267,6 +269,53 @@ DsActor*  DsPhysicsWorld::RayCast_CollectNear(DsRay& ray, double* depth/* = NULL
 	{
 		return NULL;
 	}
+}
+
+
+bool DsPhysicsWorld::SphereCast(DsVec3d start, DsVec3d end, double r, DsCollisionFilter filter, void* pUserData) const
+{
+	bool ret = false;
+	const DsVec3d vec = end - start;
+	const double lenSq = vec.LengthSq();
+	if (lenSq < (r*r*4.0)) {
+		//半径以下なので球で判定
+		DsRigidSphere::DsRigidSphereFactory factory(r, 1.0, "スフィアキャスト");
+		factory.InitPos(start);
+		char buffer[sizeof(DsRigidSphere)];
+		DsActor* pActor = factory.CreateIns(DsActorId((DsActor*)(buffer)), buffer);
+		pActor->SetUserData(pUserData);
+		pActor->SetCollisionFilter(filter);
+		ret = m_pListener->Cast(*pActor, m_group);
+
+		//DsDbgSys::GetIns().RefDrawCom().SetColor(0., 0., 1.0);
+		//pActor->Draw(DsDbgSys::GetIns().RefDrawCom());
+	}
+	else {
+		//カプセルで判定
+		const DsVec3d baseDir = DsRigidCapsule::GetInitExtendDir();
+		const DsVec3d capDir = DsVec3d::Normalize(vec);
+		const DsVec3d axis = DsVec3d::Cross(capDir, baseDir);
+		const double rad = DsVec3d::GetRelativeAng(baseDir, capDir);
+		const DsMat33d rot = DsMat33d::RotateAxis(axis, rad);
+		const DsVec3d pos = (start + end)*0.5;
+
+		//カプセルパラ
+		double halfLen = sqrt(lenSq)*0.5;
+		halfLen -= r;
+		DsRigidCapsule::DsRigidCapsuleFactory factory(r, halfLen, 1.0, "スフィアキャスト");
+		factory.InitPos(pos);
+		factory.InitRot(rot);
+		char buffer[sizeof(DsRigidCapsule)];
+		DsActor* pActor = factory.CreateIns(DsActorId( (DsActor*)(buffer) ), buffer);
+		pActor->SetUserData(pUserData);
+		pActor->SetCollisionFilter(filter);
+		ret = m_pListener->Cast(*pActor, m_group);
+
+		//DsDbgSys::GetIns().RefDrawCom().SetColor(0., 0., 1.0);
+		//pActor->Draw(DsDbgSys::GetIns().RefDrawCom());
+	}
+
+	return ret;
 }
 
 double DsPhysicsWorld::GetDt() const

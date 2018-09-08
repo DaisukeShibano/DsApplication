@@ -18,7 +18,7 @@ namespace DsPhysics
 		DsActor* actor;
 		DsBdOctreeNode* parent;
 		DsBdOctreeNode* child;
-		DsBdOctreeNode* brother;
+		DsBdOctreeNode* right;
 		DsBdOctreeNode* next;//ループアクセス用
 	};
 

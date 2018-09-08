@@ -31,6 +31,8 @@ namespace DsPhysics
 
 		virtual DsActor* CreateIns( const DsActorId& id ) const override;
 
+		DsActor* CreateIns(const DsActorId& id, void* pBuffer) const;
+
 	public:
 		void SetOption(const Option& option){ m_initOption = option; }
 		void SetBiasI(const DsVec3d& bias) { m_biasI = bias; }
@@ -58,6 +60,11 @@ namespace DsPhysics
 	public:	
 		//vertexは引数を内部で持ってるメンバにコピー
 		void Create(double r, double halfLen, double mass );
+
+		//カプセルの伸びてる方向のデフォ値
+		static DsVec3d GetInitExtendDir();
+
+	private:
 		virtual void _UpdateAabb() override;
 
 	public: //描画のためのメソッド

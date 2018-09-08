@@ -217,6 +217,35 @@ void DsCollisionListener::Cast( const DsActor& actor, const DsCollisionGroup& gr
 		}
 	}
 }
+bool DsCollisionListener::Cast(const DsActor& actor, const DsCollisionGroup& group) const
+{
+	const int totalActTNum = group.GetActorNumber();
+	DsCollisionExecuter executer(m_world);
+
+	if (_IsUseBoundingGroup(totalActTNum))
+	{
+		std::vector < const DsActor* > targetActors;
+		m_pBoundingTree->GetContainAreaActors(actor, targetActors);
+		for (const DsActor* pActor : targetActors) {
+			//((DsActor*)(pActor))->Draw(DsDbgSys::GetIns().RefDrawCom());
+			const DsCollisionResult& result = executer.Exe(*pActor, actor);
+			if (result.GetColNum() > 0) {
+				return true;
+			}
+		}
+	}
+	else
+	{
+		const DsActor*const* pActors = group.GetActors();
+		for (int i = 0; i < totalActTNum; ++i) {
+			const DsCollisionResult& result = executer.Exe(*pActors[i], actor);
+			if (result.GetColNum() > 0) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
 
 bool DsCollisionListener::_IsUseBoundingGroup(int actorNum) const
 {

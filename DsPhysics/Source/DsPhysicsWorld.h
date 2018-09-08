@@ -63,6 +63,8 @@ namespace DsPhysics
 		Actors& GetActors() { return m_actors; }
 		DsActor* RayCast_CollectNear( const DsVec3d& startPos, const DsVec3d& endPos, double* depth=NULL, DsVec3d* hitPos = NULL) const;
 		DsActor* RayCast_CollectNear(DsRay& ray, double* depth = NULL, DsVec3d* hitPos=NULL) const;
+		bool SphereCast(DsVec3d start, DsVec3d end, double r, DsCollisionFilter filter, void* pUserData) const;
+
 		double GetDt() const;
 		const DsVec3d& GetGravity() const { m_gravity; }
 

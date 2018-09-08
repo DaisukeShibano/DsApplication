@@ -260,6 +260,18 @@ namespace DsLib
 			return dst;
 		}
 
+		//nÇÕê≥ãKâªÇ∏Ç›
+		static DsMat33d RotateAxis(const DsVec3<TYPE>& n, TYPE r)
+		{
+			const DsMat33<TYPE> dst =
+			{
+				static_cast<TYPE>(n.x*n.x*(1.0 - cos(r)) + cos(r)),	     static_cast<TYPE>(n.x*n.y*(1.0 - cos(r)) - n.z*sin(r)),	static_cast<TYPE>(n.z*n.x*(1.0 - cos(r)) + n.y*sin(r)),
+				static_cast<TYPE>(n.x*n.y*(1.0 - cos(r)) + n.z*sin(r)),  static_cast<TYPE>(n.y*n.y*(1.0 - cos(r)) + cos(r)),		static_cast<TYPE>(n.y*n.z*(1.0 - cos(r)) - n.x*sin(r)),
+				static_cast<TYPE>(n.z*n.x*(1.0 - cos(r)) - n.y*sin(r)),  static_cast<TYPE>(n.y*n.z*(1.0 - cos(r)) + n.x*sin(r)),    static_cast<TYPE>(n.z*n.z*(1.0 - cos(r)) + cos(r)),
+			};
+			return dst;
+		}
+
 		static DsMat33<TYPE> ToMat33( const TYPE mat16[16] )
 		{
 			const DsMat33<TYPE> dst =

@@ -23,19 +23,17 @@ namespace DsPhysics
 		DsVec3d GetPosition() const { return m_pos; }
 		void SetPosition(const DsVec3d& pos) { m_pos = pos; }
 
-		DsMat33d GetRotation() const { return m_rot; }
-		void SetRotation(const DsMat33d& rot) { m_rot = rot; }
-
 		DsAabb GetAabb()const;
 
 		void SetUserData(void *pData);
 
 		void SetCollisionFilter(DsCollisionFilter filter);
 
+		void Drive( DsVec3d move);
+
 	private:
 		DsPhysicsWorld& m_world;
 		DsActorId m_actorId;
 		DsVec3d m_pos;
-		DsMat33d m_rot;
 	};
 }

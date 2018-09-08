@@ -35,6 +35,8 @@ namespace DsPhysics
 
 		virtual DsActor* CreateIns( const DsActorId& id ) const override;
 
+		DsActor* CreateIns(const DsActorId& id, void* pBuffer) const;
+
 	public:
 		void SetOption(const Option& option){ m_initOption = option; }
 
@@ -64,9 +66,6 @@ namespace DsPhysics
 	private:
 		virtual void _UpdateInertia(const DsMat33d& deltaRot)override;
 		virtual void _UpdateAabb()override;
-
-	private:
-		DsCollisionGeometry* m_pCollisionGeometry;
 
 	};
 }
