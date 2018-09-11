@@ -57,6 +57,7 @@ namespace DsApp
 		DsAnimRagdollModifier* m_pAnimRagdollModifier;
 		DsActionRequest* m_pActReq;
 		DsActionCtrl* m_pActCtrl;
+		DsPhysics::DsChrProxy* m_pProxy;
 
 	public://デバッグ
 		virtual void DbgDraw(DsLib::DsDrawCommand& com);

@@ -49,5 +49,7 @@ using namespace DsLib;
 #ifndef _DS_RAGDOLL_
 #include "Ragdoll/DsRagdoll.h"
 #endif
+#include "ChrProxy/DsChrProxy.h"
+
 
 #endif

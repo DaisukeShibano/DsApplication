@@ -188,6 +188,54 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 	}
 }
 
+void DsCollisionListener::OneColide(DsActorId& actor, const DsCollisionGroup& group)
+{
+	const int totalActTNum = group.GetActorNumber();
+	DsCollisionExecuter executer(m_world);
+	DsConstraintSolver* pSolver = m_world.GetConstraintSolver();
+
+	DsActor& a = *actor.GetActor();
+	if (_IsUseBoundingGroup(totalActTNum))
+	{
+		std::vector < const DsActor* > targetActors;
+		m_pBoundingTree->GetContainAreaActors(a, targetActors);
+		for (const DsActor* pActor : targetActors) {
+
+			const DsActor& b = *pActor;
+			const bool isSkip = (((a.IsRest()) && (b.IsRest())) ||
+				((a.IsRest()) && (b.RefOption().isStatic)) ||
+				((a.RefOption().isStatic) && (b.IsRest())) ||
+				((a.RefOption().isStatic) && (b.RefOption().isStatic))
+				);
+			if (!isSkip) {
+				const DsCollisionResult& result = executer.Exe(*pActor, a);
+				if (result.GetColNum() > 0) {
+					pSolver->AddCollision(result);
+				}
+			}
+		}
+	}
+	else
+	{
+		const DsActor*const* pActors = group.GetActors();
+		for (int i = 0; i < totalActTNum; ++i) {
+
+			const DsActor& b = *pActors[i];
+			const bool isSkip = (((a.IsRest()) && (b.IsRest())) ||
+				((a.IsRest()) && (b.RefOption().isStatic)) ||
+				((a.RefOption().isStatic) && (b.IsRest())) ||
+				((a.RefOption().isStatic) && (b.RefOption().isStatic))
+				);
+			if (!isSkip) {
+				const DsCollisionResult& result = executer.Exe(*pActors[i], a);
+				if (result.GetColNum() > 0) {
+					pSolver->AddCollision(result);
+				}
+			}
+		}
+	}
+}
+
 //çSë©Ç…ìoò^ÇπÇ∏ÇªÇÃèÍÇ≈îªíËÇµÇƒåãâ Çë¶ï‘Ç∑
 void DsCollisionListener::Cast( const DsActor& actor, const DsCollisionGroup& group, std::vector<DsCollisionResult>& resultVec ) const
 {

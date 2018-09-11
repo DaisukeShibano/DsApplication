@@ -30,13 +30,13 @@ void DsPositionDepthSolver::AddDepth(const DsCollisionResult& c)
 	const int colNum = c.GetColNum();
 	for (int i = 0; i < colNum; ++i) {
 
-		const DsVec3d depth = c.GefNormal()[i]*c.GefDepth()[i];
+		const DsVec3d depth = c.GetNormal()[i]*c.GetDepth()[i];
 		//方向はowner1がめり込み解消する方向なので、めり込み量としては反対側になる
 
 		//合計ベクトルにしようかと思ったが、同じ方向に複数めり込んでいた場合過剰に長くなってしまうので一番量が多いのを採用する
 		//成分ごとにやった方がいい？よく分からん方向になるが、問題ない？
 		{
-			DsActor* pOwner1 = m_world.GetActor(c.GefOwnerId1()[i]);
+			DsActor* pOwner1 = m_world.GetActor(c.GetOwnerId1()[i]);
 			const DsVec3d add = -depth*0.5;
 			const DsVec3d cur = pOwner1->GetCollisionDepth();
 			//if (cur.LengthSq() < add.LengthSq()) {
@@ -55,7 +55,7 @@ void DsPositionDepthSolver::AddDepth(const DsCollisionResult& c)
 			pOwner1->SetCollisionDepth(set);
 		}
 		{
-			DsActor* pOwner2 = m_world.GetActor(c.GefOwnerId2()[i]);
+			DsActor* pOwner2 = m_world.GetActor(c.GetOwnerId2()[i]);
 			const DsVec3d add = depth*0.5;
 			const DsVec3d cur = pOwner2->GetCollisionDepth();
 			//if (cur.LengthSq() < add.LengthSq()) {

@@ -37,7 +37,7 @@ namespace DsPhysics
 	private:
 		const DsPhysicsWorld& m_world;
 		std::list<IConstraint*> m_constraints;
-		char* m_colConstraintBuff;
+		ds_uint8* m_colConstraintBuff;
 		size_t m_colConstraintBuffSize;
 		size_t m_colConstraintBuffSizeMin;
 		size_t m_colConstraintBuffUseSize;

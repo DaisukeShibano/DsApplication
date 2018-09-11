@@ -58,12 +58,14 @@ namespace DsPhysics
 		DsJoint* CreateJoint(DsJointFactory& jointFactory);
 		void DeleteJoint(DsJoint* pJoint);
 		void Update( double dt );
+		void UpdateOneActor(double dt, DsActorId id);
+
 		void Clear();
 		DsActor* GetActor(const DsActorId& id) const;
 		Actors& GetActors() { return m_actors; }
 		DsActor* RayCast_CollectNear( const DsVec3d& startPos, const DsVec3d& endPos, double* depth=NULL, DsVec3d* hitPos = NULL) const;
 		DsActor* RayCast_CollectNear(DsRay& ray, double* depth = NULL, DsVec3d* hitPos=NULL) const;
-		bool SphereCast(DsVec3d start, DsVec3d end, double r, DsCollisionFilter filter, void* pUserData) const;
+		bool SphereCast(DsVec3d start, DsVec3d end, double r, DsCollisionFilter filter, void* pUserData, DsVec3d* pOutHitPos=NULL) const;
 
 		double GetDt() const;
 		const DsVec3d& GetGravity() const { m_gravity; }

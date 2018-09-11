@@ -6,6 +6,7 @@ namespace DsPhysics
 	class DsCollisionGroup;
 	class DsCollisionResult;
 	class DsActor;
+	class DsActorId;
 	class DsPhysicsWorld;
 	class DsBoundingOctree;
 }
@@ -18,8 +19,9 @@ namespace DsPhysics
 		DsCollisionListener( DsPhysicsWorld& world );
 		virtual ~DsCollisionListener();
 		void Collide( DsCollisionGroup& group );
+		void OneColide(DsActorId& actor, const DsCollisionGroup& group);
 
-		void Cast( const DsActor& actor, const DsCollisionGroup& group, std::vector<DsCollisionResult>& resultVec ) const;
+		void Cast( const DsActor& actor, const DsCollisionGroup& group, std::vector<DsCollisionResult>& resultVec) const;
 		bool Cast(const DsActor& actor, const DsCollisionGroup& group) const;
 
 	private:

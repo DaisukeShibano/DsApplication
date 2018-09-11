@@ -44,7 +44,7 @@ DsConstraintSolver::DsConstraintSolver(const DsPhysicsWorld& world)
 	//m_colConstraintBuff = new char[m_colConstraintBuffSize];
 	DsCollisionConstraint* tmp = new DsCollisionConstraint[s_defaultColNum];
 	DS_ASSERT(tmp, "メモリ確保失敗");
-	m_colConstraintBuff = reinterpret_cast<char*>(tmp);
+	m_colConstraintBuff = reinterpret_cast<ds_uint8*>(tmp);
 
 	m_pPosDepthSolver = new DsPositionDepthSolver(world);
 	DS_ASSERT(m_pPosDepthSolver, "メモリ確保失敗");
@@ -75,7 +75,7 @@ void DsConstraintSolver::AddCollision(const DsCollisionResult& colResult)
 		const unsigned int tmpNum = static_cast<unsigned int>( m_colConstraintBuffSize / sizeof(DsCollisionConstraint));
 		DsCollisionConstraint* newBuf = new DsCollisionConstraint[tmpNum];
 		DS_ASSERT(newBuf, "メモリ確保失敗");
-		char* tmpBuf = reinterpret_cast<char*>(newBuf);
+		ds_uint8* tmpBuf = reinterpret_cast<ds_uint8*>(newBuf);
 		//内容コピー
 		memcpy(tmpBuf, m_colConstraintBuff, tmpSize);
 		delete[] reinterpret_cast<DsCollisionConstraint*>(m_colConstraintBuff);
@@ -86,7 +86,7 @@ void DsConstraintSolver::AddCollision(const DsCollisionResult& colResult)
 		//DsCollisionConstraint* c = new(m_colConstraintBuff + m_colConstraintBuffUseSize)
 		//	DsCollisionConstraint(colResult.RefOwnerId1()[i], colResult.RefOwnerId2()[i], &m_world, colResult.RefPos()[i], colResult.RefNormal()[i], m_world.GetDt(), colResult.RefDepth()[i]);
 		DsCollisionConstraint* c = reinterpret_cast<DsCollisionConstraint*>(m_colConstraintBuff + m_colConstraintBuffUseSize);
-		c->Initialize(colResult.GefOwnerId1()[i], colResult.GefOwnerId2()[i], &m_world, colResult.GefPos()[i], colResult.GefNormal()[i], m_world.GetDt(), colResult.GefDepth()[i]);
+		c->Initialize(colResult.GetOwnerId1()[i], colResult.GetOwnerId2()[i], &m_world, colResult.GetPos()[i], colResult.GetNormal()[i], m_world.GetDt(), colResult.GetDepth()[i]);
 		m_colConstraintBuffUseSize += sizeof(DsCollisionConstraint);
 	}
 #else
@@ -159,8 +159,8 @@ void DsConstraintSolver::Solve(const int maxIteration, double dt)
 	m_colBufMinTimer += dt;
 	if (s_colBufMinMaxTime < m_colBufMinTimer){
 		if (m_colConstraintBuffSizeMin < m_colConstraintBuffSize){
-			delete[] m_colConstraintBuff;
-			m_colConstraintBuff = new char[m_colConstraintBuffSizeMin];
+			delete[] reinterpret_cast<DsCollisionConstraint*>(m_colConstraintBuff);
+			m_colConstraintBuff = new ds_uint8[m_colConstraintBuffSizeMin];
 		}
 		m_colBufMinTimer = 0;
 	}

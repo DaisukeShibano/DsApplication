@@ -41,14 +41,12 @@ namespace DsPhysics
 			, m_ownerId_1()
 			, m_ownerId_2()
 			, m_colCounter(0)
-			, m_infos()
 		{
 			//m_colPos.clear();
 			//m_colNormal.clear();
 			//m_depth.clear();
 			//m_ownerId_1.clear();
 			//m_ownerId_2.clear();
-			//m_infos.clear();
 		}
 
 		virtual ~DsCollisionResult(){}
@@ -150,11 +148,11 @@ namespace DsPhysics
 			}
 		}
 
-		const DsVec3d* GefPos() const{ return m_colPos; }
-		const DsVec3d* GefNormal() const{ return m_colNormal; }//owner1を跳ね返す方向
-		const double*	GefDepth() const { return m_depth; }//必ずプラス
-		const DsActorId* GefOwnerId1() const { return m_ownerId_1; }
-		const DsActorId* GefOwnerId2() const { return m_ownerId_2; }
+		const DsVec3d* GetPos() const{ return m_colPos; }
+		const DsVec3d* GetNormal() const{ return m_colNormal; }//owner1を跳ね返す方向
+		const double*	GetDepth() const { return m_depth; }//必ずプラス
+		const DsActorId* GetOwnerId1() const { return m_ownerId_1; }
+		const DsActorId* GetOwnerId2() const { return m_ownerId_2; }
 
 
 		
@@ -184,7 +182,6 @@ namespace DsPhysics
 		DsActorId m_ownerId_1[DEFAULT_COL_NUM];
 		DsActorId m_ownerId_2[DEFAULT_COL_NUM];
 		int m_colCounter;
-		ColInfos m_infos;
 	};
 }
 

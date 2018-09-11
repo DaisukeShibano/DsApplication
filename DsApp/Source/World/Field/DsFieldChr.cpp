@@ -44,12 +44,14 @@ DsFieldChr::DsFieldChr(DsSys& sys, DsPhysicsWorld& world)
 	, m_pAnimRagdollModifier(NULL)
 	, m_pActReq(NULL)
 	, m_pActCtrl(NULL)
+	, m_pProxy(NULL)
 {
 
 }
 
 DsFieldChr::~DsFieldChr()
 {
+	delete m_pProxy; m_pProxy = NULL;
 	delete m_pRagdoll; m_pRagdoll = NULL;
 }
 
@@ -74,6 +76,13 @@ void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 	}
 	
 	m_actorId.GetActor()->SetUserData(this);
+
+	m_pProxy = new DsChrProxy(m_world, this);
+	DS_ASSERT(m_pProxy, "メモリ確保失敗");
+	//FieldObjのInitializeでしか形状情報がとれないので今は直打ち
+	const DsMat33d rot = DsMat33d::RotateX(initInfo.ang.x)*DsMat33d::RotateY(initInfo.ang.y)*DsMat33d::RotateZ(initInfo.ang.z);
+	m_pProxy->Initialize(0.25, 1.5, 20, initInfo.pos, rot);
+	m_pProxy->SetCollisionFilter(DsAppCollisionFilter::CalcFilterInsideAllGroup());
 
 	//ラグドール
 	const DsAnimCustomProperty* pProperty = m_pAnimation->GetCustomProperty();
@@ -147,16 +156,21 @@ void DsFieldChr::Update(double dt)
 		const double velGain = 600.0f;//加速ゲイン
 		const DsVec3d targetVelF = (m_vel - pActor->GetVelocity())*velGain;
 		pActor->AddForce(DsVec3d(targetVelF.x, 0, targetVelF.z));
-
-		DsFieldObj::Update(dt);
-		if (m_pAnimation)
-		{
-			//剛体の底がキャラ座標になるように剛体は持ち上げられてる。
-			//モデルデータの足元座標は原点になってる。なのでキャラ座標そのままでいい
-			//姿勢は剛体ではなく、m_ang
-			m_pAnimation->SetRootMatrix(GetPosition(), DsMat33d::RotateY(m_ang.y));
-		}
 	}
+
+	DsFieldObj::Update(dt);
+	if (m_pAnimation)
+	{
+		//剛体の底がキャラ座標になるように剛体は持ち上げられてる。
+		//モデルデータの足元座標は原点になってる。なのでキャラ座標そのままでいい
+		//姿勢は剛体ではなく、m_ang
+		m_pAnimation->SetRootMatrix(GetPosition(), DsMat33d::RotateY(m_ang.y));
+	}
+
+	const DsMat33d rot = DsMat33d::RotateY(m_ang.y)*DsMat33d::RotateX(m_ang.x);
+	m_vel = rot * m_vel;
+	m_vel.y = 0;
+	m_pProxy->Drive(dt, m_vel*dt);
 }
 
 //virtual
