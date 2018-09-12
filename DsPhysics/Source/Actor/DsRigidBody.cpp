@@ -331,7 +331,7 @@ void DsRigidBody::AddForce(const DsVec3d& force)
 //virtual 
 void DsRigidBody::AddTorque(const DsVec3d& torque )
 {
-	if (!m_option.isStatic)
+	if( (!m_option.isStatic) && (m_option.isRotation) ) 
 	{
 		m_physicsInfo.exTorque += torque;
 		//const double max = 300;

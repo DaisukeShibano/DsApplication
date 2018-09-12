@@ -81,7 +81,8 @@ void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 	DS_ASSERT(m_pProxy, "メモリ確保失敗");
 	//FieldObjのInitializeでしか形状情報がとれないので今は直打ち
 	const DsMat33d rot = DsMat33d::RotateX(initInfo.ang.x)*DsMat33d::RotateY(initInfo.ang.y)*DsMat33d::RotateZ(initInfo.ang.z);
-	m_pProxy->Initialize(0.25, 1.5, 20, initInfo.pos, rot);
+	const double height = 1.5;
+	m_pProxy->Initialize(0.25, height, 20, initInfo.pos + DsVec3d(0, height*0.5, 0), rot);
 	m_pProxy->SetCollisionFilter(DsAppCollisionFilter::CalcFilterInsideAllGroup());
 
 	//ラグドール
@@ -146,36 +147,33 @@ void DsFieldChr::Update(double dt)
 		m_pAnimation->RequestPlayAnim(m_pActCtrl->GetCurrentAnim());
 	}
 
-	DsActor* pActor = m_actorId.GetActor();
-	if (pActor)
-	{
-		//y軸はグローバル。x軸はy軸回転後
-		const DsMat33d rot = DsMat33d::RotateY(m_ang.y)*DsMat33d::RotateX(m_ang.x);
-		m_vel = rot*m_vel;
+	//y軸はグローバル。x軸はy軸回転後
+	const DsMat33d rot = DsMat33d::RotateY(m_ang.y)*DsMat33d::RotateX(m_ang.x);
+	m_vel = rot * m_vel;
 
+	DsActor* pActor = m_actorId.GetActor();
+	if (pActor){
 		const double velGain = 600.0f;//加速ゲイン
 		const DsVec3d targetVelF = (m_vel - pActor->GetVelocity())*velGain;
 		pActor->AddForce(DsVec3d(targetVelF.x, 0, targetVelF.z));
 	}
 
 	DsFieldObj::Update(dt);
-	if (m_pAnimation)
-	{
+	if (m_pAnimation){
 		//剛体の底がキャラ座標になるように剛体は持ち上げられてる。
 		//モデルデータの足元座標は原点になってる。なのでキャラ座標そのままでいい
 		//姿勢は剛体ではなく、m_ang
 		m_pAnimation->SetRootMatrix(GetPosition(), DsMat33d::RotateY(m_ang.y));
 	}
 
-	const DsMat33d rot = DsMat33d::RotateY(m_ang.y)*DsMat33d::RotateX(m_ang.x);
-	m_vel = rot * m_vel;
-	m_vel.y = 0;
-	m_pProxy->Drive(dt, m_vel*dt);
+	m_pProxy->Drive(dt, m_vel*dt*0.3);
 }
 
 //virtual
 DsVec3d DsFieldChr::GetPosition() const
 {
+	return m_pProxy->GetPosition();
+
 	DsActor* pActor = m_world.GetActor(m_actorId);
 	if (pActor)
 	{
@@ -192,6 +190,9 @@ DsVec3d DsFieldChr::GetPosition() const
 //virtual
 DsMat33d DsFieldChr::GetRotation() const
 {
+	const DsMat33d rot = DsMat33d::RotateY(m_ang.y)*DsMat33d::RotateX(m_ang.x);
+	return rot;
+
 	DsActor* pActor = m_world.GetActor(m_actorId);
 	if (pActor)
 	{
@@ -206,6 +207,8 @@ DsMat33d DsFieldChr::GetRotation() const
 //virtual
 void DsFieldChr::SetPosition(const DsVec3d& pos)
 {
+	m_pProxy->SetPosition(pos);
+
 	DsActor* pActor = m_world.GetActor(m_actorId);
 	if (pActor)
 	{

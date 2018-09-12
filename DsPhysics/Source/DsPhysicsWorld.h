@@ -68,7 +68,7 @@ namespace DsPhysics
 		bool SphereCast(DsVec3d start, DsVec3d end, double r, DsCollisionFilter filter, void* pUserData, DsVec3d* pOutHitPos=NULL) const;
 
 		double GetDt() const;
-		const DsVec3d& GetGravity() const { m_gravity; }
+		const DsVec3d& GetGravity() const { return m_gravity; }
 
 	public:
 		//S‘©ƒ\ƒ‹ƒo[‚Ìæ“¾
