@@ -89,15 +89,6 @@ void DsChrProxy::Drive(double dt, DsVec3d move)
 		return;
 	}
 
-	if (0.0 < dt) {
-		//move分動く力を求める
-		const DsVec3d moveVel = move / dt;
-		const DsVec3d diffVel = moveVel -pActor->GetVelocity();
-		const DsVec3d force = diffVel * (pActor->GetMass().mass / dt);
-		const DsVec3d gravityF = m_world.GetGravity() * pActor->GetMass().mass;
-		pActor->AddForce(force + gravityF);
-	}
-
 	//高さあわせ
 	{
 		const double upHeight = 0.3;
@@ -110,7 +101,7 @@ void DsChrProxy::Drive(double dt, DsVec3d move)
 			pActor->SetPosition(pActor->GetPosition() + (upHitPos - upStart));//浮かせる
 		}
 
-		m_world.UpdateOneActor(dt, m_actorId);
+		m_world.DriveActor(dt, m_actorId, move);
 
 		const DsVec3d downStart = DsVec3d(pActor->GetPosition().x, pActor->RefAabb().GetMin().y, pActor->GetPosition().z);//進んだ後のカプセルの底
 		const DsVec3d downEnd = (m_isGround) ? (downStart - DsVec3d::Up()*(upHeight + downHeight)) : (downStart);
@@ -119,6 +110,8 @@ void DsChrProxy::Drive(double dt, DsVec3d move)
 		if (m_isGround) {
 			pActor->SetPosition(pActor->GetPosition() + (downHitPos - downStart));//沈ませる
 		}
+
+		m_pos = downHitPos;
 
 		m_isGround = isGround;
 	}

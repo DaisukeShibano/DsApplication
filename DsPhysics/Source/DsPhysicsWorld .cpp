@@ -130,16 +130,26 @@ void DsPhysicsWorld::Update(double dt)
 	_DeleteNoLifeActor();
 }
 
-void DsPhysicsWorld::UpdateOneActor(double dt, DsActorId id)
+void DsPhysicsWorld::DriveActor(double dt, DsActorId id, DsVec3d move)
 {
 	DsActor* pActor = id.GetActor();
-	pActor->AddForce(m_gravity*pActor->GetMass().mass);
 
-	pActor->Update();
+	const DsVec3d moveVel = (0.0 < dt) ? (move / dt) : DsVec3d::Zero();
 
-	m_pListener->OneColide(id, m_group);
+	if (move.IsNearZero(DBL_MIN)) {
+		//return;
+	}
 
-	pActor->Update();
+	{//move•ª“®‚­
+		const DsVec3d moveVel = move / dt;
+		const DsVec3d force = moveVel * (pActor->GetMass().mass / dt);
+		//pActor->IntegralDeltaForce(force);
+	}
+
+	{//Õ“Ë‰ðŒˆ
+		const DsVec3d colFroce = m_pConstraintSolver->SolveCollision(id, m_pConstraintSolver->GetIterationNum(), dt);
+		pActor->IntegralDeltaForce(colFroce);
+	}
 }
 
 void DsPhysicsWorld::_ApplyGravity()

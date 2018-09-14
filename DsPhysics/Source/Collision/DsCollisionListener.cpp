@@ -190,6 +190,7 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 
 void DsCollisionListener::OneColide(DsActorId& actor, const DsCollisionGroup& group)
 {
+	DsVec3d ret = DsVec3d::Zero();
 	const int totalActTNum = group.GetActorNumber();
 	DsCollisionExecuter executer(m_world);
 	DsConstraintSolver* pSolver = m_world.GetConstraintSolver();

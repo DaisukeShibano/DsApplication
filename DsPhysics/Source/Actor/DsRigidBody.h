@@ -96,8 +96,9 @@ namespace DsPhysics
 		virtual const DsAabb& RefAabb() const override { return m_aabb; }
 	public:
 		virtual DsVec3d CalcVelocity(const DsVec3d& f) const override;
-
 		virtual DsVec3d CalcAngularVel(const DsVec3d& t) const override;
+		//fでのみ動く分の位置を加算。現在の速度は加味しない。
+		virtual void IntegralDeltaForce(const DsVec3d& f) override;
 
 	public:
 		virtual const char* GetName() const override { return m_name.c_str(); }

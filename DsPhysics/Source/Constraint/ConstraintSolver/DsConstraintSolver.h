@@ -5,7 +5,6 @@
 #include "Collision/DsCollisionResult.h"
 #endif
 
-//#define COL_COLLECT
 
 namespace DsPhysics
 {
@@ -13,6 +12,7 @@ namespace DsPhysics
 	class IConstraint;
 	class DsCollisionConstraint;
 	class DsPositionDepthSolver;
+	class DsActorId;
 	struct DsConstraintEquation;
 }
 
@@ -29,6 +29,9 @@ namespace DsPhysics
 		void AddConstraint( IConstraint* pConstraint);
 		void RemoveConstraint(IConstraint* pConstraint);
 		void Solve(const int maxIteration, double dt);
+		
+		//idのactorには力をかけず、戻り値として返す。それ以外は拘束力がかかる
+		DsVec3d SolveCollision(const DsActorId id, const int maxIteration, double dt);
 
 	public:
 		int GetIterationNum() const;
@@ -47,12 +50,6 @@ namespace DsPhysics
 		std::vector<DsConstraintEquation*> m_eqs;
 		int m_currentIteration;
 		DsPositionDepthSolver* m_pPosDepthSolver;
-
-
-	private:
-#ifdef COL_COLLECT
-		std::vector<DsCollisionResult> m_collisionResults;
-#endif
 	};
 
 }

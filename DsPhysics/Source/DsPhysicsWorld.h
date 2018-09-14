@@ -58,7 +58,7 @@ namespace DsPhysics
 		DsJoint* CreateJoint(DsJointFactory& jointFactory);
 		void DeleteJoint(DsJoint* pJoint);
 		void Update( double dt );
-		void UpdateOneActor(double dt, DsActorId id);
+		void DriveActor(double dt, DsActorId id, DsVec3d move);
 
 		void Clear();
 		DsActor* GetActor(const DsActorId& id) const;

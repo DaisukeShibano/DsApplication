@@ -75,6 +75,8 @@ namespace DsPhysics
 	public:
 		virtual void CalclateConstraintForce() override;
 		virtual void ApplyConstraintForce() override;
+		//idのactorには適用せず戻り値で返す。他は適用
+		DsVec3d ApplyConstraintForceOne(const DsActorId id);
 		virtual void SetUp() override;
 		virtual void UpdateExForce() override;
 		virtual DsActorId GetMasterActorId() const override{ return m_masterId; }

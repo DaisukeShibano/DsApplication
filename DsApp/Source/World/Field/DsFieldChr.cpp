@@ -58,6 +58,14 @@ DsFieldChr::~DsFieldChr()
 //virtual
 void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 {
+	m_pProxy = new DsChrProxy(m_world, this);
+	DS_ASSERT(m_pProxy, "メモリ確保失敗");
+	//FieldObjのInitializeでしか形状情報がとれないので今は直打ち
+	const DsMat33d rot = DsMat33d::RotateX(initInfo.ang.x)*DsMat33d::RotateY(initInfo.ang.y)*DsMat33d::RotateZ(initInfo.ang.z);
+	const double height = 1.5;
+	m_pProxy->Initialize(0.25, height, 20, initInfo.pos + DsVec3d(0, height*0.5, 0), rot);
+	m_pProxy->SetCollisionFilter(DsAppCollisionFilter::CalcFilterInsideAllGroup());
+
 	DsFieldObj::Initialize(initInfo);
 
 	//DsFieldObj::Initializeでは剛体の中心がアニメの中心になっているので再度キャラ用基点にセットし直し
@@ -76,14 +84,6 @@ void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 	}
 	
 	m_actorId.GetActor()->SetUserData(this);
-
-	m_pProxy = new DsChrProxy(m_world, this);
-	DS_ASSERT(m_pProxy, "メモリ確保失敗");
-	//FieldObjのInitializeでしか形状情報がとれないので今は直打ち
-	const DsMat33d rot = DsMat33d::RotateX(initInfo.ang.x)*DsMat33d::RotateY(initInfo.ang.y)*DsMat33d::RotateZ(initInfo.ang.z);
-	const double height = 1.5;
-	m_pProxy->Initialize(0.25, height, 20, initInfo.pos + DsVec3d(0, height*0.5, 0), rot);
-	m_pProxy->SetCollisionFilter(DsAppCollisionFilter::CalcFilterInsideAllGroup());
 
 	//ラグドール
 	const DsAnimCustomProperty* pProperty = m_pAnimation->GetCustomProperty();

@@ -37,9 +37,16 @@ void DsRigidCapsule::Create(double r, double halfLen, double mass)
 			const double Iyy = (m1*(0.5*r*r) + m2*(8.0*r*r)) * bias.y;
 			const double Izz = (m1*(3.0*r*r + h*h) + m2*(8.0*r*r + 5.0*h*h)) * bias.z;
 			pi.mass.inertia = DsMat33d::Identity();
-			pi.mass.inertia[0] = Ixx;
-			pi.mass.inertia[4] = Iyy;
-			pi.mass.inertia[8] = Izz;
+			if (m_option.isRotation) {
+				pi.mass.inertia[0] = Ixx;
+				pi.mass.inertia[4] = Iyy;
+				pi.mass.inertia[8] = Izz;
+			}
+			else {
+				pi.mass.inertia[0] = DS_MAX_MASS;
+				pi.mass.inertia[4] = DS_MAX_MASS;
+				pi.mass.inertia[8] = DS_MAX_MASS;
+			}
 			pi.mass.mass = M;
 			pi.mass.inertiaOriginal = pi.mass.inertia;
 		}
