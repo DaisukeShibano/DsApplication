@@ -17,8 +17,9 @@ namespace DsPhysics
 
 namespace DsApp
 {
-	class DsFieldHit;
 	class DsFieldObj;
+	class DsFieldHit;
+	class DsFieldObstacle;
 	class DsFieldChr;
 }
 
@@ -44,17 +45,17 @@ namespace DsApp
 
 	public:
 		std::vector<DsFieldHit*> RefHits() { return m_hits; }
-		std::vector<DsFieldObj*> RefObjs() { return m_objs; }
+		std::vector<DsFieldObstacle*> RefObstacles() { return m_obstacles; }
 		std::vector<DsFieldChr*> RefChrs() { return m_chrs; }
 
 	private:
 		DsLib::DsSys& m_sys;
 		std::vector<DsFieldHit*> m_hits;
-		std::vector<DsFieldObj*> m_objs;
+		std::vector<DsFieldObstacle*> m_obstacles;
 		std::vector<DsFieldChr*> m_chrs;
 
 		std::vector<INIT_INFO> m_requestHits;
-		std::vector<INIT_INFO> m_requestObjs;
+		std::vector<INIT_INFO> m_requestObstacles;
 		std::vector<INIT_INFO> m_requestChrs;
 	};
 }

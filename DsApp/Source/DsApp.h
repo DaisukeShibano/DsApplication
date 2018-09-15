@@ -18,6 +18,7 @@
 #ifndef _DS_FIELD_OBJ_H_
 #include "World/Field/DsFieldObj.h"
 #endif
+#include "World/Field/DsFieldObstacle.h"
 #ifndef _DS_FIELD_HIT_H_
 #include "World/Field/DsFieldHit.h"
 #endif

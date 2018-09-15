@@ -48,8 +48,7 @@ DsFieldObstacle::~DsFieldObstacle()
 void DsFieldObstacle::SetPosition(const DsVec3d& pos)
 {
 	DsActor* pActor = m_world.GetActor(m_actorId);
-	if (pActor)
-	{
+	if (pActor){
 		const double y = pActor->GetPosition().y;
 		const DsVec3d offset = DsVec3d(0, pActor->RefAabb().GetMax().y-y, 0);
 		pActor->SetPosition(pos);
@@ -64,13 +63,11 @@ void DsFieldObstacle::SetPosition(const DsVec3d& pos)
 void DsFieldObstacle::SetRotation(const DsMat33d& rot)
 {
 	DsActor* pActor = m_world.GetActor(m_actorId);
-	if (pActor)
-	{
+	if (pActor){
 		pActor->SetRotation(rot);
 	}
 
-	if (m_pAnimation)
-	{
+	if (m_pAnimation){
 		m_pAnimation->SetRootMatrix(GetPosition(), GetRotation());
 	}
 }
@@ -79,14 +76,12 @@ void DsFieldObstacle::SetRotation(const DsMat33d& rot)
 DsVec3d DsFieldObstacle::GetPosition() const
 {
 	DsActor* pActor = m_world.GetActor(m_actorId);
-	if (pActor)
-	{
+	if (pActor){
 		const double y = pActor->GetPosition().y;
 		const DsVec3d offset = DsVec3d(0, -pActor->RefAabb().GetMax().y-y, 0);
 		return pActor->GetPosition();
 	}
-	else
-	{
+	else{
 		return DsVec3d::Zero();
 	}
 }
@@ -95,22 +90,10 @@ DsVec3d DsFieldObstacle::GetPosition() const
 DsMat33d DsFieldObstacle::GetRotation() const
 {
 	DsActor* pActor = m_world.GetActor(m_actorId);
-	if (pActor)
-	{
+	if (pActor){
 		return pActor->GetRotation();
 	}
-	else
-	{
+	else{
 		return DsMat33d::Identity();
 	}
-}
-
-DsActor* DsFieldObstacle::GetActor()
-{
-	return m_world.GetActor(m_actorId);
-}
-
-const DsActor* DsFieldObstacle::GetActor() const
-{
-	return m_world.GetActor(m_actorId);
 }

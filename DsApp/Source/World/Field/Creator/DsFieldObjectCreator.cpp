@@ -18,10 +18,10 @@ using namespace DsApp;
 DsFieldObjectCreator::DsFieldObjectCreator(DsSys& sys)
 	: m_sys(sys)
 	, m_hits()
-	, m_objs()
+	, m_obstacles()
 	, m_chrs()
 	, m_requestHits()
-	, m_requestObjs()
+	, m_requestObstacles()
 	, m_requestChrs()
 {
 
@@ -68,9 +68,9 @@ void DsFieldObjectCreator::Create(const char* resPath, DsPhysicsWorld& world)
 
 		case DS_MAP_FIELD_OBJ_TYPE::OBJ:
 		{
-			DsFieldObj* pObj = new DsFieldObj(m_sys, world);
+			DsFieldObstacle* pObj = new DsFieldObstacle(m_sys, world);
 			info.pObj = pObj;
-			m_requestObjs.push_back(info);
+			m_requestObstacles.push_back(info);
 		}
 		break;
 
@@ -116,14 +116,14 @@ void DsFieldObjectCreator::Update(double dt)
 	//ヒットが準備終わってから配置物
 	bool isObjOk = true;
 	if (isHitOk) {
-		for (INIT_INFO& iniInfo : m_requestObjs) {
+		for (INIT_INFO& iniInfo : m_requestObstacles) {
 			if (!iniInfo.pObj->IsRequestInit()) {
 				iniInfo.pObj->Initialize(iniInfo.initInfo);
-				m_objs.push_back(static_cast<DsFieldObj*>(iniInfo.pObj));
+				m_obstacles.push_back(static_cast<DsFieldObstacle*>(iniInfo.pObj));
 			}
 		}
 	}
-	for (DsFieldObj* pObj : m_objs) {
+	for (DsFieldObj* pObj : m_obstacles) {
 		if (!pObj->IsCompleteInit() ) {
 			isObjOk = false;
 		}
@@ -150,11 +150,11 @@ void DsFieldObjectCreator::Destoroy()
 	}
 	m_hits.clear();
 
-	for each(DsFieldObj* pObj in m_objs)
+	for each(DsFieldObstacle* pObstacle in m_obstacles)
 	{
-		delete pObj;
+		delete pObstacle;
 	}
-	m_objs.clear();
+	m_obstacles.clear();
 	
 	for each(DsFieldChr* pChr in m_chrs)
 	{

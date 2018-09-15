@@ -172,7 +172,7 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 	{
 		obj->Update(args.dt);
 	}
-	for(DsFieldObj* obj : m_pCreator->RefObjs())
+	for(DsFieldObj* obj : m_pCreator->RefObstacles())
 	{
 		obj->Update(args.dt);
 	}
