@@ -166,7 +166,7 @@ void DsFieldChr::Update(double dt)
 		m_pAnimation->SetRootMatrix(GetPosition(), DsMat33d::RotateY(m_ang.y));
 	}
 
-	m_pProxy->Drive(dt, m_vel*dt*0.3);
+	m_pProxy->Drive(dt, m_vel*dt);
 }
 
 //virtual

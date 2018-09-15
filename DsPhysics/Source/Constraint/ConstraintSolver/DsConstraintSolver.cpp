@@ -164,9 +164,10 @@ void DsConstraintSolver::Solve(const int maxIteration, double dt)
 
 
 //idのactorには力をかけず、戻り値として返す。それ以外は拘束力がかかる
-DsVec3d DsConstraintSolver::SolveCollision(const DsActorId id, const int maxIteration, double dt)
+DsVec3d DsConstraintSolver::SolveCollision(DsActorId id, const int maxIteration, double dt)
 {
-	DsVec3d ret = DsVec3d::Zero();
+	DsActor* pActor = id.GetActor();
+	const DsVec3d preForce = pActor->GetForce();
 	const int useColNum = static_cast<int>(m_colConstraintBuffUseSize / sizeof(DsCollisionConstraint));
 	DsCollisionConstraint* cols = reinterpret_cast<DsCollisionConstraint*>(m_colConstraintBuff);
 	for (int i = 0; i < maxIteration; ++i) {
@@ -175,14 +176,17 @@ DsVec3d DsConstraintSolver::SolveCollision(const DsActorId id, const int maxIter
 			cols[colIdx].CalclateConstraintForce();
 			DsCollisionConstraintSolver cSolver;
 			cSolver.Solve(cols[colIdx], s_matSolveIteNum);
-			ret += cols[colIdx].ApplyConstraintForceOne(id);
+			cols[colIdx].ApplyConstraintForce();
 		}
 	}
+	const DsVec3d addForce = pActor->GetForce() - preForce;
+	//力をかけなかったことにする。拘束解く段階では力をかけておかないと他の剛体がこぞって反力をかけようとする。
+	pActor->AddForce(-addForce);
 
 	//衝突は１フレ限りなので削除
 	m_colConstraintBuffUseSize = 0;
 
-	return ret;
+	return addForce;
 }
 
 int DsConstraintSolver::GetIterationNum() const

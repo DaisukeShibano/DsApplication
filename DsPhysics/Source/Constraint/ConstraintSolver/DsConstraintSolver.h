@@ -31,7 +31,7 @@ namespace DsPhysics
 		void Solve(const int maxIteration, double dt);
 		
 		//idのactorには力をかけず、戻り値として返す。それ以外は拘束力がかかる
-		DsVec3d SolveCollision(const DsActorId id, const int maxIteration, double dt);
+		DsVec3d SolveCollision(DsActorId id, const int maxIteration, double dt);
 
 	public:
 		int GetIterationNum() const;

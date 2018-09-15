@@ -402,11 +402,3 @@ DsVec3d DsRigidBody::CalcAngularVel(const DsVec3d& t) const
 	}
 }
 
-//fでのみ動く分の位置を加算。現在の速度は加味しない。
-//virtual
-void DsRigidBody::IntegralDeltaForce(const DsVec3d& f)
-{
-	const DsVec3d dx = ((f / m_physicsInfo.mass.mass) * GetDT()) * GetDT();
-	_Update(dx, DsMat33d::Identity());
-}
-

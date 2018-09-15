@@ -188,14 +188,13 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 	}
 }
 
-void DsCollisionListener::OneColide(DsActorId& actor, const DsCollisionGroup& group)
+void DsCollisionListener::OneColide(DsConstraintSolver& outSolver, const DsActorId& actor, const DsCollisionGroup& group)
 {
 	DsVec3d ret = DsVec3d::Zero();
 	const int totalActTNum = group.GetActorNumber();
 	DsCollisionExecuter executer(m_world);
-	DsConstraintSolver* pSolver = m_world.GetConstraintSolver();
-
-	DsActor& a = *actor.GetActor();
+	
+	const DsActor& a = *actor.GetActor();
 	if (_IsUseBoundingGroup(totalActTNum))
 	{
 		std::vector < const DsActor* > targetActors;
@@ -211,7 +210,7 @@ void DsCollisionListener::OneColide(DsActorId& actor, const DsCollisionGroup& gr
 			if (!isSkip) {
 				const DsCollisionResult& result = executer.Exe(*pActor, a);
 				if (result.GetColNum() > 0) {
-					pSolver->AddCollision(result);
+					outSolver.AddCollision(result);
 				}
 			}
 		}
@@ -230,7 +229,7 @@ void DsCollisionListener::OneColide(DsActorId& actor, const DsCollisionGroup& gr
 			if (!isSkip) {
 				const DsCollisionResult& result = executer.Exe(*pActors[i], a);
 				if (result.GetColNum() > 0) {
-					pSolver->AddCollision(result);
+					outSolver.AddCollision(result);
 				}
 			}
 		}

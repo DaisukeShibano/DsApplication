@@ -121,8 +121,6 @@ namespace DsPhysics
 	public:
 		virtual DsVec3d CalcVelocity(const DsVec3d& f) const { return DsVec3d::Zero(); }
 		virtual DsVec3d CalcAngularVel(const DsVec3d& t) const { return DsVec3d::Zero(); }
-		//fでのみ動く分の位置を加算。現在の速度は加味しない。
-		virtual void IntegralDeltaForce(const DsVec3d& f) {};
 
 	public:
 		virtual const char* GetName() const { static char dummy[] = ""; return dummy; }

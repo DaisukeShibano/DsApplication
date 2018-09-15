@@ -52,8 +52,18 @@ DsPhysicsWorld::DsPhysicsWorld(const DsPhysicsWorldSetting setting)
 	DS_ASSERT(m_pListener, "メモリ確保失敗");
 	m_pConstraintSolver = new DsConstraintSolver(*this);
 	DS_ASSERT(m_pConstraintSolver, "メモリ確保失敗");
+	m_pDriveActorSolver = new DsConstraintSolver(*this);
+	DS_ASSERT(m_pDriveActorSolver, "メモリ確保失敗");
 	m_actors.clear();
 };
+
+DsPhysicsWorld::~DsPhysicsWorld()
+{
+	Clear();
+	delete m_pDriveActorSolver; m_pDriveActorSolver = NULL;
+	delete m_pConstraintSolver; m_pConstraintSolver = NULL;
+	delete m_pListener; m_pListener = NULL;
+}
 
 DsActorId DsPhysicsWorld::CreateActor( const DsActorFactory& factory)
 {
@@ -132,24 +142,40 @@ void DsPhysicsWorld::Update(double dt)
 
 void DsPhysicsWorld::DriveActor(double dt, DsActorId id, DsVec3d move)
 {
+	//DsPhysicsWorld::Update()での拘束力・重力は積分済みで０。
+	//それ以降の外力は込み。
+
 	DsActor* pActor = id.GetActor();
 
 	const DsVec3d moveVel = (0.0 < dt) ? (move / dt) : DsVec3d::Zero();
 
-	if (move.IsNearZero(DBL_MIN)) {
-		//return;
-	}
+	double velY = pActor->GetVelocity().y;
+
+	//対象剛体は速度をクリアする。外力で加速した分をクリアできないため。
+	pActor->SetVelocity(DsVec3d(0, 0, 0));
 
 	{//move分動く
-		const DsVec3d moveVel = move / dt;
-		const DsVec3d force = moveVel * (pActor->GetMass().mass / dt);
-		//pActor->IntegralDeltaForce(force);
+		const double mass = pActor->GetMass().mass;
+		const DsVec3d force = moveVel * (mass / dt);
+		pActor->AddForce(force);
+		pActor->Update();
 	}
 
-	{//衝突解決
-		const DsVec3d colFroce = m_pConstraintSolver->SolveCollision(id, m_pConstraintSolver->GetIterationNum(), dt);
-		pActor->IntegralDeltaForce(colFroce);
+	{//衝突判定
+		m_pListener->OneColide(*m_pDriveActorSolver, id, m_group);
 	}
+
+	//速度は乗らないのでそのつもりで拘束力を求める(Drive時は重力も乗らない)
+	pActor->SetVelocity(DsVec3d(0, 0, 0));
+
+	{//衝突解決
+		const DsVec3d colFroce = m_pDriveActorSolver->SolveCollision(id, m_pDriveActorSolver->GetIterationNum(), dt);
+		pActor->Update();
+	}
+
+	//move分動いたので次のフレームからは動いてなくていいのでクリア
+	//重力方向だけ復帰
+	pActor->SetVelocity(DsVec3d(0, velY, 0));
 }
 
 void DsPhysicsWorld::_ApplyGravity()
@@ -212,11 +238,6 @@ void DsPhysicsWorld::Clear()
 	} 
 	m_actors.clear();
 	m_group.Clear();
-}
-
-DsPhysicsWorld::~DsPhysicsWorld()
-{
-	Clear();
 }
 
 DsActor* DsPhysicsWorld::GetActor(const DsActorId& id) const

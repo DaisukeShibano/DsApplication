@@ -88,7 +88,7 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 
 			if(1){//è’ìÀÉeÉXÉg
 				DsRigidBox::GetVertex(vertex, 1.5, 0.5, 1.5);
-				for(int i=0; i<0; ++i){
+				for(int i=0; i<30; ++i){
 					DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, "î†ÇP");
 					factory.InitPos(DsVec3d(0.0, 0.0 + (0.5)*(double)i, 2.0));
 					factory.SetOption(option);
@@ -96,7 +96,7 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 					DsActor* pActor = actorId.GetActor();
 					pActor->SetMaterial(DsActorMaterial::Aluminum());
 				}
-				for (int i = 0; i<3; ++i) {
+				for (int i = 0; i<0; ++i) {
 					DsRigidCapsule::DsRigidCapsuleFactory factory(0.5, 1.0, 1000.0, "î†ÇP");
 					factory.InitPos(DsVec3d(-1.0, 1.6 + (2.0)*(double)i, 4.0));
 					factory.InitRot(DsMat33d::RotateZ(0.3));

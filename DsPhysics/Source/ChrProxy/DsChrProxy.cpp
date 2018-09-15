@@ -89,30 +89,49 @@ void DsChrProxy::Drive(double dt, DsVec3d move)
 		return;
 	}
 
+	const bool isFlatMove = true;//これ有効だと破片とかも上ってしまう
+
+	const double radius = m_radius * 0.8;//外側のカプセルよりも小さく
+	const double diam = radius * 2.0;
+
 	//高さあわせ
-	{
+	if(isFlatMove){
 		const double upHeight = 0.3;
 		const double downHeight = 0.0;
 		const DsVec3d upStart = m_pos + DsVec3d::Up()*m_height;
-		const DsVec3d upEnd = m_pos + DsVec3d::Up()*(m_height + upHeight);
+		const DsVec3d upEnd = upStart + DsVec3d::Up()*upHeight;
 		DsVec3d upHitPos = upEnd;
+		DsVec3d upVec = DsVec3d::Zero();
 		if (m_isGround) {
-			m_world.SphereCast(upStart, upEnd, m_radius, m_filter, m_pOwner, &upHitPos);
-			pActor->SetPosition(pActor->GetPosition() + (upHitPos - upStart));//浮かせる
+			m_world.SphereCast(upStart, upEnd, radius, m_filter, m_pOwner, &upHitPos);
+			upVec = upHitPos - upStart;
+			pActor->SetPosition(pActor->GetPosition() + upVec);//浮かせる
 		}
 
 		m_world.DriveActor(dt, m_actorId, move);
 
-		const DsVec3d downStart = DsVec3d(pActor->GetPosition().x, pActor->RefAabb().GetMin().y, pActor->GetPosition().z);//進んだ後のカプセルの底
-		const DsVec3d downEnd = (m_isGround) ? (downStart - DsVec3d::Up()*(upHeight + downHeight)) : (downStart);
+		const DsVec3d downStart = DsVec3d(pActor->GetPosition().x, pActor->RefAabb().GetMin().y + diam, pActor->GetPosition().z);//進んだ後のカプセルの底
+		const DsVec3d downEnd = (m_isGround) ? (downStart - upVec - DsVec3d::Up()*(downHeight + diam)) : (downStart - DsVec3d::Up()*diam);
 		DsVec3d downHitPos = downEnd;
-		const bool isGround = m_world.SphereCast(downStart, downEnd, m_radius, m_filter, m_pOwner, &downHitPos);
+		const bool isGround = m_world.SphereCast(downStart, downEnd, radius, m_filter, m_pOwner, &downHitPos);
 		if (m_isGround) {
-			pActor->SetPosition(pActor->GetPosition() + (downHitPos - downStart));//沈ませる
+			const DsVec3d tmpP = pActor->GetPosition();
+			const double down = downHitPos.y - (downStart.y - diam);
+			pActor->SetPosition(DsVec3d(tmpP.x, tmpP.y + down, tmpP.z));//沈ませる
 		}
 
 		m_pos = downHitPos;
 
-		m_isGround = isGround;
+		m_isGround = true;
+	}
+	else {
+		m_world.DriveActor(dt, m_actorId, move);
+
+		const DsVec3d downStart = DsVec3d(pActor->GetPosition().x, pActor->RefAabb().GetMin().y + radius * 2.0, pActor->GetPosition().z);
+		const DsVec3d downEnd = downStart - DsVec3d::Up()*radius*2.0;
+
+		m_pos = downEnd;
+
+		m_isGround = m_world.SphereCast(downStart, downEnd, radius, m_filter, m_pOwner, NULL);
 	}
 }

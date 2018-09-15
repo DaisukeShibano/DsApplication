@@ -94,6 +94,7 @@ namespace DsPhysics
 		Joints m_joints;
 		DsPhysicsWorldSetting m_setting;
 		DsConstraintSolver* m_pConstraintSolver;
+		DsConstraintSolver* m_pDriveActorSolver;
 		DsCollisionCallback* m_pCollisionCallback;
 
 	private:
