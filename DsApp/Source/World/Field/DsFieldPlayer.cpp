@@ -99,7 +99,6 @@ DsActionRequest* DsFieldPlayer::_CreareActionRequest()
 //virtual 
 void DsFieldPlayer::Update(double dt)
 {
-	//m_actorId.GetActor()->RefOption().isGravity = false;
 	{//キャラ座標の更新
 
 		//カメラのY軸回転量を求める

@@ -74,25 +74,9 @@ void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 	m_ang = initInfo.ang;
 	m_pAnimation->SetRootMatrix(GetPosition(), GetRotation());
 
-
-	DsActor* pActor = m_world.GetActor(m_actorId);
-	{
-		//キャラは跳ね返らないし、摩擦もない
-		DsActorMaterial mat;
-		mat.m_bundCoef = 0.0;
-		mat.m_staticFrictionCoef = 0.0;
-		mat.m_kinematicFricCoef = 0.0;
-		pActor->SetMaterial(mat);
-	}
-	
-	m_actorId.GetActor()->SetUserData(this);
-
 	//ラグドール
 	const DsAnimCustomProperty* pProperty = m_pAnimation->GetCustomProperty();
 	DsAnimSkeleton* pSkeleton = m_pAnimation->GetSkeleton();
-
-	//地形あたりは内部のものは全て当たらない
-	m_actorId.GetActor()->SetCollisionFilter(DsAppCollisionFilter::CalcFilterInsideAllGroup());
 
 	if (pProperty && pSkeleton) {
 		m_pRagdoll = new DsRagdoll(pProperty->ragdollParamIds, *pSkeleton, m_world, this, GetPosition(),GetRotation());
@@ -104,7 +88,6 @@ void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 			parts.damperV = param.GetDamperV();
 			parts.mass = param.GetMass();
 			parts.collisionFilter = DsAppCollisionFilter::CalcFilterInside(param.GetCollisionGroup());
-			//parts.collisionFilter = DsAppCollisionFilter::CalcFilterAllOne();//あらぶるので一時的に何にも当たらないように
 			m_pRagdoll->SetParam(parts);
 		}
 
@@ -143,18 +126,8 @@ void DsFieldChr::Update(double dt)
 	const DsMat33d rot = DsMat33d::RotateY(m_ang.y)*DsMat33d::RotateX(m_ang.x);
 	m_vel = rot * m_vel;
 
-	DsActor* pActor = m_actorId.GetActor();
-	if (pActor){
-		const double velGain = 600.0f;//加速ゲイン
-		const DsVec3d targetVelF = (m_vel - pActor->GetVelocity())*velGain;
-		pActor->AddForce(DsVec3d(targetVelF.x, 0, targetVelF.z));
-	}
-
 	DsFieldObj::Update(dt);
 	if (m_pAnimation){
-		//剛体の底がキャラ座標になるように剛体は持ち上げられてる。
-		//モデルデータの足元座標は原点になってる。なのでキャラ座標そのままでいい
-		//姿勢は剛体ではなく、m_ang
 		m_pAnimation->SetRootMatrix(GetPosition(), DsMat33d::RotateY(m_ang.y));
 	}
 
@@ -165,18 +138,6 @@ void DsFieldChr::Update(double dt)
 DsVec3d DsFieldChr::GetPosition() const
 {
 	return m_pProxy->GetPosition();
-
-	DsActor* pActor = m_world.GetActor(m_actorId);
-	if (pActor)
-	{
-		const double y = pActor->GetPosition().y;
-		const DsVec3d offset = DsVec3d(0, -(pActor->RefAabb().GetMax().y-y), 0);
-		return pActor->GetPosition() + offset;
-	}
-	else
-	{
-		return DsVec3d::Zero();
-	}
 }
 
 //virtual
@@ -184,31 +145,12 @@ DsMat33d DsFieldChr::GetRotation() const
 {
 	const DsMat33d rot = DsMat33d::RotateY(m_ang.y)*DsMat33d::RotateX(m_ang.x);
 	return rot;
-
-	DsActor* pActor = m_world.GetActor(m_actorId);
-	if (pActor)
-	{
-		return pActor->GetRotation();
-	}
-	else
-	{
-		return DsMat33d::Identity();
-	}
 }
 
 //virtual
 void DsFieldChr::SetPosition(const DsVec3d& pos)
 {
 	m_pProxy->SetPosition(pos);
-
-	DsActor* pActor = m_world.GetActor(m_actorId);
-	if (pActor)
-	{
-		const double y = pActor->GetPosition().y;
-		const DsVec3d offset = DsVec3d(0, pActor->RefAabb().GetMax().y-y, 0);
-		pActor->SetPosition(pos+offset);
-	}
-
 	if (m_pAnimation)
 	{
 		m_pAnimation->SetRootMatrix(GetPosition(), GetRotation());
@@ -236,12 +178,5 @@ void DsFieldChr::SetRotation(const DsMat33d& rot)
 //virtual 
 void DsFieldChr::DbgDraw(DsLib::DsDrawCommand& com)
 {
-	DsActor* pActor = m_world.GetActor(m_actorId);
-	if (pActor)
-	{
-		pActor->SetColor(DsVec4d(1, 1, 1, 0));
-		pActor->SetLineColor(DsVec4d(0, 0, 0, 0));
-		pActor->Draw(com);
-	}
 }
 
