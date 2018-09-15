@@ -42,8 +42,6 @@ void DsFieldObjectCreator::Create(const char* resPath, DsPhysicsWorld& world)
 	//”z’uî•ñ‚Å¶¬
 	for (const DsMapRes::DATA& mapInfo : pMapRes->GetData())
 	{
-
-
 		DsFieldInitInfo reqInitInfo;
 		reqInitInfo.name = mapInfo.pName;
 		reqInitInfo.pos = mapInfo.pos;

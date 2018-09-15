@@ -33,6 +33,7 @@ namespace DsApp
 		virtual ~DsFieldObstacle();
 
 	public:
+		virtual void Initialize(const DsFieldInitInfo& initInfo) override;
 		virtual void SetPosition(const DsVec3d& pos) override;
 		virtual void SetRotation(const DsMat33d& rot) override;
 		virtual DsVec3d GetPosition() const override;
@@ -40,6 +41,11 @@ namespace DsApp
 
 	protected:
 		DsPhysics::DsActorId m_actorId;
+		std::string m_hitName;
+
+
+	public:
+		virtual void DbgDraw(DsLib::DsDrawCommand& com) override;
 	};
 }
 

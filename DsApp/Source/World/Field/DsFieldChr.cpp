@@ -159,15 +159,7 @@ void DsFieldChr::SetPosition(const DsVec3d& pos)
 //virtual
 void DsFieldChr::SetRotation(const DsMat33d& rot)
 {
-	DsActor* pActor = m_world.GetActor(m_actorId);
-	if (pActor)
-	{
-		pActor->SetRotation(rot);
-		if (m_pAnimation)
-		{
-			m_pAnimation->SetRootMatrix(GetPosition(), GetRotation());
-		}
-	}
+	DS_ASSERT(false, "Л@Ф\ВµВƒВ№ВєВс");
 }
 
 

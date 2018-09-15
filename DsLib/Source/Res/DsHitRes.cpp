@@ -140,7 +140,7 @@ bool DsHitRes::Initialize(const char* path, DsResource& resource)
 	}
 	else
 	{
-		DS_ASSERT(false, "HitResで未知の拡張子");
+		DS_ASSERT(false, "HitResで未知のファイル");
 		ret = false;
 	}
 

@@ -15,6 +15,8 @@
 #ifndef __DS_APP_COLLISION_FILTER__
 #include "World/Physics/DsAppCollisionFilter.h"
 #endif
+#include "World/Physics/DsPhysicsCreator.h"
+
 
 using namespace DsLib;
 using namespace DsPhysics;
@@ -28,11 +30,21 @@ DsFieldHit::DsFieldHit(DsSys& sys, DsPhysicsWorld& world)
 
 DsFieldHit::~DsFieldHit()
 {
+	m_actorId = m_world.DeleteActor(m_actorId);
+	m_sys.RefResource().UnregisterItem<DsHitRes>(m_hitName.c_str());
 }
 
 //virtual
 void DsFieldHit::Initialize(const DsFieldInitInfo& initInfo)
 {
+	m_hitName = initInfo.hitName;
+	const DsHitRes* pHitRes = m_sys.RefResource().RegisterItem<DsHitRes>(m_hitName.c_str());
+	if (pHitRes) {
+		m_actorId = DsPhysicsCreator::Create(m_world, *pHitRes, initInfo.physicsType, initInfo.pos, initInfo.ang, initInfo.name);
+	}
+	else {
+		DS_LOG("オブジェ初期化情報が無かったのでオブジェは作られませんでした %s", m_name.c_str());
+	}
 	DsFieldObj::Initialize(initInfo);
 
 	//地形あたりは内部のものは全て当たらない
@@ -106,5 +118,16 @@ DsMat33d DsFieldHit::GetRotation() const
 //virtual 
 void DsFieldHit::DbgDraw(DsLib::DsDrawCommand& com)
 {
-	DsFieldObj::DbgDraw(com);
+	DsActor* pActor = m_world.GetActor(m_actorId);
+	if (pActor)
+	{
+		//メッシュは描画モデルと被るので弾く
+		if (pActor->GetType() != DsActor::RIGID_MESH)
+		{
+			pActor->SetColor(DsVec4d(1, 1, 1, 0));
+			pActor->SetLineColor(DsVec4d(0, 0, 0, 0));
+			pActor->Draw(com);
+		}
+	}
+
 }

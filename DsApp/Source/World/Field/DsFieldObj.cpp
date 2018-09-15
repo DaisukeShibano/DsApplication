@@ -23,7 +23,6 @@
 #ifndef _DS_EQUIP_COMPONENT_
 #include "World/Component/Equip/DsEquipComponent.h"
 #endif
-#include "World/Physics/DsPhysicsCreator.h"
 
 using namespace DsLib;
 using namespace DsPhysics;
@@ -35,13 +34,11 @@ DsFieldObj::DsFieldObj(DsSys& sys, DsPhysicsWorld& world)
 	: m_sys(sys)
 	, m_name()
 	, m_pAnimation(NULL)
-	, m_actorId()
 	, m_world(world)
 	, m_pAnimEventCallback(NULL)
 	, m_pComponentSystem(NULL)
 	, m_reqestIsInit(false)
 	, m_isCompleteInit(false)
-	, m_hitName()
 	, m_isRequestDirectAnim(false)
 {
 	
@@ -49,20 +46,15 @@ DsFieldObj::DsFieldObj(DsSys& sys, DsPhysicsWorld& world)
 
 DsFieldObj::~DsFieldObj()
 {
-	m_actorId = m_world.DeleteActor(m_actorId);
 	delete m_pAnimEventCallback; m_pAnimEventCallback = NULL;
 	delete m_pAnimation; m_pAnimation = NULL;
 	delete m_pComponentSystem; m_pComponentSystem = NULL;
-
-	m_sys.RefResource().UnregisterItem<DsHitRes>(m_hitName.c_str());
-
 }
 
 //virtual
 void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 {
 	m_name = initInfo.name;
-	m_hitName = initInfo.hitName;
 
 	m_pComponentSystem = new DsComponentSystem(*this, m_sys);
 	DS_ASSERT(m_pComponentSystem, "メモリ確保失敗");
@@ -72,14 +64,6 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 	m_pAnimEventCallback = new DsAnimEventCallback(*this, m_sys.RefResource());
 	DS_ASSERT(m_pAnimEventCallback, "メモリ確保失敗");
 	m_pAnimEventCallback->Initialize(initInfo.animName.c_str());
-
-	const DsHitRes* pHitRes = m_sys.RefResource().RegisterItem<DsHitRes>(m_hitName.c_str());
-	if (pHitRes){
-		m_actorId = DsPhysicsCreator::Create(m_world, *pHitRes, initInfo.physicsType, initInfo.pos, initInfo.ang, m_name.c_str());
-	}
-	else{
-		DS_LOG("オブジェ初期化情報が無かったのでオブジェは作られませんでした %s", m_name.c_str());
-	}
 
 	if (m_pAnimation){
 		m_pAnimation->SetRootMatrix(GetPosition(), GetRotation());
@@ -110,68 +94,6 @@ void DsFieldObj::Update(double dt)
 		m_pComponentSystem->Update(dt);
 	}
 }
-
-//virtual
-void DsFieldObj::SetPosition(const DsVec3d& pos)
-{
-	DsActor* pActor = m_world.GetActor(m_actorId);
-	if (pActor)
-	{
-		const double y = pActor->GetPosition().y;
-		const DsVec3d offset = DsVec3d(0, pActor->RefAabb().GetMax().y-y, 0);
-		pActor->SetPosition(pos);
-
-		if (m_pAnimation)
-		{
-			m_pAnimation->SetRootMatrix(GetPosition(), GetRotation());
-		}
-	}
-}
-//virtual
-void DsFieldObj::SetRotation(const DsMat33d& rot)
-{
-	DsActor* pActor = m_world.GetActor(m_actorId);
-	if (pActor)
-	{
-		pActor->SetRotation(rot);
-	}
-
-	if (m_pAnimation)
-	{
-		m_pAnimation->SetRootMatrix(GetPosition(), GetRotation());
-	}
-}
-
-//virtual
-DsVec3d DsFieldObj::GetPosition() const
-{
-	DsActor* pActor = m_world.GetActor(m_actorId);
-	if (pActor)
-	{
-		const double y = pActor->GetPosition().y;
-		const DsVec3d offset = DsVec3d(0, -pActor->RefAabb().GetMax().y-y, 0);
-		return pActor->GetPosition();
-	}
-	else
-	{
-		return DsVec3d::Zero();
-	}
-}
-
-//virtual
-DsMat33d DsFieldObj::GetRotation() const
-{
-	DsActor* pActor = m_world.GetActor(m_actorId);
-	if (pActor)
-	{
-		return pActor->GetRotation();
-	}
-	else
-	{
-		return DsMat33d::Identity();
-	}
-}
-
 
 bool DsFieldObj::GetDmypoly(int id, std::vector<DsMat44d>& outMat, DMYPOLY_SLOT slot)const
 {
@@ -226,23 +148,6 @@ void DsFieldObj::SetRequestAnim(std::string name)
 				m_isRequestDirectAnim = true;
 				break;
 			}
-		}
-	}
-}
-
-
-//virtual 
-void DsFieldObj::DbgDraw(DsLib::DsDrawCommand& com)
-{
-	DsActor* pActor = m_world.GetActor(m_actorId);
-	if (pActor)
-	{
-		//メッシュは描画モデルと被るので弾く
-		if (pActor->GetType() != DsActor::RIGID_MESH)
-		{
-			pActor->SetColor(DsVec4d(1, 1, 1, 0));
-			pActor->SetLineColor(DsVec4d(0, 0, 0, 0));
-			pActor->Draw(com);
 		}
 	}
 }

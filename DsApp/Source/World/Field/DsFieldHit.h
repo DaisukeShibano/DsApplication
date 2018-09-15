@@ -21,10 +21,13 @@ namespace DsApp
 		virtual DsVec3d GetPosition() const override;
 		virtual DsMat33d GetRotation() const override;
 
-	public:
-		virtual void DbgDraw(DsLib::DsDrawCommand& com);
-
 	private:
+		DsPhysics::DsActorId m_actorId;
+		std::string m_hitName;
+
+
+	public:
+		virtual void DbgDraw(DsLib::DsDrawCommand& com) override;
 	};
 }
 

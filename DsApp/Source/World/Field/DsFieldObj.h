@@ -48,10 +48,10 @@ namespace DsApp
 		virtual DsActionRequest* GetActionRequest() const { return NULL; }
 
 	public:
-		virtual void SetPosition(const DsVec3d& pos);
-		virtual void SetRotation(const DsMat33d& rot);
-		virtual DsVec3d GetPosition() const;
-		virtual DsMat33d GetRotation() const;
+		virtual void SetPosition(const DsVec3d& pos) = 0;
+		virtual void SetRotation(const DsMat33d& rot) = 0;
+		virtual DsVec3d GetPosition() const = 0;
+		virtual DsMat33d GetRotation() const = 0;
 
 	public:
 		const DsLib::DsAnimation* GetAnim() const { return m_pAnimation; }
@@ -71,21 +71,18 @@ namespace DsApp
 		DsLib::DsSys& m_sys;
 		std::string m_name;
 		DsLib::DsAnimation* m_pAnimation;
-		DsPhysics::DsActorId m_actorId;
 		DsPhysics::DsPhysicsWorld& m_world;
 		DsAnimEventCallback* m_pAnimEventCallback;
 		DsComponentSystem* m_pComponentSystem;
 		bool m_reqestIsInit;
 		bool m_isCompleteInit;
-
-	protected://リソース関連
-		std::string m_hitName;
-
 	private:
 		bool m_isRequestDirectAnim;
 
+
+
 	public:
-		virtual void DbgDraw(DsLib::DsDrawCommand& com);
+		virtual void DbgDraw(DsLib::DsDrawCommand& com) {};
 
 	};
 }
