@@ -23,6 +23,7 @@
 #ifndef _DS_EQUIP_COMPONENT_
 #include "World/Component/Equip/DsEquipComponent.h"
 #endif
+#include "World/Physics/DsPhysicsCreator.h"
 
 using namespace DsLib;
 using namespace DsPhysics;
@@ -99,67 +100,15 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 	m_pAnimEventCallback->Initialize(initInfo.animName.c_str());
 
 	const DsHitRes* pHitRes = m_sys.RefResource().RegisterItem<DsHitRes>(m_hitName.c_str());
-	if (pHitRes)
-	{
-		if (pHitRes->GetAnimRes())
-		{
-			//ヒットモデルがあったのでそこから作成
-			const DsModel* pHitModel = pHitRes->GetAnimRes()->CreateAnimModel();
-			if (pHitModel)
-			{
-				DsRigidMesh::DsRigidMeshFactory factory(*pHitModel, m_name.c_str());
-				_SetActorCoord(factory, initInfo);
-				const DsActor::Option option = _GetActorOption(initInfo.physicsType);
-				factory.SetOption(option);
-				m_actorId = m_world.CreateActor(factory);
-				DsActor* pActor = m_world.GetActor(m_actorId);
-				if (pActor)
-				{
-					pActor->SetMaterial(DsActorMaterial::Aluminum());
-					if (m_pAnimation)
-					{
-						m_pAnimation->SetRootMatrix(GetPosition(), GetRotation());
-					}
-				}
-				delete pHitModel;//m_world.CreateActorした後はもういらんはず
-			}
-			else
-			{
-				DS_LOG("オブジェ作成中アニメモデルが無かったのでオブジェは作られませんでした %s", m_name.c_str());
-			}
-		}
-		else
-		{
-			//ヒットモデルがないので形状情報から作成
-			DsVec3d vertex[8];
-			const DsHitRes::Shape& shape = pHitRes->RefSpahe();
-			DsRigidBox::GetVertex(vertex, shape.sizeX, shape.sizeY, shape.sizeZ);
-			DsRigidBox::DsRigidBoxFactory factory(vertex, shape.weight, m_name.c_str());
-			//const double len = sqrt(pow(shape.sizeX*0.5, 2.0) + pow(shape.sizeZ*0.5, 2.0));
-			//DsRigidCapsule::DsRigidCapsuleFactory factory(len, shape.sizeY*0.5, shape.weight, m_name.c_str());
-			_SetActorCoord(factory, initInfo);
-			const DsActor::Option option = _GetActorOption(initInfo.physicsType);
-			factory.SetOption(option);
-				
-			m_actorId = m_world.CreateActor(factory);
-			DsActor* pActor = m_world.GetActor(m_actorId);
-			if (pActor)
-			{
-				pActor->SetMaterial(DsActorMaterial::Aluminum());
-				if (m_pAnimation)
-				{
-					m_pAnimation->SetRootMatrix(GetPosition(), GetRotation());
-				}
-			}
-		}
+	if (pHitRes){
+		m_actorId = DsPhysicsCreator::Create(m_world, *pHitRes, initInfo.physicsType, initInfo.pos, initInfo.ang, m_name.c_str());
 	}
-	else
-	{
+	else{
 		DS_LOG("オブジェ初期化情報が無かったのでオブジェは作られませんでした %s", m_name.c_str());
 	}
 
-	if (m_pAnimation)
-	{
+	if (m_pAnimation){
+		m_pAnimation->SetRootMatrix(GetPosition(), GetRotation());
 		m_pAnimation->RegisterDraw();
 	}
 
@@ -178,14 +127,12 @@ void DsFieldObj::_SetActorCoord(DsPhysics::DsActorCoordFactory& factory, const D
 //virtual 
 void DsFieldObj::Update(double dt)
 {
-	if (m_pAnimation)
-	{
+	if (m_pAnimation){
 		if (m_isRequestDirectAnim) {
 			dt = 0;
 		}
 		m_pAnimation->Update(dt);
 		m_isRequestDirectAnim = false;
-		const DsActor* pActor = m_world.GetActor(m_actorId);
 		m_pAnimation->SetRootMatrix(GetPosition(), GetRotation());
 	}
 
@@ -259,15 +206,6 @@ DsMat33d DsFieldObj::GetRotation() const
 	}
 }
 
-DsActor* DsFieldObj::GetActor()
-{
-	return m_world.GetActor(m_actorId);
-}
-
-const DsActor* DsFieldObj::GetActor() const
-{
-	return m_world.GetActor(m_actorId);
-}
 
 bool DsFieldObj::GetDmypoly(int id, std::vector<DsMat44d>& outMat, DMYPOLY_SLOT slot)const
 {

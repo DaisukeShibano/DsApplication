@@ -180,6 +180,12 @@
     <ClInclude Include="Source\Res\Param\DsWepParam.h">
       <Filter>Source\Res\Param</Filter>
     </ClInclude>
+    <ClInclude Include="Source\World\Field\DsFieldObstacle.h">
+      <Filter>Source\World\Field</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Physics\DsPhysicsCreator.h">
+      <Filter>Source\World\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsAppPch.cpp">
@@ -268,6 +274,12 @@
     </ClCompile>
     <ClCompile Include="Source\Res\Param\DsWepParam.cpp">
       <Filter>Source\Res\Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Field\DsFieldObstacle.cpp">
+      <Filter>Source\World\Field</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Physics\DsPhysicsCreator.cpp">
+      <Filter>Source\World\Physics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

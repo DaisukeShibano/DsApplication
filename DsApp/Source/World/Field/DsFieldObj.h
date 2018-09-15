@@ -56,9 +56,6 @@ namespace DsApp
 		virtual DsMat33d GetRotation() const;
 
 	public:
-		DsPhysics::DsActor* GetActor();
-		const DsPhysics::DsActor* GetActor() const;
-
 		const DsLib::DsAnimation* GetAnim() const { return m_pAnimation; }
 		DsLib::DsAnimation* GetAnim() { return m_pAnimation; }
 		bool GetDmypoly(int id, std::vector<DsMat44d>& outMat, DMYPOLY_SLOT slot)const;
