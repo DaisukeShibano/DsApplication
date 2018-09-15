@@ -58,32 +58,6 @@ DsFieldObj::~DsFieldObj()
 
 }
 
-namespace
-{
-	DsActor::Option _GetActorOption(const DS_MAP_OBJ_TYPE type)
-	{
-		DsActor::Option option = DsActor::Option::Default();
-		switch (type)
-		{
-		case DS_MAP_OBJ_TYPE::STATIC:
-			option = DsActor::Option::Static();
-			break;
-		case DS_MAP_OBJ_TYPE::DYNAMIC:
-			option = DsActor::Option::Default();
-			break;
-		case DS_MAP_OBJ_TYPE::AUTONOMOUS:
-			option = DsActor::Option::Default();
-			break;
-		case DS_MAP_OBJ_TYPE::CONTROL:
-			option = DsActor::Option::ChrProxy();
-			break;
-		default:
-			break;
-		}
-		return option;
-	}
-}
-
 //virtual
 void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 {
@@ -114,14 +88,6 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 
 	m_reqestIsInit = true;
 	m_isCompleteInit = true;
-}
-
-//virtual
-void DsFieldObj::_SetActorCoord(DsPhysics::DsActorCoordFactory& factory, const DsFieldInitInfo& initInfo)
-{
-	const DsMat33d rot = DsMat33d::RotateX(initInfo.ang.x)*DsMat33d::RotateY(initInfo.ang.y)*DsMat33d::RotateZ(initInfo.ang.z);
-	factory.InitPos(initInfo.pos);
-	factory.InitRot(rot);
 }
 
 //virtual 

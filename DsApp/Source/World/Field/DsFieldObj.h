@@ -43,8 +43,6 @@ namespace DsApp
 
 	public:
 		virtual void Initialize(const DsFieldInitInfo& initInfo);
-	protected:
-		virtual void _SetActorCoord(DsPhysics::DsActorCoordFactory& factory, const DsFieldInitInfo& initInfo);
 
 	public:
 		virtual DsActionRequest* GetActionRequest() const { return NULL; }

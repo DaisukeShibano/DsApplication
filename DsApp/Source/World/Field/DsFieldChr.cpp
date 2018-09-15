@@ -66,10 +66,12 @@ void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 	m_pProxy->Initialize(0.25, height, 20, initInfo.pos + DsVec3d(0, height*0.5, 0), rot);
 	m_pProxy->SetCollisionFilter(DsAppCollisionFilter::CalcFilterInsideAllGroup());
 
+	//基底の初期化
 	DsFieldObj::Initialize(initInfo);
 
 	//DsFieldObj::Initializeでは剛体の中心がアニメの中心になっているので再度キャラ用基点にセットし直し
 	SetPosition(initInfo.pos);
+	m_ang = initInfo.ang;
 	m_pAnimation->SetRootMatrix(GetPosition(), GetRotation());
 
 
@@ -118,16 +120,6 @@ void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 	DS_ASSERT(m_pActCtrl, "メモリ確保失敗");
 	m_pAnimation->RequestPlayAnim(m_pActCtrl->GetCurrentAnim());
 }
-
-//virtual
-void DsFieldChr::_SetActorCoord(DsPhysics::DsActorCoordFactory& factory, const DsFieldInitInfo& initInfo)
-{
-	m_ang = initInfo.ang;
-	const DsMat33d rot = DsMat33d::RotateY(m_ang.y)*DsMat33d::RotateX(m_ang.x);
-	factory.InitPos(initInfo.pos);
-	factory.InitRot(rot);
-}
-
 
 //virtual
 DsActionRequest* DsFieldChr::_CreareActionRequest()
