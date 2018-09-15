@@ -89,14 +89,16 @@ void DsChrProxy::Drive(double dt, DsVec3d move)
 		return;
 	}
 
-	const bool isFlatMove = true;//これ有効だと破片とかも上ってしまう
+	//これ有効だと破片とかも上ってしまう
+	//スフィアキャストのコリジョンフィルタを設定できるようにする
+	const bool isFlatMove = true;
 
-	const double radius = m_radius * 0.8;//外側のカプセルよりも小さく
+	const double radius = m_radius * 0.1;//外側のカプセルよりも小さく
 	const double diam = radius * 2.0;
 
 	//高さあわせ
 	if(isFlatMove){
-		const double upHeight = 0.3;
+		const double upHeight = 0.1;
 		const double downHeight = 0.0;
 		const DsVec3d upStart = m_pos + DsVec3d::Up()*m_height;
 		const DsVec3d upEnd = upStart + DsVec3d::Up()*upHeight;
