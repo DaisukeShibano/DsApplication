@@ -89,6 +89,10 @@ void DsChrProxy::Drive(double dt, DsVec3d move)
 		return;
 	}
 
+	if (pActor->RefOption().isStatic) {
+		return;
+	}
+
 	//これ有効だと破片とかも上ってしまう
 	//スフィアキャストのコリジョンフィルタを設定できるようにする
 	const bool isFlatMove = true;
@@ -136,4 +140,30 @@ void DsChrProxy::Drive(double dt, DsVec3d move)
 
 		m_isGround = m_world.SphereCast(downStart, downEnd, radius, m_filter, m_pOwner, NULL);
 	}
+}
+
+
+void DsChrProxy::DbgDraw(DsLib::DsDrawCommand& com)
+{
+	DsActor* pActor = m_world.GetActor(m_actorId);
+	if (pActor){
+		pActor->SetColor(DsVec4d(1, 1, 1, 0));
+		pActor->SetLineColor(DsVec4d(0, 0, 0, 0));
+		pActor->Draw(com);
+	}
+}
+
+void DsChrProxy::DbgSetStatic(bool isStatic)
+{
+	m_actorId.GetActor()->RefOption().isStatic = isStatic;
+}
+
+void DsChrProxy::DbgSetGravity(bool isGravity)
+{
+	m_actorId.GetActor()->RefOption().isGravity = isGravity;
+}
+
+void DsChrProxy::DbgSetDrawWireFrame(bool isWireFrame)
+{
+	m_actorId.GetActor()->RefOption().isDrawWireFrame = isWireFrame;
 }

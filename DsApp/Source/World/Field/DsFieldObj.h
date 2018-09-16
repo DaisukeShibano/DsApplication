@@ -82,8 +82,10 @@ namespace DsApp
 
 
 	public:
-		virtual void DbgDraw(DsLib::DsDrawCommand& com) {};
-
+		virtual void DbgDraw(DsLib::DsDrawCommand& com) {}
+		virtual void DbgSetStatic(bool isStatic) {}
+		virtual void DbgSetGravity(bool isGravity) {}
+		virtual void DbgSetDrawWireFrame(bool isWireFrame) {}
 	};
 }
 

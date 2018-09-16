@@ -104,6 +104,7 @@ void DsAnimEventCallback::_Call(const DS_ANIM_ET_PARAM& param)
 		_Damage(param.pDamage);
 		break;
 	case DS_ANIM_ET_ACTION_TYPE::CANCEL_ACTION_TIMING:
+		_Cancel(param.pCancel);
 		break;
 	default:
 		break;

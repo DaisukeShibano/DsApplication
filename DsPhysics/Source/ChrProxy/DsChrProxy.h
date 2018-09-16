@@ -38,5 +38,12 @@ namespace DsPhysics
 		double m_height;
 		double m_radius;
 		bool m_isGround;
+
+
+	public:
+		void DbgDraw(DsLib::DsDrawCommand& com);
+		void DbgSetStatic(bool isStatic);
+		void DbgSetGravity(bool isGravity);
+		void DbgSetDrawWireFrame(bool isWireFrame);
 	};
 }

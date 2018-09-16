@@ -208,13 +208,13 @@ std::vector<std::string> DsSimu::RegisterObj(const char* drawModelPath, const ch
 		pObj = new DsFieldChr(*m_pSys, *DsPhysicsManager::GetDefaultWorld());
 		break;
 	case DsLib::DS_MAP_FIELD_OBJ_TYPE::OBJ:
-		pObj = new DsFieldObj(*m_pSys, *DsPhysicsManager::GetDefaultWorld());
+		pObj = new DsFieldObstacle(*m_pSys, *DsPhysicsManager::GetDefaultWorld());
 		break;
 	case DsLib::DS_MAP_FIELD_OBJ_TYPE::HIT:
 		pObj = new DsFieldHit(*m_pSys, *DsPhysicsManager::GetDefaultWorld());
 		break;
 	default:
-		pObj = new DsFieldObj(*m_pSys, *DsPhysicsManager::GetDefaultWorld());
+		pObj = new DsFieldObstacle(*m_pSys, *DsPhysicsManager::GetDefaultWorld());
 		break;
 	}
 	
@@ -227,8 +227,8 @@ std::vector<std::string> DsSimu::RegisterObj(const char* drawModelPath, const ch
 	info.physicsType = physicsType;
 	pObj->Initialize(info);
 
-	pObj->GetActor()->RefOption().isGravity = false;
-	pObj->GetActor()->RefOption().isStatic = true;
+	pObj->DbgSetGravity(false);
+	pObj->DbgSetStatic(true);
 
 	m_fieldObjs.push_back(pObj);
 	m_pChrIns = pObj;

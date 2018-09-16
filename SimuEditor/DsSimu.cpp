@@ -303,13 +303,13 @@ DsFieldObj* DsSimu::RegisterObj(const char* drawModelPath, const char* hitModelP
 		pObj = new DsFieldChr(*m_pSys, *DsPhysicsManager::GetDefaultWorld());
 		break;
 	case DsLib::DS_MAP_FIELD_OBJ_TYPE::OBJ:
-		pObj = new DsFieldObj(*m_pSys, *DsPhysicsManager::GetDefaultWorld());
+		pObj = new DsFieldObstacle(*m_pSys, *DsPhysicsManager::GetDefaultWorld());
 		break;
 	case DsLib::DS_MAP_FIELD_OBJ_TYPE::HIT:
 		pObj = new DsFieldHit(*m_pSys, *DsPhysicsManager::GetDefaultWorld());
 		break;
 	default:
-		pObj = new DsFieldObj(*m_pSys, *DsPhysicsManager::GetDefaultWorld());
+		pObj = new DsFieldObstacle(*m_pSys, *DsPhysicsManager::GetDefaultWorld());
 		break;
 	}
 	
@@ -325,10 +325,11 @@ DsFieldObj* DsSimu::RegisterObj(const char* drawModelPath, const char* hitModelP
 	if ((fieldObjType == DsLib::DS_MAP_FIELD_OBJ_TYPE::CHR) || (fieldObjType == DsLib::DS_MAP_FIELD_OBJ_TYPE::OBJ) || (fieldObjType == DsLib::DS_MAP_FIELD_OBJ_TYPE::PLAYER))
 	{
 		//描画が被って見にくいのでワイヤーフレーム表示
-		pObj->GetActor()->RefOption().isDrawWireFrame = true;
+		pObj->DbgSetDrawWireFrame(true);
 	}
-	pObj->GetActor()->RefOption().isGravity = false;
-	pObj->GetActor()->RefOption().isStatic = true;
+
+	pObj->DbgSetGravity(false);
+	pObj->DbgSetStatic(true);
 
 	m_fieldObjs.push_back(pObj);
 	return pObj;

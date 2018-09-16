@@ -132,3 +132,20 @@ void DsFieldObstacle::DbgDraw(DsLib::DsDrawCommand& com)
 		}
 	}
 }
+
+//virtual
+void DsFieldObstacle::DbgSetStatic(bool isStatic)
+{
+	m_actorId.GetActor()->RefOption().isStatic = isStatic;
+}
+//virtual
+void DsFieldObstacle::DbgSetGravity(bool isGravity)
+{
+	m_actorId.GetActor()->RefOption().isGravity = isGravity;
+}
+
+//virtual
+void DsFieldObstacle::DbgSetDrawWireFrame(bool isWireFrame)
+{
+	m_actorId.GetActor()->RefOption().isDrawWireFrame = isWireFrame;
+}

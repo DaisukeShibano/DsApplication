@@ -43,6 +43,9 @@
 #ifndef _DS_MAIN_LOOP_H_
 #include "System/DsMainLoop.h"
 #endif
+#ifndef _DS_MODEL_
+#include "Model/DsModel.h"
+#endif
 #ifndef _DS_DRAW_COMMAND_H_
 #include "Graphics/Command/DsDrawCommand.h"
 #endif

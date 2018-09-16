@@ -28,6 +28,9 @@ namespace DsApp
 
 	public:
 		virtual void DbgDraw(DsLib::DsDrawCommand& com) override;
+		virtual void DbgSetStatic(bool isStatic) override;
+		virtual void DbgSetGravity(bool isGravity) override;
+		virtual void DbgSetDrawWireFrame(bool isWireFrame) override;
 	};
 }
 

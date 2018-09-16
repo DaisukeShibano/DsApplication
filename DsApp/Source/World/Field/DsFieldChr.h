@@ -57,9 +57,13 @@ namespace DsApp
 		DsActionCtrl* m_pActCtrl;
 		DsPhysics::DsChrProxy* m_pProxy;
 
+
+
 	public://デバッグ
 		virtual void DbgDraw(DsLib::DsDrawCommand& com);
-
+		virtual void DbgSetStatic(bool isStatic) override;
+		virtual void DbgSetGravity(bool isGravity) override;
+		virtual void DbgSetDrawWireFrame(bool isWireFrame) override;
 	};
 }
 

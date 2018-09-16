@@ -73,6 +73,10 @@ void DsActionRequestManual::Update(double dt)
 	m_moveVec.z = m_moveDir[0] + m_moveDir[1];
 	m_moveVec.x = m_moveDir[2] + m_moveDir[3];
 
+	if (0.00001 < m_moveVec.LengthSq()) {
+		SetRequest(ACTION_TYPE::MOVE);
+	}
+
 
 	if (m_key.IsPush('r') || m_key.IsPush('R')) {
 		SetRequest(ACTION_TYPE::CHANGE_WEP);
@@ -88,7 +92,7 @@ void DsActionRequestManual::Update(double dt)
 
 void DsActionRequestManual::_UpdateAction()
 {
-	m_requestToggle = m_request & (~m_requestPre);
+	m_requestToggle = m_request & (~m_requestPre);//‰Ÿ‚µ‚½uŠÔ
 	m_requestPre = m_request;
 	m_action = m_requestToggle & m_cancel;
 	m_request = 0;

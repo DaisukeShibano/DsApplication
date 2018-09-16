@@ -129,5 +129,21 @@ void DsFieldHit::DbgDraw(DsLib::DsDrawCommand& com)
 			pActor->Draw(com);
 		}
 	}
+}
 
+//virtual
+void DsFieldHit::DbgSetStatic(bool isStatic)
+{
+	m_actorId.GetActor()->RefOption().isStatic = isStatic;
+}
+//virtual
+void DsFieldHit::DbgSetGravity(bool isGravity)
+{
+	m_actorId.GetActor()->RefOption().isGravity = isGravity;
+}
+
+//virtual
+void DsFieldHit::DbgSetDrawWireFrame(bool isWireFrame)
+{
+	m_actorId.GetActor()->RefOption().isDrawWireFrame = isWireFrame;
 }

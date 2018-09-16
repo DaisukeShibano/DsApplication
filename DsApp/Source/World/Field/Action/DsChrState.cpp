@@ -136,9 +136,17 @@ namespace
 		{
 			m_nextState = GetMyState();
 
-			if (_IsMove(m_actReq)) {
+			
+			if (m_actReq.IsAction(ACTION_TYPE::MOVE)) {
 				m_nextState = CHR_STATE::RUN;
 			}
+			else if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
+				//2’i–ÚUŒ‚
+			}
+			else if (m_pAnimClip->IsEndWithoutBlend()) {
+				m_nextState = CHR_STATE::IDLE;
+			}
+
 		};
 	};
 	REGISTER_STATE(DsChrStateAttack1, CHR_STATE::ATTACK1)

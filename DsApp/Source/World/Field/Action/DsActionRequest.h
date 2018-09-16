@@ -14,6 +14,7 @@ namespace DsApp
 		NONE,
 		ATTACK,
 		CHANGE_WEP,
+		MOVE,
 		NUM,
 	};
 

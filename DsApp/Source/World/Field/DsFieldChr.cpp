@@ -173,5 +173,25 @@ void DsFieldChr::SetRotation(const DsMat33d& rot)
 //virtual 
 void DsFieldChr::DbgDraw(DsLib::DsDrawCommand& com)
 {
+	m_pProxy->DbgDraw(com);
 }
 
+
+
+//virtual
+void DsFieldChr::DbgSetStatic(bool isStatic)
+{
+	m_pProxy->DbgSetStatic(isStatic);
+}
+
+//virtual
+void DsFieldChr::DbgSetGravity(bool isGravity)
+{
+	m_pProxy->DbgSetGravity(isGravity);
+}
+
+//virtual
+void DsFieldChr::DbgSetDrawWireFrame(bool isWireFrame)
+{
+	m_pProxy->DbgSetDrawWireFrame(isWireFrame);
+}
