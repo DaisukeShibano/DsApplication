@@ -7,6 +7,7 @@ using namespace DsApp;
 
 DsActionRequestManual::DsActionRequestManual(const DsLib::DsSys& sys)
 	: m_key(sys.RefKeyboard())
+	, m_mouse(sys.RefMouse())
 	, m_moveVec(DsVec3d::Zero())
 	, m_moveDir{}
 	, m_request(0)
@@ -77,6 +78,9 @@ void DsActionRequestManual::Update(double dt)
 		SetRequest(ACTION_TYPE::CHANGE_WEP);
 	}
 
+	if (m_mouse.GetClickState() == DS_LEFT_CLICK) {
+		SetRequest(ACTION_TYPE::ATTACK);
+	}
 
 	//アクションの更新
 	_UpdateAction();

@@ -159,7 +159,10 @@ void DsFieldChr::SetPosition(const DsVec3d& pos)
 //virtual
 void DsFieldChr::SetRotation(const DsMat33d& rot)
 {
-	DS_ASSERT(false, "Л@Ф\ВµВƒВ№ВєВс");
+	const DsVec3d forward = DsVec3d(rot.GetAxisZ().x, 0.0, rot.GetAxisZ().z);
+	const double dot = DsVec3d::Dot(DsVec3d::GetZ(), forward);
+	const double ang = acos( max(0.0, min(dot, 1.0)) );
+	m_ang.y = ang;
 }
 
 

@@ -26,6 +26,7 @@ namespace DsApp
 
 	private:
 		const DsLib::DsKeyboard& m_key;
+		const DsLib::DsMouse& m_mouse;
 		DsVec3d m_moveVec;
 		double m_moveDir[4];
 		ds_uint64 m_request;

@@ -74,7 +74,10 @@ namespace
 			//いつでもキャンセル可能
 			m_actReq.SetCancelAll();
 
-			if (_IsMove(m_actReq)) {
+			if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
+				m_nextState = CHR_STATE::ATTACK1;
+			}
+			else if (_IsMove(m_actReq)) {
 				m_nextState = CHR_STATE::RUN;
 			}
 		};
@@ -103,12 +106,42 @@ namespace
 			//いつでもキャンセル可能
 			m_actReq.SetCancelAll();
 
-			if (!_IsMove(m_actReq)) {
+			if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
+				m_nextState = CHR_STATE::ATTACK1;
+			}
+			else if (!_IsMove(m_actReq)) {
 				m_nextState = CHR_STATE::IDLE;
 			}
 		};
 	};
 	REGISTER_STATE(DsChrStateRun, CHR_STATE::RUN)
+
+
+	/*********************************************************
+	@brief 攻撃１
+	**********************************************************/
+	class DsChrStateAttack1 : public DsChrState
+	{
+		virtual CHR_STATE GetMyState() const override { return CHR_STATE::ATTACK1; }
+	public:
+		DsChrStateAttack1(const INIT_ARG& arg) :DsChrState(arg)
+		{
+			if (m_pAnimClip) {
+				m_pAnimClip->SetLoop(false);
+			}
+		}
+
+	private:
+		virtual void Update(double dt) override
+		{
+			m_nextState = GetMyState();
+
+			if (_IsMove(m_actReq)) {
+				m_nextState = CHR_STATE::RUN;
+			}
+		};
+	};
+	REGISTER_STATE(DsChrStateAttack1, CHR_STATE::ATTACK1)
 }
 
 

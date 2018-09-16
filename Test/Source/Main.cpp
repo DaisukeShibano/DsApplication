@@ -88,7 +88,7 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 
 			if(1){//Õ“ËƒeƒXƒg
 				DsRigidBox::GetVertex(vertex, 1.5, 0.5, 1.5);
-				for(int i=0; i<30; ++i){
+				for(int i=0; i<0; ++i){
 					DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, "” ‚P");
 					factory.InitPos(DsVec3d(0.0, 0.0 + (0.5)*(double)i, 2.0));
 					factory.SetOption(option);

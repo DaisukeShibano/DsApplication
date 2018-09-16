@@ -63,6 +63,8 @@ void DsFieldObstacle::Initialize(const DsFieldInitInfo& initInfo)
 //virtual
 void DsFieldObstacle::SetPosition(const DsVec3d& pos)
 {
+	//底を原点にする必要もうなくない？
+
 	DsActor* pActor = m_world.GetActor(m_actorId);
 	if (pActor){
 		const double y = pActor->GetPosition().y;

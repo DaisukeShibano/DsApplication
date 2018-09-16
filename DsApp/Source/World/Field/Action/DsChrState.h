@@ -17,6 +17,7 @@ namespace DsApp
 	{
 		IDLE,
 		RUN,
+		ATTACK1,
 		NUM
 	};
 
