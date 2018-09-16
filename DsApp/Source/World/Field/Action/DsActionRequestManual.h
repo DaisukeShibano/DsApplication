@@ -20,6 +20,7 @@ namespace DsApp
 	public:
 		virtual DsVec3d GetMoveVec()const override;
 		virtual bool IsAction(ACTION_TYPE type)const override;
+		virtual bool IsMove()const override;
 		virtual void SetRequest(ACTION_TYPE type) override;
 		virtual void SetCancel(ACTION_TYPE type) override;
 		virtual void SetCancelAll() override;
@@ -31,9 +32,10 @@ namespace DsApp
 		double m_moveDir[4];
 		ds_uint64 m_request;
 		ds_uint64 m_requestPre;
-		ds_uint64 m_requestToggle;
+		ds_uint64 m_requestTrigger;
 		ds_uint64 m_cancel;
-		ds_uint64 m_action;
+		ds_uint64 m_actionTrigger;
+		ds_uint64 m_actionContinue;
 
 	};
 

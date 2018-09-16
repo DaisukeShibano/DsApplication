@@ -42,15 +42,7 @@ namespace
 	static ClassName##Factory s_##ClassName##Factory;\
 
 
-	namespace
-	{
-		bool _IsMove(const DsActionRequest& req)
-		{
-			const double len = req.GetMoveVec().LengthSq();
-			const bool isMove = (0.0001 < len);
-			return isMove;
-		}
-	}
+
 
 	/*********************************************************
 	@brief ‘Ò‹@
@@ -77,7 +69,7 @@ namespace
 			if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
 				m_nextState = CHR_STATE::ATTACK1;
 			}
-			else if (_IsMove(m_actReq)) {
+			else if (m_actReq.IsMove()) {
 				m_nextState = CHR_STATE::RUN;
 			}
 		};
@@ -109,7 +101,7 @@ namespace
 			if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
 				m_nextState = CHR_STATE::ATTACK1;
 			}
-			else if (!_IsMove(m_actReq)) {
+			else if (!m_actReq.IsMove()) {
 				m_nextState = CHR_STATE::IDLE;
 			}
 		};

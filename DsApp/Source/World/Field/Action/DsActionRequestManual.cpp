@@ -12,9 +12,10 @@ DsActionRequestManual::DsActionRequestManual(const DsLib::DsSys& sys)
 	, m_moveDir{}
 	, m_request(0)
 	, m_requestPre(0)
-	, m_requestToggle(0)
+	, m_requestTrigger(0)
 	, m_cancel(0)
-	, m_action(0)
+	, m_actionTrigger(0)
+	, m_actionContinue(0)
 {
 
 }
@@ -73,7 +74,7 @@ void DsActionRequestManual::Update(double dt)
 	m_moveVec.z = m_moveDir[0] + m_moveDir[1];
 	m_moveVec.x = m_moveDir[2] + m_moveDir[3];
 
-	if (0.00001 < m_moveVec.LengthSq()) {
+	if (IsMove()) {
 		SetRequest(ACTION_TYPE::MOVE);
 	}
 
@@ -92,9 +93,10 @@ void DsActionRequestManual::Update(double dt)
 
 void DsActionRequestManual::_UpdateAction()
 {
-	m_requestToggle = m_request & (~m_requestPre);//押した瞬間
+	m_requestTrigger = m_request & (~m_requestPre);//押した瞬間
 	m_requestPre = m_request;
-	m_action = m_requestToggle & m_cancel;
+	m_actionTrigger = m_requestTrigger & m_cancel;
+	m_actionContinue = m_request & m_cancel;
 	m_request = 0;
 	m_cancel = 0;
 }
@@ -108,7 +110,19 @@ DsVec3d DsActionRequestManual::GetMoveVec()const
 //virtual
 bool DsActionRequestManual::IsAction(ACTION_TYPE type)const
 {
-	return (0ULL != (m_action & (1ULL << static_cast<ds_uint64>(type))));
+	if (ACTION_TYPE::MOVE == type) {
+		return (0ULL != (m_actionContinue & (1ULL << static_cast<ds_uint64>(type))));
+	}
+	else {
+		return (0ULL != (m_actionTrigger & (1ULL << static_cast<ds_uint64>(type))));
+	}
+}
+
+//virtual
+bool DsActionRequestManual::IsMove()const
+{
+	//キャンセルタイミングは見ない
+	return 0.0001 < GetMoveVec().LengthSq();
 }
 
 //virtual

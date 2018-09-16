@@ -29,6 +29,7 @@ namespace DsApp
 		virtual void Update(double dt) {};
 		virtual DsVec3d GetMoveVec()const { return DsVec3d::Zero(); }
 		virtual bool IsAction(ACTION_TYPE type)const { return false; }
+		virtual bool IsMove()const { return false; }
 		virtual void SetRequest(ACTION_TYPE type){};
 		virtual void SetCancel(ACTION_TYPE type){};
 		virtual void SetCancelAll() {};
