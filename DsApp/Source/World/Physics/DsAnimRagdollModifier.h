@@ -24,7 +24,7 @@ namespace DsApp
 		virtual ~DsAnimRagdollModifier() {};
 
 	public:
-		virtual void ModifyAnim(double dt, DsLib::DsAnimSkeleton& skeleton, const DsLib::DsKeyframeAnim& anim, DsVec3d worldPos, DsMat33d worldRot);
+		virtual void ModifyAnim(double dt, const DsLib::DsKeyframeAnim& anim, DsVec3d worldPos, DsMat33d worldRot, DsLib::DsAnimSkeleton& skeleton);
 
 	private:
 		DsPhysics::DsRagdoll& m_ragdoll;

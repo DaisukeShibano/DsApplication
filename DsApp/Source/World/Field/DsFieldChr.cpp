@@ -127,11 +127,14 @@ void DsFieldChr::Update(double dt)
 	m_vel = rot * m_vel;
 
 	DsFieldObj::Update(dt);
+	
+	DsVec3d move = DsVec3d::Zero();
 	if (m_pAnimation){
 		m_pAnimation->SetRootMatrix(GetPosition(), DsMat33d::RotateY(m_ang.y));
+		move = rot * m_pAnimation->GetDeltaMotion();
 	}
 
-	m_pProxy->Drive(dt, m_vel*dt);
+	m_pProxy->Drive(dt, move);
 }
 
 //virtual

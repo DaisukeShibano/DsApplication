@@ -23,10 +23,10 @@ using namespace DsApp;
 
 
 //virtual
-void DsAnimRagdollModifier::ModifyAnim(double dt, DsAnimSkeleton& skeleton, const DsKeyframeAnim& anim, DsVec3d worldPos, DsMat33d worldRot)
+void DsAnimRagdollModifier::ModifyAnim(double dt, const DsKeyframeAnim& anim, DsVec3d worldPos, DsMat33d worldRot, DsAnimSkeleton& skeleton)
 {
 	//キーフレームアニメでスケルトンを変更
-	UtilKeyframeAnim(dt, skeleton, anim);
+	UtilKeyframeAnim(dt, anim, skeleton);
 	
 	std::vector<DsAnimBone*>& bones = skeleton.RefBoneArray();
 	for (const DsRagdollParts& parts : m_ragdoll.RefParts()) {
@@ -40,5 +40,4 @@ void DsAnimRagdollModifier::ModifyAnim(double dt, DsAnimSkeleton& skeleton, cons
 			m_ragdoll.FixToPhysics(dt, bones, parts, worldPos, worldRot);
 		}
 	}
-
 }

@@ -17,6 +17,7 @@ namespace DsLib
 			, vIndexNum(0)
 			, pIndex(0)
 			, pWeight(0)
+			, isMaster(false)
 		{}
 		~DsAnimBone()
 		{
@@ -41,6 +42,7 @@ namespace DsLib
 		int vIndexNum;
 		int *pIndex;
 		double* pWeight;
+		bool isMaster;
 	};
 
 
@@ -65,6 +67,8 @@ namespace DsLib
 		DsMat33d GetRootRot()const { return m_rootRot; }
 		void SetRootRot(DsMat33d rot) { m_rootRot = rot; }
 
+		const DsAnimBone* GetMasterBone() const { return m_pMaster; }
+
 		template<typename FUNC>
 		void GetAllBone(FUNC func)
 		{
@@ -87,6 +91,7 @@ namespace DsLib
 	private:
 		std::vector<DsAnimBone*> m_pRootBone;
 		std::vector<DsAnimBone*> m_boneArray;//配列アクセス用。最初からこっち使う方がよかったかも。
+		DsAnimBone* m_pMaster;
 		DsVec3d m_rootPos;
 		DsMat33d m_rootRot;
 

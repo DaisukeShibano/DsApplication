@@ -127,6 +127,16 @@ namespace DsLib
 			DS_ASSERT(boneIdx < m_boneNum, "ボーン数オーバー");
 			return m_pBone[boneIdx].RefCurrentScale();
 		}
+
+		const DsVec3d& RefMasterMovePos() const
+		{
+			return m_masterMove.RefCurrentPos();
+		}
+		const DsVec4d& RefMasterMoveRot() const
+		{
+			return m_masterMove.RefCurrentRot();
+		}
+
 		const int GetBoneNum() const { return m_boneNum; }
 		
 	public:
@@ -139,6 +149,7 @@ namespace DsLib
 		std::string m_name;
 		Pose* m_pBone;
 		int m_boneNum;
+		Pose m_masterMove;
 	};
 }
 

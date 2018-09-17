@@ -49,6 +49,7 @@ DsAnimation::DsAnimation(const char* pResName, DsDrawCommand& com, DsResource& r
 	, m_blend()
 	, m_pos(DsVec3d::Zero())
 	, m_rot(DsMat33d::Identity())
+	, m_deltaMotion(DsVec3d::Zero())
 	, m_animClips()
 	, m_pRequestAnim(NULL)
 	, m_pPlayAnim(NULL)
@@ -183,11 +184,15 @@ void DsAnimation::Update(double dt)
 	//ブレンド結果をアニメボーンに適用。
 	if (m_pSkeleton) {
 		if (m_animModifier) {
-			m_animModifier->ModifyAnim(dt, *m_pSkeleton, blend, m_pos, m_rot);
+			m_animModifier->ModifyAnim(dt, blend, m_pos, m_rot, *m_pSkeleton);
 		}
 		else {
-			DsAnimSkeletonModifier::UtilKeyframeAnim(dt, *m_pSkeleton, blend);
+			DsAnimSkeletonModifier::UtilKeyframeAnim(dt, blend, *m_pSkeleton);
 		}
+
+		//移動量更新
+		//Mater位置まで補間されると大分へんな動きする。あとblendはMaster移動量確保してない
+		DsAnimSkeletonModifier::UtilGetMasterMove(dt, m_pPlayAnim->RefAnim(), *m_pSkeleton, &m_deltaMotion, NULL);
 	}
 
 	//ボーンの結果を頂点に適用。

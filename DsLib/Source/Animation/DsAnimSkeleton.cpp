@@ -12,10 +12,16 @@ using namespace DsLib;
 DsAnimSkeleton::DsAnimSkeleton(const std::vector<DsAnimBone*>& pRootBone, const std::vector<DsAnimBone*>& boneArray)
 :m_pRootBone(pRootBone)
 ,m_boneArray(boneArray)
+,m_pMaster(NULL)
 ,m_rootPos(DsVec3d::Zero())
 ,m_rootRot(DsMat33d::Identity())
 {
-
+	for (DsAnimBone* pBone : boneArray) {
+		if (pBone->isMaster) {
+			m_pMaster = pBone;
+			break;
+		}
+	}
 }
 
 DsAnimSkeleton::~DsAnimSkeleton()

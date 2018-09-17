@@ -19,10 +19,11 @@ namespace DsLib
 		virtual ~DsAnimSkeletonModifier() {};
 
 	public:
-		virtual void ModifyAnim(double dt, DsAnimSkeleton& skeleton, const DsKeyframeAnim& anim, DsVec3d worldPos, DsMat33d worldRot)=0;
+		virtual void ModifyAnim(double dt, const DsKeyframeAnim& anim, DsVec3d worldPos, DsMat33d worldRot, DsAnimSkeleton& skeleton)=0;
 
 	public:
-		static void UtilKeyframeAnim(double dt, DsAnimSkeleton& skeleton, const DsKeyframeAnim& anim);
+		static void UtilKeyframeAnim(double dt, const DsKeyframeAnim& anim, DsAnimSkeleton& skeleton);
+		static void UtilGetMasterMove(double dt, const DsLib::DsKeyframeAnim& anim, const DsLib::DsAnimSkeleton& skeleton, DsVec3d* pPos, DsMat33d* pRot);
 	};
 }
 

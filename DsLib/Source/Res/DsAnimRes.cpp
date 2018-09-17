@@ -243,6 +243,7 @@ namespace
 			, parentIdx(0)
 			, childNum(0)
 			, pChildIdx(0)
+			, isMaster(0)
 		{}
 
 		~DS_BONE()
@@ -273,6 +274,8 @@ namespace
 		int parentIdx;
 		int childNum;
 		int* pChildIdx;
+
+		ds_uint8 isMaster;
 
 	};
 
@@ -336,6 +339,7 @@ namespace
 			keyFrameSY = 0;
 			delete[] keyFrameSZ;
 			keyFrameSZ = 0;
+
 		}
 
 		long keyFrameNumTX;
@@ -378,6 +382,7 @@ namespace
 			, animName(0)
 			, poseNum(PoseNum)
 			, pose(0)
+			, masterMove()
 		{
 			pose = new DS_ANIM_POSE[poseNum];
 		}
@@ -395,6 +400,8 @@ namespace
 
 		long poseNum;
 		DS_ANIM_POSE* pose;
+
+		DS_ANIM_POSE masterMove;
 	};
 	long DS_ANIM::PoseNum;
 
@@ -628,6 +635,9 @@ namespace
 					res.dsAnimBone.pBone[bIdx].pChildIdx = new int[childNum];
 					fs.Read((ds_uint8*)(res.dsAnimBone.pBone[bIdx].pChildIdx), sizeof(int)*childNum);
 				}
+				ds_uint8 isMaster = 0;
+				fs.Read((ds_uint8*)(&isMaster), sizeof(isMaster));
+				res.dsAnimBone.pBone[bIdx].isMaster = isMaster;
 			}
 		}
 
@@ -730,6 +740,58 @@ namespace
 						fs.Read((ds_uint8*)(res.dsAnimBone.pAnim[aIdx].pose[poseIdx].keyFrameSZ), sizeof(DS_KEY_FRAME)*keyFrameNum);
 					}
 				}
+
+				//マスター移動量
+				{
+					long keyFrameNum;
+					fs.Read((ds_uint8*)(&keyFrameNum), sizeof(keyFrameNum));
+					res.dsAnimBone.pAnim[aIdx].masterMove.keyFrameNumTX = keyFrameNum;
+					res.dsAnimBone.pAnim[aIdx].masterMove.keyFrameTX = new DS_KEY_FRAME[keyFrameNum];
+					fs.Read((ds_uint8*)(res.dsAnimBone.pAnim[aIdx].masterMove.keyFrameTX), sizeof(DS_KEY_FRAME)*keyFrameNum);
+				}
+				{
+					long keyFrameNum;
+					fs.Read((ds_uint8*)(&keyFrameNum), sizeof(keyFrameNum));
+					res.dsAnimBone.pAnim[aIdx].masterMove.keyFrameNumTY = keyFrameNum;
+					res.dsAnimBone.pAnim[aIdx].masterMove.keyFrameTY = new DS_KEY_FRAME[keyFrameNum];
+					fs.Read((ds_uint8*)(res.dsAnimBone.pAnim[aIdx].masterMove.keyFrameTY), sizeof(DS_KEY_FRAME)*keyFrameNum);
+				}
+				{
+					long keyFrameNum;
+					fs.Read((ds_uint8*)(&keyFrameNum), sizeof(keyFrameNum));
+					res.dsAnimBone.pAnim[aIdx].masterMove.keyFrameNumTZ = keyFrameNum;
+					res.dsAnimBone.pAnim[aIdx].masterMove.keyFrameTZ = new DS_KEY_FRAME[keyFrameNum];
+					fs.Read((ds_uint8*)(res.dsAnimBone.pAnim[aIdx].masterMove.keyFrameTZ), sizeof(DS_KEY_FRAME)*keyFrameNum);
+				}
+
+				{
+					long keyFrameNum;
+					fs.Read((ds_uint8*)(&keyFrameNum), sizeof(keyFrameNum));
+					res.dsAnimBone.pAnim[aIdx].masterMove.keyFrameNumRX = keyFrameNum;
+					res.dsAnimBone.pAnim[aIdx].masterMove.keyFrameRX = new DS_KEY_FRAME[keyFrameNum];
+					fs.Read((ds_uint8*)(res.dsAnimBone.pAnim[aIdx].masterMove.keyFrameRX), sizeof(DS_KEY_FRAME)*keyFrameNum);
+				}
+				{
+					long keyFrameNum;
+					fs.Read((ds_uint8*)(&keyFrameNum), sizeof(keyFrameNum));
+					res.dsAnimBone.pAnim[aIdx].masterMove.keyFrameNumRY = keyFrameNum;
+					res.dsAnimBone.pAnim[aIdx].masterMove.keyFrameRY = new DS_KEY_FRAME[keyFrameNum];
+					fs.Read((ds_uint8*)(res.dsAnimBone.pAnim[aIdx].masterMove.keyFrameRY), sizeof(DS_KEY_FRAME)*keyFrameNum);
+				}
+				{
+					long keyFrameNum;
+					fs.Read((ds_uint8*)(&keyFrameNum), sizeof(keyFrameNum));
+					res.dsAnimBone.pAnim[aIdx].masterMove.keyFrameNumRZ = keyFrameNum;
+					res.dsAnimBone.pAnim[aIdx].masterMove.keyFrameRZ = new DS_KEY_FRAME[keyFrameNum];
+					fs.Read((ds_uint8*)(res.dsAnimBone.pAnim[aIdx].masterMove.keyFrameRZ), sizeof(DS_KEY_FRAME)*keyFrameNum);
+				}
+				{
+					long keyFrameNum;
+					fs.Read((ds_uint8*)(&keyFrameNum), sizeof(keyFrameNum));
+					res.dsAnimBone.pAnim[aIdx].masterMove.keyFrameNumRQ = keyFrameNum;
+					res.dsAnimBone.pAnim[aIdx].masterMove.keyFrameRQ = new DS_KEY_FRAME[keyFrameNum];
+					fs.Read((ds_uint8*)(res.dsAnimBone.pAnim[aIdx].masterMove.keyFrameRQ), sizeof(DS_KEY_FRAME)*keyFrameNum);
+				}
 			}
 		}
 
@@ -804,6 +866,7 @@ void DsAnimRes::_CreateBone(DsAnimBone* pParent, const void* pParentSrcData, std
 		DS_ASSERT(pBone->pIndex, "メモリ確保失敗");
 		pBone->pWeight = new double[tmp->indexNum];
 		DS_ASSERT(pBone->pWeight, "メモリ確保失敗");
+		pBone->isMaster = (0 != pBone->isMaster);
 		for (int vIdx = 0; vIdx < tmp->indexNum; ++vIdx)
 		{
 			pBone->pIndex[vIdx] = tmp->pIndex[vIdx];
@@ -849,6 +912,7 @@ DsAnimSkeleton* DsAnimRes::CreateSkeleton() const
 			DS_ASSERT(root->pIndex, "メモリ確保失敗");
 			root->pWeight = new double[rootSrc->indexNum];
 			DS_ASSERT(root->pWeight, "メモリ確保失敗");
+			root->isMaster = (0 != rootSrc->isMaster);
 			for (int vIdx = 0; vIdx < rootSrc->indexNum; ++vIdx)
 			{
 				root->pIndex[vIdx] = rootSrc->pIndex[vIdx];
@@ -962,7 +1026,60 @@ DsKeyframeAnimSet* DsAnimRes::CreateKeyframeAnim() const
 				pKeyAnim[aIdx].m_pBone[bIdx].m_pScale[k].val.z = anim.pose[bIdx].keyFrameSZ[k].value;
 
 			}
-			
+		}
+
+		//マスター移動量
+		if (anim.masterMove.keyFrameNumRX != anim.masterMove.keyFrameNumRY ||
+			anim.masterMove.keyFrameNumRY != anim.masterMove.keyFrameNumRZ ||
+			anim.masterMove.keyFrameNumRZ != anim.masterMove.keyFrameNumRQ)
+		{
+			DS_ASSERT(false, "回転キーフレーム数が成分間で一致しない");
+		}
+		if (anim.masterMove.keyFrameNumTX != anim.masterMove.keyFrameNumTY ||
+			anim.masterMove.keyFrameNumTY != anim.masterMove.keyFrameNumTZ)
+		{
+			DS_ASSERT(false, "位置キーフレーム数が成分間で一致しない");
+		}
+		if (anim.masterMove.keyFrameNumSX != anim.masterMove.keyFrameNumSY ||
+			anim.masterMove.keyFrameNumSY != anim.masterMove.keyFrameNumSZ)
+		{
+			DS_ASSERT(false, "拡大キーフレーム数が成分間で一致しない");
+		}
+
+		//回転
+		pKeyAnim[aIdx].m_masterMove.m_keyFrameNumRot = anim.masterMove.keyFrameNumRX;
+		pKeyAnim[aIdx].m_masterMove.m_pRot = new DsKeyframeAnim::Vec4Key[anim.masterMove.keyFrameNumRX];
+		DS_ASSERT(pKeyAnim[aIdx].m_masterMove.m_pRot, "メモリ確保失敗");
+		for (int k = 0; k < anim.masterMove.keyFrameNumRX; ++k)
+		{
+			if (anim.masterMove.keyFrameRX[k].localTimeMs != anim.masterMove.keyFrameRY[k].localTimeMs ||
+				anim.masterMove.keyFrameRY[k].localTimeMs != anim.masterMove.keyFrameRZ[k].localTimeMs ||
+				anim.masterMove.keyFrameRZ[k].localTimeMs != anim.masterMove.keyFrameRQ[k].localTimeMs)
+			{
+				DS_ASSERT(false, "回転ローカルタイムが成分間で一致しない");
+			}
+			pKeyAnim[aIdx].m_masterMove.m_pRot[k].localTime = anim.masterMove.keyFrameRX[k].localTimeMs;
+			pKeyAnim[aIdx].m_masterMove.m_pRot[k].val.x = anim.masterMove.keyFrameRX[k].value;
+			pKeyAnim[aIdx].m_masterMove.m_pRot[k].val.y = anim.masterMove.keyFrameRY[k].value;
+			pKeyAnim[aIdx].m_masterMove.m_pRot[k].val.z = anim.masterMove.keyFrameRZ[k].value;
+			pKeyAnim[aIdx].m_masterMove.m_pRot[k].val.w = anim.masterMove.keyFrameRQ[k].value;
+
+		}
+		//位置
+		pKeyAnim[aIdx].m_masterMove.m_keyFrameNumPos = anim.masterMove.keyFrameNumTX;
+		pKeyAnim[aIdx].m_masterMove.m_pPos = new DsKeyframeAnim::Vec3Key[anim.masterMove.keyFrameNumTX];
+		DS_ASSERT(pKeyAnim[aIdx].m_masterMove.m_pPos, "メモリ確保失敗");
+		for (int k = 0; k < anim.masterMove.keyFrameNumTX; ++k)
+		{
+			if (anim.masterMove.keyFrameTX[k].localTimeMs != anim.masterMove.keyFrameTY[k].localTimeMs ||
+				anim.masterMove.keyFrameTY[k].localTimeMs != anim.masterMove.keyFrameTZ[k].localTimeMs)
+			{
+				DS_ASSERT(false, "位置ローカルタイムが成分間で一致しない");
+			}
+			pKeyAnim[aIdx].m_masterMove.m_pPos[k].localTime = anim.masterMove.keyFrameTX[k].localTimeMs;
+			pKeyAnim[aIdx].m_masterMove.m_pPos[k].val.x = anim.masterMove.keyFrameTX[k].value;
+			pKeyAnim[aIdx].m_masterMove.m_pPos[k].val.y = anim.masterMove.keyFrameTY[k].value;
+			pKeyAnim[aIdx].m_masterMove.m_pPos[k].val.z = anim.masterMove.keyFrameTZ[k].value;
 
 		}
 

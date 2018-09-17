@@ -43,6 +43,7 @@ namespace DsLib
 		const DsAnimClip* GetPlayAnim()const { return m_pPlayAnim; }
 		const DsModel* GetModel() const;
 		DsModel* GetModel();
+		const DsVec3d& GetDeltaMotion() const { return m_deltaMotion; }
 
 	private:
 		DsLib::DsResource& m_resource;
@@ -56,6 +57,7 @@ namespace DsLib
 		DsAnimBlend m_blend;
 		DsVec3d m_pos;
 		DsMat33d m_rot;
+		DsVec3d m_deltaMotion;
 		std::vector<DsAnimClip*> m_animClips;
 		DsAnimClip* m_pRequestAnim;
 		DsAnimClip* m_pPlayAnim;

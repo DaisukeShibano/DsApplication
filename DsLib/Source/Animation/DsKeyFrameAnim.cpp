@@ -34,7 +34,7 @@ void DsKeyframeAnim::Pose::SetLocalTime(double time)
 	m_currentIdxPos = 0;
 	m_currentIdxScale = 0;
 
-	const double maxTime = max(max(m_pPos[m_keyFrameNumPos - 1].localTime, m_pRot[m_keyFrameNumRot - 1].localTime), m_pScale[m_keyFrameNumScale - 1].localTime);
+	const double maxTime = max(max(m_pPos[m_keyFrameNumPos - 1].localTime, m_pRot[m_keyFrameNumRot - 1].localTime), (m_pScale) ? (m_pScale[m_keyFrameNumScale - 1].localTime) : (0));
 	m_currentTimeMs = time * 1000.0;
 
 	if (m_currentTimeMs < DBL_EPSILON) {
@@ -67,6 +67,7 @@ void DsKeyframeAnim::Pose::_Update()
 		}
 	}
 
+
 	while (m_pRot[m_currentIdxRot].localTime < m_currentTimeMs)
 	{
 		++m_currentIdxRot;
@@ -78,14 +79,17 @@ void DsKeyframeAnim::Pose::_Update()
 		}
 	}
 
-	while (m_pScale[m_currentIdxScale].localTime < m_currentTimeMs)
+	if (m_pScale) 
 	{
-		++m_currentIdxScale;
-		if (m_keyFrameNumScale <= m_currentIdxScale)
+		while (m_pScale[m_currentIdxScale].localTime < m_currentTimeMs)
 		{
-			m_currentIdxScale = m_keyFrameNumScale - 1;
-			m_endFlag |= END_FLAG_SCALE;
-			break;
+			++m_currentIdxScale;
+			if (m_keyFrameNumScale <= m_currentIdxScale)
+			{
+				m_currentIdxScale = m_keyFrameNumScale - 1;
+				m_endFlag |= END_FLAG_SCALE;
+				break;
+			}
 		}
 	}
 }
@@ -105,6 +109,7 @@ DsKeyframeAnim::DsKeyframeAnim()
 	: m_name()
 	, m_pBone(NULL)
 	, m_boneNum(0)
+	, m_masterMove()
 {
 }
 
@@ -116,36 +121,38 @@ DsKeyframeAnim::~DsKeyframeAnim()
 
 void DsKeyframeAnim::Update(double dt)
 {
-	for (int i = 0; i < m_boneNum; ++i)
-	{
+	for (int i = 0; i < m_boneNum; ++i){
 		m_pBone[i].Update(dt);
 	}
+	m_masterMove.Update(dt);
 }
 
 void DsKeyframeAnim::Reset()
 {
-	for (int i = 0; i < m_boneNum; ++i)
-	{
+	for (int i = 0; i < m_boneNum; ++i){
 		m_pBone[i].Reset();
 	}
+	m_masterMove.Reset();
 }
 
 void DsKeyframeAnim::SetLocalTime(double dt)
 {
-	for (int i = 0; i < m_boneNum; ++i)
-	{
+	for (int i = 0; i < m_boneNum; ++i){
 		m_pBone[i].SetLocalTime(dt);
 	}
+	m_masterMove.SetLocalTime(dt);
 }
 
 bool DsKeyframeAnim::IsEnd() const
 {
-	for (int i = 0; i < m_boneNum; ++i)
-	{
-		if (!m_pBone[i].IsEnd())
-		{
+	for (int i = 0; i < m_boneNum; ++i){
+		if (!m_pBone[i].IsEnd()){
 			return false;
 		}
+		//マスター移動量は関係なし
+		//if (!m_masterMove.IsEnd()) {
+		//	return false;
+		//}
 	}
 	return true;
 }
