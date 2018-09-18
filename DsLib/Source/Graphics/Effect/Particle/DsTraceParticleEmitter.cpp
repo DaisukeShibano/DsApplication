@@ -10,7 +10,7 @@ using namespace DsLib;
 
 //パラメータでもいいかもだけど今はとりあえず決め打ち
 static const double INTERVAL_TIME = 0.01;//発生間隔[秒]
-static const double PARTICLE_LIFE_TIME = 0.10f;//パーティクル寿命
+static const double PARTICLE_LIFE_TIME = 0.20f;//パーティクル寿命
 
 
 

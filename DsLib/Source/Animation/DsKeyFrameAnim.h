@@ -33,7 +33,7 @@ namespace DsLib
 		private:
 			enum END_FLAG_BIT
 			{
-				END_FLAG_POS = 0,
+				END_FLAG_POS = 1,
 				END_FLAG_ROT = 1 << 1,
 				END_FLAG_SCALE = 1 << 2,
 				END_FLAG_ALL = END_FLAG_POS | END_FLAG_ROT | END_FLAG_SCALE,
@@ -67,6 +67,7 @@ namespace DsLib
 			void Reset();
 			void SetLocalTime(double time);
 			bool IsEnd() const;
+			bool IsEndPosRot() const;
 
 		public:
 			const DsVec3d& RefCurrentPos() const

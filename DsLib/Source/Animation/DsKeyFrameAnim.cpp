@@ -52,6 +52,13 @@ bool DsKeyframeAnim::Pose::IsEnd() const
 {
 	return (m_endFlag == END_FLAG_ALL);
 }
+
+bool DsKeyframeAnim::Pose::IsEndPosRot() const
+{
+	return (m_endFlag == (END_FLAG_POS | END_FLAG_ROT) );
+}
+
+
 void DsKeyframeAnim::Pose::_Update()
 {
 	//現在のキーフレームインデックス更新
@@ -149,10 +156,12 @@ bool DsKeyframeAnim::IsEnd() const
 		if (!m_pBone[i].IsEnd()){
 			return false;
 		}
-		//マスター移動量は関係なし
-		//if (!m_masterMove.IsEnd()) {
-		//	return false;
-		//}
 	}
+	
+	//マスター移動量はスケールなし
+	if (!m_masterMove.IsEndPosRot()) {
+		return false;
+	}
+
 	return true;
 }
