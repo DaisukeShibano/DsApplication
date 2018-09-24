@@ -718,7 +718,7 @@ namespace EventTrackEditor {
 
 		}
 	}
-	public: PARAM_BASE ^ CreareBar(float startTime, float endTime, String^ barName, String^ targetAnimName)
+	public: PARAM_BASE ^ CreateBar(float startTime, float endTime, String^ barName, String^ targetAnimName)
 	{
 		PARAM_BASE^ ret = nullptr;
 
@@ -796,7 +796,7 @@ namespace EventTrackEditor {
 		ToolStripMenuItem^ item = (ToolStripMenuItem^)sender;
 		float startTime = 0;
 		float endTime = 0.1f;
-		CreareBar(startTime, endTime, item->Name, gcnew String(DsSimu::GetIns()->GetCurrentAnimName().c_str()));
+		CreateBar(startTime, endTime, item->Name, gcnew String(DsSimu::GetIns()->GetCurrentAnimName().c_str()));
 	}
 
 #pragma endregion

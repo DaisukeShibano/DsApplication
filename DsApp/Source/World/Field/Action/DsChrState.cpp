@@ -128,12 +128,12 @@ namespace
 		{
 			m_nextState = GetMyState();
 
-			
-			if (m_actReq.IsAction(ACTION_TYPE::MOVE)) {
-				m_nextState = CHR_STATE::RUN;
-			}
-			else if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
+			if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
 				//2’i–ÚUŒ‚
+				m_nextState = CHR_STATE::ATTACK2;
+			}
+			else if (m_actReq.IsAction(ACTION_TYPE::MOVE)) {
+				m_nextState = CHR_STATE::RUN;
 			}
 			else if (m_pAnimClip->IsEndWithoutBlend()) {
 				m_nextState = CHR_STATE::IDLE;
@@ -142,6 +142,42 @@ namespace
 		};
 	};
 	REGISTER_STATE(DsChrStateAttack1, CHR_STATE::ATTACK1)
+
+
+	/*********************************************************
+	@brief UŒ‚‚Q
+	**********************************************************/
+	class DsChrStateAttack2 : public DsChrState
+	{
+		virtual CHR_STATE GetMyState() const override { return CHR_STATE::ATTACK2; }
+	public:
+		DsChrStateAttack2(const INIT_ARG& arg) :DsChrState(arg)
+		{
+			if (m_pAnimClip) {
+				m_pAnimClip->SetLoop(false);
+			}
+		}
+
+	private:
+		virtual void Update(double dt) override
+		{
+			m_nextState = GetMyState();
+
+			
+			if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
+				//1’i–ÚUŒ‚
+				m_nextState = CHR_STATE::ATTACK1;
+			}
+			else if (m_actReq.IsAction(ACTION_TYPE::MOVE)) {
+				m_nextState = CHR_STATE::RUN;
+			}
+			else if (m_pAnimClip->IsEndWithoutBlend()) {
+				m_nextState = CHR_STATE::IDLE;
+			}
+
+		};
+	};
+	REGISTER_STATE(DsChrStateAttack2, CHR_STATE::ATTACK2)
 }
 
 

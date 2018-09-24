@@ -183,7 +183,7 @@ void ReadData(System::IO::FileStream ^ fs, EventTrackEditor::Form1^ form)
 			const ACTION_TYPE type = static_cast<ACTION_TYPE>(rData->pParamSet[s].pParams[p].paramType);
 			String^ barTypeName = GetActionBarTypeName(type);
 			String^ animName = gcnew String(rData->pParamSet[s].pAnimName);
-			PARAM_BASE^ barBase = form->CreareBar(startTime, endTime, barTypeName, animName);
+			PARAM_BASE^ barBase = form->CreateBar(startTime, endTime, barTypeName, animName);
 			switch (type)
 			{
 			case TRACE_EFFECT:

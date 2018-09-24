@@ -12,6 +12,7 @@ using namespace DsApp;
 static const char* IDEL_ANIM_NAME = "idle";
 static const char* RUN_ANIM_NAME = "run";
 static const char* RUN_ATTACK1_NAME = "Attack1";
+static const char* RUN_ATTACK2_NAME = "Attack2";
 
 
 DsActionCtrl::DsActionCtrl(DsActionRequest& actReq, const std::vector<DsLib::DsAnimClip*>& animClip)
@@ -34,6 +35,7 @@ DsActionCtrl::DsActionCtrl(DsActionRequest& actReq, const std::vector<DsLib::DsA
 		{ CHR_STATE::IDLE, IDEL_ANIM_NAME },
 		{ CHR_STATE::RUN, RUN_ANIM_NAME },
 		{ CHR_STATE::ATTACK1, RUN_ATTACK1_NAME },
+		{ CHR_STATE::ATTACK2, RUN_ATTACK2_NAME },
 	};
 
 	for (const CREATE_INFO& info : createInfo) {
