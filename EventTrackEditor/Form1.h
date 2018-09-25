@@ -682,9 +682,9 @@ namespace EventTrackEditor {
 
 
 #pragma region ActionContextMenu
-	private: System::Drawing::Point GetBarHeight()
+	private: System::Drawing::Point GetBarHeight(int x)
 	{
-		return  System::Drawing::Point(0, m_actionNum*HEIGHT_BAR + this->trackBar1->Size.Height);
+		return  System::Drawing::Point(x, m_actionNum*HEIGHT_BAR + this->trackBar1->Size.Height);
 	}
 
 	private: System::Void barTextBox_KeyDown(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
@@ -706,7 +706,7 @@ namespace EventTrackEditor {
 					//バーが消えたので高さを再調整
 					ClearActionBarNum();
 					for each(TextBox^ bar in trackSet->tracks) {
-						bar->Location = GetBarHeight();
+						bar->Location = GetBarHeight(bar->Location.X);
 						++m_actionNum;
 					}
 
@@ -733,6 +733,7 @@ namespace EventTrackEditor {
 
 		if (pAct) {
 			int barSize = static_cast<int>(FPSf * endTime * static_cast<float>(TICK_WDTH));
+			int start = static_cast<int>(FPSf * startTime * static_cast<float>(TICK_WDTH));
 
 			TextBox^ addBar = gcnew TextBox();
 			addBar->Anchor = System::Windows::Forms::AnchorStyles::None;
@@ -740,7 +741,7 @@ namespace EventTrackEditor {
 			addBar->Font = (gcnew System::Drawing::Font(L"ＭＳ ゴシック", 10.0F, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(128)));
 			addBar->ForeColor = System::Drawing::SystemColors::HighlightText;
-			addBar->Location = GetBarHeight();
+			addBar->Location = GetBarHeight(start);
 			addBar->Name = L"TrackBar";
 			addBar->Size = System::Drawing::Size(barSize, HEIGHT_BAR);
 			addBar->Text = gcnew String(pAct->name);
@@ -778,8 +779,7 @@ namespace EventTrackEditor {
 			ret = tag->param;
 			addBar->Tag = tag;
 
-			this->panel1->Controls->Add(addBar);
-
+			
 			//元データにバーを保存
 			for each(EDIT_TRACK_SET^ trackSet in this->m_data->data) {
 				String^  curAnimName = targetAnimName;
