@@ -5,6 +5,7 @@
 #ifndef _DS_ANIM_CLIP_H_
 #include "Animation/DsAnimClip.h"
 #endif
+#include "Animation/DsAnimSkeleton.h"
 
 
 using namespace DsLib;
@@ -51,14 +52,96 @@ void DsAnimBlend::Initialize(const DsKeyframeAnim& src)
 	
 }
 
+void DsAnimBlend::_BlendPoseGlobal(const DsAnimBone* bone, const DsKeyframeAnim& animA, const DsKeyframeAnim& animB, const DsMat33d& parentRot, const DsVec3d& parentPos, double blendRate)
+{
+	//↓最初から最後までクォータニオンにする
+
+	for (const DsAnimBone* pChild : bone->child){
+		const int idx = pChild->arrayIdx;
+			
+		//アニメAのグローバル座標
+		const DsMat33d rotA = DsMathUtil::ToMat33d<double>(DsQuaterniond(animA.RefCurrentRot(idx)));
+		const DsVec3d posA = animA.RefCurrentPos(idx);
+		const DsMat33d boneRotA = parentRot * rotA;
+		const DsVec3d bonePosA = (parentRot * posA) + parentPos;
+
+		//アニメBのグローバル座標
+		const DsMat33d rotB = DsMathUtil::ToMat33d<double>(DsQuaterniond(animB.RefCurrentRot(idx)));
+		const DsVec3d posB = animB.RefCurrentPos(idx);
+		const DsMat33d boneRotB = parentRot * rotB;
+		const DsVec3d bonePosB = (parentRot * posB) + parentPos;
+
+
+		//ブレンド
+		const double rateA = blendRate;
+		const double rateB = (1.0 - blendRate);
+		DsMat33d blendRot;
+		DsVec3d blendPos;
+		
+		{//位置のブレンド
+			blendPos = (bonePosA*rateA) + (bonePosB*rateB);//m_pBlendAnim->m_pBone[bi].m_pPosは１フレ分しか確保していなく、その都度AとBから求める
+			m_pBlendAnim->m_pBone[idx].m_pPos[0].val = blendPos - parentPos;//ローカル座標へ変換
+		}
+		{//回転のブレンド
+			const DsQuaterniond qA(rotA);
+			const DsQuaterniond qB(rotB);
+			const DsQuaterniond q = qA.LinearInterpolation(qB, rateB);
+			blendRot = q.ToMat33d();
+			const DsQuaterniond localQ = DsQuaterniond::Inverse(DsQuaterniond(parentRot))*q;//ローカル座標へ変換
+			m_pBlendAnim->m_pBone[idx].m_pRot[0].val = DsVec4d::ToVec4(localQ.x, localQ.y, localQ.z, localQ.w);
+		}
+		{//スケールのブレンド
+			const DsVec3d& sA = animA.RefCurrentScale(idx);
+			const DsVec3d& sB = animB.RefCurrentScale(idx);
+			m_pBlendAnim->m_pBone[idx].m_pScale[0].val = (sA*rateA) + (sB*rateB);
+		}
+
+		//ブレンド後のグローバル座標を子供へ
+		_BlendPoseGlobal(pChild, animA, animB, blendRot, blendPos, blendRate);
+	}	
+}
+
+void DsAnimBlend::_BlendPoseLocal(const DsKeyframeAnim& animA, const DsKeyframeAnim& animB, double blendRate)
+{
+	const double rateA = blendRate;
+	const double rateB = (1.0 - blendRate);
+
+	const int bn = animA.GetBoneNum();
+	for (int bi = 0; bi < bn; ++bi)
+	{
+		const DsKeyframeAnim::Pose& poseA = animA.m_pBone[bi];
+		const DsKeyframeAnim::Pose& poseB = animB.m_pBone[bi];
+
+		const double toLocalTime = poseA.m_pPos[poseA.m_currentIdxPos].localTime;
+
+		{//位置のブレンド
+			const DsVec3d& posA = poseA.RefCurrentPos();
+			const DsVec3d& posB = poseB.RefCurrentPos();
+			//m_pBlendAnim->m_pBone[bi].m_pPos[0].localTime = toLocalTime; //使ってない
+			m_pBlendAnim->m_pBone[bi].m_pPos[0].val = (posA*rateA) + (posB*rateB);//m_pBlendAnim->m_pBone[bi].m_pPosは１フレ分しか確保していなく、その都度AとBから求める
+		}
+		{//回転のブレンド
+			const DsVec4d& rotA = poseA.RefCurrentRot();
+			const DsVec4d& rotB = poseB.RefCurrentRot();
+			const DsQuaterniond qA(rotA.x, rotA.y, rotA.z, rotA.w);
+			const DsQuaterniond qB(rotB.x, rotB.y, rotB.z, rotB.w);
+			const DsQuaterniond q = qA.LinearInterpolation(qB, rateB);//ローカル同士の補間だとポーズがかけ離れてしまうかも。
+			m_pBlendAnim->m_pBone[bi].m_pRot[0].val = DsVec4d::ToVec4(q.x, q.y, q.z, q.w);
+		}
+		{//スケールのブレンド
+			const DsVec3d& sA = poseA.RefCurrentScale();
+			const DsVec3d& sB = poseB.RefCurrentScale();
+			m_pBlendAnim->m_pBone[bi].m_pScale[0].val = (sA*rateA) + (sB*rateB);
+		}
+	}
+}
+
+
 //blendRate = 1 で A。 blendRate = 0 で B
 const DsKeyframeAnim& DsAnimBlend::Blend(const DsAnimClip* pClipA, const DsAnimClip* pClipB, double blendRate)
 {
 	if (pClipA && pClipB)
 	{
-		const double rateA = blendRate;
-		const double rateB = (1.0 - blendRate);
-
 		const DsKeyframeAnim& animA = pClipA->RefAnim();
 		const DsKeyframeAnim& animB = pClipB->RefAnim();
 		
@@ -72,37 +155,7 @@ const DsKeyframeAnim& DsAnimBlend::Blend(const DsAnimClip* pClipA, const DsAnimC
 			return animB;
 		}
 
-		const int bn = animA.GetBoneNum();
-		for (int bi = 0; bi < bn; ++bi)
-		{
-			const DsKeyframeAnim::Pose& poseA = animA.m_pBone[bi];
-			const DsKeyframeAnim::Pose& poseB = animB.m_pBone[bi];
-
-			const double toLocalTime = poseA.m_pPos[poseA.m_currentIdxPos].localTime;
-			const int toBoneIdx = poseA.m_currentIdxPos;
-
-			{
-				const DsVec3d& posA = poseA.RefCurrentPos();
-				const DsVec3d& posB = poseB.RefCurrentPos();
-				//m_pBlendAnim->m_pBone[bi].m_pPos[0].localTime = toLocalTime; //使ってない
-				m_pBlendAnim->m_pBone[bi].m_pPos[0].val = (posA*rateA) + (posB*rateB);//m_pBlendAnim->m_pBone[bi].m_pPosは１フレ分しか確保していなく、その都度AとBから求める
-			}
-			{
-				const DsVec4d& rotA = poseA.RefCurrentRot();
-				const DsVec4d& rotB = poseB.RefCurrentRot();
-				const DsQuaterniond qA(rotA.x, rotA.y, rotA.z, rotA.w);
-				const DsQuaterniond qB(rotB.x, rotB.y, rotB.z, rotB.w);
-				const DsQuaterniond q = qA.LinearInterpolation(qB, rateB);//ローカル同士の補間だとポーズがかけ離れてしまうかも。
-				m_pBlendAnim->m_pBone[bi].m_pRot[0].val = DsVec4d::ToVec4(q.x, q.y, q.z, q.w);
-			}
-			{
-				const DsVec3d& sA = poseA.RefCurrentScale();
-				const DsVec3d& sB = poseB.RefCurrentScale();
-				m_pBlendAnim->m_pBone[bi].m_pScale[0].val = (sA*rateA) + (sB*rateB);
-			}
-			const DsVec3d& sclA = animA.RefCurrentScale(bi);
-		}
-
+		_BlendPoseLocal(animA, animB, blendRate);
 
 		return *m_pBlendAnim;
 	}

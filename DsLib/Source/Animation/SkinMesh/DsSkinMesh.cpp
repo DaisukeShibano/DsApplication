@@ -87,7 +87,7 @@ void DsSkinMesh::ApplySkeleton(const DsAnimSkeleton& skeleton)
 	}
 	
 	const std::vector<DsAnimBone*>& boneArray = skeleton.RefBoneArray();
-	for each(const DsAnimBone* pBone in boneArray)
+	for(const DsAnimBone* pBone : boneArray)
 	{
 		_Mapping(pBone, pBone->modelPose.ToMat33(), pBone->modelPose.GetPos(), m_pModel->GetVertex(), m_srcModel.GetVertex());
 	}

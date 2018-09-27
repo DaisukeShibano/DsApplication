@@ -38,7 +38,7 @@ namespace
 	void _UpdatePose(DsAnimBone* bone, const DsMat33d& bRot, const DsVec3d& bPos)
 	{
 		bone->modelPose = DsMat44d::Get(bRot, bPos);
-		for each(DsAnimBone* child in bone->child)
+		for(DsAnimBone* child : bone->child)
 		{
 			//位置は親の座標から見た位置っぽい
 			DsVec3d bonePos = bRot*(child->localPose.GetPos());
@@ -54,12 +54,12 @@ namespace
 void DsAnimSkeleton::UpdatePose()
 {
 	const std::vector<DsAnimBone*>& roots = RefRootBone();
-	for each( DsAnimBone* root in roots)
+	for( DsAnimBone* root : roots)
 	{
 		// FBX変換かかってなさげなので掛けてみる(調査中)。問題なさそうなら出力ツール側でやる。無理なら初期化時
 		//const DsMat33d fbxR = DsMat33d::RotateX(-M_PI_2);
 		//intWorldはFbx変換かかってる。localPoseはかかってない。Fbx変換成分だけを抜き出す。ただし、localPoseの姿勢がキーフレームで変わってるとダメ
-		const DsMat33d fbxR = root->initWorldPose.ToMat33()*root->localPose.ToMat33().ToTransposition();
+		const DsMat33d fbxR = DsMat33d::RotateX(-M_PI * 0.5);
 #ifndef		USE_OLD_MODEL_COOD
 		const DsMat33d m = fbxR*root->localPose.ToMat33();	//マスターの姿勢は変えられなかったから考慮しなくてOK
 #else
