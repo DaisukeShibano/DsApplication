@@ -179,10 +179,11 @@ void DsAnimation::Update(double dt)
 		//ブレンド率は、前のアニメから今のアニメに徐々にウェイトが行くようにする
 		blendRate = 1.0 - m_pPlayAnimPre->GetBlendRate();
 	}
-	const DsKeyframeAnim& blend = m_blend.Blend(m_pPlayAnim, m_pPlayAnimPre, blendRate);
-
+	
 	//ブレンド結果をアニメボーンに適用。
 	if (m_pSkeleton) {
+		const DsKeyframeAnim& blend = m_blend.Blend(*m_pSkeleton, m_pPlayAnim, m_pPlayAnimPre, blendRate);
+
 		if (m_animModifier) {
 			m_animModifier->ModifyAnim(dt, blend, m_pos, m_rot, *m_pSkeleton);
 		}

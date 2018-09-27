@@ -52,7 +52,7 @@ void DsAnimBlend::Initialize(const DsKeyframeAnim& src)
 	
 }
 
-void DsAnimBlend::_BlendPoseGlobal(const DsAnimBone* bone, const DsKeyframeAnim& animA, const DsKeyframeAnim& animB, const DsMat33d& parentRot, const DsVec3d& parentPos, double blendRate)
+void DsAnimBlend::_BlendPoseModel(const DsAnimBone* bone, const DsKeyframeAnim& animA, const DsKeyframeAnim& animB, const DsMat33d& parentRot, const DsVec3d& parentPos, double blendRate)
 {
 	//↓最初から最後までクォータニオンにする
 
@@ -97,7 +97,7 @@ void DsAnimBlend::_BlendPoseGlobal(const DsAnimBone* bone, const DsKeyframeAnim&
 		}
 
 		//ブレンド後のグローバル座標を子供へ
-		_BlendPoseGlobal(pChild, animA, animB, blendRot, blendPos, blendRate);
+		_BlendPoseModel(pChild, animA, animB, blendRot, blendPos, blendRate);
 	}	
 }
 
@@ -138,7 +138,7 @@ void DsAnimBlend::_BlendPoseLocal(const DsKeyframeAnim& animA, const DsKeyframeA
 
 
 //blendRate = 1 で A。 blendRate = 0 で B
-const DsKeyframeAnim& DsAnimBlend::Blend(const DsAnimClip* pClipA, const DsAnimClip* pClipB, double blendRate)
+const DsKeyframeAnim& DsAnimBlend::Blend(const DsAnimSkeleton& skeleton, const DsAnimClip* pClipA, const DsAnimClip* pClipB, double blendRate)
 {
 	if (pClipA && pClipB)
 	{
@@ -156,6 +156,9 @@ const DsKeyframeAnim& DsAnimBlend::Blend(const DsAnimClip* pClipA, const DsAnimC
 		}
 
 		_BlendPoseLocal(animA, animB, blendRate);
+		//for (const DsAnimBone* pBone : skeleton.RefRootBone()) {
+		//	_BlendPoseModel(pBone, animA, animB, DsMat33d::Identity(), DsVec3d::Zero(), blendRate);
+		//}
 
 		return *m_pBlendAnim;
 	}
