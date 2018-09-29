@@ -36,6 +36,7 @@ namespace DsApp
 		void _SoundEffect(const struct DS_ANIM_ET_SOUND_EFFECT* pParam);
 		void _Damage(const struct DS_ANIM_ET_DAMAGE* pParam);
 		void _Cancel(const struct DS_ANIM_ET_CANCEL_ACTION_TIMING* pParam);
+		void _Interpolation(const struct DS_ANIM_ET_ANIM_INTERPOLATION* pParam);
 
 	private:
 		double m_preLocalTime;

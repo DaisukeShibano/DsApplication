@@ -200,6 +200,7 @@
     <ClInclude Include="Source\Res\Param\DsRagdollParam.h" />
     <ClInclude Include="Source\Res\Param\DsWepParam.h" />
     <ClInclude Include="Source\World\Animation\Event\DsAnimEventCallback.h" />
+    <ClInclude Include="Source\World\Animation\Event\DsAnimEventFlags.h" />
     <ClInclude Include="Source\World\Component\Attach\DsAttachComponent.h" />
     <ClInclude Include="Source\World\Component\Attach\DsAttachEntity.h" />
     <ClInclude Include="Source\World\Component\DsComponent.h" />

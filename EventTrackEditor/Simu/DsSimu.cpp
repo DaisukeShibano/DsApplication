@@ -291,7 +291,7 @@ bool DsSimu::IsEndAnim()const
 		if (pAnim) {
 			for (DsAnimClip* pClip : pAnim->RefAnimClips()) {
 				if (m_selectAnimName == pClip->RefAnimName()) {
-					ret = pClip->IsEndWithoutBlend();
+					ret = pClip->IsEnd();
 					break;
 				}
 			}

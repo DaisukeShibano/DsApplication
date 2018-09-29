@@ -27,10 +27,10 @@ namespace DsLib
 
 			// 最大成分を検索
 			TYPE elem[4]; // 0:x, 1:y, 2:z, 3:w
-			elem[0] = mat.m00 - mat.m11 - mat.m22 + 1.0f;
-			elem[1] = -mat.m00 + mat.m11 - mat.m22 + 1.0f;
-			elem[2] = -mat.m00 - mat.m11 + mat.m22 + 1.0f;
-			elem[3] = mat.m00 + mat.m11 + mat.m22 + 1.0f;
+			elem[0] = mat.m00 - mat.m11 - mat.m22 + 1.0;
+			elem[1] = -mat.m00 + mat.m11 - mat.m22 + 1.0;
+			elem[2] = -mat.m00 - mat.m11 + mat.m22 + 1.0;
+			elem[3] = mat.m00 + mat.m11 + mat.m22 + 1.0;
 
 			unsigned biggestIndex = 0;
 			for (int i = 1; i < 4; i++) {
@@ -38,16 +38,16 @@ namespace DsLib
 					biggestIndex = i;
 			}
 
-			if (elem[biggestIndex] < 0.0f)
+			if (elem[biggestIndex] < 0.0)
 			{
 				return ret; // 引数の行列に間違いあり！
 			}
 
 			// 最大要素の値を算出
 			TYPE *q[4] = { &ret.x, &ret.y, &ret.z, &ret.w };
-			TYPE v = static_cast<TYPE>(sqrt(elem[biggestIndex]) * 0.5f);
+			TYPE v = static_cast<TYPE>(sqrt(elem[biggestIndex]) * 0.5);
 			*q[biggestIndex] = v;
-			TYPE mult = 0.25f / v;
+			TYPE mult = 0.25 / v;
 
 			switch (biggestIndex) {
 			case 0: // x
@@ -83,17 +83,17 @@ namespace DsLib
 			const double qz = static_cast<double>(q.z);
 			const double qw = static_cast<double>(q.w);
 
-			ret.m00 = 1.0f - 2.0f * qy * qy - 2.0f * qz * qz;
-			ret.m01 = 2.0f * qx * qy + 2.0f * qw * qz;
-			ret.m02 = 2.0f * qx * qz - 2.0f * qw * qy;
+			ret.m00 = 1.0 - 2.0 * qy * qy - 2.0 * qz * qz;
+			ret.m01 = 2.0 * qx * qy + 2.0 * qw * qz;
+			ret.m02 = 2.0 * qx * qz - 2.0 * qw * qy;
 
-			ret.m10 = 2.0f * qx * qy - 2.0f * qw * qz;
-			ret.m11 = 1.0f - 2.0f * qx * qx - 2.0f * qz * qz;
-			ret.m12 = 2.0f * qy * qz + 2.0f * qw * qx;
+			ret.m10 = 2.0 * qx * qy - 2.0 * qw * qz;
+			ret.m11 = 1.0 - 2.0 * qx * qx - 2.0f * qz * qz;
+			ret.m12 = 2.0 * qy * qz + 2.0 * qw * qx;
 
-			ret.m20 = 2.0f * qx * qz + 2.0f * qw * qy;
-			ret.m21 = 2.0f * qy * qz - 2.0f * qw * qx;
-			ret.m22 = 1.0f - 2.0f * qx * qx - 2.0f * qy * qy;
+			ret.m20 = 2.0 * qx * qz + 2.0 * qw * qy;
+			ret.m21 = 2.0 * qy * qz - 2.0 * qw * qx;
+			ret.m22 = 1.0 - 2.0 * qx * qx - 2.0 * qy * qy;
 
 			return ret;
 		}

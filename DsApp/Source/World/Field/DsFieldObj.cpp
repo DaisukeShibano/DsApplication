@@ -24,6 +24,8 @@
 #include "World/Component/Equip/DsEquipComponent.h"
 #endif
 
+#include "World/Animation/Event/DsAnimEventFlags.h"
+
 using namespace DsLib;
 using namespace DsPhysics;
 using namespace DsApp;
@@ -37,6 +39,7 @@ DsFieldObj::DsFieldObj(DsSys& sys, DsPhysicsWorld& world)
 	, m_world(world)
 	, m_pAnimEventCallback(NULL)
 	, m_pComponentSystem(NULL)
+	, m_pAnimEventFlags(NULL)
 	, m_reqestIsInit(false)
 	, m_isCompleteInit(false)
 	, m_isRequestDirectAnim(false)
@@ -49,6 +52,7 @@ DsFieldObj::~DsFieldObj()
 	delete m_pAnimEventCallback; m_pAnimEventCallback = NULL;
 	delete m_pAnimation; m_pAnimation = NULL;
 	delete m_pComponentSystem; m_pComponentSystem = NULL;
+	delete m_pAnimEventFlags; m_pAnimEventFlags = NULL;
 }
 
 //virtual
@@ -64,6 +68,8 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 	m_pAnimEventCallback = new DsAnimEventCallback(*this, m_sys.RefResource());
 	DS_ASSERT(m_pAnimEventCallback, "ƒƒ‚ƒŠŠm•ÛŽ¸”s");
 	m_pAnimEventCallback->Initialize(initInfo.animName.c_str());
+	m_pAnimEventFlags = new DsAnimEventFlags();
+	DS_ASSERT(m_pAnimEventFlags, "ƒƒ‚ƒŠŠm•ÛŽ¸”s");
 
 	if (m_pAnimation){
 		m_pAnimation->SetRootMatrix(GetPosition(), GetRotation());

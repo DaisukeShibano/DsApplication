@@ -9,6 +9,7 @@ namespace DsApp
 {
 	class DsChrState;
 	class DsActionRequest;
+	class DsAnimEventFlags;
 }
 
 namespace DsApp
@@ -16,7 +17,7 @@ namespace DsApp
 	class DsActionCtrl
 	{
 	public:
-		DsActionCtrl(DsActionRequest& actReq, const std::vector<DsLib::DsAnimClip*>& animClip);
+		DsActionCtrl(DsActionRequest& actReq, const DsAnimEventFlags& animFlags, const std::vector<DsLib::DsAnimClip*>& animClip);
 		virtual ~DsActionCtrl();
 
 	public:
@@ -25,7 +26,6 @@ namespace DsApp
 
 	private:
 		DsLib::DsActionStateCtrl* m_pASCtrl;
-		DsActionRequest& m_actReq;
 		StateMap m_state;
 		DsAnimClip* m_pCurrentAnim;
 	};

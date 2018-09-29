@@ -99,7 +99,7 @@ void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 
 	//アクション
 	m_pActReq = _CreareActionRequest();
-	m_pActCtrl = new DsActionCtrl(*m_pActReq, m_pAnimation->RefAnimClips());
+	m_pActCtrl = new DsActionCtrl(*m_pActReq, *GetAnimEventFlags(), m_pAnimation->RefAnimClips());
 	DS_ASSERT(m_pActCtrl, "メモリ確保失敗");
 	m_pAnimation->RequestPlayAnim(m_pActCtrl->GetCurrentAnim());
 }

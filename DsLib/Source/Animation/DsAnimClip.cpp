@@ -9,7 +9,7 @@
 
 using namespace DsLib;
 
-static const double BLEND_TIME = 0.2;
+static const double INTERPOLATE_TIME = 0.2;
 
 
 DsAnimClip::DsAnimClip(DsKeyframeAnim& anim)
@@ -19,6 +19,7 @@ DsAnimClip::DsAnimClip(DsKeyframeAnim& anim)
 	, m_blendRate(0.0)
 	, m_isRequestEnd(false)
 	, m_localTime(0)
+	, m_interpolationTime(INTERPOLATE_TIME)
 {
 
 }
@@ -49,12 +50,23 @@ void DsAnimClip::Update(double dt)
 	if (m_isActive)
 	{
 		m_localTime += dt;
-		m_blendRate = min(1.0, m_blendRate + dt / (BLEND_TIME));
+
+		if (0.0 < m_interpolationTime) {
+			m_blendRate = min(1.0, m_blendRate + dt / (m_interpolationTime));
+		}
+		else {
+			m_blendRate = 1.0;
+		}
 	}
 	else
 	{
 		m_localTime = 0.0;
-		m_blendRate = max(0.0, m_blendRate - dt / (BLEND_TIME));
+		if (0.0 < m_interpolationTime) {
+			m_blendRate = max(0.0, m_blendRate - dt / (m_interpolationTime));
+		}
+		else {
+			m_blendRate = 0.0;
+		}
 	}
 	
 	m_anim.Update(dt);
@@ -75,7 +87,12 @@ void  DsAnimClip::ResetAnim()
 void DsAnimClip::SetLocalTime(double time)
 {
 	m_localTime = time;
-	m_blendRate = min(1.0, time / (BLEND_TIME));
+	if (0.0 < m_interpolationTime) {
+		m_blendRate = min(1.0, time / (m_interpolationTime));
+	}
+	else {
+		m_blendRate = 1.0;
+	}
 	m_anim.SetLocalTime(time);
 	m_isRequestEnd = m_anim.IsEnd();
 }
@@ -87,12 +104,17 @@ double DsAnimClip::GetLocalTime()const
 
 bool DsAnimClip::IsEnd() const
 {
-	return ( m_isRequestEnd && (m_blendRate < 0.00001) );//ブレンド率見るのは補間中もアクティブ扱いにしたいから
+	return m_isRequestEnd ;
 }
 
-bool DsAnimClip::IsEndWithoutBlend() const
+bool DsAnimClip::IsEndBlend() const
 {
-	return m_isRequestEnd;
+	return m_blendRate < 0.00001;
+}
+
+void DsAnimClip::ClearInterpolationTime()
+{
+	m_interpolationTime = INTERPOLATE_TIME;
 }
 
 const std::string& DsAnimClip::RefAnimName() const

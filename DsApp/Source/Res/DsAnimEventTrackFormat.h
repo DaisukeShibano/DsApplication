@@ -15,6 +15,7 @@ namespace DsApp
 		SOUND_EFFECT,
 		DAMAGE,
 		CANCEL_ACTION_TIMING,
+		ANIM_INTERPOLATION,
 		ACTION_TYPE_NUM,
 	};
 	struct DS_ANIM_ET_TRACE_EFFECT
@@ -34,7 +35,13 @@ namespace DsApp
 	};
 	struct DS_ANIM_ET_CANCEL_ACTION_TIMING
 	{
+		int action;
 	};
+	struct DS_ANIM_ET_ANIM_INTERPOLATION
+	{
+		float time;
+	};
+
 
 
 
@@ -56,6 +63,7 @@ namespace DsApp
 			DS_ANIM_ET_TRACE_EFFECT* pSound;
 			DS_ANIM_ET_DAMAGE* pDamage;
 			DS_ANIM_ET_CANCEL_ACTION_TIMING* pCancel;
+			DS_ANIM_ET_ANIM_INTERPOLATION* pAnimInterpolation;
 		};
 	};
 

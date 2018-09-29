@@ -23,8 +23,10 @@ namespace DsLib
 		void SetLocalTime(double time);
 		double GetLocalTime()const;
 		bool IsEnd() const;
-		bool IsEndWithoutBlend() const;
+		bool IsEndBlend() const;
 		double GetBlendRate() const { return m_blendRate; }
+		void SetInterpolationTime(double time) { m_interpolationTime = time; }
+		void ClearInterpolationTime();
 
 	public:
 		const DsKeyframeAnim& RefAnim() const { return m_anim; }
@@ -37,6 +39,7 @@ namespace DsLib
 		double m_blendRate;
 		bool m_isRequestEnd;
 		double m_localTime;
+		double m_interpolationTime;
 	};
 }
 

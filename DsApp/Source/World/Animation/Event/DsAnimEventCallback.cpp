@@ -19,6 +19,9 @@
 #include "World/Field/Action/DsActionRequest.h"
 #endif
 
+#include "World/Animation/Event/DsAnimEventFlags.h"
+
+
 
 using namespace DsLib;
 using namespace DsApp;
@@ -59,7 +62,11 @@ void DsAnimEventCallback::Call()
 		return;
 	}
 
-	const double current = pClip->GetLocalTime();
+	//毎フレームクリア系のフラグクリア
+	DsAnimEventFlags* pFlags = m_owner.GetAnimEventFlags();
+	if (pFlags) {
+		pFlags->Clear();
+	}
 	
 	const DS_ANIM_ET_PARAM* pParams = NULL;
 	int paramNum = 0;
@@ -77,6 +84,7 @@ void DsAnimEventCallback::Call()
 		}
 	}
 
+	const double current = pClip->GetLocalTime();
 	//アニメ時間の期間中のイベントを発行
 	for (int i = 0; i < paramNum; ++i) {
 		if ((m_preLocalTime <= pParams[i].endTime ) &&
@@ -105,6 +113,9 @@ void DsAnimEventCallback::_Call(const DS_ANIM_ET_PARAM& param)
 		break;
 	case DS_ANIM_ET_ACTION_TYPE::CANCEL_ACTION_TIMING:
 		_Cancel(param.pCancel);
+		break;
+	case DS_ANIM_ET_ACTION_TYPE::ANIM_INTERPOLATION:
+		_Interpolation(param.pAnimInterpolation);
 		break;
 	default:
 		break;
@@ -139,5 +150,12 @@ void DsAnimEventCallback::_Cancel(const DS_ANIM_ET_CANCEL_ACTION_TIMING* pParam)
 	DsActionRequest* pReq = m_owner.GetActionRequest();
 	if (pReq) {
 		pReq->SetCancelAll();
+	}
+}
+void DsAnimEventCallback::_Interpolation(const struct DS_ANIM_ET_ANIM_INTERPOLATION* pParam)
+{
+	DsAnimEventFlags* pFalgs = m_owner.GetAnimEventFlags();
+	if (pFalgs) {
+		pFalgs->SetAnimInterpolationTime(pParam->time);
 	}
 }

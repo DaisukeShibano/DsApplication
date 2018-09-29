@@ -167,7 +167,7 @@ void DsAnimation::Update(double dt)
 	//一つ前のアニメは補間のためしばらく更新し続ける
 	if (m_pPlayAnimPre) {
 		m_pPlayAnimPre->Update(dt);
-		if (m_pPlayAnimPre->IsEnd()) {
+		if (m_pPlayAnimPre->IsEndBlend()) {
 			m_pPlayAnimPre->ResetAnim();
 			m_pPlayAnimPre = NULL;
 		}

@@ -631,6 +631,7 @@ namespace EventTrackEditor {
 		{
 			DAMAGE_PARAM^ param = (DAMAGE_PARAM^)tag->param;
 			this->dataGridView1->Rows->Add(param->paramNum);
+
 			DataGridViewTextBoxCell^ cell00 = gcnew DataGridViewTextBoxCell();
 			DataGridViewTextBoxCell^ cell01 = gcnew DataGridViewTextBoxCell();
 			cell00->Value = param->dmyPolyId0.name;
@@ -638,6 +639,7 @@ namespace EventTrackEditor {
 			cell01->Tag = param->dmyPolyId0.value;
 			this->dataGridView1->Rows[0]->Cells[0] = cell00;
 			this->dataGridView1->Rows[0]->Cells[1] = cell01;
+
 			DataGridViewTextBoxCell^ cell10 = gcnew DataGridViewTextBoxCell();
 			DataGridViewTextBoxCell^ cell11 = gcnew DataGridViewTextBoxCell();
 			cell10->Value = param->dmyPolyId1.name;
@@ -645,6 +647,7 @@ namespace EventTrackEditor {
 			cell11->Tag = param->dmyPolyId1.value;
 			this->dataGridView1->Rows[1]->Cells[0] = cell10;
 			this->dataGridView1->Rows[1]->Cells[1] = cell11;
+
 			DataGridViewTextBoxCell^ cell20 = gcnew DataGridViewTextBoxCell();
 			DataGridViewTextBoxCell^ cell21 = gcnew DataGridViewTextBoxCell();
 			cell20->Value = param->damageId.name;
@@ -656,8 +659,28 @@ namespace EventTrackEditor {
 		break;
 		case CANCEL_ACTION_TIMING:
 		{
-			//データが無いのですることなし
-			//CANCEL_ACTION_TIMING_PARAM^ param = (CANCEL_ACTION_TIMING_PARAM^)tag->param;
+			CANCEL_ACTION_TIMING_PARAM^ param = (CANCEL_ACTION_TIMING_PARAM^)tag->param;
+			this->dataGridView1->Rows->Add(param->paramNum);
+			DataGridViewTextBoxCell^ cell00 = gcnew DataGridViewTextBoxCell();
+			DataGridViewTextBoxCell^ cell01 = gcnew DataGridViewTextBoxCell();
+			cell00->Value = param->actionType.name;
+			cell01->Value = param->actionType.value;
+			cell01->Tag = param->actionType.value;
+			this->dataGridView1->Rows[0]->Cells[0] = cell00;
+			this->dataGridView1->Rows[0]->Cells[1] = cell01;
+		}
+		break;
+		case ANIM_INTERPOLATION:
+		{
+			ANIM_INTERPOLATION_PARAM^ param = (ANIM_INTERPOLATION_PARAM^)tag->param;
+			this->dataGridView1->Rows->Add(param->paramNum);
+			DataGridViewTextBoxCell^ cell00 = gcnew DataGridViewTextBoxCell();
+			DataGridViewTextBoxCell^ cell01 = gcnew DataGridViewTextBoxCell();
+			cell00->Value = param->time.name;
+			cell01->Value = param->time.value;
+			cell01->Tag = param->time.value;
+			this->dataGridView1->Rows[0]->Cells[0] = cell00;
+			this->dataGridView1->Rows[0]->Cells[1] = cell01;
 		}
 		break;
 		default:
@@ -773,12 +796,17 @@ namespace EventTrackEditor {
 				tag->param = gcnew CANCEL_ACTION_TIMING_PARAM();
 				tag->paramSize = sizeof(ET_CANCEL_ACTION_TIMING);
 				break;
+			case ANIM_INTERPOLATION:
+				tag->param = gcnew ANIM_INTERPOLATION_PARAM();
+				tag->paramSize = sizeof(ET_ANIM_INTERPOLATION);
+				break;
 			default:
 				break;
 			}
 			ret = tag->param;
 			addBar->Tag = tag;
 
+			this->panel1->Controls->Add(addBar);
 			
 			//元データにバーを保存
 			for each(EDIT_TRACK_SET^ trackSet in this->m_data->data) {

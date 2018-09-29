@@ -214,6 +214,13 @@ void ReadData(System::IO::FileStream ^ fs, EventTrackEditor::Form1^ form)
 				bar->Set(*pTmp);
 			}
 			break;
+			case ANIM_INTERPOLATION:
+			{
+				ET_ANIM_INTERPOLATION* pTmp = rData->pParamSet[s].pParams[p].pAnimInterpolation;
+				ANIM_INTERPOLATION_PARAM^ bar = dynamic_cast<ANIM_INTERPOLATION_PARAM^>(barBase);
+				bar->Set(*pTmp);
+			}
+			break;
 			default:
 				break;
 			}

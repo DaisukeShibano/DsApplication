@@ -15,9 +15,8 @@ static const char* RUN_ATTACK1_NAME = "Attack1";
 static const char* RUN_ATTACK2_NAME = "Attack2";
 
 
-DsActionCtrl::DsActionCtrl(DsActionRequest& actReq, const std::vector<DsLib::DsAnimClip*>& animClip)
+DsActionCtrl::DsActionCtrl(DsActionRequest& actReq, const DsAnimEventFlags& animFlags, const std::vector<DsLib::DsAnimClip*>& animClip)
 	: m_pASCtrl(NULL)
-	, m_actReq(actReq)
 	, m_state()
 	, m_pCurrentAnim(NULL)
 {
@@ -43,7 +42,7 @@ DsActionCtrl::DsActionCtrl(DsActionRequest& actReq, const std::vector<DsLib::DsA
 		for (DsAnimClip* pAnim : animClip) {
 			if ( std::string::npos != pAnim->RefAnimName().find(info.animTypeName) ) {
 				//ステートに該当するアニメを見つけたのでステート生成
-				DsChrState::INIT_ARG arg(pAnim, m_actReq, m_state, info.state);
+				DsChrState::INIT_ARG arg(pAnim, actReq, m_state, animFlags, info.state);
 				DsChrState* pState = DsChrState::CreateIns(arg);
 				DS_ASSERT(pState, "ステート作成失敗");
 				m_state[info.state] = pState;

@@ -186,6 +186,9 @@
     <ClInclude Include="Source\World\Physics\DsPhysicsCreator.h">
       <Filter>Source\World\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="Source\World\Animation\Event\DsAnimEventFlags.h">
+      <Filter>Source\World\Animation\Event</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsAppPch.cpp">

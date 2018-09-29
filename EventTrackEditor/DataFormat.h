@@ -8,6 +8,7 @@ enum ACTION_TYPE
 	SOUND_EFFECT,
 	DAMAGE,
 	CANCEL_ACTION_TIMING,
+	ANIM_INTERPOLATION,
 	ACTION_TYPE_NUM,
 };
 
@@ -23,11 +24,19 @@ static const ACTION_TYPE_NAME ACTION_NAME_ARRAY[]=
 	{ SOUND_EFFECT,				L"SE" },
 	{ DAMAGE,					L"ダメージ" },
 	{ CANCEL_ACTION_TIMING,		L"キャンセル可能タイミング" },
+	{ ANIM_INTERPOLATION,		L"アニメ補間" },
+
 };
 
 ref struct INT_PARAM : public System::Object
 {
 	System::Int32^ value;
+	System::String^ name;
+};
+
+ref struct DECIMAL_PARAM : public System::Object
+{
+	System::Decimal^ value;
 	System::String^ name;
 };
 
@@ -144,13 +153,17 @@ ref struct DAMAGE_PARAM : PARAM_BASE
 
 struct ET_CANCEL_ACTION_TIMING
 {
+	int actionType;
 };
 ref struct CANCEL_ACTION_TIMING_PARAM : PARAM_BASE
 {
 	CANCEL_ACTION_TIMING_PARAM()
 	{
+		actionType.name = gcnew System::String(L"actionType");
+		actionType.value = gcnew System::Int32(-1);
 	}
-	const int paramNum = 0;
+	INT_PARAM actionType;
+	const int paramNum = 1;
 
 	virtual char* GetParamStaticBuff() override
 	{
@@ -158,9 +171,33 @@ ref struct CANCEL_ACTION_TIMING_PARAM : PARAM_BASE
 		return (char*)(&ret);
 	}
 	void Set(const ET_CANCEL_ACTION_TIMING& param) {
+		actionType.value = param.actionType;
 	}
 };
 
+struct ET_ANIM_INTERPOLATION
+{
+	int time;
+};
+ref struct ANIM_INTERPOLATION_PARAM : PARAM_BASE
+{
+	ANIM_INTERPOLATION_PARAM()
+	{
+		time.name = gcnew System::String(L"time");
+		time.value = gcnew System::Decimal(0.0);
+	}
+	DECIMAL_PARAM time;
+	const int paramNum = 1;
+
+	virtual char* GetParamStaticBuff() override
+	{
+		static ET_ANIM_INTERPOLATION ret;
+		return (char*)(&ret);
+	}
+	void Set(const ET_ANIM_INTERPOLATION& param) {
+		time.value = System::Decimal(param.time);
+	}
+};
 
 struct ET_HEADER
 {
@@ -179,6 +216,7 @@ struct ET_PARAM
 		ET_SOUND_EFFECT* pSound;
 		ET_DAMAGE* pDamage;
 		ET_CANCEL_ACTION_TIMING* pCancelTiming;
+		ET_ANIM_INTERPOLATION* pAnimInterpolation;
 	};
 };
 
