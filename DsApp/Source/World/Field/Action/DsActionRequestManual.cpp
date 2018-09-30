@@ -14,6 +14,8 @@ DsActionRequestManual::DsActionRequestManual(const DsLib::DsSys& sys)
 	, m_requestPre(0)
 	, m_requestTrigger(0)
 	, m_cancel(0)
+	, m_input(0)
+	, m_inputSave(0)
 	, m_actionTrigger(0)
 	, m_actionContinue(0)
 {
@@ -93,12 +95,32 @@ void DsActionRequestManual::Update(double dt)
 
 void DsActionRequestManual::_UpdateAction()
 {
+	//リクエスト
 	m_requestTrigger = m_request & (~m_requestPre);//押した瞬間
 	m_requestPre = m_request;
-	m_actionTrigger = m_requestTrigger & m_cancel;
-	m_actionContinue = m_request & m_cancel;
+
+	//入力保持
+	if (0 != m_input) {
+		//入力のバーが続いていれば保持
+		m_inputSave |= m_input & m_requestTrigger;
+	}
+	else {
+		//バーが切れればクリア
+		m_inputSave = 0;
+	}
+
+	//入力保持はキャンセルタイミングが来たらキャンセル可能
+	//キャンセルタイミングはいつでもキャンセル可能
+	const ds_uint64 enableAction = (m_inputSave & m_cancel) | (m_requestTrigger & m_cancel);
+
+	//アクション
+	m_actionTrigger = enableAction;
+	m_actionContinue = (m_request & m_cancel) | enableAction;//押しっぱなしでもtrue
+
+	//クリア
 	m_request = 0;
 	m_cancel = 0;
+	m_input = 0;
 }
 
 //virtual
@@ -132,9 +154,14 @@ void DsActionRequestManual::SetRequest(ACTION_TYPE type)
 }
 
 //virtual
-void DsActionRequestManual::SetCancel(ACTION_TYPE type)
+void DsActionRequestManual::SetCancel(int type)
 {
-	m_cancel |= 1ULL << static_cast<ds_uint64>(type);
+	if (0 <= type) {
+		m_cancel |= 1ULL << static_cast<ds_uint64>(type);
+	}
+	else {
+		SetCancelAll();
+	}
 }
 
 //virtual
@@ -142,3 +169,15 @@ void DsActionRequestManual::SetCancelAll()
 {
 	m_cancel = 0xFFFFFFFFFFFFFFFFULL;
 }
+
+//virtual
+void DsActionRequestManual::SetInput(int type)
+{
+	if (0 <= type) {
+		m_input |= 1ULL << static_cast<ds_uint64>(type);
+	}
+	else {
+		m_input = 0xFFFFFFFFFFFFFFFFULL;
+	}
+}
+

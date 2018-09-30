@@ -16,6 +16,11 @@ namespace DsApp
 		DAMAGE,
 		CANCEL_ACTION_TIMING,
 		ANIM_INTERPOLATION,
+		ACTION_INPUT,
+		NO_HIT_DAMAGE,
+		DISABLE_TURN,
+		DISABLE_GRAVITY,
+		SUPER_ARMOR,
 		ACTION_TYPE_NUM,
 	};
 	struct DS_ANIM_ET_TRACE_EFFECT
@@ -41,8 +46,22 @@ namespace DsApp
 	{
 		float time;
 	};
-
-
+	struct DS_ANIM_ET_ACTION_INPUT
+	{
+		int actionType;
+	};
+	struct DS_ANIM_ET_NO_HIT_DAMAGE
+	{
+	};
+	struct DS_ANIM_ET_DISABLE_TURN
+	{
+	};
+	struct DS_ANIM_ET_DISABLE_GRAVITY
+	{
+	};
+	struct DS_ANIM_ET_SUPER_ARMOR
+	{
+	};
 
 
 
@@ -64,6 +83,11 @@ namespace DsApp
 			DS_ANIM_ET_DAMAGE* pDamage;
 			DS_ANIM_ET_CANCEL_ACTION_TIMING* pCancel;
 			DS_ANIM_ET_ANIM_INTERPOLATION* pAnimInterpolation;
+			DS_ANIM_ET_ACTION_INPUT* pActionInput;
+			DS_ANIM_ET_NO_HIT_DAMAGE* pNoHitDamage;
+			DS_ANIM_ET_DISABLE_TURN* pDisableTurn;
+			DS_ANIM_ET_DISABLE_GRAVITY* pDisableGravity;
+			DS_ANIM_ET_SUPER_ARMOR* pSuperArmor;
 		};
 	};
 

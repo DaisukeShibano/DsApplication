@@ -177,6 +177,7 @@ ref struct CANCEL_ACTION_TIMING_PARAM : PARAM_BASE
 	virtual char* GetParamStaticBuff() override
 	{
 		static ET_CANCEL_ACTION_TIMING ret;
+		ret.actionType = (*actionType.value);
 		return (char*)(&ret);
 	}
 	void Set(const ET_CANCEL_ACTION_TIMING& param) {
@@ -186,7 +187,7 @@ ref struct CANCEL_ACTION_TIMING_PARAM : PARAM_BASE
 
 struct ET_ANIM_INTERPOLATION
 {
-	int time;
+	float time;
 };
 ref struct ANIM_INTERPOLATION_PARAM : PARAM_BASE
 {
@@ -201,6 +202,7 @@ ref struct ANIM_INTERPOLATION_PARAM : PARAM_BASE
 	virtual char* GetParamStaticBuff() override
 	{
 		static ET_ANIM_INTERPOLATION ret;
+		ret.time = static_cast<float>(System::Decimal::ToDouble(*time.value));
 		return (char*)(&ret);
 	}
 	void Set(const ET_ANIM_INTERPOLATION& param) {
@@ -226,6 +228,7 @@ ref struct ACTION_INPUT_PARAM : PARAM_BASE
 	virtual char* GetParamStaticBuff() override
 	{
 		static ET_ACTION_INPUT ret;
+		ret.actionType = (*actionType.value);
 		return (char*)(&ret);
 	}
 	void Set(const ET_ACTION_INPUT& param) {

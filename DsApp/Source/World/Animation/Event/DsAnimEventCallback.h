@@ -37,6 +37,11 @@ namespace DsApp
 		void _Damage(const struct DS_ANIM_ET_DAMAGE* pParam);
 		void _Cancel(const struct DS_ANIM_ET_CANCEL_ACTION_TIMING* pParam);
 		void _Interpolation(const struct DS_ANIM_ET_ANIM_INTERPOLATION* pParam);
+		void _ActionInput(const struct DS_ANIM_ET_ACTION_INPUT* pParam);
+		void _NoHitDamage(const struct DS_ANIM_ET_NO_HIT_DAMAGE* pParam);
+		void _DisableTurn(const struct DS_ANIM_ET_DISABLE_TURN* pParam);
+		void _DisableGravity(const struct DS_ANIM_ET_DISABLE_GRAVITY* pParam);
+		void _SuperArmor(const struct DS_ANIM_ET_SUPER_ARMOR* pParam);
 
 	private:
 		double m_preLocalTime;

@@ -9,7 +9,7 @@
 
 namespace DsApp
 {
-	enum class ACTION_TYPE
+	enum class ACTION_TYPE : ds_uint8
 	{
 		NONE,
 		ATTACK,
@@ -31,8 +31,9 @@ namespace DsApp
 		virtual bool IsAction(ACTION_TYPE type)const { return false; }
 		virtual bool IsMove()const { return false; }
 		virtual void SetRequest(ACTION_TYPE type){};
-		virtual void SetCancel(ACTION_TYPE type){};
+		virtual void SetCancel(int type) {};
 		virtual void SetCancelAll() {};
+		virtual void SetInput(int type) {};
 	};
 
 }

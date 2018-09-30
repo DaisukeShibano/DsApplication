@@ -117,6 +117,17 @@ void DsAnimEventCallback::_Call(const DS_ANIM_ET_PARAM& param)
 	case DS_ANIM_ET_ACTION_TYPE::ANIM_INTERPOLATION:
 		_Interpolation(param.pAnimInterpolation);
 		break;
+	case DS_ANIM_ET_ACTION_TYPE::ACTION_INPUT:
+		_ActionInput(param.pActionInput);
+		break;
+	case DS_ANIM_ET_ACTION_TYPE::NO_HIT_DAMAGE:
+		break;
+	case DS_ANIM_ET_ACTION_TYPE::DISABLE_TURN:
+		break;
+	case DS_ANIM_ET_ACTION_TYPE::DISABLE_GRAVITY:
+		break;
+	case DS_ANIM_ET_ACTION_TYPE::SUPER_ARMOR:
+		break;
 	default:
 		break;
 	}
@@ -149,13 +160,41 @@ void DsAnimEventCallback::_Cancel(const DS_ANIM_ET_CANCEL_ACTION_TIMING* pParam)
 {
 	DsActionRequest* pReq = m_owner.GetActionRequest();
 	if (pReq) {
-		pReq->SetCancelAll();
+		pReq->SetCancel(pParam->action);
 	}
 }
+
 void DsAnimEventCallback::_Interpolation(const struct DS_ANIM_ET_ANIM_INTERPOLATION* pParam)
 {
 	DsAnimEventFlags* pFalgs = m_owner.GetAnimEventFlags();
 	if (pFalgs) {
 		pFalgs->SetAnimInterpolationTime(pParam->time);
 	}
+}
+
+void DsAnimEventCallback::_ActionInput(const struct DS_ANIM_ET_ACTION_INPUT* pParam)
+{
+	DsActionRequest* pReq = m_owner.GetActionRequest();
+	if (pReq) {
+		pReq->SetInput(pParam->actionType);
+	}
+}
+void DsAnimEventCallback::_NoHitDamage(const struct DS_ANIM_ET_NO_HIT_DAMAGE* pParam)
+{
+
+}
+
+void DsAnimEventCallback::_DisableTurn(const struct DS_ANIM_ET_DISABLE_TURN* pParam)
+{
+
+}
+
+void DsAnimEventCallback::_DisableGravity(const struct DS_ANIM_ET_DISABLE_GRAVITY* pParam)
+{
+
+}
+
+void DsAnimEventCallback::_SuperArmor(const struct DS_ANIM_ET_SUPER_ARMOR* pParam)
+{
+
 }

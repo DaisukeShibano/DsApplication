@@ -22,8 +22,9 @@ namespace DsApp
 		virtual bool IsAction(ACTION_TYPE type)const override;
 		virtual bool IsMove()const override;
 		virtual void SetRequest(ACTION_TYPE type) override;
-		virtual void SetCancel(ACTION_TYPE type) override;
+		virtual void SetCancel(int type) override;
 		virtual void SetCancelAll() override;
+		virtual void SetInput(int type) override;
 
 	private:
 		const DsLib::DsKeyboard& m_key;
@@ -34,6 +35,8 @@ namespace DsApp
 		ds_uint64 m_requestPre;
 		ds_uint64 m_requestTrigger;
 		ds_uint64 m_cancel;
+		ds_uint64 m_input;
+		ds_uint64 m_inputSave;
 		ds_uint64 m_actionTrigger;
 		ds_uint64 m_actionContinue;
 

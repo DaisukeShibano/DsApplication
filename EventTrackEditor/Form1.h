@@ -683,6 +683,39 @@ namespace EventTrackEditor {
 			this->dataGridView1->Rows[0]->Cells[1] = cell01;
 		}
 		break;
+		case ACTION_INPUT:
+		{
+			ACTION_INPUT_PARAM^ param = (ACTION_INPUT_PARAM^)tag->param;
+			this->dataGridView1->Rows->Add(param->paramNum);
+			DataGridViewTextBoxCell^ cell00 = gcnew DataGridViewTextBoxCell();
+			DataGridViewTextBoxCell^ cell01 = gcnew DataGridViewTextBoxCell();
+			cell00->Value = param->actionType.name;
+			cell01->Value = param->actionType.value;
+			cell01->Tag   = param->actionType.value;
+			this->dataGridView1->Rows[0]->Cells[0] = cell00;
+			this->dataGridView1->Rows[0]->Cells[1] = cell01;
+		}
+		break;
+		case NO_HIT_DAMAGE:
+		{
+
+		}
+		break;
+		case DISABLE_TURN:
+		{
+
+		}
+		break;
+		case DISABLE_GRAVITY:
+		{
+
+		}
+		break;
+		case SUPER_ARMOR:
+		{
+
+		}
+		break;
 		default:
 			break;
 		}
