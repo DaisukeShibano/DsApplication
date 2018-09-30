@@ -84,6 +84,7 @@ void DsTexture::Load(const std::string& path)
 		map.pImg = img;
 		map.id = texName;
 		m_texMap[path] = map;
+		m_texMap[path].refCounter = 1;
 	}
 	else
 	{
