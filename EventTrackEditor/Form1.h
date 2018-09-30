@@ -800,6 +800,26 @@ namespace EventTrackEditor {
 				tag->param = gcnew ANIM_INTERPOLATION_PARAM();
 				tag->paramSize = sizeof(ET_ANIM_INTERPOLATION);
 				break;
+			case ACTION_INPUT:
+				tag->param = gcnew ACTION_INPUT_PARAM();
+				tag->paramSize = sizeof(ET_ACTION_INPUT);
+				break;
+			case NO_HIT_DAMAGE:
+				tag->param = gcnew NO_HIT_DAMAGE_PARAM();
+				tag->paramSize = sizeof(ET_NO_HIT_DAMAGE);
+				break;
+			case DISABLE_TURN:
+				tag->param = gcnew DISABLE_TURN_PARAM();
+				tag->paramSize = sizeof(ET_DISABLE_TURN);
+				break;
+			case DISABLE_GRAVITY:
+				tag->param = gcnew DISABLE_GRAVITY_PARAM();
+				tag->paramSize = sizeof(ET_DISABLE_GRAVITY);
+				break;
+			case SUPER_ARMOR:
+				tag->param = gcnew SUPER_ARMOR_PARAM();
+				tag->paramSize = sizeof(ET_SUPER_ARMOR);
+				break;
 			default:
 				break;
 			}

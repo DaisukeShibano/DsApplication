@@ -9,6 +9,11 @@ enum ACTION_TYPE
 	DAMAGE,
 	CANCEL_ACTION_TIMING,
 	ANIM_INTERPOLATION,
+	ACTION_INPUT,
+	NO_HIT_DAMAGE,
+	DISABLE_TURN,
+	DISABLE_GRAVITY,
+	SUPER_ARMOR,
 	ACTION_TYPE_NUM,
 };
 
@@ -25,7 +30,11 @@ static const ACTION_TYPE_NAME ACTION_NAME_ARRAY[]=
 	{ DAMAGE,					L"ダメージ" },
 	{ CANCEL_ACTION_TIMING,		L"キャンセル可能タイミング" },
 	{ ANIM_INTERPOLATION,		L"アニメ補間" },
-
+	{ ACTION_INPUT,				L"入力受付" },
+	{ NO_HIT_DAMAGE,			L"ダメージすり抜け" },
+	{ DISABLE_TURN,				L"旋回無効" },
+	{ DISABLE_GRAVITY,			L"重力無効"},
+	{ SUPER_ARMOR ,				L"スーパーアーマー"},
 };
 
 ref struct INT_PARAM : public System::Object
@@ -199,6 +208,104 @@ ref struct ANIM_INTERPOLATION_PARAM : PARAM_BASE
 	}
 };
 
+
+struct ET_ACTION_INPUT
+{
+	int actionType;
+};
+ref struct ACTION_INPUT_PARAM : PARAM_BASE
+{
+	ACTION_INPUT_PARAM()
+	{
+		actionType.name = gcnew System::String(L"actionType");
+		actionType.value = gcnew System::Int32(-1);
+	}
+	INT_PARAM actionType;
+	const int paramNum = 1;
+
+	virtual char* GetParamStaticBuff() override
+	{
+		static ET_ACTION_INPUT ret;
+		return (char*)(&ret);
+	}
+	void Set(const ET_ACTION_INPUT& param) {
+		actionType.value =param.actionType;
+	}
+};
+
+struct ET_NO_HIT_DAMAGE
+{
+
+};
+ref struct NO_HIT_DAMAGE_PARAM : PARAM_BASE
+{
+
+	const int paramNum = 0;
+
+	virtual char* GetParamStaticBuff() override
+	{
+		static ET_NO_HIT_DAMAGE ret;
+		return (char*)(&ret);
+	}
+	void Set(const ET_NO_HIT_DAMAGE& param) {
+	}
+};
+
+struct ET_DISABLE_TURN
+{
+
+};
+ref struct DISABLE_TURN_PARAM : PARAM_BASE
+{
+	const int paramNum = 0;
+
+	virtual char* GetParamStaticBuff() override
+	{
+		static ET_DISABLE_TURN ret;
+		return (char*)(&ret);
+	}
+	void Set(const ET_DISABLE_TURN& param) {
+	}
+};
+
+struct ET_DISABLE_GRAVITY
+{
+
+};
+ref struct DISABLE_GRAVITY_PARAM : PARAM_BASE
+{
+	const int paramNum = 0;
+
+	virtual char* GetParamStaticBuff() override
+	{
+		static ET_DISABLE_GRAVITY ret;
+		return (char*)(&ret);
+	}
+	void Set(const ET_DISABLE_GRAVITY& param) {
+	}
+};
+
+
+struct ET_SUPER_ARMOR
+{
+
+};
+ref struct SUPER_ARMOR_PARAM : PARAM_BASE
+{
+	const int paramNum = 0;
+
+	virtual char* GetParamStaticBuff() override
+	{
+		static ET_SUPER_ARMOR ret;
+		return (char*)(&ret);
+	}
+	void Set(const ET_SUPER_ARMOR& param) {
+	}
+};
+
+
+
+
 struct ET_HEADER
 {
 	int version;
@@ -217,6 +324,11 @@ struct ET_PARAM
 		ET_DAMAGE* pDamage;
 		ET_CANCEL_ACTION_TIMING* pCancelTiming;
 		ET_ANIM_INTERPOLATION* pAnimInterpolation;
+		ET_ACTION_INPUT* pActionInput;
+		ET_NO_HIT_DAMAGE* pNoHitDamage;
+		ET_DISABLE_TURN* pDisableTurn;
+		ET_DISABLE_GRAVITY* pDisableGravity;
+		ET_SUPER_ARMOR* pSuperArmor;
 	};
 };
 

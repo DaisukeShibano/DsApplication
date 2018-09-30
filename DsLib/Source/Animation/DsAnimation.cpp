@@ -182,6 +182,8 @@ void DsAnimation::Update(double dt)
 	
 	//ブレンド結果をアニメボーンに適用。
 	if (m_pSkeleton) {
+		m_blend.m_dbgPos = m_pos;
+		m_blend.m_dbgRot = m_rot;
 		const DsKeyframeAnim& blend = m_blend.Blend(*m_pSkeleton, m_pPlayAnim, m_pPlayAnimPre, blendRate);
 
 		if (m_animModifier) {

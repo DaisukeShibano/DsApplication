@@ -28,12 +28,24 @@ namespace DsLib
 		const DsKeyframeAnim& Blend(const DsAnimSkeleton& skeleton, const DsAnimClip* pClipA, const DsAnimClip* pClipB, double blendRate);
 
 	private:
-		void _BlendPoseModel(const DsAnimBone* bone, const DsKeyframeAnim& animA, const DsKeyframeAnim& animB, const DsMat33d& parentRot, const DsVec3d& parentPos, double blendRate);
+		void _BlendPoseModel(const DsAnimBone* bone,
+							const DsKeyframeAnim& animA, const DsKeyframeAnim& animB, double blendRate);
+		void _BlendPoseModel(const DsAnimBone* bone,
+							const DsKeyframeAnim& animA, const DsKeyframeAnim& animB,
+							const DsMat33d& parentARot, const DsVec3d& parentAPos,
+							const DsMat33d& parentBRot, const DsVec3d& parentBPos,
+							const DsMat33d& parentBlendRot, const DsVec3d& parentBlendPos, 
+							double blendRate);
+
 		void _BlendPoseLocal(const DsKeyframeAnim& animA, const DsKeyframeAnim& animB, double blendRate);
 
 	private:
 		DsKeyframeAnim* m_pBlendAnim;
 
+
+	public:
+		DsVec3d m_dbgPos;
+		DsMat33d m_dbgRot;
 	};
 
 }

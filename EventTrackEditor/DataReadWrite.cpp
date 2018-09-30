@@ -221,6 +221,41 @@ void ReadData(System::IO::FileStream ^ fs, EventTrackEditor::Form1^ form)
 				bar->Set(*pTmp);
 			}
 			break;
+			case ACTION_INPUT:
+			{
+				ET_ACTION_INPUT* pTmp = rData->pParamSet[s].pParams[p].pActionInput;
+				ACTION_INPUT_PARAM^ bar = dynamic_cast<ACTION_INPUT_PARAM^>(barBase);
+				bar->Set(*pTmp);
+			}
+			break;
+			case NO_HIT_DAMAGE:
+			{
+				ET_NO_HIT_DAMAGE* pTmp = rData->pParamSet[s].pParams[p].pNoHitDamage;
+				NO_HIT_DAMAGE_PARAM^ bar = dynamic_cast<NO_HIT_DAMAGE_PARAM^>(barBase);
+				bar->Set(*pTmp);
+			}
+			break;
+			case DISABLE_TURN:
+			{
+				ET_DISABLE_TURN* pTmp = rData->pParamSet[s].pParams[p].pDisableTurn;
+				DISABLE_TURN_PARAM^ bar = dynamic_cast<DISABLE_TURN_PARAM^>(barBase);
+				bar->Set(*pTmp);
+			}
+			break;
+			case DISABLE_GRAVITY:
+			{
+				ET_DISABLE_GRAVITY* pTmp = rData->pParamSet[s].pParams[p].pDisableGravity;
+				DISABLE_GRAVITY_PARAM^ bar = dynamic_cast<DISABLE_GRAVITY_PARAM^>(barBase);
+				bar->Set(*pTmp);
+			}
+			break;
+			case SUPER_ARMOR:
+			{
+				ET_SUPER_ARMOR* pTmp = rData->pParamSet[s].pParams[p].pSuperArmor;
+				SUPER_ARMOR_PARAM^ bar = dynamic_cast<SUPER_ARMOR_PARAM^>(barBase);
+				bar->Set(*pTmp);
+			}
+			break;
 			default:
 				break;
 			}
