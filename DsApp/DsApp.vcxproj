@@ -214,9 +214,12 @@
     <ClInclude Include="Source\World\Field\Action\DsActionRequest.h" />
     <ClInclude Include="Source\World\Field\Action\DsActionRequestManual.h" />
     <ClInclude Include="Source\World\Field\Action\DsChrState.h" />
+    <ClInclude Include="Source\World\Field\Action\Enemy\DsActionRequestCom1.h" />
+    <ClInclude Include="Source\World\Field\Action\Enemy\DsEnemyState.h" />
     <ClInclude Include="Source\World\Field\Controller\DsChrController.h" />
     <ClInclude Include="Source\World\Field\Controller\DsGpController.h" />
     <ClInclude Include="Source\World\Field\Creator\DsFieldObjectCreator.h" />
+    <ClInclude Include="Source\World\Field\DsFieldEnemy.h" />
     <ClInclude Include="Source\World\Field\DsFieldObstacle.h" />
     <ClInclude Include="Source\World\Field\DsFieldChr.h" />
     <ClInclude Include="Source\World\Field\DsFieldHit.h" />
@@ -254,9 +257,12 @@
     <ClCompile Include="Source\World\Field\Action\DsActionCtrl.cpp" />
     <ClCompile Include="Source\World\Field\Action\DsActionRequestManual.cpp" />
     <ClCompile Include="Source\World\Field\Action\DsChrState.cpp" />
+    <ClCompile Include="Source\World\Field\Action\Enemy\DsActionRequestCom1.cpp" />
+    <ClCompile Include="Source\World\Field\Action\Enemy\DsEnemyState.cpp" />
     <ClCompile Include="Source\World\Field\Controller\DsChrController.cpp" />
     <ClCompile Include="Source\World\Field\Controller\DsGpController.cpp" />
     <ClCompile Include="Source\World\Field\Creator\DsFieldObjectCreator.cpp" />
+    <ClCompile Include="Source\World\Field\DsFieldEnemy.cpp" />
     <ClCompile Include="Source\World\Field\DsFieldObstacle.cpp" />
     <ClCompile Include="Source\World\Field\DsFieldChr.cpp" />
     <ClCompile Include="Source\World\Field\DsFieldHit.cpp" />

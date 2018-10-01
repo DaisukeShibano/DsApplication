@@ -213,12 +213,12 @@ const DsKeyframeAnim& DsAnimBlend::Blend(const DsAnimSkeleton& skeleton, const D
 		}
 
 		//ローカル座標でブレンド
-		//_BlendPoseLocal(animA, animB, blendRate);
+		_BlendPoseLocal(animA, animB, blendRate);
 		
 		//モデル座標でブレンド
-		for (const DsAnimBone* pBone : skeleton.RefRootBone()) {
-			_BlendPoseModel(pBone, animA, animB, blendRate);
-		}
+		//for (const DsAnimBone* pBone : skeleton.RefRootBone()) {
+		//	_BlendPoseModel(pBone, animA, animB, blendRate);
+		//}
 
 		return *m_pBlendAnim;
 	}

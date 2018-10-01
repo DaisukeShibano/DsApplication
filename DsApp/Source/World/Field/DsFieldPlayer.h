@@ -14,7 +14,7 @@ namespace DsApp
 		virtual ~DsFieldPlayer();
 
 	public:
-		virtual void Initialize(const DsFieldInitInfo& initInfo);
+		virtual void Initialize(const DsFieldInitInfo& initInfo) override;
 	protected:
 		virtual DsActionRequest* _CreareActionRequest() override;
 

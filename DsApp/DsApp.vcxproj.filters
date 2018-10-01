@@ -61,6 +61,9 @@
     <Filter Include="Source\World\Field\Component\Attach">
       <UniqueIdentifier>{50384dce-f5f3-405b-9816-8880b58b36df}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\World\Field\Action\Enemy">
+      <UniqueIdentifier>{25e70ed0-dd0b-4f39-ad08-6faf722a1ebc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsAppPch.h">
@@ -189,6 +192,15 @@
     <ClInclude Include="Source\World\Animation\Event\DsAnimEventFlags.h">
       <Filter>Source\World\Animation\Event</Filter>
     </ClInclude>
+    <ClInclude Include="Source\World\Field\Action\Enemy\DsActionRequestCom1.h">
+      <Filter>Source\World\Field\Action\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Field\Action\Enemy\DsEnemyState.h">
+      <Filter>Source\World\Field\Action\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Field\DsFieldEnemy.h">
+      <Filter>Source\World\Field</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsAppPch.cpp">
@@ -283,6 +295,15 @@
     </ClCompile>
     <ClCompile Include="Source\World\Physics\DsPhysicsCreator.cpp">
       <Filter>Source\World\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Field\Action\Enemy\DsActionRequestCom1.cpp">
+      <Filter>Source\World\Field\Action\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Field\Action\Enemy\DsEnemyState.cpp">
+      <Filter>Source\World\Field\Action\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Field\DsFieldEnemy.cpp">
+      <Filter>Source\World\Field</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
