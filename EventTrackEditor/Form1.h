@@ -788,8 +788,13 @@ namespace EventTrackEditor {
 		}
 
 		if (pAct) {
-			int barSize = static_cast<int>(FPSf * endTime * static_cast<float>(TICK_WDTH));
 			int start = static_cast<int>(FPSf * startTime * static_cast<float>(TICK_WDTH));
+			int end = static_cast<int>(FPSf * endTime * static_cast<float>(TICK_WDTH));
+			int barSize = end - start;
+			if (barSize < 0) {
+				//end‚Ì•û‚ª¬‚³‚¢‚Ì‚Í‘z’èŠO
+				assert(false);
+			}
 
 			TextBox^ addBar = gcnew TextBox();
 			addBar->Anchor = System::Windows::Forms::AnchorStyles::None;
