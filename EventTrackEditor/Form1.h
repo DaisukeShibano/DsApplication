@@ -478,7 +478,7 @@ namespace EventTrackEditor {
 			}
 		}
 	}
-			 //クリック処理
+	//クリック処理
 	private: System::Void pictureBox1_MouseClick(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 		pictureBox1->Focus();//フォーカス当てないとマウスホイールイベントが発行されないらしい。
 

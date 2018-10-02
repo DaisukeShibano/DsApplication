@@ -13,6 +13,8 @@ static const char* IDEL_ANIM_NAME = "idle";
 static const char* RUN_ANIM_NAME = "run";
 static const char* RUN_ATTACK1_NAME = "Attack1";
 static const char* RUN_ATTACK2_NAME = "Attack2";
+static const char* RUN_ATTACK3_NAME = "Attack3";
+static const char* RUN_ATTACK4_NAME = "Attack4";
 
 
 DsActionCtrl::DsActionCtrl(DsActionRequest& actReq, const DsAnimEventFlags& animFlags, const std::vector<DsLib::DsAnimClip*>& animClip)
@@ -35,6 +37,8 @@ DsActionCtrl::DsActionCtrl(DsActionRequest& actReq, const DsAnimEventFlags& anim
 		{ CHR_STATE::RUN, RUN_ANIM_NAME },
 		{ CHR_STATE::ATTACK1, RUN_ATTACK1_NAME },
 		{ CHR_STATE::ATTACK2, RUN_ATTACK2_NAME },
+		{ CHR_STATE::ATTACK3, RUN_ATTACK3_NAME },
+		{ CHR_STATE::ATTACK4, RUN_ATTACK4_NAME },
 	};
 
 	for (const CREATE_INFO& info : createInfo) {
