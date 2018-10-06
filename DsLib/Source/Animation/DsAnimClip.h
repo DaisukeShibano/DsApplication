@@ -18,7 +18,7 @@ namespace DsLib
 		void Activate(double dt);
 		void Update(double dt);
 		void Deactivate(double dt);
-		void SetLoop(bool loop){ m_isLoop = loop; }
+		void SetLoop(bool isLoop);
 		void ResetAnim();
 		void SetLocalTime(double time);
 		double GetLocalTime()const;
@@ -34,7 +34,6 @@ namespace DsLib
 
 	private:
 		DsKeyframeAnim& m_anim;
-		bool m_isLoop;
 		bool m_isActive;
 		double m_blendRate;
 		bool m_isRequestEnd;

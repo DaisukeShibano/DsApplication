@@ -40,34 +40,15 @@ namespace DsLib
 			};
 
 		public:
-			Pose()
-			: m_pPos(0)
-			, m_pRot(0)
-			, m_pScale(0)
-			, m_keyFrameNumRot(0)
-			, m_keyFrameNumPos(0)
-			, m_keyFrameNumScale(0)
-			, m_currentTimeMs(0.0)
-			, m_currentIdxRot(0)
-			, m_currentIdxPos(0)
-			, m_currentIdxScale(0)
-			, m_endFlag(0)
-			{
-			}
-
-			~Pose()
-			{
-				delete[] m_pPos; m_pPos = NULL;
-				delete[] m_pRot; m_pRot = NULL;
-				delete[] m_pScale; m_pScale = NULL;
-			}
+			Pose();
+			~Pose();
 
 		public:
-			void Update(double dt);
+			void Initialize();
+			void Update(double dt, DsVec4d* pOutDeltaRot, DsVec3d* pOutDeltaPos);
 			void Reset();
-			void SetLocalTime(double time);
+			void SetLocalTime(double time, DsVec4d* pOutDeltaRot, DsVec3d* pOutDeltaPos);
 			bool IsEnd() const;
-			bool IsEndPosRot() const;
 
 		public:
 			const DsVec3d& RefCurrentPos() const
@@ -83,10 +64,15 @@ namespace DsLib
 				return m_pScale[m_currentIdxScale].val;
 			}
 
-		private:
-			void _Update();
+			double GetMaxLocalTime() const { return m_maxLocalTimeMs; }
 
 		private:
+			void _Update(DsVec4d* pOutDeltaRot, DsVec3d* pOutDeltaPos);
+
+		private:
+			double m_currentTimeMs;
+			double m_maxLocalTimeMs;
+
 			Vec3Key* m_pPos;
 			Vec4Key* m_pRot;
 			Vec3Key* m_pScale;
@@ -95,7 +81,6 @@ namespace DsLib
 			int m_keyFrameNumPos;
 			int m_keyFrameNumScale;
 
-			double m_currentTimeMs;
 			int m_currentIdxRot;
 			int m_currentIdxPos;
 			int m_currentIdxScale;
@@ -107,10 +92,12 @@ namespace DsLib
 		virtual ~DsKeyframeAnim();
 
 	public:
+		void Initialize();
 		void Update(double dt);
 		void Reset();
-		void SetLocalTime(double dt);
+		void SetLocalTime(double time);
 		bool IsEnd() const;
+		void SetLoop(bool isLoop);
 
 	public:
 		const DsVec3d& RefCurrentPos(int boneIdx) const
@@ -131,11 +118,11 @@ namespace DsLib
 
 		const DsVec3d& RefMasterMovePos() const
 		{
-			return m_masterMove.RefCurrentPos();
+			return m_masterMoveDeltaPos;
 		}
 		const DsVec4d& RefMasterMoveRot() const
 		{
-			return m_masterMove.RefCurrentRot();
+			return m_masterMoveDeltaRot;
 		}
 
 		const int GetBoneNum() const { return m_boneNum; }
@@ -147,10 +134,17 @@ namespace DsLib
 		}
 
 	private:
+		Pose m_masterMove;
+		DsVec4d m_masterMoveDeltaRot;
+		DsVec3d m_masterMoveDeltaPos;
+		DsVec4d m_masterMoveDeltaRotPre;
+		DsVec3d m_masterMoveDeltaPosPre;
 		std::string m_name;
+		double m_currentTimeMs;
+		double m_maxLocalTimeMs;
 		Pose* m_pBone;
 		int m_boneNum;
-		Pose m_masterMove;
+		bool m_isLoop;
 	};
 }
 

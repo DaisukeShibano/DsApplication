@@ -14,7 +14,6 @@ static const double INTERPOLATE_TIME = 0.2;
 
 DsAnimClip::DsAnimClip(DsKeyframeAnim& anim)
 	: m_anim(anim)
-	, m_isLoop(false)
 	, m_isActive(false)
 	, m_blendRate(0.0)
 	, m_isRequestEnd(false)
@@ -39,14 +38,6 @@ void DsAnimClip::Activate(double dt)
 
 void DsAnimClip::Update(double dt)
 {
-	if (m_isLoop)
-	{
-		if (m_anim.IsEnd())
-		{
-			m_anim.Reset();
-			m_localTime = 0.0;
-		}
-	}
 	if (m_isActive)
 	{
 		m_localTime += dt;
@@ -76,6 +67,11 @@ void DsAnimClip::Update(double dt)
 void DsAnimClip::Deactivate(double dt)
 {
 	m_isActive = false;
+}
+
+void DsAnimClip::SetLoop(bool isLoop)
+{
+	m_anim.SetLoop(isLoop);
 }
 
 void  DsAnimClip::ResetAnim()

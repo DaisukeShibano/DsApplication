@@ -1083,6 +1083,7 @@ DsKeyframeAnimSet* DsAnimRes::CreateKeyframeAnim() const
 
 		}
 
+		pKeyAnim[aIdx].Initialize();
 	}
 
 	DsKeyframeAnimSet* ret = new DsKeyframeAnimSet(pKeyAnim, pRes->dsAnimBone.an);
