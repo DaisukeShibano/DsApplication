@@ -242,7 +242,7 @@ private:
 		m_nextState = GetMyState();
 	
 		if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
-			m_nextState = CHR_STATE::ATTACK1;
+			m_nextState = CHR_STATE::ATTACK4;
 		}
 		else if (m_actReq.IsAction(ACTION_TYPE::MOVE)) {
 			m_nextState = CHR_STATE::RUN;
@@ -254,6 +254,42 @@ private:
 	};
 };
 REGISTER_STATE(DsChrStateAttack3, CHR_STATE::ATTACK3)
+
+
+/*********************************************************
+@brief UŒ‚‚S
+**********************************************************/
+class DsChrStateAttack4 : public DsChrState
+{
+	virtual CHR_STATE GetMyState() const override { return CHR_STATE::ATTACK4; }
+public:
+	DsChrStateAttack4(const INIT_ARG& arg) :DsChrState(arg)
+	{
+		if (m_pAnimClip) {
+			m_pAnimClip->SetLoop(false);
+		}
+	}
+
+private:
+	virtual void Update(double dt) override
+	{
+		DsChrState::Update(dt);
+
+		m_nextState = GetMyState();
+
+		if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
+			m_nextState = CHR_STATE::ATTACK1;
+		}
+		else if (m_actReq.IsAction(ACTION_TYPE::MOVE)) {
+			m_nextState = CHR_STATE::RUN;
+		}
+		else if (m_pAnimClip->IsEnd()) {
+			m_nextState = CHR_STATE::IDLE;
+		}
+
+	};
+};
+REGISTER_STATE(DsChrStateAttack4, CHR_STATE::ATTACK4)
 
 
 //static 
