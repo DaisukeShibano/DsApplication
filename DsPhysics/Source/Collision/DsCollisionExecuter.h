@@ -42,6 +42,7 @@
 #ifndef _DS_COLLISION_CAPSULE_CAPSULE_
 #include "Collision/EachGeom/DsCollisionCapsuleCapsule.h"
 #endif
+#include "Collision/EachGeom/DsCollisionCapsuleRay.h"
 
 namespace DsPhysics
 {
@@ -70,6 +71,7 @@ namespace DsPhysics
 			, m_meshMesh(world)
 			, m_boxCapsule(world)
 			, m_capsuleCapsule(world)
+			, m_capsuleRay(world)
 		{}
 		virtual ~DsCollisionExecuter()
 		{}
@@ -170,6 +172,12 @@ namespace DsPhysics
 				return m_sphereBox.Collide();
 			}
 
+			//カプセルとカプセル
+			else if ((actor1.GetType() == DsActor::RIGID_CAPSULE) && (actor2.GetType() == DsActor::RIGID_CAPSULE))
+			{
+				m_capsuleCapsule.Initialize(actor1.GetCollisionGeometry(), actor2.GetCollisionGeometry());
+				return m_capsuleCapsule.Collide();
+			}
 
 			//カプセルとメッシュ
 			else if ((actor1.GetType() == DsActor::RIGID_CAPSULE) && (actor2.GetType() == DsActor::RIGID_MESH))
@@ -183,11 +191,16 @@ namespace DsPhysics
 				return m_capsuleMesh.Collide();
 			}
 
-			//カプセルとカプセル
-			if ((actor1.GetType() == DsActor::RIGID_CAPSULE) && (actor2.GetType() == DsActor::RIGID_CAPSULE))
+			//カプセルとレイ
+			else if ((actor1.GetType() == DsActor::RIGID_CAPSULE) && (actor2.GetType() == DsActor::RAY))
 			{
-				m_capsuleCapsule.Initialize(actor1.GetCollisionGeometry(), actor2.GetCollisionGeometry());
-				return m_capsuleCapsule.Collide();
+				m_capsuleRay.Initialize(actor1.GetCollisionGeometry(), actor2.GetCollisionGeometry());
+				return m_capsuleRay.Collide();
+			}
+			else if ((actor1.GetType() == DsActor::RAY) && (actor2.GetType() == DsActor::RIGID_CAPSULE))
+			{
+				m_capsuleRay.Initialize(actor2.GetCollisionGeometry(), actor1.GetCollisionGeometry());
+				return m_capsuleRay.Collide();
 			}
 
 			return m_noCollide;
@@ -206,6 +219,7 @@ namespace DsPhysics
 		DsCollisionMeshMesh m_meshMesh;
 		DsCollisionBoxCapsule m_boxCapsule;
 		DsCollisionCapsuleCapsule m_capsuleCapsule;
+		DsCollisionCapsuleRay m_capsuleRay;
 	};
 }
 

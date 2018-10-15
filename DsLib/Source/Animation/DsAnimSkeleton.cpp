@@ -56,9 +56,8 @@ void DsAnimSkeleton::UpdatePose()
 	const std::vector<DsAnimBone*>& roots = RefRootBone();
 	for( DsAnimBone* root : roots)
 	{
-		// FBX変換かかってなさげなので掛けてみる(調査中)。問題なさそうなら出力ツール側でやる。無理なら初期化時
-		//const DsMat33d fbxR = DsMat33d::RotateX(-M_PI_2);
-		//intWorldはFbx変換かかってる。localPoseはかかってない。Fbx変換成分だけを抜き出す。ただし、localPoseの姿勢がキーフレームで変わってるとダメ
+		//FBX出力時の座標変換かかってなさげなので掛けてみる(調査中)。問題なさそうなら出力ツール側でやる。無理ならせめて初期化時
+		//頂点座標はかかってそうなんだけど、何故かキーフレームポーズだけがかかってない雰囲気
 		const DsMat33d fbxR = DsMat33d::RotateX(-M_PI * 0.5);
 #ifndef		USE_OLD_MODEL_COOD
 		const DsMat33d m = fbxR*root->localPose.ToMat33();	//マスターの姿勢は変えられなかったから考慮しなくてOK

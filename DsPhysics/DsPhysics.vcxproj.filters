@@ -231,6 +231,9 @@
     <ClInclude Include="Source\Actor\DsActorId.h">
       <Filter>Source\Actor</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Collision\EachGeom\DsCollisionCapsuleRay.h">
+      <Filter>Source\Collision\EachGeom</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsPhysicsManager.cpp">
@@ -379,6 +382,9 @@
     </ClCompile>
     <ClCompile Include="Source\ChrProxy\DsChrProxy.cpp">
       <Filter>Source\ChrProxy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\EachGeom\DsCollisionCapsuleRay.cpp">
+      <Filter>Source\Collision\EachGeom</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

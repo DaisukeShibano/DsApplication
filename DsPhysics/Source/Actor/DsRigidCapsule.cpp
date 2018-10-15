@@ -14,6 +14,11 @@ DsRigidCapsule::~DsRigidCapsule()
 	delete m_pCollisionGeometry; m_pCollisionGeometry = NULL;
 }
 
+/*
+@param[in] r 球の半径
+@param[in] halfLen rを覗いたカプセルの長さの半分
+@param[in] mass 重さ[kg]
+*/
 void DsRigidCapsule::Create(double r, double halfLen, double mass)
 {
 	DS_ASSERT(!( 0.0 >= mass), "重さが0以下です");

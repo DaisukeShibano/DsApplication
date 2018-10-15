@@ -42,6 +42,7 @@ namespace DsPhysics
 		const DsVec3d* GetVertex()const{ return m_vertex; }
 
 	private:
+		DsMat33d m_rot;
 		DsVec3d m_vertex[2];
 		DsVec3d m_pos;
 		DsLine m_line;
@@ -74,7 +75,6 @@ namespace DsPhysics
 	private:
 		const DsVec3d& m_start;
 		const DsVec3d& m_end;
-
 	};
 
 }
