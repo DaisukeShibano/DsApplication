@@ -64,6 +64,9 @@
     <Filter Include="Source\World\Field\Action\Enemy">
       <UniqueIdentifier>{25e70ed0-dd0b-4f39-ad08-6faf722a1ebc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\World\Field\Action\Player">
+      <UniqueIdentifier>{15fad10b-1735-4b8a-aaa3-c4f48f24ef27}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsAppPch.h">
@@ -201,6 +204,15 @@
     <ClInclude Include="Source\World\Field\DsFieldEnemy.h">
       <Filter>Source\World\Field</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Res\Param\DsChrParam.h">
+      <Filter>Source\Res\Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Res\DsChrStateRes.h">
+      <Filter>Source\Res</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Field\Action\Player\DsPlayerState.h">
+      <Filter>Source\World\Field\Action\Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsAppPch.cpp">
@@ -304,6 +316,15 @@
     </ClCompile>
     <ClCompile Include="Source\World\Field\DsFieldEnemy.cpp">
       <Filter>Source\World\Field</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Res\Param\DsCharParam.cpp">
+      <Filter>Source\Res\Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Res\DsChrStateRes.cpp">
+      <Filter>Source\Res</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Field\Action\Player\DsPlayerState.cpp">
+      <Filter>Source\World\Field\Action\Player</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

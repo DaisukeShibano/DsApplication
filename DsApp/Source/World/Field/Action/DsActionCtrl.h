@@ -7,7 +7,6 @@
 
 namespace DsApp
 {
-	class DsChrState;
 	class DsActionRequest;
 	class DsAnimEventFlags;
 }

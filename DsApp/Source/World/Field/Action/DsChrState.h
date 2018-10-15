@@ -22,6 +22,10 @@ namespace DsApp
 		ATTACK2,
 		ATTACK3,
 		ATTACK4,
+		DAMAGE_F,
+		DAMAGE_B,
+		DAMAGE_L,
+		DAMAGE_R,
 		NUM
 	};
 

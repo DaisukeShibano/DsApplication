@@ -11,10 +11,14 @@ using namespace DsApp;
 
 static const char* IDEL_ANIM_NAME = "idle";
 static const char* RUN_ANIM_NAME = "run";
-static const char* RUN_ATTACK1_NAME = "Attack1";
-static const char* RUN_ATTACK2_NAME = "Attack2";
-static const char* RUN_ATTACK3_NAME = "Attack3";
-static const char* RUN_ATTACK4_NAME = "Attack4";
+static const char* ATTACK1_NAME = "Attack1";
+static const char* ATTACK2_NAME = "Attack2";
+static const char* ATTACK3_NAME = "Attack3";
+static const char* ATTACK4_NAME = "Attack4";
+static const char* DAMAGE_F_NAME = "DamageF";
+static const char* DAMAGE_B_NAME = "DamageB";
+static const char* DAMAGE_L_NAME = "DamageL";
+static const char* DAMAGE_R_NAME = "DamageR";
 
 
 DsActionCtrl::DsActionCtrl(DsActionRequest& actReq, const DsAnimEventFlags& animFlags, const std::vector<DsLib::DsAnimClip*>& animClip)
@@ -35,10 +39,14 @@ DsActionCtrl::DsActionCtrl(DsActionRequest& actReq, const DsAnimEventFlags& anim
 	{
 		{ CHR_STATE::IDLE, IDEL_ANIM_NAME },
 		{ CHR_STATE::RUN, RUN_ANIM_NAME },
-		{ CHR_STATE::ATTACK1, RUN_ATTACK1_NAME },
-		{ CHR_STATE::ATTACK2, RUN_ATTACK2_NAME },
-		{ CHR_STATE::ATTACK3, RUN_ATTACK3_NAME },
-		{ CHR_STATE::ATTACK4, RUN_ATTACK4_NAME },
+		{ CHR_STATE::ATTACK1, ATTACK1_NAME },
+		{ CHR_STATE::ATTACK2, ATTACK2_NAME },
+		{ CHR_STATE::ATTACK3, ATTACK3_NAME },
+		{ CHR_STATE::ATTACK4, ATTACK4_NAME },
+		{ CHR_STATE::DAMAGE_F, DAMAGE_F_NAME },
+		{ CHR_STATE::DAMAGE_B, DAMAGE_B_NAME },
+		{ CHR_STATE::DAMAGE_L, DAMAGE_L_NAME },
+		{ CHR_STATE::DAMAGE_R, DAMAGE_R_NAME },
 	};
 
 	for (const CREATE_INFO& info : createInfo) {

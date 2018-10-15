@@ -196,6 +196,8 @@
     <ClInclude Include="Source\NeuralNetwork\DsNeuronCtrl.h" />
     <ClInclude Include="Source\Res\DsAnimEventTrackFormat.h" />
     <ClInclude Include="Source\Res\DsAnimEventTrackRes.h" />
+    <ClInclude Include="Source\Res\DsChrStateRes.h" />
+    <ClInclude Include="Source\Res\Param\DsChrParam.h" />
     <ClInclude Include="Source\Res\Param\DsItemParam.h" />
     <ClInclude Include="Source\Res\Param\DsRagdollParam.h" />
     <ClInclude Include="Source\Res\Param\DsWepParam.h" />
@@ -216,6 +218,7 @@
     <ClInclude Include="Source\World\Field\Action\DsChrState.h" />
     <ClInclude Include="Source\World\Field\Action\Enemy\DsActionRequestCom1.h" />
     <ClInclude Include="Source\World\Field\Action\Enemy\DsEnemyState.h" />
+    <ClInclude Include="Source\World\Field\Action\Player\DsPlayerState.h" />
     <ClInclude Include="Source\World\Field\Controller\DsChrController.h" />
     <ClInclude Include="Source\World\Field\Controller\DsGpController.h" />
     <ClInclude Include="Source\World\Field\Creator\DsFieldObjectCreator.h" />
@@ -244,6 +247,8 @@
     <ClCompile Include="Source\Evolve\Gene\DsGene.cpp" />
     <ClCompile Include="Source\NeuralNetwork\DsNeuronCtrl.cpp" />
     <ClCompile Include="Source\Res\DsAnimEventTrackRes.cpp" />
+    <ClCompile Include="Source\Res\DsChrStateRes.cpp" />
+    <ClCompile Include="Source\Res\Param\DsCharParam.cpp" />
     <ClCompile Include="Source\Res\Param\DsItemParam.cpp" />
     <ClCompile Include="Source\Res\Param\DsRagdollParam.cpp" />
     <ClCompile Include="Source\Res\Param\DsWepParam.cpp" />
@@ -259,6 +264,7 @@
     <ClCompile Include="Source\World\Field\Action\DsChrState.cpp" />
     <ClCompile Include="Source\World\Field\Action\Enemy\DsActionRequestCom1.cpp" />
     <ClCompile Include="Source\World\Field\Action\Enemy\DsEnemyState.cpp" />
+    <ClCompile Include="Source\World\Field\Action\Player\DsPlayerState.cpp" />
     <ClCompile Include="Source\World\Field\Controller\DsChrController.cpp" />
     <ClCompile Include="Source\World\Field\Controller\DsGpController.cpp" />
     <ClCompile Include="Source\World\Field\Creator\DsFieldObjectCreator.cpp" />
