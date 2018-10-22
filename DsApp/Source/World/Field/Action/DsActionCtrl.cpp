@@ -9,18 +9,6 @@
 using namespace DsApp;
 
 
-static const char* IDEL_ANIM_NAME = "idle";
-static const char* RUN_ANIM_NAME = "run";
-static const char* ATTACK1_NAME = "Attack1";
-static const char* ATTACK2_NAME = "Attack2";
-static const char* ATTACK3_NAME = "Attack3";
-static const char* ATTACK4_NAME = "Attack4";
-static const char* DAMAGE_F_NAME = "DamageF";
-static const char* DAMAGE_B_NAME = "DamageB";
-static const char* DAMAGE_L_NAME = "DamageL";
-static const char* DAMAGE_R_NAME = "DamageR";
-
-
 DsActionCtrl::DsActionCtrl(DsActionRequest& actReq, const DsAnimEventFlags& animFlags, const std::vector<DsLib::DsAnimClip*>& animClip)
 	: m_pASCtrl(NULL)
 	, m_state()
@@ -30,29 +18,12 @@ DsActionCtrl::DsActionCtrl(DsActionRequest& actReq, const DsAnimEventFlags& anim
 	DS_ASSERT(m_pASCtrl, "メモリ確保失敗");
 
 
-	struct CREATE_INFO
-	{
-		const CHR_STATE state;
-		const char* animTypeName;
-	};
-	const CREATE_INFO createInfo[] =
-	{
-		{ CHR_STATE::IDLE, IDEL_ANIM_NAME },
-		{ CHR_STATE::RUN, RUN_ANIM_NAME },
-		{ CHR_STATE::ATTACK1, ATTACK1_NAME },
-		{ CHR_STATE::ATTACK2, ATTACK2_NAME },
-		{ CHR_STATE::ATTACK3, ATTACK3_NAME },
-		{ CHR_STATE::ATTACK4, ATTACK4_NAME },
-		{ CHR_STATE::DAMAGE_F, DAMAGE_F_NAME },
-		{ CHR_STATE::DAMAGE_B, DAMAGE_B_NAME },
-		{ CHR_STATE::DAMAGE_L, DAMAGE_L_NAME },
-		{ CHR_STATE::DAMAGE_R, DAMAGE_R_NAME },
-	};
-
-	for (const CREATE_INFO& info : createInfo) {
+	STATE_CLASS_TYPE* pCreateInfo = DsChrState::GetStateClassTypes();
+	for (size_t idx = 0; idx < DsChrState::GetStateClassTypesNum(); ++idx) {
+		const STATE_CLASS_TYPE& info = pCreateInfo[idx];
 		//アニメデータからステートに該当するものを見つける
 		for (DsAnimClip* pAnim : animClip) {
-			if ( std::string::npos != pAnim->RefAnimName().find(info.animTypeName) ) {
+			if ( std::string::npos != pAnim->RefAnimName().find(info.pName) ) {
 				//ステートに該当するアニメを見つけたのでステート生成
 				DsChrState::INIT_ARG arg(pAnim, actReq, m_state, animFlags, info.state);
 				DsChrState* pState = DsChrState::CreateIns(arg);

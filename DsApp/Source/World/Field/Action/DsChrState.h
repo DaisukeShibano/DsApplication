@@ -32,6 +32,19 @@ namespace DsApp
 	class DsChrState;
 	typedef std::map<CHR_STATE, DsChrState*> StateMap;
 
+	/*--------------------------------------------------------------
+	ステート型情報
+	---------------------------------------------------------------*/
+	struct STATE_CLASS_TYPE
+	{
+		std::type_index type;
+		CHR_STATE state;
+		const char* pName;
+	};
+
+	/*--------------------------------------------------------------
+	ステート
+	---------------------------------------------------------------*/
 	class DsChrState : public DsLib::DsASNode
 	{
 	public:
@@ -53,11 +66,13 @@ namespace DsApp
 		};
 
 	public:
+		static size_t GetStateClassTypesNum();
+		static STATE_CLASS_TYPE* GetStateClassTypes();
 		static DsChrState* CreateIns(const INIT_ARG& arg);
 
 	public:
 		DsChrState(const INIT_ARG& arg)
-			:m_pAnimClip(arg.pAnimClip), m_nextState(arg.myState), m_actReq(arg.actReq), m_allState(arg.allState), m_animFlags(arg.animFlags), m_pNextStateNode(){}
+			:m_pAnimClip(arg.pAnimClip), m_nextState(arg.myState), m_myState(arg.myState), m_actReq(arg.actReq), m_allState(arg.allState), m_animFlags(arg.animFlags), m_pNextStateNode(){}
 		virtual ~DsChrState() {}
 
 	public:
@@ -67,7 +82,7 @@ namespace DsApp
 		virtual void OnActive(double dt) override;
 		virtual void Update(double dt) override;
 		virtual void OnDeactive(double dt) override;
-		virtual bool IsNext()const override { return m_nextState != GetMyState(); }//デフォ実装でステートが変わったら
+		virtual bool IsNext()const override { return m_nextState != m_myState; }//デフォ実装でステートが変わったら
 		
 	private:
 		virtual int GetNextNum() const override final{ return 1; }
@@ -83,12 +98,10 @@ namespace DsApp
 			}
 		}
 
-	public:
-		virtual CHR_STATE GetMyState() const = 0;
-
 	protected:
 		DsLib::DsAnimClip* m_pAnimClip;
 		CHR_STATE m_nextState;
+		const CHR_STATE m_myState;
 		DsActionRequest& m_actReq;
 		const DsAnimEventFlags& m_animFlags;
 

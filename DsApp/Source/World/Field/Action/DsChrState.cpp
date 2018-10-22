@@ -19,26 +19,49 @@ using namespace DsApp;
 ツールに出すメリットがないのでコードに直接書く
 */
 
-
-	
-class StateFactory
+/*--------------------------------------------------------------
+ステートファクトリー
+---------------------------------------------------------------*/
+class DsStateFactory
 {
 public:
+	DsStateFactory():m_pNext(NULL){}
 	virtual  DsChrState* Create(const DsChrState::INIT_ARG& arg) { return NULL; }
+	void SetNext(DsStateFactory* pNext) { m_pNext = pNext; }
+	DsStateFactory* GetNext() const { return m_pNext; }
+
+	virtual std::type_index GetType() const = 0;
+private:
+	DsStateFactory* m_pNext;
 };
 
-static StateFactory* s_factory[static_cast<int>(CHR_STATE::NUM)];
 
-#define REGISTER_STATE(ClassName, state)\
-class ClassName##Factory : public StateFactory\
+DsStateFactory* s_factoryTop = NULL;
+
+#define REGISTER_STATE(ClassName)\
+class ClassName##Factory : public DsStateFactory\
 {\
 public:\
 	ClassName##Factory()\
+		:DsStateFactory()\
 	{\
-		DS_ASSERT( (NULL==s_factory[static_cast<int>(state)]), "キャラステート[%d]の重複登録", state);\
-		s_factory[static_cast<int>(state)] = this;\
+		if(s_factoryTop){\
+			DsStateFactory* pSet = s_factoryTop;\
+			while(pSet){\
+				DsStateFactory* pNext = pSet->GetNext();\
+				if( pNext ){\
+					pSet = pNext;\
+				}else{\
+					pSet->SetNext(this); \
+					break; \
+				}\
+			}\
+		}else{\
+			s_factoryTop = this;\
+		}\
 	}\
 	virtual ClassName* Create(const DsChrState::INIT_ARG& arg) override { return new ClassName(arg); }\
+	virtual std::type_index GetType() const override { return typeid(ClassName); }\
 };\
 static ClassName##Factory s_##ClassName##Factory;\
 
@@ -50,7 +73,7 @@ static ClassName##Factory s_##ClassName##Factory;\
 void DsChrState::OnActive(double dt)
 {
 	//現在のステートに設定
-	m_nextState = GetMyState();
+	m_nextState = m_myState;
 
 
 	if (m_pAnimClip) {
@@ -62,8 +85,11 @@ void DsChrState::OnActive(double dt)
 //virtual
 void DsChrState::Update(double dt)
 {
+	//アニメイベントからアニメ補間秒数設定
 	double interpolationTime = 0;
 	if (m_animFlags.GetAnimInterpolationTime(interpolationTime)) {
+		//ブレンドされるので無効値では上書きしない
+		//有効値ならどちらか不定
 		if (m_pAnimClip) {
 			m_pAnimClip->SetInterpolationTime(interpolationTime);
 		}
@@ -83,7 +109,6 @@ void DsChrState::OnDeactive(double dt)
 **********************************************************/
 class DsChrStateIdle : public DsChrState
 {
-	virtual CHR_STATE GetMyState() const override { return CHR_STATE::IDLE; }
 public:
 	DsChrStateIdle(const INIT_ARG& arg):DsChrState(arg)
 	{
@@ -97,7 +122,7 @@ private:
 	{
 		DsChrState::Update(dt);
 
-		m_nextState = GetMyState();
+		m_nextState = m_myState;
 
 		//いつでもキャンセル可能
 		m_actReq.SetCancelAll();
@@ -110,14 +135,14 @@ private:
 		}
 	};
 };
-REGISTER_STATE(DsChrStateIdle, CHR_STATE::IDLE)
+REGISTER_STATE(DsChrStateIdle)
+
 
 /*********************************************************
 @brief 走行
 **********************************************************/
 class DsChrStateRun : public DsChrState
 {
-	virtual CHR_STATE GetMyState() const override { return CHR_STATE::RUN; }
 public:
 	DsChrStateRun(const INIT_ARG& arg) :DsChrState(arg)
 	{
@@ -131,7 +156,7 @@ private:
 	{
 		DsChrState::Update(dt);
 
-		m_nextState = GetMyState();
+		m_nextState = m_myState;
 
 		//いつでもキャンセル可能
 		m_actReq.SetCancelAll();
@@ -144,7 +169,7 @@ private:
 		}
 	};
 };
-REGISTER_STATE(DsChrStateRun, CHR_STATE::RUN)
+REGISTER_STATE(DsChrStateRun)
 
 
 /*********************************************************
@@ -152,7 +177,6 @@ REGISTER_STATE(DsChrStateRun, CHR_STATE::RUN)
 **********************************************************/
 class DsChrStateAttack1 : public DsChrState
 {
-	virtual CHR_STATE GetMyState() const override { return CHR_STATE::ATTACK1; }
 public:
 	DsChrStateAttack1(const INIT_ARG& arg) :DsChrState(arg)
 	{
@@ -166,7 +190,7 @@ private:
 	{
 		DsChrState::Update(dt);
 
-		m_nextState = GetMyState();
+		m_nextState = m_myState;
 
 		if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
 			//2段目攻撃
@@ -181,7 +205,7 @@ private:
 
 	};
 };
-REGISTER_STATE(DsChrStateAttack1, CHR_STATE::ATTACK1)
+REGISTER_STATE(DsChrStateAttack1)
 
 
 /*********************************************************
@@ -189,7 +213,6 @@ REGISTER_STATE(DsChrStateAttack1, CHR_STATE::ATTACK1)
 **********************************************************/
 class DsChrStateAttack2 : public DsChrState
 {
-	virtual CHR_STATE GetMyState() const override { return CHR_STATE::ATTACK2; }
 public:
 	DsChrStateAttack2(const INIT_ARG& arg) :DsChrState(arg)
 	{
@@ -203,7 +226,7 @@ private:
 	{
 		DsChrState::Update(dt);
 
-		m_nextState = GetMyState();
+		m_nextState = m_myState;
 	
 		if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
 			m_nextState = CHR_STATE::ATTACK3;
@@ -217,7 +240,7 @@ private:
 
 	};
 };
-REGISTER_STATE(DsChrStateAttack2, CHR_STATE::ATTACK2)
+REGISTER_STATE(DsChrStateAttack2)
 
 
 /*********************************************************
@@ -225,7 +248,6 @@ REGISTER_STATE(DsChrStateAttack2, CHR_STATE::ATTACK2)
 **********************************************************/
 class DsChrStateAttack3 : public DsChrState
 {
-	virtual CHR_STATE GetMyState() const override { return CHR_STATE::ATTACK3; }
 public:
 	DsChrStateAttack3(const INIT_ARG& arg) :DsChrState(arg)
 	{
@@ -239,7 +261,7 @@ private:
 	{
 		DsChrState::Update(dt);
 
-		m_nextState = GetMyState();
+		m_nextState = m_myState;
 	
 		if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
 			m_nextState = CHR_STATE::ATTACK4;
@@ -253,7 +275,7 @@ private:
 
 	};
 };
-REGISTER_STATE(DsChrStateAttack3, CHR_STATE::ATTACK3)
+REGISTER_STATE(DsChrStateAttack3)
 
 
 
@@ -262,7 +284,6 @@ REGISTER_STATE(DsChrStateAttack3, CHR_STATE::ATTACK3)
 **********************************************************/
 class DsChrStateAttack4 : public DsChrState
 {
-	virtual CHR_STATE GetMyState() const override { return CHR_STATE::ATTACK4; }
 public:
 	DsChrStateAttack4(const INIT_ARG& arg) :DsChrState(arg)
 	{
@@ -276,7 +297,7 @@ private:
 	{
 		DsChrState::Update(dt);
 
-		m_nextState = GetMyState();
+		m_nextState = m_myState;
 
 		if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
 			m_nextState = CHR_STATE::ATTACK1;
@@ -290,16 +311,63 @@ private:
 
 	};
 };
-REGISTER_STATE(DsChrStateAttack4, CHR_STATE::ATTACK4)
+REGISTER_STATE(DsChrStateAttack4)
 
+
+
+
+static STATE_CLASS_TYPE s_registerClass[] =
+{
+	{ typeid(DsChrStateIdle), CHR_STATE::IDLE, "idle" },
+	{ typeid(DsChrStateRun), CHR_STATE::RUN, "run" },
+	{ typeid(DsChrStateAttack1), CHR_STATE::ATTACK1, "Attack1" },
+	{ typeid(DsChrStateAttack2), CHR_STATE::ATTACK2, "Attack2" },
+	{ typeid(DsChrStateAttack3), CHR_STATE::ATTACK3, "Attack3" },
+	{ typeid(DsChrStateAttack4), CHR_STATE::ATTACK4, "Attack4" },
+	//{ typeid(DsChrStateDamageF), CHR_STATE::DAMAGE_F, "DamageF" },
+	//{ typeid(DsChrStateDamageB), CHR_STATE::DAMAGE_B, "DamageB" },
+	//{ typeid(DsChrStateDamageL), CHR_STATE::DAMAGE_L, "DamageL" },
+	//{ typeid(DsChrStateDamageR), CHR_STATE::DAMAGE_R, "DamageR" },
+};
+
+
+//static
+size_t DsChrState::GetStateClassTypesNum()
+{
+	return std::size(s_registerClass);
+}
+//static
+STATE_CLASS_TYPE* DsChrState::GetStateClassTypes()
+{
+	return s_registerClass;
+}
 
 //static 
 DsChrState* DsChrState::CreateIns(const INIT_ARG& arg)
 {
 	DsChrState* ret = NULL;
-	StateFactory* pFactory = s_factory[static_cast<int>(arg.myState)];
-	DS_ASSERT(pFactory, "登録されていないステート[%d]を生成しようとしました", arg.myState);
-	ret = pFactory->Create(arg);
-	
+
+	//クラス一覧から引数のステートに該当する型情報検索
+	for (const STATE_CLASS_TYPE& classType : s_registerClass) {
+		if (classType.state == arg.myState) {
+
+			//登録されたファクトリーを検索
+			DsStateFactory* pFactory = s_factoryTop;
+			while (pFactory) {
+				if (pFactory->GetType() == classType.type) {
+					break;
+				}
+				pFactory = pFactory->GetNext();
+			}
+
+			if (pFactory) {
+				ret = pFactory->Create(arg);
+			}
+
+			//重複はありえないのでここで終了
+			break;
+		}
+	}
+
 	return ret;
 }

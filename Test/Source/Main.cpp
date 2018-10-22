@@ -226,6 +226,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine,
 	if (0 == hwnd) {
 		return 0;
 	}
+
 	DsPath::SetAssetPath(DsPath::GetCurrentPath() + L"\\Asset");
 	DsSys* pSys = new DsSys();
 	DS_ASSERT(pSys, "ÉÅÉÇÉäämï€é∏îs");
