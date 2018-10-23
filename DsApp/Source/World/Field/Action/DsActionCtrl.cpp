@@ -2,10 +2,9 @@
 #ifndef _DS_ACTION_CTRL_
 #include "World/Field/Action/DsActionCtrl.h"
 #endif
-
-#ifndef _DS_CHR_STATE_
+//‘¼‚Ìƒwƒbƒ_
 #include "World/Field/Action/DsChrState.h"
-#endif
+
 using namespace DsApp;
 
 

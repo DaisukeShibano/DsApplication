@@ -1,8 +1,6 @@
 #include "DsAppPch.h"
-#ifndef _DS_CHR_STATE_
 #include "World/Field/Action/DsChrState.h"
-#endif
-
+//他のヘッダ
 #ifndef _DS_ACTION_REQUEST_
 #include "World/Field/Action/DsActionRequest.h"
 #endif
@@ -18,52 +16,6 @@ using namespace DsApp;
 アニメのループ設定はここでやっている
 ツールに出すメリットがないのでコードに直接書く
 */
-
-/*--------------------------------------------------------------
-ステートファクトリー
----------------------------------------------------------------*/
-class DsStateFactory
-{
-public:
-	DsStateFactory():m_pNext(NULL){}
-	virtual  DsChrState* Create(const DsChrState::INIT_ARG& arg) { return NULL; }
-	void SetNext(DsStateFactory* pNext) { m_pNext = pNext; }
-	DsStateFactory* GetNext() const { return m_pNext; }
-
-	virtual std::type_index GetType() const = 0;
-private:
-	DsStateFactory* m_pNext;
-};
-
-
-DsStateFactory* s_factoryTop = NULL;
-
-#define REGISTER_STATE(ClassName)\
-class ClassName##Factory : public DsStateFactory\
-{\
-public:\
-	ClassName##Factory()\
-		:DsStateFactory()\
-	{\
-		if(s_factoryTop){\
-			DsStateFactory* pSet = s_factoryTop;\
-			while(pSet){\
-				DsStateFactory* pNext = pSet->GetNext();\
-				if( pNext ){\
-					pSet = pNext;\
-				}else{\
-					pSet->SetNext(this); \
-					break; \
-				}\
-			}\
-		}else{\
-			s_factoryTop = this;\
-		}\
-	}\
-	virtual ClassName* Create(const DsChrState::INIT_ARG& arg) override { return new ClassName(arg); }\
-	virtual std::type_index GetType() const override { return typeid(ClassName); }\
-};\
-static ClassName##Factory s_##ClassName##Factory;\
 
 
 /*********************************************************
@@ -135,7 +87,7 @@ private:
 		}
 	};
 };
-REGISTER_STATE(DsChrStateIdle)
+DS_REGISTER_STATE(DsChrStateIdle)
 
 
 /*********************************************************
@@ -169,7 +121,7 @@ private:
 		}
 	};
 };
-REGISTER_STATE(DsChrStateRun)
+DS_REGISTER_STATE(DsChrStateRun)
 
 
 /*********************************************************
@@ -205,7 +157,7 @@ private:
 
 	};
 };
-REGISTER_STATE(DsChrStateAttack1)
+DS_REGISTER_STATE(DsChrStateAttack1)
 
 
 /*********************************************************
@@ -240,7 +192,7 @@ private:
 
 	};
 };
-REGISTER_STATE(DsChrStateAttack2)
+DS_REGISTER_STATE(DsChrStateAttack2)
 
 
 /*********************************************************
@@ -275,7 +227,7 @@ private:
 
 	};
 };
-REGISTER_STATE(DsChrStateAttack3)
+DS_REGISTER_STATE(DsChrStateAttack3)
 
 
 
@@ -311,11 +263,10 @@ private:
 
 	};
 };
-REGISTER_STATE(DsChrStateAttack4)
+DS_REGISTER_STATE(DsChrStateAttack4)
 
 
-
-
+//デフォルトクラス情報
 static STATE_CLASS_TYPE s_registerClass[] =
 {
 	{ typeid(DsChrStateIdle), CHR_STATE::IDLE, "idle" },
@@ -329,6 +280,22 @@ static STATE_CLASS_TYPE s_registerClass[] =
 	//{ typeid(DsChrStateDamageL), CHR_STATE::DAMAGE_L, "DamageL" },
 	//{ typeid(DsChrStateDamageR), CHR_STATE::DAMAGE_R, "DamageR" },
 };
+//派生クラス登録コンテナ
+static std::map<int, DsRegisterClass*> s_registerClassContainer;
+//ステートインスタンス生成機
+DsStateFactory* s_factoryTop = NULL;
+
+
+//static
+DsStateFactory* DsChrState::GetFactoryTop()
+{
+	return s_factoryTop;
+}
+//static
+void DsChrState::SetFactoryTop(DsStateFactory* pFactory)
+{
+	s_factoryTop = pFactory;
+}
 
 
 //static
@@ -352,7 +319,7 @@ DsChrState* DsChrState::CreateIns(const INIT_ARG& arg)
 		if (classType.state == arg.myState) {
 
 			//登録されたファクトリーを検索
-			DsStateFactory* pFactory = s_factoryTop;
+			DsStateFactory* pFactory = DsChrState::GetFactoryTop();
 			while (pFactory) {
 				if (pFactory->GetType() == classType.type) {
 					break;
@@ -362,12 +329,69 @@ DsChrState* DsChrState::CreateIns(const INIT_ARG& arg)
 
 			if (pFactory) {
 				ret = pFactory->Create(arg);
+				break;
 			}
 
-			//重複はありえないのでここで終了
-			break;
 		}
 	}
 
 	return ret;
 }
+
+//static
+void DsChrState::AddRegisterClass(DsRegisterClass& registerClass)
+{
+	const int id = registerClass.GetId();
+	auto it = s_registerClassContainer.find(id);
+	if (it == s_registerClassContainer.end()) {
+		s_registerClassContainer[id] = &registerClass;
+	}
+	else {
+		DS_ASSERT(false, "キャラステート登録IDが重複しています %d", id);
+	}
+}
+
+//static
+void DsChrState::Initialize()
+{
+	//cpp側で定義したクラス情報を生成
+	for (auto val : s_registerClassContainer) {
+		val.second->Register();
+	}
+}
+
+/*--------------------------------------------------------------
+クラス登録
+---------------------------------------------------------------*/
+void DsRegisterClass::Register()
+{
+	if (m_registerClasses.empty()) {
+
+		STATE_CLASS_TYPE* pClassTypes = DsChrState::GetStateClassTypes();
+		for (int i = 0; i < DsChrState::GetStateClassTypesNum(); ++i) {
+			STATE_CLASS_TYPE copy = pClassTypes[i];
+
+			//基底のクラス名と同じものを派生のクラス名の中から探す
+			std::string srcName = copy.type.name();
+
+			for (int typeIdx = 0; typeIdx < m_overrideTypesNum; ++typeIdx) {
+				const std::type_index& typeIndex = m_pOverrideTypes[typeIdx];
+				std::string myName = typeIndex.name();
+
+				//一応名前ではなくtype_indexの==でも判定できる模様
+				//if (copy.type == typeIndex) {
+				//
+				//}
+
+				//namespaceで囲うとクラス名に追加されるので注意(type_indexの==もfalseになる)
+				if (myName == srcName) {
+					//派生に同じクラス名があったので型を上書き
+					copy.type = typeIndex;
+					break;
+				}
+			}
+			m_registerClasses.push_back(copy);
+		}
+	}
+}
+

@@ -1,8 +1,5 @@
 #pragma once
-
-#ifndef _DS_CHR_STATE_
 #include "World/Field/Action/DsChrState.h"
-#endif
 
 namespace DsApp
 {

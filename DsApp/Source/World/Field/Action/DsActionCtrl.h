@@ -1,9 +1,7 @@
 #ifndef _DS_ACTION_CTRL_
 #define _DS_ACTION_CTRL_
 
-#ifndef _DS_CHR_STATE_
 #include "World/Field/Action/DsChrState.h"
-#endif
 
 namespace DsApp
 {

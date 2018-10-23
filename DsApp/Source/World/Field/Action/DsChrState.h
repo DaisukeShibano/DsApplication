@@ -1,5 +1,25 @@
-#ifndef _DS_CHR_STATE_
-#define _DS_CHR_STATE_
+#pragma once
+
+/*
+解説
+
+ステートは１つのcppに１キャラを想定した全て分が書かれている
+違うパターンの遷移を組みたければ別cppを用意する
+DsState.cpp は共通処理
+
+１つのcppにIDが割り振られる
+キャラが使うステートはキャラパラのIDと一致するcppのIDが採用される
+cppに割り振られるIDとは、DsRegisterClass::GetId() で返す値のこと
+DsRegisterClassは各cppで継承してユニークIDを決める
+各cppではstaticでDsRegisterClassの派生のインスタンスが作られる
+コンストラクタでAddRegisterClassにて自身を登録。IDが重複していればエラー
+
+
+各cppでオーバーライドしたいステートをDsStateと同じ名前で作る
+定義の仕方はDsStateと全く同じ
+ステートに対応したクラス情報が上書きされるようになっている
+
+*/
 
 namespace DsLib
 {
@@ -10,6 +30,7 @@ namespace DsApp
 {
 	class DsActionRequest;
 	class DsAnimEventFlags;
+	class DsStateFactory;
 }
 
 namespace DsApp
@@ -43,6 +64,26 @@ namespace DsApp
 	};
 
 	/*--------------------------------------------------------------
+	クラス登録
+	---------------------------------------------------------------*/
+	class DsRegisterClass
+	{
+	public:
+		DsRegisterClass(std::vector<STATE_CLASS_TYPE>& classes, std::type_index* pTypes, int typeNum)
+			: m_registerClasses(classes)
+			, m_pOverrideTypes(pTypes)
+			, m_overrideTypesNum(typeNum)
+		{}
+		virtual void Register();
+		virtual int GetId() const = 0;
+
+	private:
+		std::vector<STATE_CLASS_TYPE>& m_registerClasses;
+		std::type_index* m_pOverrideTypes;
+		const int m_overrideTypesNum;
+	};
+
+	/*--------------------------------------------------------------
 	ステート
 	---------------------------------------------------------------*/
 	class DsChrState : public DsLib::DsASNode
@@ -66,9 +107,13 @@ namespace DsApp
 		};
 
 	public:
+		static DsStateFactory* GetFactoryTop();
+		static void SetFactoryTop(DsStateFactory*pFactory);
 		static size_t GetStateClassTypesNum();
 		static STATE_CLASS_TYPE* GetStateClassTypes();
 		static DsChrState* CreateIns(const INIT_ARG& arg);
+		static void AddRegisterClass(DsRegisterClass& registerClass);
+		static void Initialize();//初期化とどめ
 
 	public:
 		DsChrState(const INIT_ARG& arg)
@@ -110,6 +155,53 @@ namespace DsApp
 		DsASNode* m_pNextStateNode[1];
 
 	};
-}
 
-#endif // !_DS_CHR_STATE_
+	/*--------------------------------------------------------------
+	ステートファクトリー
+	---------------------------------------------------------------*/
+	class DsStateFactory
+	{
+	public:
+		DsStateFactory() :m_pNext(NULL) {}
+		virtual  DsChrState* Create(const DsChrState::INIT_ARG& arg) { return NULL; }
+		void SetNext(DsStateFactory* pNext) { m_pNext = pNext; }
+		DsStateFactory* GetNext() const { return m_pNext; }
+
+		virtual std::type_index GetType() const = 0;
+	private:
+		DsStateFactory * m_pNext;
+	};
+
+/*--------------------------------------------------------------
+ステートファクトリーコード生成マクロ
+DS_REGISTER_STATE(クラス名)とすることでグローバルのファクトリーリストに追加される
+---------------------------------------------------------------*/
+#define DS_REGISTER_STATE(ClassName)\
+class ClassName##Factory : public DsStateFactory\
+{\
+public:\
+	ClassName##Factory()\
+		:DsStateFactory()\
+	{\
+		DsStateFactory* pFactoryTop = DsChrState::GetFactoryTop();\
+		if(pFactoryTop){\
+			DsStateFactory* pSet = pFactoryTop;\
+			while(pSet){\
+				DsStateFactory* pNext = pSet->GetNext();\
+				if( pNext ){\
+					pSet = pNext;\
+				}else{\
+					pSet->SetNext(this); \
+					break; \
+				}\
+			}\
+		}else{\
+			DsChrState::SetFactoryTop(this);\
+		}\
+	}\
+	virtual ClassName* Create(const DsChrState::INIT_ARG& arg) override { return new ClassName(arg); }\
+	virtual std::type_index GetType() const override { return typeid(ClassName); }\
+};\
+static ClassName##Factory s_##ClassName##Factory;\
+
+}

@@ -2,7 +2,7 @@
 
 namespace DsLib
 {
-	class DsASNode;
+	
 }
 
 namespace DsApp
@@ -16,7 +16,5 @@ namespace DsApp
 	public:
 		virtual bool Initialize(const char* path, DsLib::DsResource& resource) override;
 
-	private:
-		DsLib::DsASNode* m_pData;
 	};
 }
