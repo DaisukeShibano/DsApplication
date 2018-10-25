@@ -30,6 +30,8 @@
 #include "World/Field/Action/DsActionCtrl.h"
 #endif
 #include "World/Field/Action/DsChrStateDefine.h"
+#include "Res/Param/DsChrParam.h"
+
 
 using namespace DsLib;
 using namespace DsPhysics;
@@ -103,9 +105,16 @@ void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 	}
 
 	//アクション
-	m_pActReq = _CreareActionRequest();
-	m_pActCtrl = new DsActionCtrl(*m_pActReq, *GetAnimEventFlags(), m_pAnimation->RefAnimClips());
-	DS_ASSERT(m_pActCtrl, "メモリ確保失敗");
+	const DsChrParam param(m_name);
+	if (param.IsValid()) {
+		m_pActReq = _CreareActionRequest();
+		m_pActCtrl = new DsActionCtrl(*m_pActReq, *GetAnimEventFlags(), m_pAnimation->RefAnimClips(), param);
+		DS_ASSERT(m_pActCtrl, "メモリ確保失敗");
+	}
+	else {
+		DS_ASSERT(false, "%Sに該当するキャラパラが存在しません", m_name.c_str());
+	}
+
 	m_pAnimation->RequestPlayAnim(m_pActCtrl->GetCurrentAnim());
 }
 

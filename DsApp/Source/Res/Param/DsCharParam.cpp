@@ -7,12 +7,13 @@ namespace
 {
 	static DS_CHR_PARAN_FORMAT s_param[] =
 	{
-		//id	ChrName		stateId
+		//id	ChrName		stateGraphId
 		{0,		"alice",			0},
 		{1,		"enemy0",			1},
 	};
 
 
+	//static‚ÌŒÅ’è’·”z—ñ‚©‚çid‚â–¼‘O‚Å‚·‚®‚Éæ‚èo‚¹‚é‚æ‚¤‚É‚µ‚Ä‚¨‚­
 	class DsChrParamBank
 	{
 	public:
@@ -49,7 +50,7 @@ namespace
 		std::map<int, const DS_CHR_PARAN_FORMAT*> m_idMap;
 	};
 
-	DsChrParamBank* s_pBank = NULL;
+	static DsChrParamBank* s_pBank = NULL;
 }
 
 

@@ -23,10 +23,10 @@ namespace
 		/*********************************************************
 		@brief ‘Ò‹@
 		**********************************************************/
-		class DsChrStateIdle : public DsChrState
+		class DsChrStateIdle : public DsPlayerState
 		{
 		public:
-			DsChrStateIdle(const INIT_ARG& arg) :DsChrState(arg)
+			DsChrStateIdle(const INIT_ARG& arg) :DsPlayerState(arg)
 			{
 				if (m_pAnimClip) {
 					m_pAnimClip->SetLoop(true);
@@ -36,7 +36,7 @@ namespace
 		private:
 			virtual void Update(double dt) override
 			{
-				DsChrState::Update(dt);
+				DsPlayerState::Update(dt);
 
 				m_nextState = m_myState;
 

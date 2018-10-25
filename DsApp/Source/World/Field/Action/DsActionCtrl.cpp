@@ -4,11 +4,13 @@
 #endif
 //他のヘッダ
 #include "World/Field/Action/DsChrState.h"
+#include "Res/Param/DsChrParam.h"
+
 
 using namespace DsApp;
 
 
-DsActionCtrl::DsActionCtrl(DsActionRequest& actReq, const DsAnimEventFlags& animFlags, const std::vector<DsLib::DsAnimClip*>& animClip)
+DsActionCtrl::DsActionCtrl(DsActionRequest& actReq, const DsAnimEventFlags& animFlags, const std::vector<DsLib::DsAnimClip*>& animClip, const DsChrParam& param)
 	: m_pASCtrl(NULL)
 	, m_state()
 	, m_pCurrentAnim(NULL)
@@ -20,7 +22,7 @@ DsActionCtrl::DsActionCtrl(DsActionRequest& actReq, const DsAnimEventFlags& anim
 	for (DsAnimClip* pAnim : animClip) {
 		//ステートに該当するアニメを見つけたのでステート生成
 		DsChrState::INIT_ARG arg(pAnim, actReq, m_state, animFlags, CHR_STATE::IDLE);//ここではまだステートは分からないのでダミー
-		DsChrState* pState = DsChrState::CreateIns(arg, pAnim->RefAnimName(), 0);
+		DsChrState* pState = DsChrState::CreateIns(arg, pAnim->RefAnimName(), param.GetStateGraphId());
 		if (pState) {
 			m_state[pState->GetMyState()] = pState;
 		}

@@ -7,7 +7,7 @@ namespace DsApp
 	{
 		const int id;
 		const char* pChrName;
-		const int stateId;
+		const int stateGraphId;
 	};
 
 
@@ -18,11 +18,14 @@ namespace DsApp
 		DsChrParam(std::string chrName);
 		~DsChrParam() {}
 
+	public:
+		bool IsValid() const { return NULL != m_pParam; }
+
 	private:
 		void _Init();
 
 	public:
-		int GetStateId() const { m_pParam ? m_pParam->stateId : -1; }
+		int GetStateGraphId() const { return m_pParam ? m_pParam->stateGraphId : -1; }
 
 	private:
 		const DS_CHR_PARAN_FORMAT* m_pParam;

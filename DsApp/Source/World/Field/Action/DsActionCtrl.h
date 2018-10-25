@@ -7,6 +7,7 @@ namespace DsApp
 {
 	class DsActionRequest;
 	class DsAnimEventFlags;
+	class DsChrParam;
 }
 
 namespace DsApp
@@ -14,7 +15,7 @@ namespace DsApp
 	class DsActionCtrl
 	{
 	public:
-		DsActionCtrl(DsActionRequest& actReq, const DsAnimEventFlags& animFlags, const std::vector<DsLib::DsAnimClip*>& animClip);
+		DsActionCtrl(DsActionRequest& actReq, const DsAnimEventFlags& animFlags, const std::vector<DsLib::DsAnimClip*>& animClip, const DsChrParam& param);
 		virtual ~DsActionCtrl();
 
 	public:
