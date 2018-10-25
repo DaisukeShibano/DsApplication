@@ -213,6 +213,9 @@
     <ClInclude Include="Source\World\Field\Action\Player\DsPlayerState.h">
       <Filter>Source\World\Field\Action\Player</Filter>
     </ClInclude>
+    <ClInclude Include="Source\World\Field\Action\DsChrStateDefine.h">
+      <Filter>Source\World\Field\Action</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsAppPch.cpp">
@@ -325,6 +328,9 @@
     </ClCompile>
     <ClCompile Include="Source\World\Field\Action\Player\DsPlayerState.cpp">
       <Filter>Source\World\Field\Action\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Field\Action\DsChrStateDefine.cpp">
+      <Filter>Source\World\Field\Action</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

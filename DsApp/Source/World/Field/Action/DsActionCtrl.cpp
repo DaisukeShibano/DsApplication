@@ -16,23 +16,16 @@ DsActionCtrl::DsActionCtrl(DsActionRequest& actReq, const DsAnimEventFlags& anim
 	m_pASCtrl = new DsLib::DsActionStateCtrl;
 	DS_ASSERT(m_pASCtrl, "メモリ確保失敗");
 
-
-	STATE_CLASS_TYPE* pCreateInfo = DsChrState::GetStateClassTypes();
-	for (size_t idx = 0; idx < DsChrState::GetStateClassTypesNum(); ++idx) {
-		const STATE_CLASS_TYPE& info = pCreateInfo[idx];
-		//アニメデータからステートに該当するものを見つける
-		for (DsAnimClip* pAnim : animClip) {
-			if ( std::string::npos != pAnim->RefAnimName().find(info.pName) ) {
-				//ステートに該当するアニメを見つけたのでステート生成
-				DsChrState::INIT_ARG arg(pAnim, actReq, m_state, animFlags, info.state);
-				DsChrState* pState = DsChrState::CreateIns(arg);
-				DS_ASSERT(pState, "ステート作成失敗");
-				m_state[info.state] = pState;
-				break;
-			}
+	//アニメデータからステートに該当するものを見つける
+	for (DsAnimClip* pAnim : animClip) {
+		//ステートに該当するアニメを見つけたのでステート生成
+		DsChrState::INIT_ARG arg(pAnim, actReq, m_state, animFlags, CHR_STATE::IDLE);//ここではまだステートは分からないのでダミー
+		DsChrState* pState = DsChrState::CreateIns(arg, pAnim->RefAnimName(), 0);
+		if (pState) {
+			m_state[pState->GetMyState()] = pState;
 		}
 	}
-
+	
 	//初期ステート設定
 	auto it = m_state.find(CHR_STATE::IDLE);
 	if (it != m_state.end()) {

@@ -12,6 +12,8 @@ namespace DsApp
 
 		virtual ~DsPlayerState()
 		{}
+
+		static void Initialize();
 	};
 
 }

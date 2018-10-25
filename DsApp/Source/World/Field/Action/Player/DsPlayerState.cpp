@@ -4,65 +4,86 @@
 #ifndef _DS_ACTION_REQUEST_
 #include "World/Field/Action/DsActionRequest.h"
 #endif
+#include "World/Field/Action/DsChrStateDefine.h"
 
 using namespace DsApp;
 
 
 
-/*********************************************************
-@brief 待機
-**********************************************************/
-class DsChrStateIdle : public DsChrState
+namespace
 {
-public:
-	DsChrStateIdle(const INIT_ARG& arg) :DsChrState(arg)
+
+	//ステートグラフID登録
+	static const int DS_REGISTER_STATE_GRAPH_ID = DsChrStateDefine::PLAYER_STATE_GRAPH_ID;
+
+
+
+	namespace
 	{
-		if (m_pAnimClip) {
-			m_pAnimClip->SetLoop(true);
-		}
+		/*********************************************************
+		@brief 待機
+		**********************************************************/
+		class DsChrStateIdle : public DsChrState
+		{
+		public:
+			DsChrStateIdle(const INIT_ARG& arg) :DsChrState(arg)
+			{
+				if (m_pAnimClip) {
+					m_pAnimClip->SetLoop(true);
+				}
+			}
+
+		private:
+			virtual void Update(double dt) override
+			{
+				DsChrState::Update(dt);
+
+				m_nextState = m_myState;
+
+				//いつでもキャンセル可能
+				m_actReq.SetCancelAll();
+
+				if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
+					m_nextState = CHR_STATE::ATTACK1;
+				}
+				else if (m_actReq.IsMove()) {
+					m_nextState = CHR_STATE::RUN;
+				}
+			};
+		};
+		DS_REGISTER_STATE(DsChrStateIdle)
 	}
 
-private:
-	virtual void Update(double dt) override
+	/*---------------------------------------------------------
+	DsRegisterMyClass
+	---------------------------------------------------------*/
+	class DsRegisterMyClass : public DsRegisterClass
 	{
-		DsChrState::Update(dt);
-
-		m_nextState = m_myState;
-
-		//いつでもキャンセル可能
-		m_actReq.SetCancelAll();
-
-		if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
-			m_nextState = CHR_STATE::ATTACK1;
-		}
-		else if (m_actReq.IsMove()) {
-			m_nextState = CHR_STATE::RUN;
+	public:
+		DsRegisterMyClass(std::vector<STATE_CLASS_TYPE>& classes, std::type_index* pTypes, int typeNum)
+			:DsRegisterClass(classes, pTypes, typeNum)
+		{}
+		virtual int GetId() const override
+		{
+			return DsChrStateDefine::PLAYER_STATE_GRAPH_ID;
 		}
 	};
-};
-DS_REGISTER_STATE(DsChrStateIdle)
+
+}
 
 
-std::vector<STATE_CLASS_TYPE> s_myClasses;
-std::type_index s_myClassTypes[]=
+/*---------------------------------------------------------
+DsPlayerState
+---------------------------------------------------------*/
+//static
+void DsPlayerState::Initialize()
 {
-	typeid(DsChrStateIdle),
-};
-
-
-
-class DsRegisterMyClass : DsRegisterClass
-{
-public:
-	DsRegisterMyClass(std::vector<STATE_CLASS_TYPE>& classes, std::type_index* pTypes, int typeNum)
-		:DsRegisterClass(classes, pTypes, typeNum)
+	//上書きするステートリストを登録します
+	static std::vector<STATE_CLASS_TYPE> s_myClasses;
+	static std::type_index s_myClassTypes[] =
 	{
-		DsChrState::AddRegisterClass(*this);
-	}
-
-	virtual int GetId() const override
-	{
-		return 0;//define.hなどで纏める
-	}
-};
-static DsRegisterMyClass s_registerMyClass(s_myClasses, s_myClassTypes, static_cast<int>(std::size(s_myClassTypes)));
+		typeid(DsChrStateIdle),
+	};
+	static DsRegisterMyClass s_registerMyClass(s_myClasses, s_myClassTypes, static_cast<int>(std::size(s_myClassTypes)));
+	DsChrState::AddRegisterClass(s_registerMyClass);
+}

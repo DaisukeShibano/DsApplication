@@ -71,15 +71,17 @@ namespace DsApp
 	public:
 		DsRegisterClass(std::vector<STATE_CLASS_TYPE>& classes, std::type_index* pTypes, int typeNum)
 			: m_registerClasses(classes)
-			, m_pOverrideTypes(pTypes)
+			, m_pOverwriteTypes(pTypes)
 			, m_overrideTypesNum(typeNum)
 		{}
-		virtual void Register();
+		void Register();
 		virtual int GetId() const = 0;
+
+		const std::vector<STATE_CLASS_TYPE>& RefRegisterClasses() const { return m_registerClasses; }
 
 	private:
 		std::vector<STATE_CLASS_TYPE>& m_registerClasses;
-		std::type_index* m_pOverrideTypes;
+		std::type_index* m_pOverwriteTypes;
 		const int m_overrideTypesNum;
 	};
 
@@ -111,9 +113,8 @@ namespace DsApp
 		static void SetFactoryTop(DsStateFactory*pFactory);
 		static size_t GetStateClassTypesNum();
 		static STATE_CLASS_TYPE* GetStateClassTypes();
-		static DsChrState* CreateIns(const INIT_ARG& arg);
+		static DsChrState* CreateIns(INIT_ARG arg, const std::string& animName, const int id);
 		static void AddRegisterClass(DsRegisterClass& registerClass);
-		static void Initialize();//初期化とどめ
 
 	public:
 		DsChrState(const INIT_ARG& arg)
@@ -143,6 +144,9 @@ namespace DsApp
 			}
 		}
 
+	public:
+		CHR_STATE GetMyState() const { return m_myState; }
+
 	protected:
 		DsLib::DsAnimClip* m_pAnimClip;
 		CHR_STATE m_nextState;
@@ -163,11 +167,14 @@ namespace DsApp
 	{
 	public:
 		DsStateFactory() :m_pNext(NULL) {}
+
 		virtual  DsChrState* Create(const DsChrState::INIT_ARG& arg) { return NULL; }
+		virtual int GetId() const = 0;
+		virtual std::type_index GetType() const = 0;
+
 		void SetNext(DsStateFactory* pNext) { m_pNext = pNext; }
 		DsStateFactory* GetNext() const { return m_pNext; }
 
-		virtual std::type_index GetType() const = 0;
 	private:
 		DsStateFactory * m_pNext;
 	};
@@ -175,6 +182,7 @@ namespace DsApp
 /*--------------------------------------------------------------
 ステートファクトリーコード生成マクロ
 DS_REGISTER_STATE(クラス名)とすることでグローバルのファクトリーリストに追加される
+DS_REGISTER_STATE_ID を定義すること。DsChrStateDefine.hに定義されているIDに対応する
 ---------------------------------------------------------------*/
 #define DS_REGISTER_STATE(ClassName)\
 class ClassName##Factory : public DsStateFactory\
@@ -200,6 +208,7 @@ public:\
 		}\
 	}\
 	virtual ClassName* Create(const DsChrState::INIT_ARG& arg) override { return new ClassName(arg); }\
+	virtual int GetId() const override { return DS_REGISTER_STATE_GRAPH_ID; }\
 	virtual std::type_index GetType() const override { return typeid(ClassName); }\
 };\
 static ClassName##Factory s_##ClassName##Factory;\

@@ -29,6 +29,7 @@
 #ifndef _DS_ACTION_CTRL_
 #include "World/Field/Action/DsActionCtrl.h"
 #endif
+#include "World/Field/Action/DsChrStateDefine.h"
 
 using namespace DsLib;
 using namespace DsPhysics;
@@ -46,6 +47,10 @@ DsFieldChr::DsFieldChr(DsSys& sys, DsPhysicsWorld& world)
 	, m_pActCtrl(NULL)
 	, m_pProxy(NULL)
 {
+
+	//キャラステートの初期化はキャラが１体でも生成された場合にしておく
+	//システム全体の初期化みたいなの用意しても外から叩いてもらってもいいかもしれない
+	DsChrStateDefine::InitializeState();
 
 }
 
