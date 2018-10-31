@@ -56,7 +56,7 @@ namespace DsApp
 			return (0xFFFFFFFFULL << 32ULL);
 		}
 
-		//内部グループ全てにする設定。グループ全てにする設定
+		//何も当たらない。内部グループ全てにする設定。グループ全てにする設定
 		static DsPhysics::DsCollisionFilter CalcFilterAllOne()
 		{
 			//32bit内部グループ | 32bitグループ

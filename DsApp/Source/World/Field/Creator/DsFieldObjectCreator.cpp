@@ -136,8 +136,20 @@ void DsFieldObjectCreator::Update(double dt)
 			}
 		}
 	}
+}
 
-
+//何も考えず軒並みアップデート
+void DsFieldObjectCreator::UpdateAllIns(double dt)
+{
+	for (DsFieldHit* obj : RefHits()) {
+		obj->Update(dt);
+	}
+	for (DsFieldChr* obj : RefChrs()) {
+		obj->Update(dt);
+	}
+	for (DsFieldObstacle* obj : RefObstacles()) {
+		obj->Update(dt);
+	}
 }
 
 void DsFieldObjectCreator::Destoroy()

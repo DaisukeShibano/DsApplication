@@ -7,6 +7,14 @@
 
 namespace DsApp
 {
+
+}
+
+namespace DsApp
+{
+	/*
+	プレイヤーは１人しか存在しない想定
+	*/
 	class DsFieldPlayer : public DsFieldChr
 	{
 	public:

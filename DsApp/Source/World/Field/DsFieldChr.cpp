@@ -94,7 +94,8 @@ void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 			parts.damperA = param.GetDamperA();
 			parts.damperV = param.GetDamperV();
 			parts.mass = param.GetMass();
-			parts.collisionFilter = DsAppCollisionFilter::CalcFilterInside(param.GetCollisionGroup());
+			//parts.collisionFilter = DsAppCollisionFilter::CalcFilterInside(param.GetCollisionGroup());
+			parts.collisionFilter = DsAppCollisionFilter::CalcFilterAllOne();//ラグドールはゆれ物しか使ってないので何にも当たらなくいいかな。ダメージ判定も今のとこカプセルで十分
 			m_pRagdoll->SetParam(parts);
 		}
 
@@ -105,15 +106,15 @@ void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 	}
 
 	//アクション
-	const DsChrParam param(m_name);
-	if (param.IsValid()) {
-		m_pActReq = _CreareActionRequest();
-		m_pActCtrl = new DsActionCtrl(*m_pActReq, *GetAnimEventFlags(), m_pAnimation->RefAnimClips(), param);
-		DS_ASSERT(m_pActCtrl, "メモリ確保失敗");
+	DsChrParam param(m_name);
+	if (!param.IsValid()) {
+		param = DsChrParam(0);
+		//他ツールなどで配置前のインスタンスを作ることがあるのでダミーを用意させる
 	}
-	else {
-		DS_ASSERT(false, "%Sに該当するキャラパラが存在しません", m_name.c_str());
-	}
+
+	m_pActReq = _CreareActionRequest();
+	m_pActCtrl = new DsActionCtrl(*m_pActReq, *GetAnimEventFlags(), m_pAnimation->RefAnimClips(), param);
+	DS_ASSERT(m_pActCtrl, "メモリ確保失敗");
 
 	m_pAnimation->RequestPlayAnim(m_pActCtrl->GetCurrentAnim());
 }

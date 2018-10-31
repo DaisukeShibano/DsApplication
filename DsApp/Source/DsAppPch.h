@@ -10,6 +10,7 @@
 #include <map>
 #include <algorithm>
 #include <fstream>
+#include <set>
 
 #ifndef _DS_LIB_H_
 #include "DsLib.h"

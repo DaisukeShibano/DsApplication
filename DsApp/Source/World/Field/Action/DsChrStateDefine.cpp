@@ -14,5 +14,6 @@ void DsChrStateDefine::InitializeState()
 	static bool isInit = false;
 	if (!isInit) {
 		DsPlayerState::Initialize();
+		isInit = true;
 	}
 }

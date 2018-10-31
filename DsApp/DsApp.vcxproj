@@ -212,6 +212,7 @@
     <ClInclude Include="Source\World\Component\Effect\DsTraceEffectComponent.h" />
     <ClInclude Include="Source\World\Component\Equip\DsEquipComponent.h" />
     <ClInclude Include="Source\World\Component\Item\DsItemBoxComponent.h" />
+    <ClInclude Include="Source\World\DsGameWorld.h" />
     <ClInclude Include="Source\World\Field\Action\DsActionCtrl.h" />
     <ClInclude Include="Source\World\Field\Action\DsActionRequest.h" />
     <ClInclude Include="Source\World\Field\Action\DsActionRequestManual.h" />
@@ -230,10 +231,13 @@
     <ClInclude Include="Source\World\Field\DsFieldInitInfo.h" />
     <ClInclude Include="Source\World\Field\DsFieldObj.h" />
     <ClInclude Include="Source\World\Field\DsFieldPlayer.h" />
+    <ClInclude Include="Source\World\Field\LockOn\DsLockOn.h" />
+    <ClInclude Include="Source\World\Field\LockOn\DsLockOnPoint.h" />
     <ClInclude Include="Source\World\Physics\DsAnimRagdollModifier.h" />
     <ClInclude Include="Source\World\Physics\DsAppCollisionCallback.h" />
     <ClInclude Include="Source\World\Physics\DsAppCollisionFilter.h" />
     <ClInclude Include="Source\World\Physics\DsPhysicsCreator.h" />
+    <ClInclude Include="Source\World\System\DsGameSys.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsAppPch.cpp">
@@ -260,6 +264,7 @@
     <ClCompile Include="Source\World\Component\Effect\DsTraceEffectComponent.cpp" />
     <ClCompile Include="Source\World\Component\Equip\DsEquipComponent.cpp" />
     <ClCompile Include="Source\World\Component\Item\DsItemBoxComponent.cpp" />
+    <ClCompile Include="Source\World\DsGameWorld.cpp" />
     <ClCompile Include="Source\World\Field\Action\DsActionCtrl.cpp" />
     <ClCompile Include="Source\World\Field\Action\DsActionRequestManual.cpp" />
     <ClCompile Include="Source\World\Field\Action\DsChrState.cpp" />
@@ -276,9 +281,12 @@
     <ClCompile Include="Source\World\Field\DsFieldHit.cpp" />
     <ClCompile Include="Source\World\Field\DsFieldObj.cpp" />
     <ClCompile Include="Source\World\Field\DsFieldPlayer.cpp" />
+    <ClCompile Include="Source\World\Field\LockOn\DsLockOn.cpp" />
+    <ClCompile Include="Source\World\Field\LockOn\DsLockOnPoint.cpp" />
     <ClCompile Include="Source\World\Physics\DsAnimRagdollModifier.cpp" />
     <ClCompile Include="Source\World\Physics\DsAppCollisionCallback.cpp" />
     <ClCompile Include="Source\World\Physics\DsPhysicsCreator.cpp" />
+    <ClCompile Include="Source\World\System\DsGameSys.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

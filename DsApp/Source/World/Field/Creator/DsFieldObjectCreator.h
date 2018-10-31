@@ -41,7 +41,8 @@ namespace DsApp
 	public:
 		void Create(const char* resPath, DsPhysics::DsPhysicsWorld& world);
 		void Update(double dt);
-		void Destoroy();
+		void UpdateAllIns(double dt);
+		void Destoroy();		
 
 	public:
 		std::vector<DsFieldHit*> RefHits() { return m_hits; }

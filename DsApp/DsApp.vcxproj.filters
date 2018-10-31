@@ -67,6 +67,12 @@
     <Filter Include="Source\World\Field\Action\Player">
       <UniqueIdentifier>{15fad10b-1735-4b8a-aaa3-c4f48f24ef27}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\World\Field\LockOn">
+      <UniqueIdentifier>{fb6478e9-9d19-472f-8063-cd604bfde57f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\World\System">
+      <UniqueIdentifier>{3bac5d00-140d-440a-a677-49211d2827f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsAppPch.h">
@@ -216,6 +222,18 @@
     <ClInclude Include="Source\World\Field\Action\DsChrStateDefine.h">
       <Filter>Source\World\Field\Action</Filter>
     </ClInclude>
+    <ClInclude Include="Source\World\Field\LockOn\DsLockOn.h">
+      <Filter>Source\World\Field\LockOn</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Field\LockOn\DsLockOnPoint.h">
+      <Filter>Source\World\Field\LockOn</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\System\DsGameSys.h">
+      <Filter>Source\World\System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\DsGameWorld.h">
+      <Filter>Source\World</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsAppPch.cpp">
@@ -331,6 +349,18 @@
     </ClCompile>
     <ClCompile Include="Source\World\Field\Action\DsChrStateDefine.cpp">
       <Filter>Source\World\Field\Action</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Field\LockOn\DsLockOn.cpp">
+      <Filter>Source\World\Field\LockOn</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Field\LockOn\DsLockOnPoint.cpp">
+      <Filter>Source\World\Field\LockOn</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\System\DsGameSys.cpp">
+      <Filter>Source\World\System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\DsGameWorld.cpp">
+      <Filter>Source\World</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
