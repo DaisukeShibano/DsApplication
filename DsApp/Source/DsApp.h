@@ -34,5 +34,6 @@
 #ifndef __DS_APP_COLLISION_CALLBACK__
 #include "World/Physics/DsAppCollisionCallback.h"
 #endif
+#include "World/DsGameWorld.h"
 
 #endif

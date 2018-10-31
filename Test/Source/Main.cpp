@@ -5,21 +5,23 @@
 
 #include<windows.h>
 
+using namespace DsApp;
 
 class TestMainLoop : public DsMainLoop
 {
 public:
 	TestMainLoop()
 		: DsMainLoop()
-		, m_pCreator(NULL)
+		//, m_pCreator(NULL)
+		, m_gameWorld()
 	{
 
 	}
 
 	~TestMainLoop()
 	{
-		delete m_pCreator;
-		m_pCreator = NULL;
+		//delete m_pCreator;
+		//m_pCreator = NULL;
 	}
 
 public:
@@ -27,92 +29,95 @@ public:
 	virtual void BeforeWindowUpdate(DsMainLoopArgs& args) override;
 
 private:
-	DsFieldObjectCreator* m_pCreator;
-	DsHinge2Joint* m_joint;
-	DsHinge2Joint* m_joint2;
-	DsAppCollisionCallback m_callback;
+	DsGameWorld m_gameWorld;
 
-	DsCamera m_cam;
-	DsRenderCamCaptureImage* m_pImage;
-	DsCamera m_cam2;
-	DsRenderCamCaptureImage* m_pImage2;
+private:
+	//DsFieldObjectCreator* m_pCreator;
+	//DsHinge2Joint* m_joint;
+	//DsHinge2Joint* m_joint2;
+	//DsAppCollisionCallback m_callback;
+	//
+	//DsCamera m_cam;
+	//DsRenderCamCaptureImage* m_pImage;
+	//DsCamera m_cam2;
+	//DsRenderCamCaptureImage* m_pImage2;
 };
 
 
 void TestMainLoop::Initialize(DsMainLoopArgs& args)
 {
-	const bool isSuccessSetUp = DsPhysicsManager::SetUpDefault();
-
-	if (isSuccessSetUp)
-	{
-		DsPhysicsWorld* pWorld = DsPhysicsManager::GetDefaultWorld();
-		if (pWorld)
-		{
-			pWorld->SetCollisionCallback(&m_callback);
-
-			DsActorId act1;
-			DsActorId act2;
-			DsActorId act3;
-			DsVec3d vertex[8];
-			DsActor::Option option = DsActor::Option::Default();
-			//option.isGravity = false;
-
-			m_joint = new DsHinge2Joint(*pWorld);
-			m_joint2 = new DsHinge2Joint(*pWorld);
-			if(0){//ÉWÉáÉCÉìÉgÉeÉXÉg
-				DsRigidBox::GetVertex(vertex, 0.5, 0.5, 0.5);
-				{//î†ÇP
-					DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, "î†ÇP");
-					factory.InitPos(DsVec3d(2.0, 1.0, 5.0));
-					factory.SetOption(option);
-					act1 = pWorld->CreateActor(factory);
-					act1.GetActor()->SetMaterial(DsActorMaterial::Aluminum());
-				}
-				{//î†ÇQ
-					DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, "î†ÇQ");
-					factory.InitPos(DsVec3d(1.0, 1.0, 5.0));
-					factory.SetOption(option);
-					act2 = pWorld->CreateActor(factory);
-					act2.GetActor()->SetMaterial(DsActorMaterial::Aluminum());
-				}
-				{//î†ÇR
-					DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, "î†ÇR");
-					factory.InitPos(DsVec3d(0.0, 1.0, 5.0));
-					factory.SetOption(option);
-					act3 = pWorld->CreateActor(factory);
-					act3.GetActor()->SetMaterial(DsActorMaterial::Aluminum());
-				}
-				m_joint->AttachJoint(act1, act2, act1.GetActor()->GetPosition() + DsVec3d(-0.5, 0, 0), DsVec3d(0,0,1), DsVec3d(1, 0, 0));
-				m_joint2->AttachJoint(act2, act3, act2.GetActor()->GetPosition() + DsVec3d(-0.5, 0, 0), DsVec3d(0, 0, 1), DsVec3d(1, 0, 0));
-			}
-
-			if(1){//è’ìÀÉeÉXÉg
-				DsRigidBox::GetVertex(vertex, 1.5, 0.5, 1.5);
-				for(int i=0; i<0; ++i){
-					DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, "î†ÇP");
-					factory.InitPos(DsVec3d(0.0, 0.0 + (0.5)*(double)i, 2.0));
-					factory.SetOption(option);
-					DsActorId actorId = pWorld->CreateActor(factory);
-					DsActor* pActor = actorId.GetActor();
-					pActor->SetMaterial(DsActorMaterial::Aluminum());
-				}
-				for (int i = 0; i<0; ++i) {
-					DsRigidCapsule::DsRigidCapsuleFactory factory(0.5, 1.0, 1000.0, "î†ÇP");
-					factory.InitPos(DsVec3d(-1.0, 1.6 + (2.0)*(double)i, 4.0));
-					factory.InitRot(DsMat33d::RotateZ(0.3));
-					factory.SetOption(option);
-					DsActorId actorId = pWorld->CreateActor(factory);
-					DsActor* pActor = actorId.GetActor();
-					pActor->SetMaterial(DsActorMaterial::Aluminum());
-				}
-			}
-
-			const char* dataPath = "testmap.dmap";
-			m_pCreator = new DsFieldObjectCreator(args.sys);
-			m_pCreator->Create(dataPath, *pWorld);
-		}
-	}
-
+	//const bool isSuccessSetUp = DsPhysicsManager::SetUpDefault();
+	//
+	//if (isSuccessSetUp)
+	//{
+	//	DsPhysicsWorld* pWorld = DsPhysicsManager::GetDefaultWorld();
+	//	if (pWorld)
+	//	{
+	//		pWorld->SetCollisionCallback(&m_callback);
+	//
+	//		DsActorId act1;
+	//		DsActorId act2;
+	//		DsActorId act3;
+	//		DsVec3d vertex[8];
+	//		DsActor::Option option = DsActor::Option::Default();
+	//		//option.isGravity = false;
+	//
+	//		m_joint = new DsHinge2Joint(*pWorld);
+	//		m_joint2 = new DsHinge2Joint(*pWorld);
+	//		if(0){//ÉWÉáÉCÉìÉgÉeÉXÉg
+	//			DsRigidBox::GetVertex(vertex, 0.5, 0.5, 0.5);
+	//			{//î†ÇP
+	//				DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, "î†ÇP");
+	//				factory.InitPos(DsVec3d(2.0, 1.0, 5.0));
+	//				factory.SetOption(option);
+	//				act1 = pWorld->CreateActor(factory);
+	//				act1.GetActor()->SetMaterial(DsActorMaterial::Aluminum());
+	//			}
+	//			{//î†ÇQ
+	//				DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, "î†ÇQ");
+	//				factory.InitPos(DsVec3d(1.0, 1.0, 5.0));
+	//				factory.SetOption(option);
+	//				act2 = pWorld->CreateActor(factory);
+	//				act2.GetActor()->SetMaterial(DsActorMaterial::Aluminum());
+	//			}
+	//			{//î†ÇR
+	//				DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, "î†ÇR");
+	//				factory.InitPos(DsVec3d(0.0, 1.0, 5.0));
+	//				factory.SetOption(option);
+	//				act3 = pWorld->CreateActor(factory);
+	//				act3.GetActor()->SetMaterial(DsActorMaterial::Aluminum());
+	//			}
+	//			m_joint->AttachJoint(act1, act2, act1.GetActor()->GetPosition() + DsVec3d(-0.5, 0, 0), DsVec3d(0,0,1), DsVec3d(1, 0, 0));
+	//			m_joint2->AttachJoint(act2, act3, act2.GetActor()->GetPosition() + DsVec3d(-0.5, 0, 0), DsVec3d(0, 0, 1), DsVec3d(1, 0, 0));
+	//		}
+	//
+	//		if(1){//è’ìÀÉeÉXÉg
+	//			DsRigidBox::GetVertex(vertex, 1.5, 0.5, 1.5);
+	//			for(int i=0; i<0; ++i){
+	//				DsRigidBox::DsRigidBoxFactory factory(vertex, 1.0, "î†ÇP");
+	//				factory.InitPos(DsVec3d(0.0, 0.0 + (0.5)*(double)i, 2.0));
+	//				factory.SetOption(option);
+	//				DsActorId actorId = pWorld->CreateActor(factory);
+	//				DsActor* pActor = actorId.GetActor();
+	//				pActor->SetMaterial(DsActorMaterial::Aluminum());
+	//			}
+	//			for (int i = 0; i<0; ++i) {
+	//				DsRigidCapsule::DsRigidCapsuleFactory factory(0.5, 1.0, 1000.0, "î†ÇP");
+	//				factory.InitPos(DsVec3d(-1.0, 1.6 + (2.0)*(double)i, 4.0));
+	//				factory.InitRot(DsMat33d::RotateZ(0.3));
+	//				factory.SetOption(option);
+	//				DsActorId actorId = pWorld->CreateActor(factory);
+	//				DsActor* pActor = actorId.GetActor();
+	//				pActor->SetMaterial(DsActorMaterial::Aluminum());
+	//			}
+	//		}
+	//
+	//		const char* dataPath = "testmap.dmap";
+	//		m_pCreator = new DsFieldObjectCreator(args.sys);
+	//		m_pCreator->Create(dataPath, *pWorld);
+	//	}
+	//}
+	//
 	//const DsCamera& sysCam = args.sys.RefCam();
 	//m_cam = sysCam;
 	//m_pImage = DsRenderCamCaptureImage::Create(m_cam, 128, 128);
@@ -122,61 +127,63 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 	//m_pImage2 = DsRenderCamCaptureImage::Create(m_cam2, 128, 128);
 	//args.sys.RefRender().RegisterCaptureImage(m_pImage2);
 
+
+	m_gameWorld.Initialize(args.sys);
 }
 
 void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 {
-	DsPhysicsWorld* pWorld = DsPhysicsManager::GetDefaultWorld();
-	if (pWorld)
-	{
-		pWorld->Update(args.dt);
-		int color = 0;
-		for(DsActor* actor : pWorld->GetActors())
-		{
-			std::string tmp = actor->GetName();
-			//if( (tmp != "robo_0") && (tmp!="ragdoll") )
-			if ((tmp == "î†ÇP") || (tmp == "î†ÇQ") || (tmp == "_ChrProxy"))
-			//if (actor->GetType() == DsActor::RIGID_CAPSULE)
-			{
-				const double rC = (actor->IsRest()) ? (0.5) : (1.0);
-				if (color == 0) {
-					actor->SetColor(DsVec4d(1.0, 0.6, 0.2, 1)*rC);
-				}
-				else if (color == 1) {
-					actor->SetColor(DsVec4d(0.2, 1.0, 0.6, 1)*rC);
-				}
-				else {
-					actor->SetColor(DsVec4d(0.4, 0.6, 1.0, 1)*rC);
-				}
-				actor->SetLineColor(DsVec4d(0, 0, 0, 1));
-				actor->Draw(args.drawCom);
-			}
-			++color;
-			color %= 3;
-		}
-		m_joint->Update(args.dt);
-		m_joint->DbgDraw(args.drawCom);
-
-		m_joint2->Update(args.dt);
-		m_joint2->DbgDraw(args.drawCom);
-
-	}
-
-	m_pCreator->Update(args.dt);
-
-	for(DsFieldHit* obj : m_pCreator->RefHits())
-	{
-		obj->Update(args.dt);
-	}
-	for(DsFieldChr* obj : m_pCreator->RefChrs())
-	{
-		obj->Update(args.dt);
-	}
-	for(DsFieldObj* obj : m_pCreator->RefObstacles())
-	{
-		obj->Update(args.dt);
-	}
-
+	//DsPhysicsWorld* pWorld = DsPhysicsManager::GetDefaultWorld();
+	//if (pWorld)
+	//{
+	//	pWorld->Update(args.dt);
+	//	int color = 0;
+	//	for(DsActor* actor : pWorld->GetActors())
+	//	{
+	//		std::string tmp = actor->GetName();
+	//		//if( (tmp != "robo_0") && (tmp!="ragdoll") )
+	//		if ((tmp == "î†ÇP") || (tmp == "î†ÇQ") || (tmp == "_ChrProxy"))
+	//		//if (actor->GetType() == DsActor::RIGID_CAPSULE)
+	//		{
+	//			const double rC = (actor->IsRest()) ? (0.5) : (1.0);
+	//			if (color == 0) {
+	//				actor->SetColor(DsVec4d(1.0, 0.6, 0.2, 1)*rC);
+	//			}
+	//			else if (color == 1) {
+	//				actor->SetColor(DsVec4d(0.2, 1.0, 0.6, 1)*rC);
+	//			}
+	//			else {
+	//				actor->SetColor(DsVec4d(0.4, 0.6, 1.0, 1)*rC);
+	//			}
+	//			actor->SetLineColor(DsVec4d(0, 0, 0, 1));
+	//			actor->Draw(args.drawCom);
+	//		}
+	//		++color;
+	//		color %= 3;
+	//	}
+	//	m_joint->Update(args.dt);
+	//	m_joint->DbgDraw(args.drawCom);
+	//
+	//	m_joint2->Update(args.dt);
+	//	m_joint2->DbgDraw(args.drawCom);
+	//
+	//}
+	//
+	//m_pCreator->Update(args.dt);
+	//
+	//for(DsFieldHit* obj : m_pCreator->RefHits())
+	//{
+	//	obj->Update(args.dt);
+	//}
+	//for(DsFieldChr* obj : m_pCreator->RefChrs())
+	//{
+	//	obj->Update(args.dt);
+	//}
+	//for(DsFieldObj* obj : m_pCreator->RefObstacles())
+	//{
+	//	obj->Update(args.dt);
+	//}
+	//
 	//const DsCamera& sysCam = args.sys.RefCam();
 	//m_cam = sysCam;
 	//m_cam.SetRot(DsMat33d::RotateY(RadToDeg(10))*sysCam.GetRot());
@@ -212,6 +219,8 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 	//	tex[0], tex[1], tex[2], tex[3],
 	//	m_pImage2->GetImage(), m_pImage2->GetWidth(), m_pImage2->GetHeight());
 	
+	m_gameWorld.Update(args.dt);
+
 	DsPerf::RefPerfTotalFps().DbgDrawFps();
 
 	//args.drawCom.SetColor(DsVec3d(0, 0, 0)).DrawTextScreen(DsVec2d(-0.33, 0.36), L" w");

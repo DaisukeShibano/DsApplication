@@ -10,9 +10,8 @@ using namespace DsApp;
 using namespace DsPhysics;
 
 
-DsGameWorld::DsGameWorld(DsLib::DsSys& sys)
-	: m_sys(sys)
-	, m_pPhysWorld(NULL)
+DsGameWorld::DsGameWorld()
+	: m_pPhysWorld(NULL)
 	, m_pGameSys(NULL)
 	, m_pFieldObjectCreator(NULL)
 	, m_pCollisionCallback(NULL)
@@ -27,7 +26,7 @@ DsGameWorld::~DsGameWorld()
 	delete m_pCollisionCallback; m_pCollisionCallback = NULL;
 }
 
-void DsGameWorld::Initialize()
+void DsGameWorld::Initialize(DsLib::DsSys& sys)
 {
 	const bool isSuccessSetUp = DsPhysicsManager::SetUpDefault();
 	if (isSuccessSetUp) {
@@ -39,7 +38,7 @@ void DsGameWorld::Initialize()
 	m_pGameSys->Initialize();
 
 	if (m_pPhysWorld) {
-		m_pFieldObjectCreator = new DsFieldObjectCreator(m_sys);
+		m_pFieldObjectCreator = new DsFieldObjectCreator(sys);
 		DS_ASSERT(m_pFieldObjectCreator, "ƒƒ‚ƒŠŠm•ÛŽ¸”s");
 		const char* dataPath = "testmap.dmap";
 		m_pFieldObjectCreator->Create(dataPath, *m_pPhysWorld);

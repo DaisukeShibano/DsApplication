@@ -13,15 +13,14 @@ namespace DsApp
 	class DsGameWorld
 	{
 	public:
-		DsGameWorld(DsLib::DsSys& sys);
+		DsGameWorld();
 		virtual~DsGameWorld();
 
 	public:
-		void Initialize();
+		void Initialize(DsLib::DsSys& sys);
 		void Update(double dt);
 
 	private:
-		DsLib::DsSys& m_sys;
 		DsPhysics::DsPhysicsWorld* m_pPhysWorld;
 		DsGameSys* m_pGameSys;
 		DsFieldObjectCreator* m_pFieldObjectCreator;

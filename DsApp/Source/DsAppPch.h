@@ -19,4 +19,6 @@
 #include "DsPhysics.h"
 #endif
 
+#include "World/System/DsGameSys.h"
+
 #endif
