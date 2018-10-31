@@ -53,6 +53,7 @@ namespace DsApp
 		virtual void SetRotation(const DsMat33d& rot) = 0;
 		virtual DsVec3d GetPosition() const = 0;
 		virtual DsMat33d GetRotation() const = 0;
+		virtual DsVec3d GetChrSize() const = 0;
 
 	public:
 		const DsLib::DsAnimation* GetAnim() const { return m_pAnimation; }

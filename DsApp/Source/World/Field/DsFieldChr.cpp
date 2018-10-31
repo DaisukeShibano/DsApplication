@@ -29,7 +29,6 @@
 #ifndef _DS_ACTION_CTRL_
 #include "World/Field/Action/DsActionCtrl.h"
 #endif
-#include "World/Field/Action/DsChrStateDefine.h"
 #include "Res/Param/DsChrParam.h"
 
 
@@ -49,11 +48,6 @@ DsFieldChr::DsFieldChr(DsSys& sys, DsPhysicsWorld& world)
 	, m_pActCtrl(NULL)
 	, m_pProxy(NULL)
 {
-
-	//キャラステートの初期化はキャラが１体でも生成された場合にしておく
-	//システム全体の初期化みたいなの用意しても外から叩いてもらってもいいかもしれない
-	DsChrStateDefine::InitializeState();
-
 }
 
 DsFieldChr::~DsFieldChr()
@@ -183,6 +177,17 @@ void DsFieldChr::SetRotation(const DsMat33d& rot)
 	m_ang.y = ang;
 }
 
+//virtual
+DsVec3d DsFieldChr::GetChrSize() const
+{
+	DsVec3d ret = DsVec3d::Zero();
+	//大体のサイズ
+	if (m_pProxy) {
+		const DsAabb aabb = m_pProxy->GetAabb();
+		ret = aabb.GetMax() - aabb.GetMin();
+	}
+	return ret;
+}
 
 
 

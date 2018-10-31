@@ -47,6 +47,7 @@ namespace DsApp
 		virtual DsMat33d GetRotation() const override;
 		virtual void SetPosition(const DsVec3d& pos) override;
 		virtual void SetRotation(const DsMat33d& rot) override;
+		virtual DsVec3d GetChrSize() const override;
 
 	protected:
 		DsVec3d m_vel;

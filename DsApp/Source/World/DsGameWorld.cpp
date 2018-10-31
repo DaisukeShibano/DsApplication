@@ -5,6 +5,7 @@
 #include "World/Field/Creator/DsFieldObjectCreator.h"
 #include "Collision/DsCollisionCallback.h"
 #include "World/Physics/DsAppCollisionCallback.h"
+#include "World/Field/Action/DsChrStateDefine.h"
 
 using namespace DsApp;
 using namespace DsPhysics;
@@ -37,11 +38,14 @@ void DsGameWorld::Initialize(DsLib::DsSys& sys)
 	DS_ASSERT(m_pGameSys, "メモリ確保失敗");
 	m_pGameSys->Initialize();
 
+	//キャラステートのクラス登録など
+	DsChrStateDefine::InitializeState();
+
 	if (m_pPhysWorld) {
 		m_pFieldObjectCreator = new DsFieldObjectCreator(sys);
 		DS_ASSERT(m_pFieldObjectCreator, "メモリ確保失敗");
 		const char* dataPath = "testmap.dmap";
-		m_pFieldObjectCreator->Create(dataPath, *m_pPhysWorld);
+		m_pFieldObjectCreator->Create(dataPath, *m_pPhysWorld, m_pGameSys);
 
 		m_pCollisionCallback = new DsAppCollisionCallback();
 		DS_ASSERT(m_pCollisionCallback, "メモリ確保失敗");

@@ -23,17 +23,21 @@ DsLockOn::~DsLockOn()
 
 void DsLockOn::Register(DsLockOnPoint* pPoint)
 {
-	auto it = m_points.find(pPoint);
-	if (it == m_points.end()) {
-		m_points.insert(pPoint);
+	if (pPoint) {
+		auto it = m_points.find(pPoint);
+		if (it == m_points.end()) {
+			m_points.insert(pPoint);
+		}
 	}
 }
 
 void DsLockOn::Unregister(DsLockOnPoint* pPoint)
 {
-	m_points.erase(pPoint);
-	if (m_pBestPoint == pPoint) {
-		m_pBestPoint = NULL;
+	if (pPoint) {
+		m_points.erase(pPoint);
+		if (m_pBestPoint == pPoint) {
+			m_pBestPoint = NULL;
+		}
 	}
 }
 

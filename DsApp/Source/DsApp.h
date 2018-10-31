@@ -28,6 +28,7 @@
 #ifndef _DS_FIELD_PLAYER_H_
 #include "World/Field/DsFieldPlayer.h"
 #endif
+#include "World/Field/DsFieldEnemy.h"
 #ifndef _DS_FIELD_OBJECT_CREATOR_H_
 #include "World/Field/Creator/DsFieldObjectCreator.h"
 #endif

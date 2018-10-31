@@ -32,7 +32,7 @@ DsFieldObjectCreator::~DsFieldObjectCreator()
 	Destoroy();
 }
 
-void DsFieldObjectCreator::Create(const char* resPath, DsPhysicsWorld& world)
+void DsFieldObjectCreator::Create(const char* resPath, DsPhysicsWorld& world, DsGameSys* pGameSys)
 {
 	const DsMapRes* pMapRes = m_sys.RefResource().RegisterItem<DsMapRes>(resPath);
 	if (NULL == pMapRes) {
@@ -49,6 +49,7 @@ void DsFieldObjectCreator::Create(const char* resPath, DsPhysicsWorld& world)
 		reqInitInfo.hitName = mapInfo.pHitPath;
 		reqInitInfo.animName = mapInfo.pAnimPath;
 		reqInitInfo.physicsType = mapInfo.objType;
+		reqInitInfo.pGameSys = pGameSys;
 
 		INIT_INFO info;
 		info.initInfo = reqInitInfo;
@@ -57,7 +58,7 @@ void DsFieldObjectCreator::Create(const char* resPath, DsPhysicsWorld& world)
 		{
 		case DS_MAP_FIELD_OBJ_TYPE::CHR:
 		{
-			DsFieldChr* pChr = new DsFieldChr(m_sys, world);
+			DsFieldEnemy* pChr = new DsFieldEnemy(m_sys, world);
 			info.pObj = pChr;
 			m_requestChrs.push_back(info);
 

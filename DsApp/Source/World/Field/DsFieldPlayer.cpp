@@ -45,6 +45,7 @@
 #ifndef _DS_ITEM_BOX_COMPONENT_
 #include "World/Component/Item/DsItemBoxComponent.h"
 #endif
+#include "World/Field/LockOn/DsLockOn.h"
 
 using namespace DsLib;
 using namespace DsPhysics;
@@ -57,6 +58,7 @@ DsFieldPlayer::DsFieldPlayer(DsSys& sys, DsPhysicsWorld& world)
 	, m_cam(sys.RefCam())
 	, m_mouse(sys.RefMouse())
 	, m_window(sys.RefWindow())
+	, m_pGameSys(NULL)
 {
 }
 
@@ -67,6 +69,8 @@ DsFieldPlayer::~DsFieldPlayer()
 //virtual
 void DsFieldPlayer::Initialize(const DsFieldInitInfo& initInfo)
 {
+	m_pGameSys = initInfo.pGameSys;
+
 	DsFieldChr::Initialize(initInfo);
 	const DsVec3d pos = DsVec3d(0, 1.5f, -3.5f) + GetPosition();
 	m_cam.SetPos(pos);

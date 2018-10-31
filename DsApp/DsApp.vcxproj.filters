@@ -73,6 +73,9 @@
     <Filter Include="Source\World\System">
       <UniqueIdentifier>{3bac5d00-140d-440a-a677-49211d2827f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\World\Field\Component\LockOn">
+      <UniqueIdentifier>{fc5e2dcb-e9e8-4e01-a112-7a73a76ccdba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsAppPch.h">
@@ -234,6 +237,9 @@
     <ClInclude Include="Source\World\DsGameWorld.h">
       <Filter>Source\World</Filter>
     </ClInclude>
+    <ClInclude Include="Source\World\Component\LockOn\DsLockOnComponent.h">
+      <Filter>Source\World\Field\Component\LockOn</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsAppPch.cpp">
@@ -361,6 +367,9 @@
     </ClCompile>
     <ClCompile Include="Source\World\DsGameWorld.cpp">
       <Filter>Source\World</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Component\LockOn\DsLockOnComponent.cpp">
+      <Filter>Source\World\Field\Component\LockOn</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

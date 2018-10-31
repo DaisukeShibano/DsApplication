@@ -12,11 +12,13 @@ namespace  DsLib
 
 namespace DsApp
 {
+	class DsGameSys;
 	class DsFieldObj;
 	class DsComponent;
 	class DsItemBoxComponent;
 	class DsAttachEntity;
 	class DsEquipComponent;
+	class DsLockOnComponent;
 }
 
 namespace DsApp
@@ -49,7 +51,7 @@ namespace DsApp
 		};
 
 	public:
-		DsComponentSystem(DsFieldObj& owner, DsLib::DsSys& sys);
+		DsComponentSystem(DsFieldObj& owner, DsLib::DsSys& sys, DsGameSys* pGameSys);
 		virtual ~DsComponentSystem();
 
 	public:
@@ -68,6 +70,7 @@ namespace DsApp
 		void RequestEquip();
 		void RequestItemBox();
 		void RequestAttachWithUpdate(const DsMat44d& target, DsAttachEntity* pMove, double dt);
+		void RequestLockOnPoint();
 
 	public:
 		DsItemBoxComponent * GetItemBox()const;
@@ -77,6 +80,7 @@ namespace DsApp
 		std::unordered_map<KEY, DsComponent*, KeyHash> m_components;
 		DsFieldObj& m_owner;
 		DsLib::DsSys& m_sys;
+		DsGameSys* m_pGameSys;
 
 	};
 

@@ -36,6 +36,7 @@ namespace DsApp
 		DsLib::DsCamera& m_cam;
 		DsLib::DsMouse& m_mouse;
 		DsLib::DsWindow& m_window;
+		DsGameSys* m_pGameSys;
 
 	public:
 		virtual void DbgDraw(DsLib::DsDrawCommand& com);

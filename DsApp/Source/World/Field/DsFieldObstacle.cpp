@@ -116,6 +116,18 @@ DsMat33d DsFieldObstacle::GetRotation() const
 	}
 }
 
+//virtual
+DsVec3d DsFieldObstacle::GetChrSize() const
+{
+	//‘å‘Ì‚ÌƒTƒCƒY
+	DsVec3d ret = DsVec3d::Zero();
+	const DsActor* pActor = m_world.GetActor(m_actorId);
+	if (pActor) {
+		const DsAabb aabb = pActor->RefAabb();
+		ret = aabb.GetMax() - aabb.GetMin();
+	}
+	return ret;
+}
 
 //virtual 
 void DsFieldObstacle::DbgDraw(DsLib::DsDrawCommand& com)

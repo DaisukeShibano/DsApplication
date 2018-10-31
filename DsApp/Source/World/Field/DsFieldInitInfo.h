@@ -9,6 +9,11 @@ namespace DsLib
 
 namespace DsApp
 {
+	class DsGameSys;
+}
+
+namespace DsApp
+{
 	struct DsFieldInitInfo
 	{
 		DsFieldInitInfo()
@@ -19,6 +24,7 @@ namespace DsApp
 			, animName()
 			, physicsType()
 			, boundCoef(0.0)
+			, pGameSys(NULL)
 		{}
 		DsVec3d pos;
 		DsVec3d ang;
@@ -27,6 +33,7 @@ namespace DsApp
 		std::string animName;
 		DS_MAP_OBJ_TYPE physicsType;
 		double boundCoef;
+		DsGameSys* pGameSys;
 	};
 }
 

@@ -10,7 +10,12 @@ namespace DsApp
 	class DsFieldEnemy : public DsFieldChr
 	{
 	public:
+		DsFieldEnemy(DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& world);
+		virtual ~DsFieldEnemy();
+
+	public:
 		virtual void Initialize(const DsFieldInitInfo& initInfo) override;
+		virtual void Update(double dt);
 	};
 
 }
