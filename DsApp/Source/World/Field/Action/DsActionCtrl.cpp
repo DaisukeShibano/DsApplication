@@ -10,7 +10,7 @@
 using namespace DsApp;
 
 
-DsActionCtrl::DsActionCtrl(DsActionRequest& actReq, const DsAnimEventFlags& animFlags, const std::vector<DsLib::DsAnimClip*>& animClip, const DsChrParam& param)
+DsActionCtrl::DsActionCtrl(DsActionRequest& actReq, DsActionFlags& animFlags, const std::vector<DsLib::DsAnimClip*>& animClip, const DsChrParam& param)
 	: m_pASCtrl(NULL)
 	, m_state()
 	, m_pCurrentAnim(NULL)

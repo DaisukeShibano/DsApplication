@@ -107,9 +107,10 @@ void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 	}
 
 	m_pActReq = _CreareActionRequest();
-	m_pActCtrl = new DsActionCtrl(*m_pActReq, *GetAnimEventFlags(), m_pAnimation->RefAnimClips(), param);
+	m_pActCtrl = new DsActionCtrl(*m_pActReq, *GetActionFlags(), m_pAnimation->RefAnimClips(), param);
 	DS_ASSERT(m_pActCtrl, "メモリ確保失敗");
 
+	//初期アニメ
 	m_pAnimation->RequestPlayAnim(m_pActCtrl->GetCurrentAnim());
 }
 
@@ -124,19 +125,22 @@ DsActionRequest* DsFieldChr::_CreareActionRequest()
 //virtual 
 void DsFieldChr::Update(double dt)
 {
-	m_pActReq->Update(dt);
-	m_pActCtrl->Update(dt);
-	
-	if (!IsRequestDirectAnim()) {
-		m_pAnimation->RequestPlayAnim(m_pActCtrl->GetCurrentAnim());
-	}
-
 	//y軸はグローバル。x軸はy軸回転後
 	const DsMat33d rot = DsMat33d::RotateY(m_ang.y)*DsMat33d::RotateX(m_ang.x);
 	m_vel = rot * m_vel;
 
 	DsFieldObj::Update(dt);
 	
+	//AnimEventの後
+	m_pActReq->Update(dt);
+	m_pActCtrl->Update(dt);
+
+
+	if (!IsRequestDirectAnim()) {
+		//ステートから再生アニメ決定
+		m_pAnimation->RequestPlayAnim(m_pActCtrl->GetCurrentAnim());
+	}
+
 	DsVec3d move = DsVec3d::Zero();
 	if (m_pAnimation){
 		m_pAnimation->SetRootMatrix(GetPosition(), DsMat33d::RotateY(m_ang.y));

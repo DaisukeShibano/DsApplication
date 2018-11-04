@@ -46,6 +46,9 @@
 #include "World/Component/Item/DsItemBoxComponent.h"
 #endif
 #include "World/Field/LockOn/DsLockOn.h"
+#include "World/Field/Action/DsActionFlags.h"
+
+
 
 using namespace DsLib;
 using namespace DsPhysics;
@@ -89,7 +92,6 @@ void DsFieldPlayer::Initialize(const DsFieldInitInfo& initInfo)
 		if (pItemBox) {
 			pItemBox->AddItem(0);
 		}
-
 	}
 }
 
@@ -107,25 +109,42 @@ void DsFieldPlayer::Update(double dt)
 {
 	{//キャラ座標の更新
 
+		//ロックオン方向に旋回
+		double angVelDeg = 1440.0;
+		DsLockOn* pLockOn = (m_pGameSys) ? (m_pGameSys->GetLockOn()) : (NULL);
+		const DsActionFlags* pFlags = GetActionFlags();
+		DsVec3d lockOnDir;
+		bool isLockOn = false;
+		if (pFlags && pLockOn) {
+			DsVec3d lockOnPos;
+			if (pFlags->IsLockOnTurn() && m_isLockOn && pLockOn->GetLockOnPos(lockOnPos)) {
+				const DsVec3d toTarget = lockOnPos - GetPosition();
+				const DsVec3d toTargetXZ = DsVec3d::Normalize(DsVec3d(toTarget.x, 0, toTarget.z));
+				lockOnDir = toTargetXZ;
+				angVelDeg = 430.0;
+				isLockOn = true;
+			}
+		}
+
 		//カメラのY軸回転量を求める
 		const DsVec3d camFlatZ = DsVec3d::Normalize(DsVec3d(m_cam.GetRot().GetAxisZ().x, 0, m_cam.GetRot().GetAxisZ().z));
-		const DsVec3d camRotCross = DsVec3d::Normalize( DsVec3d::Cross(DsVec3d::GetZ(), camFlatZ));
+		const DsVec3d camRotCross = DsVec3d::Normalize(DsVec3d::Cross(DsVec3d::GetZ(), camFlatZ));
 		const double camRotYang = acos(Clamp(DsVec3d::Dot(DsVec3d::GetZ(), camFlatZ), -1.0, 1.0));
 		const DsMat33d camRotY = DsMat33d::RotateVec(camRotCross*camRotYang);
 
 		//入力移動量をカメラからの座標に変換し、キャラの目標角度にする
-		const DsVec3d moveVec = camRotY*DsVec3d::Normalize(m_pActReq->GetMoveVec());
+		const DsVec3d moveVec = (isLockOn) ? (lockOnDir) : (camRotY * DsVec3d::Normalize(m_pActReq->GetMoveVec()));
 		const DsVec3d chrDir = DsMat33d::RotateY(m_ang.y)*DsVec3d::GetZ();
 		const DsVec3d axis = DsVec3d::Cross(chrDir, moveVec);
-		const double dAng = acos(Clamp(DsVec3d::Dot(chrDir, moveVec), -1.0, 1.0));
-		const double angVel = DegToRad(1440.0)*dt;
+		const double dAng = DsACos(DsVec3d::Dot(chrDir, moveVec));
+		double angVel = DegToRad(angVelDeg)*dt;
 		double targetY;
 
 		if (0.00001 < moveVec.Length())
 		{
 			//if (angVel < dAng)
 			{
-				if (0 < axis.y)
+				if (0.0 < axis.y)
 				{
 					targetY = m_ang.y + min(angVel, fabs(dAng));
 				}
@@ -142,7 +161,11 @@ void DsFieldPlayer::Update(double dt)
 	}
 
 	DsFieldChr::Update(dt);
+
 	_UpdateCam(dt);
+
+	
+
 }
 
 

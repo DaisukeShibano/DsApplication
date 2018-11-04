@@ -23,8 +23,7 @@
 #ifndef _DS_EQUIP_COMPONENT_
 #include "World/Component/Equip/DsEquipComponent.h"
 #endif
-
-#include "World/Animation/Event/DsAnimEventFlags.h"
+#include "World/Field/Action/DsActionFlags.h"
 
 using namespace DsLib;
 using namespace DsPhysics;
@@ -68,7 +67,7 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 	m_pAnimEventCallback = new DsAnimEventCallback(*this, m_sys.RefResource());
 	DS_ASSERT(m_pAnimEventCallback, "メモリ確保失敗");
 	m_pAnimEventCallback->Initialize(initInfo.animName.c_str());
-	m_pAnimEventFlags = new DsAnimEventFlags();
+	m_pAnimEventFlags = new DsActionFlags();
 	DS_ASSERT(m_pAnimEventFlags, "メモリ確保失敗");
 
 	if (m_pAnimation){
@@ -83,6 +82,12 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 //virtual 
 void DsFieldObj::Update(double dt)
 {
+	//毎フレームクリア系のフラグクリア
+	DsActionFlags* pFlags = GetActionFlags();
+	if (pFlags) {
+		pFlags->Clear();
+	}
+
 	if (m_pAnimation){
 		if (m_isRequestDirectAnim) {
 			dt = 0;

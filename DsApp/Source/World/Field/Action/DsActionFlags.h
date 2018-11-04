@@ -1,24 +1,25 @@
 #pragma once
 
 /*コピペ用
-#include "World/Animation/Event/DsAnimEventFlags.h"
+#include "World/Field/Action/DsActionFlags.h"
 */
 
 namespace DsApp
 {
-	class DsAnimEventFlags
+	class DsActionFlags
 	{
 	public:
-		DsAnimEventFlags()
+		DsActionFlags()
 			: m_animInterpolationTime(-1.0)
 		{}
 
-		~DsAnimEventFlags()
+		~DsActionFlags()
 		{}
 
 		void Clear()
 		{
 			m_animInterpolationTime = -1.0;
+			m_flags = 0;
 		}
 
 		bool GetAnimInterpolationTime(double& time) const
@@ -33,14 +34,23 @@ namespace DsApp
 			}
 			return ret;
 		}
-
 		void SetAnimInterpolationTime(double time)
 		{
 			m_animInterpolationTime = time;
 		}
 
+		void SetLockOnTurn(bool isSet) { m_isLockOnTurn = isSet; }
+		bool IsLockOnTurn() const { return m_isLockOnTurn; }
+
 	private:
 		double m_animInterpolationTime;
+
+		union
+		{
+			ds_uint64 m_flags;
+			ds_uint64 m_isLockOnTurn : 1;
+		};
+
 	};
 
 }

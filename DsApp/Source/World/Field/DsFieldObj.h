@@ -19,7 +19,7 @@ namespace DsApp
 	class DsAnimEventCallback;
 	class DsComponentSystem;
 	class DsActionRequest;
-	class DsAnimEventFlags;
+	class DsActionFlags;
 }
 
 namespace DsApp
@@ -65,7 +65,7 @@ namespace DsApp
 
 	public:
 		DsComponentSystem* GetComponentSystem() const { return m_pComponentSystem; }
-		DsAnimEventFlags* GetAnimEventFlags() const { return m_pAnimEventFlags; }
+		DsActionFlags* GetActionFlags() const { return m_pAnimEventFlags; }
 
 	protected:
 		bool IsRequestDirectAnim()const { return m_isRequestDirectAnim; }
@@ -77,7 +77,7 @@ namespace DsApp
 		DsPhysics::DsPhysicsWorld& m_world;
 		DsAnimEventCallback* m_pAnimEventCallback;
 		DsComponentSystem* m_pComponentSystem;
-		DsAnimEventFlags* m_pAnimEventFlags;
+		DsActionFlags* m_pAnimEventFlags;
 		bool m_reqestIsInit;
 		bool m_isCompleteInit;
 	private:

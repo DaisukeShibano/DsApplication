@@ -5,6 +5,8 @@
 #include "World/Field/Action/DsActionRequest.h"
 #endif
 #include "World/Field/Action/DsChrStateDefine.h"
+#include "World/Field/Action/DsActionFlags.h"
+
 
 using namespace DsApp;
 

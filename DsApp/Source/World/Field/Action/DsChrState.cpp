@@ -5,7 +5,7 @@
 #include "World/Field/Action/DsActionRequest.h"
 #endif
 #include "World/Field/Action/DsChrStateDefine.h"
-#include "World/Animation/Event/DsAnimEventFlags.h"
+#include "World/Field/Action/DsActionFlags.h"
 
 using namespace DsApp;
 
@@ -147,9 +147,16 @@ namespace
 		}
 
 	private:
+		virtual void OnActive(double dt) override
+		{
+			DsChrState::OnActive(dt);
+			m_animFlags.SetLockOnTurn(true);
+		}
+
 		virtual void Update(double dt) override
 		{
 			DsChrState::Update(dt);
+			m_animFlags.SetLockOnTurn(true);
 
 			m_nextState = m_myState;
 
@@ -183,9 +190,15 @@ namespace
 		}
 
 	private:
+		virtual void OnActive(double dt) override
+		{
+			DsChrState::OnActive(dt);
+			m_animFlags.SetLockOnTurn(true);
+		}
 		virtual void Update(double dt) override
 		{
 			DsChrState::Update(dt);
+			m_animFlags.SetLockOnTurn(true);
 
 			m_nextState = m_myState;
 
@@ -218,9 +231,15 @@ namespace
 		}
 
 	private:
+		virtual void OnActive(double dt) override
+		{
+			DsChrState::OnActive(dt);
+			m_animFlags.SetLockOnTurn(true);
+		}
 		virtual void Update(double dt) override
 		{
 			DsChrState::Update(dt);
+			m_animFlags.SetLockOnTurn(true);
 
 			m_nextState = m_myState;
 
@@ -254,9 +273,15 @@ namespace
 		}
 
 	private:
+		virtual void OnActive(double dt) override
+		{
+			DsChrState::OnActive(dt);
+			m_animFlags.SetLockOnTurn(true);
+		}
 		virtual void Update(double dt) override
 		{
 			DsChrState::Update(dt);
+			m_animFlags.SetLockOnTurn(true);
 
 			m_nextState = m_myState;
 

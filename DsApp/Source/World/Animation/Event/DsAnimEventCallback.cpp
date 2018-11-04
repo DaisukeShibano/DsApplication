@@ -18,9 +18,7 @@
 #ifndef _DS_ACTION_REQUEST_
 #include "World/Field/Action/DsActionRequest.h"
 #endif
-
-#include "World/Animation/Event/DsAnimEventFlags.h"
-
+#include "World/Field/Action/DsActionFlags.h"
 
 
 using namespace DsLib;
@@ -60,12 +58,6 @@ void DsAnimEventCallback::Call()
 	const DsAnimClip* pClip = pAnim->GetPlayAnim();
 	if (!pClip) {
 		return;
-	}
-
-	//毎フレームクリア系のフラグクリア
-	DsAnimEventFlags* pFlags = m_owner.GetAnimEventFlags();
-	if (pFlags) {
-		pFlags->Clear();
 	}
 	
 	const DS_ANIM_ET_PARAM* pParams = NULL;
@@ -166,7 +158,7 @@ void DsAnimEventCallback::_Cancel(const DS_ANIM_ET_CANCEL_ACTION_TIMING* pParam)
 
 void DsAnimEventCallback::_Interpolation(const struct DS_ANIM_ET_ANIM_INTERPOLATION* pParam)
 {
-	DsAnimEventFlags* pFalgs = m_owner.GetAnimEventFlags();
+	DsActionFlags* pFalgs = m_owner.GetActionFlags();
 	if (pFalgs) {
 		pFalgs->SetAnimInterpolationTime(pParam->time);
 	}

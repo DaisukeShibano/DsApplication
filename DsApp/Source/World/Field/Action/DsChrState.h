@@ -29,7 +29,7 @@ namespace DsLib
 namespace DsApp
 {
 	class DsActionRequest;
-	class DsAnimEventFlags;
+	class DsActionFlags;
 	class DsStateFactory;
 }
 
@@ -93,7 +93,7 @@ namespace DsApp
 	public:
 		struct INIT_ARG
 		{
-			INIT_ARG(DsLib::DsAnimClip* arg1, DsActionRequest& arg2, StateMap& arg3, const DsAnimEventFlags& arg4, CHR_STATE arg5)
+			INIT_ARG(DsLib::DsAnimClip* arg1, DsActionRequest& arg2, StateMap& arg3, DsActionFlags& arg4, CHR_STATE arg5)
 				: pAnimClip(arg1)
 				, actReq(arg2)
 				, allState(arg3)
@@ -104,7 +104,7 @@ namespace DsApp
 			DsLib::DsAnimClip* pAnimClip;
 			DsActionRequest& actReq;
 			StateMap& allState;
-			const DsAnimEventFlags& animFlags;
+			DsActionFlags& animFlags;
 			CHR_STATE myState;
 		};
 
@@ -152,7 +152,7 @@ namespace DsApp
 		CHR_STATE m_nextState;
 		const CHR_STATE m_myState;
 		DsActionRequest& m_actReq;
-		const DsAnimEventFlags& m_animFlags;
+		DsActionFlags& m_animFlags;
 
 	private:
 		StateMap& m_allState;
