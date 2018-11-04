@@ -37,6 +37,8 @@ namespace DsApp
 		DsLib::DsMouse& m_mouse;
 		DsLib::DsWindow& m_window;
 		DsGameSys* m_pGameSys;
+		bool m_isLockOn;
+		bool m_isReqLockOn;
 
 	public:
 		virtual void DbgDraw(DsLib::DsDrawCommand& com);

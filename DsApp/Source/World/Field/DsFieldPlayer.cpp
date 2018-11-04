@@ -59,6 +59,8 @@ DsFieldPlayer::DsFieldPlayer(DsSys& sys, DsPhysicsWorld& world)
 	, m_mouse(sys.RefMouse())
 	, m_window(sys.RefWindow())
 	, m_pGameSys(NULL)
+	, m_isLockOn(false)
+	, m_isReqLockOn(false)
 {
 }
 
@@ -146,84 +148,135 @@ void DsFieldPlayer::Update(double dt)
 
 void DsFieldPlayer::_UpdateCam(double dt)
 {
-	//カメラ追従
-	{
-		const double fllowLen = 3.5;//カメラとの距離
-		const DsVec3d chrOffSet = DsVec3d::ToVec3(0, 1.5, 0);//カメラオフセット高さ
-		const DsVec3d toChr = GetPosition() + chrOffSet - m_cam.GetPos();
-		const double toChrLen = toChr.Length();
+	const DsVec3d chrOffSet = DsVec3d::ToVec3(0, 1.5, 0);//カメラオフセット高さ
+	const DsVec3d chrOffSetLock = DsVec3d::ToVec3(0, 1.2, 0);//ロック中カメラオフセット高さ
+	const DsVec3d chrBasePos = GetPosition() + chrOffSet;
+	const DsVec3d chrBasePosLock = GetPosition() + chrOffSetLock;
+	const double fllowLen = 3.5;//カメラとの距離
 
-		if (toChrLen > fllowLen)
-		{
-			//カメラとキャラの線上のキャラからfllowLen分離れた位置がカメラの目標位置。にすると低い位置になってしまうときがあるのでｙはキャラの頭上に固定
-			DsVec3d camTargetPos = GetPosition() - DsVec3d::Normalize(toChr)*fllowLen;
-			camTargetPos.y = GetPosition().y + chrOffSet.y;
+	DsLockOn* pLockOn = (m_pGameSys) ? (m_pGameSys->GetLockOn()) : (NULL);
+	DsVec3d lockOnPos;
+	if (pLockOn) {
+		const bool isInutLockOn = m_sys.RefKeyboard().IsPush('F');
+		const bool isLockOn = isInutLockOn && (!m_isReqLockOn);
+		m_isReqLockOn = isInutLockOn;
+	
+		pLockOn->Update(dt, m_cam.GetPos());
 
-			const DsVec3d targetDir = camTargetPos - m_cam.GetPos();
-			const DsVec3d camVel = targetDir * dt * 6.0;//キャラーカメラ位置を保つように
-			m_cam.SetPos(camVel + m_cam.GetPos());
+		if (isLockOn) {
+			m_isLockOn = !m_isLockOn;
 		}
 
+		if (isLockOn) {
+			pLockOn->LockOn(m_cam.GetPos(), m_cam.GetRot().GetAxisZ());
+		}
 
-		//キャラを中心に捉える
-		//if (0.1 < m_vel.Length())
-		{
-			DsVec3d chrMoveDir = DsVec3d::Normalize(DsVec3d::ToVec3(toChr.x, toChr.y/*0*/, toChr.z));
-			DsVec3d camDir = m_cam.GetRot().GetAxisZ();
-			camDir = DsVec3d::Normalize(DsVec3d::ToVec3(camDir.x, camDir.y/*0*/, camDir.z));
-
-			DsMat33d camRot = m_cam.GetRot();
-			DsMat33d yFix;
-			{
-				const DsVec3d chr = DsVec3d::Normalize(DsVec3d(toChr.x, 0, toChr.z));
-				const DsVec3d cam = DsVec3d::Normalize(DsVec3d(camDir.x, 0, camDir.z));
-				double angY = DsVec3d::Dot(chr, cam);
-				angY = acos(max(-1.0, min(1.0, angY)));
-				const DsVec3d axisY = DsVec3d::Cross(cam, chr);
-				camRot = DsMat33d::RotateVec(axisY * angY * dt*10.0)*camRot;
-				yFix = DsMat33d::RotateVec(axisY*angY)*camRot;//y軸回転を一致させたカメラ姿勢
+		if (m_isLockOn) {
+			if ( !pLockOn->GetLockOnPos(lockOnPos) ) {
+				m_isLockOn = false;//範囲内に誰もいなかったので解除
 			}
-			{
-				double angX = DsVec3d::Dot(yFix.GetAxisZ(), chrMoveDir);
-				angX = acos(max(-1.0, min(1.0, angX)));
-				const DsVec3d axisX = DsVec3d::Cross(yFix.GetAxisZ(), chrMoveDir);
-				camRot = DsMat33d::RotateVec(axisX*angX*dt*10.0)*camRot;
-			}
-			m_cam.SetRot(camRot);
-
-			//const DsVec3d axis = DsVec3d::Cross(camDir, chrMoveDir);
-			//double ang = acos(max(-1.0, min(1.0, DsVec3d::Dot(chrMoveDir, camDir))));
-			//if (0.001 < fabs(ang))
-			//{
-			//	const double dAng = ang * dt * 10.0;
-			//	const DsMat33d dr = DsMat33d::RotateVec(axis*dAng);
-			//	m_cam.SetRot(dr*m_cam.GetRot());
-			//}
 		}
 	}
 
-	//右クリックで回転
-	if (m_mouse.GetClickState() == DsMouseClickState::DS_LEFT_CLICK)
+	if (!m_isLockOn)
 	{
+		//カメラ追従
 		{
-			const DsVec2i drag2i = m_mouse.GetDragMove();
-			const DsVec3d drag3 = m_window.GetNormalizeScreenCoord(DsVec2i::ToVec2(-drag2i.x, -drag2i.y));//正面を向いてると仮定して右手系になるように。
-			const double moveVel = 2.0;
-			const DsMat33d mat = m_cam.GetRot();
-			const DsVec3d rotAxisX = mat.GetAxisX();
-			const DsVec3d rotAxisY = mat.GetAxisY();
+			const DsVec3d toChr = chrBasePos - m_cam.GetPos();
+			const double toChrLen = toChr.Length();
 
-			const DsMat33d rotMatY = DsMat33d::RotateVec(DsVec3d::GetY()*drag3.x*moveVel);
-			const DsMat33d rotMatX = rotMatY*DsMat33d::RotateVec(rotAxisX*drag3.y*moveVel*(-1.0));
-			const DsMat33d rotMat = rotMatY*rotMatX;
-			m_cam.SetRot(rotMat*mat);
+			if (toChrLen > fllowLen)
+			{
+				//カメラとキャラの線上のキャラからfllowLen分離れた位置がカメラの目標位置。にすると低い位置になってしまうときがあるのでｙはキャラの頭上に固定
+				DsVec3d camTargetPos = GetPosition() - DsVec3d::Normalize(toChr)*fllowLen;
+				camTargetPos.y = GetPosition().y + chrOffSet.y;
 
-			//注視点を中心を回るようにする
-			DsVec3d toLook = m_cam.GetRot().GetAxisZ() * (GetPosition() - m_cam.GetPos()).Length();
-			DsVec3d toCam = -toLook;
-			DsVec3d toCamDr = rotMat*toCam;
-			m_cam.SetPos(m_cam.GetPos() + (toCamDr - toCam));
+				const DsVec3d targetDir = camTargetPos - m_cam.GetPos();
+				const DsVec3d camVel = targetDir * dt * 6.0;//キャラーカメラ位置を保つように
+				m_cam.SetPos(camVel + m_cam.GetPos());
+			}
+
+
+			//キャラを中心に捉える
+			//if (0.1 < m_vel.Length())
+			{
+				DsVec3d chrMoveDir = DsVec3d::Normalize(DsVec3d::ToVec3(toChr.x, toChr.y/*0*/, toChr.z));
+				DsVec3d camDir = m_cam.GetRot().GetAxisZ();
+				camDir = DsVec3d::Normalize(DsVec3d::ToVec3(camDir.x, camDir.y/*0*/, camDir.z));
+
+				DsMat33d camRot = m_cam.GetRot();
+				DsMat33d yFix;
+				{
+					const DsVec3d chr = DsVec3d::Normalize(DsVec3d(toChr.x, 0, toChr.z));
+					const DsVec3d cam = DsVec3d::Normalize(DsVec3d(camDir.x, 0, camDir.z));
+					double angY = DsVec3d::Dot(chr, cam);
+					angY = acos(max(-1.0, min(1.0, angY)));
+					const DsVec3d axisY = DsVec3d::Cross(cam, chr);
+					camRot = DsMat33d::RotateVec(axisY * angY * dt*10.0)*camRot;
+					yFix = DsMat33d::RotateVec(axisY*angY)*camRot;//y軸回転を一致させたカメラ姿勢
+				}
+				{
+					double angX = DsVec3d::Dot(yFix.GetAxisZ(), chrMoveDir);
+					angX = acos(max(-1.0, min(1.0, angX)));
+					const DsVec3d axisX = DsVec3d::Cross(yFix.GetAxisZ(), chrMoveDir);
+					camRot = DsMat33d::RotateVec(axisX*angX*dt*10.0)*camRot;
+				}
+				m_cam.SetRot(camRot);
+			}
 		}
+
+		//右クリックで回転
+		if (m_mouse.GetClickState() == DsMouseClickState::DS_LEFT_CLICK)
+		{
+			{
+				const DsVec2i drag2i = m_mouse.GetDragMove();
+				const DsVec3d drag3 = m_window.GetNormalizeScreenCoord(DsVec2i::ToVec2(-drag2i.x, -drag2i.y));//正面を向いてると仮定して右手系になるように。
+				const double moveVel = 2.0;
+				const DsMat33d mat = m_cam.GetRot();
+				const DsVec3d rotAxisX = mat.GetAxisX();
+				const DsVec3d rotAxisY = mat.GetAxisY();
+
+				const DsMat33d rotMatY = DsMat33d::RotateVec(DsVec3d::GetY()*drag3.x*moveVel);
+				const DsMat33d rotMatX = rotMatY * DsMat33d::RotateVec(rotAxisX*drag3.y*moveVel*(-1.0));
+				const DsMat33d rotMat = rotMatY * rotMatX;
+				m_cam.SetRot(rotMat*mat);
+
+				//注視点を中心を回るようにする
+				DsVec3d toLook = m_cam.GetRot().GetAxisZ() * (GetPosition() - m_cam.GetPos()).Length();
+				DsVec3d toCam = -toLook;
+				DsVec3d toCamDr = rotMat * toCam;
+				m_cam.SetPos(m_cam.GetPos() + (toCamDr - toCam));
+			}
+		}
+	}
+	else {//ロックオン中
+
+		const DsVec3d camDir = m_cam.GetRot().GetAxisZ();
+		const DsVec3d camDirXZ = DsVec3d::Normalize( DsVec3d(camDir.x, 0, camDir.z) );
+		const DsVec3d toTarget = DsVec3d::Normalize(lockOnPos - chrBasePosLock);
+		const DsVec3d toTargetXZ = DsVec3d::Normalize( DsVec3d(toTarget.x, 0, toTarget.z) );
+
+		//Y軸相対
+		const DsVec3d axis = DsVec3d::Cross(camDirXZ, toTargetXZ);
+		const double angY = DsACos( DsVec3d::Dot(camDirXZ, toTargetXZ) );
+		const double velY = min(1.0, dt * 10.0);
+		const double dY = (0.0 < axis.y) ? (angY * velY) : (-angY * velY);
+		const DsMat33d rotY = DsMat33d::RotateY(dY);
+		m_cam.SetRot(rotY*m_cam.GetRot());
+
+		//X軸
+		const double camDirAngX = atan2(camDir.y, sqrt(camDir.x*camDir.x + camDir.z*camDir.z));
+		const double toTargetAngX = atan2(toTarget.y, sqrt(toTarget.x*toTarget.x + toTarget.z*toTarget.z));
+		const double velX = min(1.0, dt * 10.0);
+		const double angX = (camDirAngX - toTargetAngX)*velX;
+		const DsMat33d rotX = DsMat33d::RotateAxis(m_cam.GetRot().GetAxisX(), angX);
+		m_cam.SetRot(rotX*m_cam.GetRot());
+
+		//キャラの後ろに行くようにカメラも移動する
+		const DsVec3d targetPos = toTarget * (-fllowLen) + chrBasePosLock;
+		const DsVec3d diffPos = targetPos - m_cam.GetPos();
+		const DsVec3d dMove = diffPos * (dt * 10.0);
+		m_cam.SetPos(m_cam.GetPos() + dMove);
 	}
 
 	{//Z軸回転を水平に保つ

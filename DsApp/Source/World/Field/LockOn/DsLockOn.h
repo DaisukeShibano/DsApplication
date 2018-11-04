@@ -18,6 +18,7 @@ namespace DsApp
 		void Unregister(DsLockOnPoint* pPoint);
 		void LockOn(const DsVec3d& pos, const DsVec3d dir);
 		bool GetLockOnPos(DsVec3d& pos)const;
+		void Update(double dt, const DsVec3d& pos);
 
 	private:
 		std::set<DsLockOnPoint*> m_points;

@@ -88,3 +88,14 @@ bool DsLockOn::GetLockOnPos(DsVec3d& pos)const
 	}
 	return ret;
 }
+
+void DsLockOn::Update(double dt, const DsVec3d& pos)
+{
+	if (m_pBestPoint) {
+		//ˆê’è‹——£—£‚ê‚½‚çƒƒbƒNƒIƒ“‰ðœ
+		const double len = (m_pBestPoint->GetPos() - pos).LengthSq();
+		if (MAX_RANGE_DEFAULT*MAX_RANGE_DEFAULT < len) {
+			m_pBestPoint = NULL;
+		}
+	}
+}
