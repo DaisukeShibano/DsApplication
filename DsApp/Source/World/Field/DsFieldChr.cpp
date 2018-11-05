@@ -100,18 +100,15 @@ void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 	}
 
 	//アクション
-	DsChrParam param(m_name);
-	if (!param.IsValid()) {
-		param = DsChrParam(0);
-		//他ツールなどで配置前のインスタンスを作ることがあるのでダミーを用意させる
+	if (!initInfo.isViewer) {//ビューワー用は遷移しなくていい
+		DsChrParam param(m_name);
+		m_pActReq = _CreareActionRequest();
+		m_pActCtrl = new DsActionCtrl(*m_pActReq, *GetActionFlags(), m_pAnimation->RefAnimClips(), param);
+		DS_ASSERT(m_pActCtrl, "メモリ確保失敗");
+
+		//初期アニメ
+		m_pAnimation->RequestPlayAnim(m_pActCtrl->GetCurrentAnim());
 	}
-
-	m_pActReq = _CreareActionRequest();
-	m_pActCtrl = new DsActionCtrl(*m_pActReq, *GetActionFlags(), m_pAnimation->RefAnimClips(), param);
-	DS_ASSERT(m_pActCtrl, "メモリ確保失敗");
-
-	//初期アニメ
-	m_pAnimation->RequestPlayAnim(m_pActCtrl->GetCurrentAnim());
 }
 
 //virtual
@@ -132,13 +129,18 @@ void DsFieldChr::Update(double dt)
 	DsFieldObj::Update(dt);
 	
 	//AnimEventの後
-	m_pActReq->Update(dt);
-	m_pActCtrl->Update(dt);
-
+	if (m_pActReq) {
+		m_pActReq->Update(dt);
+	}
+	if (m_pActCtrl) {
+		m_pActCtrl->Update(dt);
+	}
 
 	if (!IsRequestDirectAnim()) {
 		//ステートから再生アニメ決定
-		m_pAnimation->RequestPlayAnim(m_pActCtrl->GetCurrentAnim());
+		if (m_pActCtrl) {
+			m_pAnimation->RequestPlayAnim(m_pActCtrl->GetCurrentAnim());
+		}
 	}
 
 	DsVec3d move = DsVec3d::Zero();

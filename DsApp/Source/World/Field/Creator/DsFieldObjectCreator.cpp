@@ -50,6 +50,7 @@ void DsFieldObjectCreator::Create(const char* resPath, DsPhysicsWorld& world, Ds
 		reqInitInfo.animName = mapInfo.pAnimPath;
 		reqInitInfo.physicsType = mapInfo.objType;
 		reqInitInfo.pGameSys = pGameSys;
+		reqInitInfo.isViewer = false;
 
 		INIT_INFO info;
 		info.initInfo = reqInitInfo;

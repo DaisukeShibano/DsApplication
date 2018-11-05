@@ -25,6 +25,7 @@ namespace DsApp
 			, physicsType()
 			, boundCoef(0.0)
 			, pGameSys(NULL)
+			, isViewer(false)
 		{}
 		DsVec3d pos;
 		DsVec3d ang;
@@ -34,6 +35,7 @@ namespace DsApp
 		DS_MAP_OBJ_TYPE physicsType;
 		double boundCoef;
 		DsGameSys* pGameSys;
+		bool isViewer;
 	};
 }
 

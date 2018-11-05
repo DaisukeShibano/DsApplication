@@ -225,6 +225,7 @@ std::vector<std::string> DsSimu::RegisterObj(const char* drawModelPath, const ch
 	info.hitName = hitModelPath;
 	info.animName = drawModelPath;
 	info.physicsType = physicsType;
+	info.isViewer = true;
 	pObj->Initialize(info);
 
 	pObj->DbgSetGravity(false);

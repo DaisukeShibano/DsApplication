@@ -195,7 +195,9 @@ void DsAnimation::Update(double dt)
 
 		//移動量更新
 		//Mater位置まで補間されると大分へんな動きする。あとblendはMaster移動量確保してない
-		DsAnimSkeletonModifier::UtilGetMasterMove(dt, m_pPlayAnim->RefAnim(), *m_pSkeleton, &m_deltaMotion, NULL);
+		if (m_pPlayAnim) {
+			DsAnimSkeletonModifier::UtilGetMasterMove(dt, m_pPlayAnim->RefAnim(), *m_pSkeleton, &m_deltaMotion, NULL);
+		}
 	}
 
 	//ボーンの結果を頂点に適用。

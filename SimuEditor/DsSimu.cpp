@@ -320,6 +320,7 @@ DsFieldObj* DsSimu::RegisterObj(const char* drawModelPath, const char* hitModelP
 	info.hitName = hitModelPath;
 	info.animName = drawModelPath;
 	info.physicsType = physicsType;
+	info.isViewer = true;
 	pObj->Initialize(info);
 
 	if ((fieldObjType == DsLib::DS_MAP_FIELD_OBJ_TYPE::CHR) || (fieldObjType == DsLib::DS_MAP_FIELD_OBJ_TYPE::OBJ) || (fieldObjType == DsLib::DS_MAP_FIELD_OBJ_TYPE::PLAYER))
