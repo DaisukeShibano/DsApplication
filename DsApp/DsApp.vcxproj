@@ -220,7 +220,7 @@
     <ClInclude Include="Source\World\Field\Action\DsChrState.h" />
     <ClInclude Include="Source\World\Field\Action\DsChrStateDefine.h" />
     <ClInclude Include="Source\World\Field\Action\Enemy\DsActionRequestCom1.h" />
-    <ClInclude Include="Source\World\Field\Action\Enemy\DsEnemyState.h" />
+    <ClInclude Include="Source\World\Field\Action\Enemy\DsEnemyState1.h" />
     <ClInclude Include="Source\World\Field\Action\Player\DsPlayerState.h" />
     <ClInclude Include="Source\World\Field\Controller\DsChrController.h" />
     <ClInclude Include="Source\World\Field\Controller\DsGpController.h" />
@@ -272,7 +272,7 @@
     <ClCompile Include="Source\World\Field\Action\DsChrState.cpp" />
     <ClCompile Include="Source\World\Field\Action\DsChrStateDefine.cpp" />
     <ClCompile Include="Source\World\Field\Action\Enemy\DsActionRequestCom1.cpp" />
-    <ClCompile Include="Source\World\Field\Action\Enemy\DsEnemyState.cpp" />
+    <ClCompile Include="Source\World\Field\Action\Enemy\DsEnemyState1.cpp" />
     <ClCompile Include="Source\World\Field\Action\Player\DsPlayerState.cpp" />
     <ClCompile Include="Source\World\Field\Controller\DsChrController.cpp" />
     <ClCompile Include="Source\World\Field\Controller\DsGpController.cpp" />

@@ -3,7 +3,6 @@
 
 namespace DsLib
 {
-
 //#define DS_ASSERT( flag, ex ) ( (flag) ? (flag) : assert( (flag) && (ex) ) )
 #ifdef _DEBUG
 #define DS_ASSERTW( flag, ex, ...)\

@@ -1,32 +1,24 @@
 #include "DsAppPch.h"
-#include "World/Field/Action/Player/DsPlayerState.h"
+#include "World/Field/Action/Enemy/DsEnemyState1.h"
 //他のヘッダ
-#ifndef _DS_ACTION_REQUEST_
-#include "World/Field/Action/DsActionRequest.h"
-#endif
 #include "World/Field/Action/DsChrStateDefine.h"
 #include "World/Field/Action/DsActionFlags.h"
 
-
 using namespace DsApp;
-
-
 
 namespace
 {
-
 	//ステートグラフID登録
 	static const int DS_REGISTER_STATE_GRAPH_ID = DsChrStateDefine::PLAYER_STATE_GRAPH_ID;
-
 
 
 	/*********************************************************
 	@brief 待機
 	**********************************************************/
-	class DsChrStateIdle : public DsPlayerState
+	class DsChrStateIdle : public DsEnemyState1
 	{
 	public:
-		DsChrStateIdle(const INIT_ARG& arg) :DsPlayerState(arg)
+		DsChrStateIdle(const INIT_ARG& arg) :DsEnemyState1(arg)
 		{
 			if (m_pAnimClip) {
 				m_pAnimClip->SetLoop(true);
@@ -36,22 +28,11 @@ namespace
 	private:
 		virtual void Update(double dt) override
 		{
-			DsPlayerState::Update(dt);
-
-			m_nextState = m_myState;
-
-			//いつでもキャンセル可能
-			m_actReq.SetCancelAll();
-
-			if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
-				m_nextState = CHR_STATE::ATTACK1;
-			}
-			else if (m_actReq.IsMove()) {
-				m_nextState = CHR_STATE::RUN;
-			}
+			DsEnemyState1::Update(dt);
 		};
 	};
 	DS_REGISTER_STATE(DsChrStateIdle)
+
 
 	/*---------------------------------------------------------
 	DsRegisterMyClass
@@ -64,18 +45,17 @@ namespace
 		{}
 		virtual int GetId() const override
 		{
-			return DsChrStateDefine::PLAYER_STATE_GRAPH_ID;
+			return DsChrStateDefine::ENEMY1_STATE_GRAPH_ID;
 		}
 	};
 
 }
 
-
 /*---------------------------------------------------------
 DsPlayerState
 ---------------------------------------------------------*/
 //static
-void DsPlayerState::Initialize()
+void DsEnemyState1::Initialize()
 {
 	//上書きするステートリストを登録します
 	static std::vector<STATE_CLASS_TYPE> s_myClasses;

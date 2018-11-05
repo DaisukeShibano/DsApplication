@@ -9,7 +9,7 @@ namespace
 	{
 		//id	ChrName		stateGraphId
 		{0,		"alice",			0},
-		{1,		"enemy0",			1},
+		{1,		"enemy1",			1},
 	};
 
 

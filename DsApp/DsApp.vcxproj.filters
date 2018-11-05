@@ -204,9 +204,6 @@
     <ClInclude Include="Source\World\Field\Action\Enemy\DsActionRequestCom1.h">
       <Filter>Source\World\Field\Action\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Source\World\Field\Action\Enemy\DsEnemyState.h">
-      <Filter>Source\World\Field\Action\Enemy</Filter>
-    </ClInclude>
     <ClInclude Include="Source\World\Field\DsFieldEnemy.h">
       <Filter>Source\World\Field</Filter>
     </ClInclude>
@@ -239,6 +236,9 @@
     </ClInclude>
     <ClInclude Include="Source\World\Field\Action\DsActionFlags.h">
       <Filter>Source\World\Field\Action</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Field\Action\Enemy\DsEnemyState1.h">
+      <Filter>Source\World\Field\Action\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -338,9 +338,6 @@
     <ClCompile Include="Source\World\Field\Action\Enemy\DsActionRequestCom1.cpp">
       <Filter>Source\World\Field\Action\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Source\World\Field\Action\Enemy\DsEnemyState.cpp">
-      <Filter>Source\World\Field\Action\Enemy</Filter>
-    </ClCompile>
     <ClCompile Include="Source\World\Field\DsFieldEnemy.cpp">
       <Filter>Source\World\Field</Filter>
     </ClCompile>
@@ -370,6 +367,9 @@
     </ClCompile>
     <ClCompile Include="Source\World\Component\LockOn\DsLockOnComponent.cpp">
       <Filter>Source\World\Field\Component\LockOn</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Field\Action\Enemy\DsEnemyState1.cpp">
+      <Filter>Source\World\Field\Action\Enemy</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

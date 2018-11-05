@@ -9,14 +9,16 @@ namespace DsApp
 namespace DsApp
 {
 	
-	class DsEnemyState : public DsChrState
+	class DsEnemyState1 : public DsChrState
 	{
 	public:
-		DsEnemyState(const INIT_ARG& arg)
+		DsEnemyState1(const INIT_ARG& arg)
 			:DsChrState(arg)
 		{}
 
-		virtual ~DsEnemyState()
+		virtual ~DsEnemyState1()
 		{}
+
+		static void Initialize();
 	};
 }
