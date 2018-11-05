@@ -48,7 +48,7 @@ void DsFieldHit::Initialize(const DsFieldInitInfo& initInfo)
 	DsFieldObj::Initialize(initInfo);
 
 	//’nŒ`‚ ‚½‚è‚Í“à•”‚Ì‚à‚Ì‚Í‘S‚Ä“–‚½‚ç‚È‚¢
-	m_actorId.GetActor()->SetCollisionFilter(DsAppCollisionFilter::CalcFilterGroup(COLLISION_GROUP::HIT));
+	m_actorId.GetActor()->SetCollisionFilter(DsAppCollisionFilter::CalcFilterGroupInsideNoHit(COLLISION_GROUP::HIT));
 }
 
 //virtual 

@@ -88,7 +88,7 @@ void DsFieldChr::Initialize(const DsFieldInitInfo& initInfo)
 			parts.damperA = param.GetDamperA();
 			parts.damperV = param.GetDamperV();
 			parts.mass = param.GetMass();
-			//parts.collisionFilter = DsAppCollisionFilter::CalcFilterInside(param.GetCollisionGroup());
+			//parts.collisionFilter = DsAppCollisionFilter::CalcFilterInsideGroupAllHit(param.GetCollisionGroup());
 			parts.collisionFilter = DsAppCollisionFilter::CalcFilterAllOne();//ラグドールはゆれ物しか使ってないので何にも当たらなくいいかな。ダメージ判定も今のとこカプセルで十分
 			m_pRagdoll->SetParam(parts);
 		}

@@ -76,6 +76,9 @@
     <Filter Include="Source\World\Field\Component\LockOn">
       <UniqueIdentifier>{fc5e2dcb-e9e8-4e01-a112-7a73a76ccdba}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\World\Field\Component\Damage">
+      <UniqueIdentifier>{34c592f6-e834-4a23-8f65-442aa91a96a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsAppPch.h">
@@ -240,6 +243,12 @@
     <ClInclude Include="Source\World\Field\Action\Enemy\DsEnemyState1.h">
       <Filter>Source\World\Field\Action\Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Res\Param\DsDamageParam.h">
+      <Filter>Source\Res\Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\World\Component\Damage\DsDamageComponent.h">
+      <Filter>Source\World\Field\Component\Damage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsAppPch.cpp">
@@ -370,6 +379,12 @@
     </ClCompile>
     <ClCompile Include="Source\World\Field\Action\Enemy\DsEnemyState1.cpp">
       <Filter>Source\World\Field\Action\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Res\Param\DsDamageParam.cpp">
+      <Filter>Source\Res\Param</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Component\Damage\DsDamageComponent.cpp">
+      <Filter>Source\World\Field\Component\Damage</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

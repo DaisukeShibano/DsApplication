@@ -51,7 +51,7 @@ namespace DsApp
 		};
 
 	public:
-		DsComponentSystem(DsFieldObj& owner, DsLib::DsSys& sys, DsGameSys* pGameSys);
+		DsComponentSystem(DsFieldObj& owner, DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& physWorld, DsGameSys* pGameSys);
 		virtual ~DsComponentSystem();
 
 	public:
@@ -71,6 +71,7 @@ namespace DsApp
 		void RequestItemBox();
 		void RequestAttachWithUpdate(const DsMat44d& target, DsAttachEntity* pMove, double dt);
 		void RequestLockOnPoint();
+		void RequestDamage(ds_int64 key, int damageId, int dmypolyId0, int dmypolyId1);
 
 	public:
 		DsItemBoxComponent * GetItemBox()const;
@@ -80,6 +81,7 @@ namespace DsApp
 		std::unordered_map<KEY, DsComponent*, KeyHash> m_components;
 		DsFieldObj& m_owner;
 		DsLib::DsSys& m_sys;
+		DsPhysics::DsPhysicsWorld& m_physWorld;
 		DsGameSys* m_pGameSys;
 
 	};

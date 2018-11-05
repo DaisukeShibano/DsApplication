@@ -15,15 +15,17 @@ namespace DsApp
 {
 	struct COMPONENT_UPDATE_ARG
 	{
-		COMPONENT_UPDATE_ARG(double _dt, DsFieldObj& _owner, DsLib::DsSys& _sys, DsGameSys* _pGameSys)
+		COMPONENT_UPDATE_ARG(double _dt, DsFieldObj& _owner, DsLib::DsSys& _sys, DsPhysics::DsPhysicsWorld& _physWorld, DsGameSys* _pGameSys)
 			: dt(_dt)
 			, owner(_owner)
 			, sys(_sys)
+			, physWorld(_physWorld)
 			, pGameSys(_pGameSys)
 		{}
 		double dt;
 		DsFieldObj& owner;
 		DsLib::DsSys& sys;
+		DsPhysics::DsPhysicsWorld& physWorld;
 		DsGameSys* pGameSys;
 	};
 

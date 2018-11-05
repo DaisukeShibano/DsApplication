@@ -1,6 +1,9 @@
 #ifndef __DS_APP_COLLISION_FILTER__
 #define __DS_APP_COLLISION_FILTER__
 
+/*
+#include "World/Physics/DsAppCollisionFilter.h"
+*/
 
 namespace DsPhysics
 {
@@ -14,7 +17,8 @@ namespace DsApp
 	//別オーナー
 	enum class COLLISION_GROUP : unsigned int
 	{
-		HIT,
+		HIT,//地形
+		DAMAGE,//ダメージ
 		//MAX = 31,
 	};
 
@@ -36,17 +40,31 @@ namespace DsApp
 		}
 
 		//内部グループは全てに当たる設定。グループのみ設定
-		static DsPhysics::DsCollisionFilter CalcFilterGroup(COLLISION_GROUP group)
+		static DsPhysics::DsCollisionFilter CalcFilterGroupInsideAllHit(COLLISION_GROUP group)
 		{
 			//32bit内部グループ | 32bitグループ
 			return (1ULL) << static_cast<unsigned int>(group);
 		}
 
+		//内部グループは全てに当たらない設定。グループのみ設定
+		static DsPhysics::DsCollisionFilter CalcFilterGroupInsideNoHit(COLLISION_GROUP group)
+		{
+			//32bit内部グループ | 32bitグループ
+			return (0xFFFFFFFFULL << 32ULL) | (1ULL << static_cast<unsigned int>(group));
+		}
+
 		//内部グループのみ設定。グループは全てに当たる設定
-		static DsPhysics::DsCollisionFilter CalcFilterInside(INSIDE_COLLISION_GROUP inside)
+		static DsPhysics::DsCollisionFilter CalcFilterInsideGroupAllHit(INSIDE_COLLISION_GROUP inside)
 		{
 			//32bit内部グループ | 32bitグループ
 			return (1ULL << 32ULL ) << static_cast<unsigned int>(inside);
+		}
+
+		//内部グループのみ設定。グループは全てに当たらない設定
+		static DsPhysics::DsCollisionFilter CalcFilterInsideGroupNoHit(INSIDE_COLLISION_GROUP inside)
+		{
+			//32bit内部グループ | 32bitグループ
+			return ((1ULL << 32ULL) << static_cast<unsigned int>(inside)) | (0xFFFFFFFFULL);
 		}
 
 		//全ての内部グループに所属する設定。グループは全てに当たる設定

@@ -19,13 +19,15 @@
 #include "World/Component/Attach/DsAttachComponent.h"
 #endif
 #include "World/Component/LockOn/DsLockOnComponent.h"
+#include "World/Component/Damage/DsDamageComponent.h"
 
 using namespace DsApp;
 
-DsComponentSystem::DsComponentSystem(DsFieldObj& owner, DsLib::DsSys& sys, DsGameSys* pGameSys)
+DsComponentSystem::DsComponentSystem(DsFieldObj& owner, DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& physWorld, DsGameSys* pGameSys)
 	: m_components()
 	, m_owner(owner)
 	, m_sys(sys)
+	, m_physWorld(physWorld)
 	, m_pGameSys(pGameSys)
 {
 }
@@ -40,7 +42,7 @@ DsComponentSystem::~DsComponentSystem()
 
 void DsComponentSystem::Update(double dt)
 {
-	const COMPONENT_UPDATE_ARG arg(dt, m_owner, m_sys, m_pGameSys);
+	const COMPONENT_UPDATE_ARG arg(dt, m_owner, m_sys, m_physWorld, m_pGameSys);
 
 	std::vector<KEY> eraseList;
 	for (auto c : m_components) {
@@ -118,7 +120,7 @@ void DsComponentSystem::RequestAttachWithUpdate(const DsMat44d& target, DsAttach
 	DsAttachComponent* pComponent = _CreateGetComponent<DsAttachComponent>((ds_uint64)(&m_owner));
 	if (pComponent) {
 		pComponent->Request(target, pMove);
-		const COMPONENT_UPDATE_ARG arg(dt, m_owner, m_sys, m_pGameSys);
+		const COMPONENT_UPDATE_ARG arg(dt, m_owner, m_sys, m_physWorld, m_pGameSys);
 		pComponent->Update(arg);
 		pComponent->Request(target, pMove);
 	}
@@ -132,6 +134,13 @@ void DsComponentSystem::RequestLockOnPoint()
 	}
 }
 
+void DsComponentSystem::RequestDamage(ds_int64 key, int damageId, int dmypolyId0, int dmypolyId1)
+{
+	DsDamageComponent* pComponent = _CreateGetComponent<DsDamageComponent>((ds_uint64)(&m_owner));
+	if (pComponent) {
+		pComponent->Request(damageId, dmypolyId0, dmypolyId1);
+	}
+}
 
 DsItemBoxComponent * DsComponentSystem::GetItemBox()const
 {

@@ -146,6 +146,11 @@ void DsAnimEventCallback::_SoundEffect(const DS_ANIM_ET_SOUND_EFFECT* pParam)
 
 void DsAnimEventCallback::_Damage(const DS_ANIM_ET_DAMAGE* pParam)
 {
+	DsComponentSystem* pComSys = m_owner.GetComponentSystem();
+	if (pComSys) {
+		const ds_uint64 key = (ds_uint64)(pParam);
+		pComSys->RequestDamage(key, pParam->damageId, pParam->dmyPolyId[0], pParam->dmyPolyId[1]);
+	}
 }
 
 void DsAnimEventCallback::_Cancel(const DS_ANIM_ET_CANCEL_ACTION_TIMING* pParam)

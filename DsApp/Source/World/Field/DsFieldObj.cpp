@@ -59,7 +59,7 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 {
 	m_name = initInfo.name;
 
-	m_pComponentSystem = new DsComponentSystem(*this, m_sys, initInfo.pGameSys);
+	m_pComponentSystem = new DsComponentSystem(*this, m_sys, m_world, initInfo.pGameSys);
 	DS_ASSERT(m_pComponentSystem, "ÉÅÉÇÉäämï€é∏îs");
 
 	m_pAnimation = new DsAnimation(initInfo.animName.c_str(), m_sys.RefRender().RefDrawCom(), m_sys.RefResource());
