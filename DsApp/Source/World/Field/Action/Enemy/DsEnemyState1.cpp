@@ -9,7 +9,7 @@ using namespace DsApp;
 namespace
 {
 	//ステートグラフID登録
-	static const int DS_REGISTER_STATE_GRAPH_ID = DsChrStateDefine::PLAYER_STATE_GRAPH_ID;
+	static const int DS_REGISTER_STATE_GRAPH_ID = DsChrStateDefine::ENEMY1_STATE_GRAPH_ID;
 
 
 	/*********************************************************
