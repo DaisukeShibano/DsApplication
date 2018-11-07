@@ -249,6 +249,9 @@
     <ClInclude Include="Source\World\Component\Damage\DsDamageComponent.h">
       <Filter>Source\World\Field\Component\Damage</Filter>
     </ClInclude>
+    <ClInclude Include="Source\World\Component\Effect\DsHitEffectComponent.h">
+      <Filter>Source\World\Field\Component\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsAppPch.cpp">
@@ -385,6 +388,9 @@
     </ClCompile>
     <ClCompile Include="Source\World\Component\Damage\DsDamageComponent.cpp">
       <Filter>Source\World\Field\Component\Damage</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Component\Effect\DsHitEffectComponent.cpp">
+      <Filter>Source\World\Field\Component\Effect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

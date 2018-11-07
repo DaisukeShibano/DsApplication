@@ -16,6 +16,7 @@ DsDamageComponent::DsDamageComponent()
 	, m_dmypolyId0(-1)
 	, m_dmypolyId1(-1)
 	, m_preEndPos(DsVec3d::Zero())
+	, m_hitOwners()
 {
 }
 
@@ -39,17 +40,43 @@ bool DsDamageComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 			if (isGetDmypoly0 && isGetDmypoly1) {
 
 				const double radius = param.GetRadius();
-				DsDbgSys::GetIns().RefDrawCom().DrawCapsule(start.GetPos(), end.GetPos(), 0.1);
+				DsDbgSys::GetIns().RefDrawCom().DrawCapsule(start.GetPos(), end.GetPos(), radius);
 				const DsCollisionFilter filter = DsAppCollisionFilter::CalcFilterGroupInsideNoHit(COLLISION_GROUP::DAMAGE);
-				DsVec3d hitPos0;
-				const bool isHit0 = arg.physWorld.SphereCast(start.GetPos(), end.GetPos(), radius, filter, &arg.owner, &hitPos0);
+				std::vector<DsCollisionResult> results;
+				bool isHit = arg.physWorld.SphereCast(start.GetPos(), end.GetPos(), radius, filter, &arg.owner, results);
 
 				//２回目以降は前フレとの補完判定
-				if (m_isCreateDamage) {
-					DsVec3d hitPos1;
-					const bool isHit1 = arg.physWorld.SphereCast(m_preEndPos, end.GetPos(), radius, filter, &arg.owner, &hitPos1);
-					DsDbgSys::GetIns().RefDrawCom().DrawCapsule(m_preEndPos, end.GetPos(), 0.1);
+				if (!isHit) {
+					if (m_isCreateDamage) {
+						DsVec3d hitPos1;
+						isHit = arg.physWorld.SphereCast(m_preEndPos, end.GetPos(), radius, filter, &arg.owner, results);
+						DsDbgSys::GetIns().RefDrawCom().DrawCapsule(m_preEndPos, end.GetPos(), radius);
+					}
 				}
+
+
+				//多段ヒット回避制御
+				if (isHit) {
+					for (const DsCollisionResult& result : results) {
+						const DsFieldObj* pOwner1 = (DsFieldObj*)(result.GetOwnerId1()->GetActor()->GetUserData());
+						const DsFieldObj* pOwner2 = (DsFieldObj*)(result.GetOwnerId2()->GetActor()->GetUserData());
+						const DsFieldObj* pDefender = (pOwner1 && (pOwner1 != &arg.owner)) ? (pOwner1) : (pOwner2);
+						if (pDefender) {
+							if (m_hitOwners.find(pDefender) == m_hitOwners.end()) {
+								//初回ヒット
+								m_hitOwners.insert(pDefender);
+								//オーナーにダメージ通知
+							}
+							else {
+								//２回目以降のヒット
+								//何もしない
+							}
+						}
+					}
+				}
+
+
+				
 
 				isCreateDamage = true;
 				m_preEndPos = end.GetPos();

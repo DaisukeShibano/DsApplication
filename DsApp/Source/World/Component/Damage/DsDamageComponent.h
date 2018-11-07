@@ -25,6 +25,7 @@ namespace DsApp
 		int m_dmypolyId0;
 		int m_dmypolyId1;
 		DsVec3d m_preEndPos;
+		std::set<const DsFieldObj*> m_hitOwners;
 
 	};
 }

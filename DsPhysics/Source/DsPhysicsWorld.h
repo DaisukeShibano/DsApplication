@@ -65,8 +65,12 @@ namespace DsPhysics
 		Actors& GetActors() { return m_actors; }
 		DsActor* RayCast_CollectNear( const DsVec3d& startPos, const DsVec3d& endPos, double* depth=NULL, DsVec3d* hitPos = NULL) const;
 		DsActor* RayCast_CollectNear(DsRay& ray, double* depth = NULL, DsVec3d* hitPos=NULL) const;
-		bool SphereCast(DsVec3d start, DsVec3d end, double r, DsCollisionFilter filter, void* pUserData, DsVec3d* pOutHitPos=NULL) const;
+		bool SphereCast(DsVec3d start, DsVec3d end, double r, DsCollisionFilter filter, void* pUserData, DsVec3d* pOutHitPos=NULL, DsActorId* pOutActor=NULL) const;
+		bool SphereCast(DsVec3d start, DsVec3d end, double r, DsCollisionFilter filter, void* pUserData, std::vector<DsCollisionResult>& outResult) const;
+	private:
+		DsActor* _GetSphereCastShape(DsVec3d start, DsVec3d end, double r, DsCollisionFilter filter, void* pUserData, char* pActorBuffer) const;
 
+	public:
 		double GetDt() const;
 		const DsVec3d& GetGravity() const { return m_gravity; }
 

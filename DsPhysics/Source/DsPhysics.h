@@ -50,6 +50,8 @@ using namespace DsLib;
 #include "Ragdoll/DsRagdoll.h"
 #endif
 #include "ChrProxy/DsChrProxy.h"
-
+#ifndef __DS_COLLISION_RESULT__
+#include "Collision/DsCollisionResult.h"
+#endif
 
 #endif

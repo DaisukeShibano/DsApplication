@@ -315,7 +315,7 @@ DsActor*  DsPhysicsWorld::RayCast_CollectNear(DsRay& ray, double* depth/* = NULL
 }
 
 
-bool DsPhysicsWorld::SphereCast(DsVec3d start, DsVec3d end, double r, DsCollisionFilter filter, void* pUserData, DsVec3d* pOutHitPos/*=NULL*/) const
+bool DsPhysicsWorld::SphereCast(DsVec3d start, DsVec3d end, double r, DsCollisionFilter filter, void* pUserData, DsVec3d* pOutHitPos/*=NULL*/, DsActorId* pOutActor/* = NULL*/) const
 {
 	typedef std::vector<DsCollisionResult> resultVec;
 
@@ -323,39 +323,10 @@ bool DsPhysicsWorld::SphereCast(DsVec3d start, DsVec3d end, double r, DsCollisio
 	resultVec results;
 	const DsVec3d vec = end - start;
 	const DsVec3d capDir = DsVec3d::Normalize(vec);
-	DsActor* pActor = NULL;
-	const double lenSq = vec.LengthSq();
-	if (lenSq < (r*r*4.0)) {
-		//半径以下なので球で判定
-		DsRigidSphere::DsRigidSphereFactory factory(r, 1.0, "スフィアキャスト");
-		factory.InitPos(start);
-		char buffer[sizeof(DsRigidSphere)];
-		pActor = factory.CreateIns(DsActorId((DsActor*)(buffer)), buffer);	
-	}
-	else {
-		//カプセルで判定
-		const DsVec3d baseDir = DsRigidCapsule::GetInitExtendDir();
-		const DsVec3d axis = DsVec3d::Cross(capDir, baseDir);
-		const double rad = DsVec3d::GetRelativeAng(baseDir, capDir);
-		const DsMat33d rot = DsMat33d::RotateAxis(axis, rad);
-		const DsVec3d pos = (start + end)*0.5;
 
-		//カプセルパラ
-		double halfLen = sqrt(lenSq)*0.5;
-		halfLen -= r;
-		DsRigidCapsule::DsRigidCapsuleFactory factory(r, halfLen, 1.0, "スフィアキャスト");
-		factory.InitPos(pos);
-		factory.InitRot(rot);
-		char buffer[sizeof(DsRigidCapsule)];
-		pActor = factory.CreateIns(DsActorId( (DsActor*)(buffer) ), buffer);
-		//DsDbgSys::GetIns().RefDrawCom().SetColor(0., 0., 1.0);
-		//pActor->Draw(DsDbgSys::GetIns().RefDrawCom());
-	}
+	char buffer[ max(sizeof(DsRigidSphere), sizeof(DsRigidCapsule)) ];
+	const DsActor* pActor = _GetSphereCastShape(start, end, r, filter, pUserData, buffer);
 
-	pActor->SetUserData(pUserData);
-	pActor->SetCollisionFilter(filter);
-	//DsDbgSys::GetIns().RefDrawCom().SetColor(0., 0., 1.0);
-	//pActor->Draw(DsDbgSys::GetIns().RefDrawCom());
 	if (pOutHitPos) {
 		m_pListener->Cast(*pActor, m_group, results);
 	}
@@ -379,12 +350,57 @@ bool DsPhysicsWorld::SphereCast(DsVec3d start, DsVec3d end, double r, DsCollisio
 			}
 		}
 
-		if (ret){
+		if (ret) {
 			*pOutHitPos = start + capDir * depth;
 		}
 	}
 
 	return ret;
+}
+
+bool DsPhysicsWorld::SphereCast(DsVec3d start, DsVec3d end, double r, DsCollisionFilter filter, void* pUserData, std::vector<DsCollisionResult>& outResult) const
+{
+	bool ret = false;
+	char buffer[max(sizeof(DsRigidSphere), sizeof(DsRigidCapsule))];
+	const DsActor* pActor = _GetSphereCastShape(start, end, r, filter, pUserData, buffer);
+	m_pListener->Cast(*pActor, m_group, outResult);
+	return !outResult.empty();
+}
+
+DsActor* DsPhysicsWorld::_GetSphereCastShape(DsVec3d start, DsVec3d end, double r, DsCollisionFilter filter, void* pUserData, char* pActorBuffer) const
+{
+	const DsVec3d vec = end - start;
+	const DsVec3d capDir = DsVec3d::Normalize(vec);
+	DsActor* pActor = NULL;
+	const double lenSq = vec.LengthSq();
+	if (lenSq < (r*r*4.0)) {
+		//半径以下なので球で判定
+		DsRigidSphere::DsRigidSphereFactory factory(r, 1.0, "スフィアキャスト");
+		factory.InitPos(start);
+		pActor = factory.CreateIns(DsActorId((DsActor*)(pActorBuffer)), pActorBuffer);
+	}
+	else {
+		//カプセルで判定
+		const DsVec3d baseDir = DsRigidCapsule::GetInitExtendDir();
+		const DsVec3d axis = DsVec3d::Cross(capDir, baseDir);
+		const double rad = DsVec3d::GetRelativeAng(baseDir, capDir);
+		const DsMat33d rot = DsMat33d::RotateAxis(axis, rad);
+		const DsVec3d pos = (start + end)*0.5;
+
+		//カプセルパラ
+		double halfLen = sqrt(lenSq)*0.5;
+		halfLen -= r;
+		DsRigidCapsule::DsRigidCapsuleFactory factory(r, halfLen, 1.0, "スフィアキャスト");
+		factory.InitPos(pos);
+		factory.InitRot(rot);
+		pActor = factory.CreateIns(DsActorId((DsActor*)(pActorBuffer)), pActorBuffer);
+		//DsDbgSys::GetIns().RefDrawCom().SetColor(0., 0., 1.0);
+		//pActor->Draw(DsDbgSys::GetIns().RefDrawCom());
+	}
+
+	pActor->SetUserData(pUserData);
+	pActor->SetCollisionFilter(filter);
+	return pActor;
 }
 
 double DsPhysicsWorld::GetDt() const

@@ -209,6 +209,7 @@
     <ClInclude Include="Source\World\Component\DsComponent.h" />
     <ClInclude Include="Source\World\Component\DsComponentSystem.h" />
     <ClInclude Include="Source\World\Component\DsComponentSystemDefine.h" />
+    <ClInclude Include="Source\World\Component\Effect\DsHitEffectComponent.h" />
     <ClInclude Include="Source\World\Component\Effect\DsSoundEffectComponent.h" />
     <ClInclude Include="Source\World\Component\Effect\DsTraceEffectComponent.h" />
     <ClInclude Include="Source\World\Component\Equip\DsEquipComponent.h" />
@@ -265,6 +266,7 @@
     <ClCompile Include="Source\World\Component\Attach\DsAttachComponent.cpp" />
     <ClCompile Include="Source\World\Component\Damage\DsDamageComponent.cpp" />
     <ClCompile Include="Source\World\Component\DsComponentSystem.cpp" />
+    <ClCompile Include="Source\World\Component\Effect\DsHitEffectComponent.cpp" />
     <ClCompile Include="Source\World\Component\Effect\DsSoundEffectComponent.cpp" />
     <ClCompile Include="Source\World\Component\Effect\DsTraceEffectComponent.cpp" />
     <ClCompile Include="Source\World\Component\Equip\DsEquipComponent.cpp" />
