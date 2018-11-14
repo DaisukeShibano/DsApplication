@@ -10,5 +10,6 @@
 #ifndef _DS_TRACE_PARTICLE_EMITTER_
 #include "Graphics/Effect/Particle/DsTraceParticleEmitter.h"
 #endif
+#include "Graphics/Effect/Particle/DsBloodParticleEmitter.h"
 
 #endif

@@ -76,7 +76,9 @@ bool DsDamageComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 				}
 
 
-				
+				//HP減算
+				//ノックバックをアタッチ
+				//ヒットエフェクトをアタッチ
 
 				isCreateDamage = true;
 				m_preEndPos = end.GetPos();

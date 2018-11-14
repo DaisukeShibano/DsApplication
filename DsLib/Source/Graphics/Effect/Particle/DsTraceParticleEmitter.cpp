@@ -8,14 +8,15 @@
 
 using namespace DsLib;
 
-//パラメータでもいいかもだけど今はとりあえず決め打ち
-static const double INTERVAL_TIME = 0.01;//発生間隔[秒]
-static const double PARTICLE_LIFE_TIME = 0.20f;//パーティクル寿命
+namespace
+{
+	//パラメータでもいいかもだけど今はとりあえず決め打ち
+	static const double INTERVAL_TIME = 0.01;//発生間隔[秒]
+	static const double PARTICLE_LIFE_TIME = 0.20;//パーティクル寿命
 
-
-
-static const int BLOCK_SIZE = 256;//この個数単位でメモリ確保される
-static const double DELETE_BLOCK_TIME = 5.0f;//ブロックがこの時間以上空だったら削除する
+	static const int BLOCK_SIZE = 256;//この個数単位でメモリ確保される
+	static const double DELETE_BLOCK_TIME = 5.0;//ブロックがこの時間以上空だったら削除する
+}
 
 
 DsTraceParticleEmitter::DsTraceParticleEmitter()

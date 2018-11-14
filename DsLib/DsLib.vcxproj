@@ -206,6 +206,7 @@
     <ClCompile Include="Source\DsUtil.cpp" />
     <ClCompile Include="Source\Graphics\Camera\DsCamera.cpp" />
     <ClCompile Include="Source\Graphics\Command\DsDrawCommand.cpp" />
+    <ClCompile Include="Source\Graphics\Effect\Particle\DsBloodParticleEmitter.cpp" />
     <ClCompile Include="Source\Graphics\Effect\Particle\DsTraceParticleEmitter.cpp" />
     <ClCompile Include="Source\Graphics\GL\DsGLFunc.cpp" />
     <ClCompile Include="Source\Graphics\Image\DsImage.cpp" />
@@ -266,6 +267,7 @@
     <ClInclude Include="Source\Graphics\Camera\DsCamera.h" />
     <ClInclude Include="Source\Graphics\Command\DsDrawCommand.h" />
     <ClInclude Include="Source\Graphics\Effect\DsEffect.h" />
+    <ClInclude Include="Source\Graphics\Effect\Particle\DsBloodParticleEmitter.h" />
     <ClInclude Include="Source\Graphics\Effect\Particle\DsParticle.h" />
     <ClInclude Include="Source\Graphics\Effect\Particle\DsTraceParticleEmitter.h" />
     <ClInclude Include="Source\Graphics\GL\DsGLFunc.h" />

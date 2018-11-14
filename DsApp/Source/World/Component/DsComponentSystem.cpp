@@ -20,11 +20,13 @@
 #endif
 #include "World/Component/LockOn/DsLockOnComponent.h"
 #include "World/Component/Damage/DsDamageComponent.h"
+#include "World/Component/Effect/DsHitEffectComponent.h"
 
 using namespace DsApp;
 
 DsComponentSystem::DsComponentSystem(DsFieldObj& owner, DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& physWorld, DsGameSys* pGameSys)
 	: m_components()
+	, m_oneShotComponents()
 	, m_owner(owner)
 	, m_sys(sys)
 	, m_physWorld(physWorld)
@@ -34,27 +36,64 @@ DsComponentSystem::DsComponentSystem(DsFieldObj& owner, DsLib::DsSys& sys, DsPhy
 
 DsComponentSystem::~DsComponentSystem()
 {
-	for (auto c : m_components) {
-		delete c.second;
+	for (auto t : m_components) {
+		for (auto c : t.second) {
+			delete c.second;
+		}
+		t.second.clear();
 	}
 	m_components.clear();
+
+	for(DsComponent* pC : m_oneShotComponents){
+		delete pC;
+	}
+	m_oneShotComponents.clear();
 }
 
 void DsComponentSystem::Update(double dt)
 {
 	const COMPONENT_UPDATE_ARG arg(dt, m_owner, m_sys, m_physWorld, m_pGameSys);
 
-	std::vector<KEY> eraseList;
-	for (auto c : m_components) {
-		const bool isAlive = c.second->Update(arg);
-		if (!isAlive) {
-			eraseList.push_back(c.first);
+	{//キー管理コンポーネント更新
+		struct _KEY_PAIR
+		{
+			std::type_index type;
+			KEY key;
+		};
+
+		std::vector<_KEY_PAIR> eraseList;
+		for (auto t : m_components) {
+			for (auto c : t.second) {
+				const bool isAlive = c.second->Update(arg);
+				if (!isAlive) {
+					eraseList.push_back({ t.first, c.first });
+				}
+			}
+		}
+
+		for (const _KEY_PAIR& key : eraseList) {
+			DsComponent* pCom = m_components[key.type][key.key];
+			delete pCom;
+			m_components[key.type].erase(key.key);
+			//クラスの種類別なのでそこまで増えないはず。
+			//それよりもメモリの確保解放が頻繁に走る方がいやなのでeraseはしない
+			//if (m_components[key.type].empty()) {
+			//	m_components.erase(key.type);
+			//}
 		}
 	}
-	for (const KEY& key : eraseList) {
-		DsComponent* pCom = m_components[key];
-		delete pCom;
-		m_components.erase(key);
+
+	{//ワンショットコンポートネント更新
+		auto it = m_oneShotComponents.begin();
+		while (it != m_oneShotComponents.end()) {
+			const bool isAlive = (*it)->Update(arg);
+			if (!isAlive) {
+				it = m_oneShotComponents.erase(it);
+			}
+			else {
+				++it;
+			}
+		}
 	}
 }
 
@@ -62,18 +101,29 @@ template<class CLASS>
 CLASS* DsComponentSystem::_CreateGetComponent(ds_int64 key)
 {
 	CLASS* pComponent = NULL;
-	const KEY k(typeid(CLASS), key);
-	auto it = m_components.find(k);
-	if (m_components.end() == it) {
+	const KEY k( key);
+	KeyMap& map = m_components[typeid(CLASS)];
+	auto it = map.find(k);
+	if (map.end() == it) {
 		CLASS* pNew = new CLASS();
 		DS_ASSERT(pNew, "メモリ確保失敗");
-		m_components[k] = pNew;
+		map[k] = pNew;
 		pComponent = pNew;
 	}
 	else {
+		//slotNo=-1は毎回生成
 		pComponent = dynamic_cast<CLASS*>(it->second);
 	}
-	
+
+	return pComponent;
+}
+
+template<class CLASS>
+CLASS* DsComponentSystem::_CreateOneShotComponent(ds_int64 key)
+{
+	CLASS* pComponent = new CLASS();
+	DS_ASSERT(pComponent, "メモリ確保失敗");
+	m_oneShotComponents.push_back(pComponent);
 	return pComponent;
 }
 
@@ -81,10 +131,13 @@ template<class CLASS>
 CLASS* DsComponentSystem::_GetComponent(ds_int64 key)const
 {
 	CLASS* pComponent = NULL;
-	const KEY k(typeid(CLASS), key);
-	auto it = m_components.find(k);
-	if (m_components.end() != it) {
-		pComponent = dynamic_cast<CLASS*>(it->second);
+	const KEY k(key);
+	auto itt = m_components.find(typeid(CLASS));
+	if (m_components.end() != itt) {
+		auto itc = itt->second.find(k);
+		if (itt->second.end() != itc) {
+			pComponent = dynamic_cast<CLASS*>(itc->second);
+		}
 	}
 	return pComponent;
 }
@@ -94,6 +147,14 @@ void DsComponentSystem::RequestTraceEffect(ds_int64 key, int effectId, int dmypo
 	DsTraceEffectComponent* pComponent = _CreateGetComponent<DsTraceEffectComponent>(key);
 	if (pComponent) {
 		pComponent->Request(effectId, dmypolyId0, dmypolyId1);
+	}
+}
+
+void DsComponentSystem::RequestHitEffect(ds_int64 key, int effectId, const DsVec3d& hitPos, DsVec3d hitDir)
+{
+	DsHitEffectComponent* pComponent = _CreateOneShotComponent<DsHitEffectComponent>(key);
+	if (pComponent) {
+		pComponent->Request(effectId, hitPos, hitDir);
 	}
 }
 
@@ -149,6 +210,6 @@ DsItemBoxComponent * DsComponentSystem::GetItemBox()const
 
 DsEquipComponent* DsComponentSystem::GetEquip() const
 {
-	return _GetComponent<DsEquipComponent>((ds_uint64)(&m_owner));
+	return _GetComponent<DsEquipComponent>( (ds_uint64)(&m_owner) );
 }
 

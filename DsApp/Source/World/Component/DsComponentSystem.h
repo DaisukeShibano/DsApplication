@@ -26,27 +26,33 @@ namespace DsApp
 	class DsComponentSystem
 	{
 	public:
-		//別のコンポーネントとキーが被らないよう、型+任意の数値でキーを表現する
+		//キーは、１キャラに１個ならオーナーのアドレス、アニメイベントならバーのアドレス、など
 		struct KEY
 		{
-			KEY(const std::type_info& _type, ds_uint64 _key)
-				:type(_type)
-				,key(_key)
+			explicit KEY(ds_uint64 _key)
+				:key(_key)
 			{}
 
 			bool operator == (const KEY& r) const{
-				return (type == r.type) && (key == r.key);
+				return (key == r.key);
 			}
 
-			std::type_index type;
-			ds_uint64 key;
+			const ds_uint64 key;
 		};
 
 		class KeyHash
 		{
 		public:
-			std::size_t operator()(const KEY& key) const {
-				return key.type.hash_code() + key.key;
+			size_t operator()(const KEY& r) const {
+				return r.key;
+			}
+		};
+
+		class TypeHash
+		{
+		public:
+			size_t operator()(const std::type_index& r) const {
+				return r.hash_code();
 			}
 		};
 
@@ -62,10 +68,14 @@ namespace DsApp
 		CLASS* _CreateGetComponent(ds_int64 key);
 
 		template<class CLASS>
+		CLASS* _CreateOneShotComponent(ds_int64 key);
+
+		template<class CLASS>
 		CLASS* _GetComponent(ds_int64 key)const;
 
 	public:
 		void RequestTraceEffect(ds_int64 key, int effectId, int dmypolyId0, int dmypolyId1);
+		void RequestHitEffect(ds_int64 key, int effectId, const DsVec3d& hitPos, DsVec3d hitDir);
 		void RequestSoundEffect(ds_int64 key, int soundId, int dmypolyId);
 		void RequestEquip();
 		void RequestItemBox();
@@ -78,7 +88,10 @@ namespace DsApp
 		DsEquipComponent* GetEquip() const;
 
 	private:
-		std::unordered_map<KEY, DsComponent*, KeyHash> m_components;
+		typedef std::unordered_map<KEY, DsComponent*, KeyHash> KeyMap;
+
+		std::unordered_map<std::type_index, KeyMap, TypeHash> m_components;
+		std::list<DsComponent*> m_oneShotComponents;
 		DsFieldObj& m_owner;
 		DsLib::DsSys& m_sys;
 		DsPhysics::DsPhysicsWorld& m_physWorld;

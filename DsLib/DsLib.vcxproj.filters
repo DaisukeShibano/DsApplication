@@ -277,6 +277,9 @@
     <ClCompile Include="Source\Model\DsModel.cpp">
       <Filter>Source\Model</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Graphics\Effect\Particle\DsBloodParticleEmitter.cpp">
+      <Filter>Source\Graphics\Effect\Particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsPch.h">
@@ -521,6 +524,9 @@
     </ClInclude>
     <ClInclude Include="Source\Model\DsModel.h">
       <Filter>Source\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Effect\Particle\DsBloodParticleEmitter.h">
+      <Filter>Source\Graphics\Effect\Particle</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
