@@ -7,7 +7,7 @@
 
 namespace DsLib
 {
-	class DsTraceParticleEmitter;
+	class DsParticleEmitter;
 	class DsCamera;
 }
 
@@ -20,14 +20,14 @@ namespace DsLib
 		~DsParticleRender();
 
 	public:
-		void Register(const DsTraceParticleEmitter& emitter);
-		void UnRegister(const DsTraceParticleEmitter& emitter);
+		void Register(const DsParticleEmitter& emitter);
+		void UnRegister(const DsParticleEmitter& emitter);
 
 	public:
 		void Render() const;
 
 	private:
-		std::list<const DsTraceParticleEmitter*> m_traceDrawList;
+		std::list<const DsParticleEmitter*> m_emitterList;
 		DsTexture m_texture;
 		const DsCamera& m_cam;
 	};

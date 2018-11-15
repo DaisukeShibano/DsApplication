@@ -23,5 +23,7 @@ namespace DsApp
 		int m_effectId;
 		DsVec3d m_hitPos;
 		DsVec3d m_hitDir;
+		DsLib::DsSys* m_pSys;
+		DsLib::DsBloodParticleEmitter* m_pEmitter;
 	};
 }

@@ -7,9 +7,7 @@
 #include "Graphics/Render/DsParticleRender.h"
 #endif
 //‘¼‚Ìƒwƒbƒ_
-#ifndef _DS_TRACE_PARTICLE_EMITTER_
-#include "Graphics/Effect/Particle/DsTraceParticleEmitter.h"
-#endif
+#include "Graphics/Effect/Particle/DsParticleEmitter.h"
 #ifndef _DS_CAMERA_H_
 #include "Graphics/Camera/DsCamera.h"
 #endif
@@ -18,7 +16,7 @@ using namespace DsLib;
 
 
 DsParticleRender::DsParticleRender(const DsCamera& cam)
-	: m_traceDrawList()
+	: m_emitterList()
 	, m_texture()
 	, m_cam(cam)
 {
@@ -28,16 +26,16 @@ DsParticleRender::~DsParticleRender()
 {
 }
 
-void DsParticleRender::Register(const DsTraceParticleEmitter& emitter)
+void DsParticleRender::Register(const DsParticleEmitter& emitter)
 {
-	m_traceDrawList.push_back(&emitter);
+	m_emitterList.push_back(&emitter);
 	m_texture.Load(emitter.GetTexPath());
 }
 
-void DsParticleRender::UnRegister(const DsTraceParticleEmitter& emitter)
+void DsParticleRender::UnRegister(const DsParticleEmitter& emitter)
 {
 	m_texture.UnLoad(emitter.GetTexPath());
-	m_traceDrawList.remove(&emitter);
+	m_emitterList.remove(&emitter);
 }
 
 void DsParticleRender::Render() const
@@ -48,7 +46,7 @@ void DsParticleRender::Render() const
 
 	const DsVec3d camDir = -m_cam.GetRot().GetAxisZ();
 
-	for (const DsTraceParticleEmitter* pEmitter : m_traceDrawList) {
+	for (const DsParticleEmitter* pEmitter : m_emitterList) {
 		const double maxLifeTime = pEmitter->GetParticleMaxLifeTime();
 		const GLuint texId = m_texture.GetTexId(pEmitter->GetTexPath());
 		glBindTexture(GL_TEXTURE_2D, texId);

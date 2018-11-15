@@ -13,6 +13,7 @@ namespace DsLib
 			c[num] = L'\n'; \
 			c[num + 1] = L'\0'; \
 			_wassert(c, _CRT_WIDE(__FILE__), __LINE__);\
+			while(true);\
 		}\
 	}\
 

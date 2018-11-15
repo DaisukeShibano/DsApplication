@@ -4,6 +4,7 @@
 #include "World/Field/DsFieldChr.h"
 #include "Res/Param/DsDamageParam.h"
 #include "World/Physics/DsAppCollisionFilter.h"
+#include "World/Component/DsComponentSystem.h"
 
 
 using namespace DsApp;
@@ -40,7 +41,7 @@ bool DsDamageComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 			if (isGetDmypoly0 && isGetDmypoly1) {
 
 				const double radius = param.GetRadius();
-				DsDbgSys::GetIns().RefDrawCom().DrawCapsule(start.GetPos(), end.GetPos(), radius);
+				//DsDbgSys::GetIns().RefDrawCom().DrawCapsule(start.GetPos(), end.GetPos(), radius);
 				const DsCollisionFilter filter = DsAppCollisionFilter::CalcFilterGroupInsideNoHit(COLLISION_GROUP::DAMAGE);
 				std::vector<DsCollisionResult> results;
 				bool isHit = arg.physWorld.SphereCast(start.GetPos(), end.GetPos(), radius, filter, &arg.owner, results);
@@ -48,9 +49,8 @@ bool DsDamageComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 				//２回目以降は前フレとの補完判定
 				if (!isHit) {
 					if (m_isCreateDamage) {
-						DsVec3d hitPos1;
 						isHit = arg.physWorld.SphereCast(m_preEndPos, end.GetPos(), radius, filter, &arg.owner, results);
-						DsDbgSys::GetIns().RefDrawCom().DrawCapsule(m_preEndPos, end.GetPos(), radius);
+						//DsDbgSys::GetIns().RefDrawCom().DrawCapsule(m_preEndPos, end.GetPos(), radius);
 					}
 				}
 
@@ -64,8 +64,17 @@ bool DsDamageComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 						if (pDefender) {
 							if (m_hitOwners.find(pDefender) == m_hitOwners.end()) {
 								//初回ヒット
+
+								//材質でエフェクト変えるとかありそうなので相手側にリクエスト
+								DsComponentSystem* pDefCom = pDefender->GetComponentSystem();
+								if (pDefCom) {
+									const DsVec3d hitPos = result.GetPos()[0];
+									const DsVec3d hitDir = DsVec3d::Normalize(end.GetPos() - m_preEndPos);//ここの差分を速度として渡してもいいかも
+									pDefCom->RequestHitEffect(m_hitOwners.size(), param.GetHitEffectId(), hitPos, hitDir);
+								}
+
+								//ヒット登録
 								m_hitOwners.insert(pDefender);
-								//オーナーにダメージ通知
 							}
 							else {
 								//２回目以降のヒット
@@ -78,7 +87,7 @@ bool DsDamageComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 
 				//HP減算
 				//ノックバックをアタッチ
-				//ヒットエフェクトをアタッチ
+				
 
 				isCreateDamage = true;
 				m_preEndPos = end.GetPos();

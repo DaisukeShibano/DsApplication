@@ -528,5 +528,8 @@
     <ClInclude Include="Source\Graphics\Effect\Particle\DsBloodParticleEmitter.h">
       <Filter>Source\Graphics\Effect\Particle</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Graphics\Effect\Particle\DsParticleEmitter.h">
+      <Filter>Source\Graphics\Effect\Particle</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

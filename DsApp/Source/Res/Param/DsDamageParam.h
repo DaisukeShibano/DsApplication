@@ -7,6 +7,7 @@ namespace DsApp
 	{
 		const int id;
 		const double radius;
+		const int hitEffectId;
 	};
 
 
@@ -24,6 +25,8 @@ namespace DsApp
 
 	public:
 		double GetRadius() const { return m_pParam ? m_pParam->radius : 0.0; }
+		int GetHitEffectId() const { return m_pParam ? m_pParam->hitEffectId : 0; }
+
 
 	private:
 		const DS_DAMAGE_PARAN_FORMAT* m_pParam;

@@ -2,6 +2,7 @@
 #ifndef _DS_PARTICLE_
 #include "Graphics/Effect/Particle/DsParticle.h"
 #endif
+#include "Graphics/Effect/Particle/DsParticleEmitter.h"
 
 namespace DsLib
 {
@@ -9,7 +10,7 @@ namespace DsLib
 
 namespace DsLib
 {
-	class DsBloodParticleEmitter
+	class DsBloodParticleEmitter : public DsParticleEmitter
 	{
 	public:
 		DsBloodParticleEmitter();
@@ -18,21 +19,16 @@ namespace DsLib
 	public:
 		void Update(double dt);
 		void RequestEmit(const DsVec3d& pos, const DsVec3d& dir);
-		std::string GetTexPath() const { return m_texPath; }
-		double GetParticleMaxLifeTime()const;
+		virtual double GetParticleMaxLifeTime() const override;
 		bool IsEmpty()const;
 
 	public:
-		template<typename FUNC>
-		void EnumParticle(FUNC func) const{
-			
-		}
+		virtual void EnumParticle(const EnumType& func) const override;
 
 	private:
 		std::vector<DsSquareParticle> m_particle;
 		DsVec3d m_reqPos;
 		DsVec3d m_reqDir;
-		std::string m_texPath;
 		double m_lineTime;
 		bool m_isRequest;
 	};

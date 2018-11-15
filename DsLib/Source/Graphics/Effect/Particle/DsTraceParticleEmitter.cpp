@@ -23,7 +23,6 @@ DsTraceParticleEmitter::DsTraceParticleEmitter()
 	: m_particle()
 	, m_emitPos()
 	, m_emitPrePos()
-	, m_texPath()
 	, m_nextEmitTime(0)
 	, m_isRequestEmit(false)
 	, m_isRequestEmitPre(false)
@@ -196,7 +195,8 @@ void DsTraceParticleEmitter::RequestEmit(const DsVec3d& pos1, const DsVec3d& pos
 	m_emitPos[1] = pos2;
 }
 
-double DsTraceParticleEmitter::GetParticleMaxLifeTime()const
+//virtual 
+double DsTraceParticleEmitter::GetParticleMaxLifeTime()const//override
 {
 	return PARTICLE_LIFE_TIME;
 }
@@ -211,3 +211,15 @@ bool DsTraceParticleEmitter::IsEmpty()const
 	return true;
 }
 
+//virtual
+void DsTraceParticleEmitter::EnumParticle(const EnumType& func) const //override
+{
+	for (const ParticleBlock& block : m_particle) {
+		const DsSquareParticle* pParticle = block.pUseHead;
+		const DsSquareParticle* pPre = NULL;
+		while (pParticle) {
+			func(*pParticle);
+			pParticle = pParticle->pNext;
+		}
+	}
+}

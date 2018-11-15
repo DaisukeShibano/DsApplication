@@ -18,6 +18,7 @@ namespace
 	static const double BASE_VEL = 1.0;
 	static const double RAND_VEL_RATE = 0.3;//速度ランダム値
 	static const double RAND_Y_ANG = DegToRad(20.0);//迎角ランダム値
+	static const double RAND_Y_ANG_RATE = 0.3;
 
 
 	double _Rand(double val, double rate)
@@ -33,9 +34,8 @@ namespace
 		if (rmax != rmin) {
 			int randVal = (rand() % (rmax - rmin)) + rmin;
 			double ret = static_cast<double>(randVal);
-			if (1 < scale) {//小数点分大きくしたので戻す
-				d /= static_cast<double>(scale - 1);
-			}
+			//小数点分大きくしたので戻す
+			ret /= static_cast<double>(scale);
 			return ret;
 		}
 		else {
@@ -49,14 +49,14 @@ DsBloodParticleEmitter::DsBloodParticleEmitter()
 	: m_particle()
 	, m_reqPos()
 	, m_reqDir()
-	, m_texPath()
 	, m_lineTime(-1)
 	, m_isRequest(false)
 {
-	m_texPath = "TestParticle2.tga";
+	m_texPath = "TestParticle.tga";
 	m_particle.reserve(BASE_CREATE_NUM);
 }
 
+//virtual
 DsBloodParticleEmitter::~DsBloodParticleEmitter()
 {
 }
@@ -75,20 +75,20 @@ void DsBloodParticleEmitter::Update(double dt)
 		for (int i = 0; i < createNum; ++i) {
 			DsSquareParticle p;
 			
-			const double yAng = _Rand(0.0, RAND_Y_ANG);
+			const double yAng = _Rand(RAND_Y_ANG, RAND_Y_ANG_RATE);
 			const DsMat33d drY = DsMat33d::RotateAxis(xAxis, -yAng);
 			DsVec3d ver = drY * vertical;
 			DsVec3d dir = drY * m_reqDir;
 
 			//m_reqDirに垂直方向に出す
 			p.pos[0] = m_reqPos;
-			const double w = _Rand(BASE_WIDTH, RAND_WIDTH_RATE);
-			p.pos[1] = m_reqPos + (ver * w);
+			const double h = _Rand(BASE_WIDTH, RAND_WIDTH_RATE);
+			p.pos[1] = m_reqPos + (ver * h);
 
 			//m_reqDir方向へ伸ばす
-			const double l = _Rand(BASE_LEN, RAND_LEN_RATE);
-			p.pos[2] = p.pos[1] + (dir*l);
-			p.pos[3] = dir * l;
+			const double w = _Rand(BASE_LEN, RAND_LEN_RATE);
+			p.pos[2] = p.pos[1] + (dir*w);
+			p.pos[3] = p.pos[2] - (ver * h);
 
 			const double v = _Rand(BASE_VEL, RAND_VEL_RATE);
 			p.speed = dir * v;
@@ -101,6 +101,15 @@ void DsBloodParticleEmitter::Update(double dt)
 			m_particle.push_back(p);
 		}
 
+		m_lineTime = GetParticleMaxLifeTime();
+	}
+	else {
+
+		m_lineTime -= dt;
+		if (0.0 >= m_lineTime) {
+			m_particle.clear();
+			m_lineTime = -1;
+		}
 	}
 }
 
@@ -111,13 +120,21 @@ void DsBloodParticleEmitter::RequestEmit(const DsVec3d& pos, const DsVec3d& dir)
 	m_reqDir = dir;
 }
 
-double DsBloodParticleEmitter::GetParticleMaxLifeTime()const
+//virtual
+double DsBloodParticleEmitter::GetParticleMaxLifeTime()const//override
 {
 	return PARTICLE_LIFE_TIME;
 }
 
 bool DsBloodParticleEmitter::IsEmpty()const
 {
-	return (0.0 < m_lineTime);
+	return (m_lineTime < 0.0);
 }
 
+//virtual 
+void DsBloodParticleEmitter::EnumParticle(const EnumType& func) const //override
+{
+	for (const DsSquareParticle& p : m_particle) {
+		func(p);
+	}
+}
