@@ -22,7 +22,7 @@ namespace DsLib
 	public:
 		void Update(double dt);
 		void RequestEmit(const DsVec3d& pos1, const DsVec3d& pos2);
-		virtual double GetParticleMaxLifeTime()const override;
+		virtual double GetAlpha(const double lifeTime)const override;
 		bool IsEmpty()const;
 
 	public:

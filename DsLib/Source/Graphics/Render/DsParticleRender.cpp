@@ -47,7 +47,6 @@ void DsParticleRender::Render() const
 	const DsVec3d camDir = -m_cam.GetRot().GetAxisZ();
 
 	for (const DsParticleEmitter* pEmitter : m_emitterList) {
-		const double maxLifeTime = pEmitter->GetParticleMaxLifeTime();
 		const GLuint texId = m_texture.GetTexId(pEmitter->GetTexPath());
 		glBindTexture(GL_TEXTURE_2D, texId);
 		//材質の色は適当
@@ -61,10 +60,11 @@ void DsParticleRender::Render() const
 
 		//パーティクルループ
 		{
-			auto func = [this, texId, camDir, maxLifeTime](const DsSquareParticle& particle) {
+			auto func = [this, texId, camDir, pEmitter](const DsSquareParticle& particle) {
 				const DsVec2f* pUv = particle.uvPos;
 				const DsVec3d* pPos = particle.pos;
-				const GLfloat col[] = { 1.0f, 1.0f, 1.0f, static_cast<float>(particle.lifeTime/ maxLifeTime) };
+				const double alpha = pEmitter->GetAlpha(particle.lifeTime);
+				const GLfloat col[] = { 1.0f, 1.0f, 1.0f, static_cast<float>(alpha) };
 				
 				glColor4fv(col);
 				glNormal3dv(camDir.v);

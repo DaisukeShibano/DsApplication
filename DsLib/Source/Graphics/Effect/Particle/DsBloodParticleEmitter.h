@@ -19,7 +19,7 @@ namespace DsLib
 	public:
 		void Update(double dt);
 		void RequestEmit(const DsVec3d& pos, const DsVec3d& dir);
-		virtual double GetParticleMaxLifeTime() const override;
+		virtual double GetAlpha(const double lifeTime)const override;
 		bool IsEmpty()const;
 
 	public:
@@ -29,7 +29,7 @@ namespace DsLib
 		std::vector<DsSquareParticle> m_particle;
 		DsVec3d m_reqPos;
 		DsVec3d m_reqDir;
-		double m_lineTime;
+		double m_lifeTime;
 		bool m_isRequest;
 	};
 

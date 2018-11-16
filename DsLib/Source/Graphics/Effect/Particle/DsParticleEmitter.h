@@ -27,8 +27,8 @@ namespace DsLib
 
 	public:
 		std::string GetTexPath() const { return m_texPath; }
-		virtual double GetParticleMaxLifeTime()const = 0;
-		
+		virtual double GetAlpha(const double lifeTime)const = 0;
+
 	public:
 		virtual void EnumParticle(const EnumType& func) const = 0;
 

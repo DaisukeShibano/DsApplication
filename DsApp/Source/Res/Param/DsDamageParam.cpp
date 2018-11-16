@@ -8,7 +8,7 @@ namespace
 	static DS_DAMAGE_PARAN_FORMAT s_param[] =
 	{
 		//id	radius	hitEffectId
-		{0,		0.2,	0}
+		{0,		0.3,	0}
 	};
 
 

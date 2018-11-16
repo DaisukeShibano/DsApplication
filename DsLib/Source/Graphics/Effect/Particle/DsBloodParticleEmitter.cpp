@@ -8,17 +8,19 @@ using namespace DsLib;
 namespace
 {
 	//パラメータでもいいかもだけど今はとりあえず決め打ち
-	static const double PARTICLE_LIFE_TIME = 1.5;//パーティクル寿命
-	static const int BASE_CREATE_NUM = 8;
-	static const double GRAVITY = -9.8;
-	static const double BASE_WIDTH = 0.1;
-	static const double RAND_WIDTH_RATE = 0.3;//幅ランダム値
-	static const double BASE_LEN = 1.0;
-	static const double RAND_LEN_RATE = 0.5;//発生方向長さランダム値
-	static const double BASE_VEL = 1.0;
-	static const double RAND_VEL_RATE = 0.3;//速度ランダム値
-	static const double RAND_Y_ANG = DegToRad(20.0);//迎角ランダム値
-	static const double RAND_Y_ANG_RATE = 0.3;
+	static const double PARTICLE_LIFE_TIME = 0.4;//パーティクル寿命
+	static const int BASE_CREATE_NUM = 16;
+	static const double GRAVITY = -28.0;
+	static const double BASE_WIDTH = 0.26;
+	static const double RAND_WIDTH_RATE = 2.3;//幅ランダム値
+	static const double START_WIDTH_RATE = 0.4;//始点幅サイズ
+	static const double BASE_LEN = 0.1;
+	static const double RAND_LEN_RATE = 2.5;//発生方向長さランダム値
+	static const double BASE_VEL = 28.0;
+	static const double RAND_VEL_RATE = 0.2;//速度ランダム値
+	static const double VEL_RESIST = 7.0;//速度減衰値
+	static const double RAND_Y_ANG = DegToRad(40.0);//迎角ランダム値
+	static const double RAND_Y_ANG_RATE = 0.8;
 
 
 	double _Rand(double val, double rate)
@@ -49,10 +51,10 @@ DsBloodParticleEmitter::DsBloodParticleEmitter()
 	: m_particle()
 	, m_reqPos()
 	, m_reqDir()
-	, m_lineTime(-1)
+	, m_lifeTime(-1)
 	, m_isRequest(false)
 {
-	m_texPath = "TestParticle.tga";
+	m_texPath = "blood.tga";
 	m_particle.reserve(BASE_CREATE_NUM);
 }
 
@@ -83,7 +85,7 @@ void DsBloodParticleEmitter::Update(double dt)
 			//m_reqDirに垂直方向に出す
 			p.pos[0] = m_reqPos;
 			const double h = _Rand(BASE_WIDTH, RAND_WIDTH_RATE);
-			p.pos[1] = m_reqPos + (ver * h);
+			p.pos[1] = m_reqPos + (ver * h * START_WIDTH_RATE);//始点は細く
 
 			//m_reqDir方向へ伸ばす
 			const double w = _Rand(BASE_LEN, RAND_LEN_RATE);
@@ -101,14 +103,23 @@ void DsBloodParticleEmitter::Update(double dt)
 			m_particle.push_back(p);
 		}
 
-		m_lineTime = GetParticleMaxLifeTime();
+		m_lifeTime = PARTICLE_LIFE_TIME;
 	}
 	else {
 
-		m_lineTime -= dt;
-		if (0.0 >= m_lineTime) {
+
+		for (DsSquareParticle& p : m_particle) {
+			p.speed -= p.speed*VEL_RESIST*dt;
+			p.speed += DsVec3d(0, GRAVITY, 0)*dt;
+			p.pos[2] += (p.speed*dt);
+			p.pos[3] += (p.speed*dt);
+		}
+
+
+		m_lifeTime -= dt;
+		if (0.0 >= m_lifeTime) {
 			m_particle.clear();
-			m_lineTime = -1;
+			m_lifeTime = -1;
 		}
 	}
 }
@@ -121,14 +132,24 @@ void DsBloodParticleEmitter::RequestEmit(const DsVec3d& pos, const DsVec3d& dir)
 }
 
 //virtual
-double DsBloodParticleEmitter::GetParticleMaxLifeTime()const//override
+double DsBloodParticleEmitter::GetAlpha(const double lifeTime)const //override
 {
-	return PARTICLE_LIFE_TIME;
+	//http://d.hatena.ne.jp/nakamura001/20111117/1321539246
+	double t = m_lifeTime / PARTICLE_LIFE_TIME;//時間(進行度)
+	double b = 0.0;//開始の値(開始時の座標やスケールなど)
+	double c = 1.0;//開始と終了の値の差分
+	double d = 1.0;//Tween(トゥイーン)の合計時間
+
+	//ease_out
+	t /= d;
+	t = t - 1.0;
+	double val = c * (t*t*t*t*t + 1.0) + b;
+	return m_lifeTime/PARTICLE_LIFE_TIME;
 }
 
 bool DsBloodParticleEmitter::IsEmpty()const
 {
-	return (m_lineTime < 0.0);
+	return (m_lifeTime < 0.0);
 }
 
 //virtual 
