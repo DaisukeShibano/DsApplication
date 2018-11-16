@@ -80,14 +80,18 @@ void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 }
 
 //virtual 
-void DsFieldObj::Update(double dt)
+void DsFieldObj::Update1(double dt)
 {
-	//毎フレームクリア系のフラグクリア
+	//毎フレーム頭でクリア系のフラグクリア
 	DsActionFlags* pFlags = GetActionFlags();
 	if (pFlags) {
-		pFlags->Clear();
+		pFlags->ClearFirst();
 	}
+}
 
+//virtual 
+void DsFieldObj::Update2(double dt)
+{
 	if (m_pAnimation){
 		if (m_isRequestDirectAnim) {
 			dt = 0;
@@ -103,6 +107,16 @@ void DsFieldObj::Update(double dt)
 
 	if (m_pComponentSystem) {
 		m_pComponentSystem->Update(dt);
+	}
+}
+
+//virtual
+void DsFieldObj::Update3(double dt)
+{
+	//毎フレーム最後でクリア系のフラグクリア
+	DsActionFlags* pFlags = GetActionFlags();
+	if (pFlags) {
+		pFlags->ClearLast();
 	}
 }
 

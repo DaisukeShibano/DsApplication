@@ -118,7 +118,14 @@ namespace DsApp
 
 	public:
 		DsChrState(const INIT_ARG& arg)
-			:m_pAnimClip(arg.pAnimClip), m_nextState(arg.myState), m_myState(arg.myState), m_actReq(arg.actReq), m_allState(arg.allState), m_animFlags(arg.animFlags), m_pNextStateNode(){}
+			: m_pAnimClip(arg.pAnimClip)
+			, m_nextState(arg.myState)
+			, m_myState(arg.myState)
+			, m_actReq(arg.actReq)
+			, m_animFlags(arg.animFlags)
+			, m_allState(arg.allState)
+			, m_pNextStateNode()
+		{}
 		virtual ~DsChrState() {}
 
 	public:

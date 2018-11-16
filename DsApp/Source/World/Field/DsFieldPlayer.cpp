@@ -105,25 +105,35 @@ DsActionRequest* DsFieldPlayer::_CreareActionRequest()
 }
 
 //virtual 
-void DsFieldPlayer::Update(double dt)
+void DsFieldPlayer::Update1(double dt)
+{
+	DsFieldChr::Update1(dt);
+}
+
+//virtual 
+void DsFieldPlayer::Update2(double dt)
 {
 	{//キャラ座標の更新
 
 		//ロックオン方向に旋回
 		double angVelDeg = 1440.0;
 		DsLockOn* pLockOn = (m_pGameSys) ? (m_pGameSys->GetLockOn()) : (NULL);
-		const DsActionFlags* pFlags = GetActionFlags();
+		DsActionFlags* pFlags = GetActionFlags();
 		DsVec3d lockOnDir;
 		bool isLockOn = false;
-		if (pFlags && pLockOn) {
-			DsVec3d lockOnPos;
-			if (pFlags->IsLockOnTurn() && m_isLockOn && pLockOn->GetLockOnPos(lockOnPos)) {
-				const DsVec3d toTarget = lockOnPos - GetPosition();
-				const DsVec3d toTargetXZ = DsVec3d::Normalize(DsVec3d(toTarget.x, 0, toTarget.z));
-				lockOnDir = toTargetXZ;
-				angVelDeg = 430.0;
-				isLockOn = true;
+		if (pFlags){
+			if (pLockOn) {
+				DsVec3d lockOnPos;
+				if (pFlags->IsLockOnTurn() && m_isLockOn && pLockOn->GetLockOnPos(lockOnPos)) {
+					const DsVec3d toTarget = lockOnPos - GetPosition();
+					const DsVec3d toTargetXZ = DsVec3d::Normalize(DsVec3d(toTarget.x, 0, toTarget.z));
+					lockOnDir = toTargetXZ;
+					angVelDeg = 630.0;
+					isLockOn = true;
+				}
 			}
+
+			pFlags->SetLockOnTurn(false);//クリア
 		}
 
 		//カメラのY軸回転量を求める
@@ -160,12 +170,15 @@ void DsFieldPlayer::Update(double dt)
 		m_vel.Set(0, 0, vel);
 	}
 
-	DsFieldChr::Update(dt);
+	DsFieldChr::Update2(dt);
 
 	_UpdateCam(dt);
+}
 
-	
-
+//virtual 
+void DsFieldPlayer::Update3(double dt)
+{
+	DsFieldChr::Update3(dt);
 }
 
 

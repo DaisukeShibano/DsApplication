@@ -27,7 +27,9 @@ namespace DsApp
 		virtual DsActionRequest* _CreareActionRequest() override;
 
 	public:
-		virtual void Update(double dt);
+		virtual void Update1(double dt);
+		virtual void Update2(double dt);
+		virtual void Update3(double dt);
 
 	private:
 		void _UpdateCam(double dt);

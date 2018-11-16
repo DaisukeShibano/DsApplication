@@ -14,7 +14,9 @@ namespace DsApp
 		virtual ~DsFieldHit();
 
 	public:
-		virtual void Update(double dt) override;
+		virtual void Update1(double dt) override;
+		virtual void Update2(double dt) override;
+		virtual void Update3(double dt) override;
 		virtual void Initialize(const DsFieldInitInfo& initInfo) override;
 		virtual void SetPosition(const DsVec3d& pos) override;
 		virtual void SetRotation(const DsMat33d& rot) override;

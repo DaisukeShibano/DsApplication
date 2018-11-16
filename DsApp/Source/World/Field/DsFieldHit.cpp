@@ -52,9 +52,19 @@ void DsFieldHit::Initialize(const DsFieldInitInfo& initInfo)
 }
 
 //virtual 
-void DsFieldHit::Update(double dt)
+void DsFieldHit::Update1(double dt)
 {
-	DsFieldObj::Update(dt);
+	DsFieldObj::Update1(dt);
+}
+//virtual 
+void DsFieldHit::Update2(double dt)
+{
+	DsFieldObj::Update2(dt);
+}
+//virtual 
+void DsFieldHit::Update3(double dt)
+{
+	DsFieldObj::Update3(dt);
 }
 
 //virtual

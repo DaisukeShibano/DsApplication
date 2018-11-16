@@ -29,6 +29,23 @@ namespace
 		virtual void Update(double dt) override
 		{
 			DsEnemyState1::Update(dt);
+
+			switch (m_animFlags.GetDmgDir())
+			{
+			case DsDmgDir::F:
+				m_nextState = CHR_STATE::DAMAGE_F;
+				break;
+			case DsDmgDir::B:
+				m_nextState = CHR_STATE::DAMAGE_B;
+				break;
+			case DsDmgDir::L:
+				m_nextState = CHR_STATE::DAMAGE_L;
+				break;
+			case DsDmgDir::R:
+				m_nextState = CHR_STATE::DAMAGE_R;
+				break;
+			}
+
 		};
 	};
 	DS_REGISTER_STATE(DsChrStateIdle)

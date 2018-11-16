@@ -27,9 +27,13 @@ void DsFieldEnemy::Initialize(const DsFieldInitInfo& initInfo)
 
 }
 
-
 //virtual
-void DsFieldEnemy::Update(double dt)
+void DsFieldEnemy::Update1(double dt)
+{
+	DsFieldChr::Update1(dt);
+}
+//virtual
+void DsFieldEnemy::Update2(double dt)
 {
 	//TODO:Ž€‚ñ‚¾‚çƒƒbƒNƒIƒ“Ø‚é
 	DsComponentSystem* pComSys = GetComponentSystem();
@@ -37,5 +41,10 @@ void DsFieldEnemy::Update(double dt)
 		pComSys->RequestLockOnPoint();
 	}
 
-	DsFieldChr::Update(dt);
+	DsFieldChr::Update2(dt);
+}
+//virtual
+void DsFieldEnemy::Update3(double dt)
+{
+	DsFieldChr::Update3(dt);
 }

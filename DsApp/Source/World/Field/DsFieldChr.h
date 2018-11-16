@@ -31,10 +31,10 @@ namespace DsApp
 		virtual ~DsFieldChr();
 
 	public:
-		virtual void Update(double dt);
-
-	public:
 		virtual void Initialize(const DsFieldInitInfo& initInfo) override;
+		virtual void Update1(double dt);
+		virtual void Update2(double dt);
+		virtual void Update3(double dt);
 
 	protected:
 		virtual DsActionRequest* _CreareActionRequest();

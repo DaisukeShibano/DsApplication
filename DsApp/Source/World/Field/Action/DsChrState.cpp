@@ -35,7 +35,6 @@ void DsChrState::OnActive(double dt)
 	//現在のステートに設定
 	m_nextState = m_myState;
 
-
 	if (m_pAnimClip) {
 		//補完時間をデフォルトに戻す
 		m_pAnimClip->ClearInterpolationTime();
@@ -65,6 +64,27 @@ void DsChrState::OnDeactive(double dt)
 
 namespace
 {
+	bool _GetDmgState(CHR_STATE& state, DsDmgDir dmgDir) 
+	{
+		bool ret = false;
+		switch (dmgDir)
+		{
+		case DsDmgDir::F:
+			state = CHR_STATE::DAMAGE_F; ret = true;
+			break;
+		case DsDmgDir::B:
+			state = CHR_STATE::DAMAGE_B; ret = true;
+			break;
+		case DsDmgDir::L:
+			state = CHR_STATE::DAMAGE_L; ret = true;
+			break;
+		case DsDmgDir::R:
+			state = CHR_STATE::DAMAGE_R; ret = true;
+			break;
+		}
+		return ret;
+	}
+
 	/*********************************************************
 	@brief 待機
 	**********************************************************/
@@ -94,6 +114,10 @@ namespace
 			else if (m_actReq.IsMove()) {
 				m_nextState = CHR_STATE::RUN;
 			}
+
+			//ダメージ
+			_GetDmgState(m_nextState, m_animFlags.GetDmgDir());
+
 		};
 	};
 	DS_REGISTER_STATE(DsChrStateIdle)
@@ -128,6 +152,10 @@ namespace
 			else if (!m_actReq.IsMove()) {
 				m_nextState = CHR_STATE::IDLE;
 			}
+			
+			//ダメージ
+			_GetDmgState(m_nextState, m_animFlags.GetDmgDir());
+
 		};
 	};
 	DS_REGISTER_STATE(DsChrStateRun)
@@ -198,7 +226,7 @@ namespace
 		virtual void Update(double dt) override
 		{
 			DsChrState::Update(dt);
-			m_animFlags.SetLockOnTurn(true);
+			//m_animFlags.SetLockOnTurn(true);
 
 			m_nextState = m_myState;
 
@@ -239,7 +267,7 @@ namespace
 		virtual void Update(double dt) override
 		{
 			DsChrState::Update(dt);
-			m_animFlags.SetLockOnTurn(true);
+			//m_animFlags.SetLockOnTurn(true);
 
 			m_nextState = m_myState;
 
@@ -281,7 +309,7 @@ namespace
 		virtual void Update(double dt) override
 		{
 			DsChrState::Update(dt);
-			m_animFlags.SetLockOnTurn(true);
+			//m_animFlags.SetLockOnTurn(true);
 
 			m_nextState = m_myState;
 
@@ -300,7 +328,190 @@ namespace
 	DS_REGISTER_STATE(DsChrStateAttack4)
 
 
-		//デフォルトクラス情報
+	/*********************************************************
+	@brief ダメージ前
+	**********************************************************/
+	class DsChrStateDamageF : public DsChrState
+	{
+	public:
+		DsChrStateDamageF(const INIT_ARG& arg) :DsChrState(arg)
+		{
+			if (m_pAnimClip) {
+				m_pAnimClip->SetLoop(false);
+			}
+		}
+
+	private:
+		virtual void OnActive(double dt) override
+		{
+			DsChrState::OnActive(dt);
+			m_animFlags.SetLockOnTurn(true);
+		}
+		virtual void Update(double dt) override
+		{
+			DsChrState::Update(dt);
+			m_animFlags.SetLockOnTurn(true);
+
+			m_nextState = m_myState;
+
+			if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
+				m_nextState = CHR_STATE::ATTACK1;
+			}
+			else if (m_actReq.IsAction(ACTION_TYPE::MOVE)) {
+				m_nextState = CHR_STATE::RUN;
+			}
+			else if (m_pAnimClip->IsEnd()) {
+				m_nextState = CHR_STATE::IDLE;
+			}
+
+			//ダメージ
+			bool isDmg = _GetDmgState(m_nextState, m_animFlags.GetDmgDir());
+			if (isDmg) {//同じ方向かもしれないので再度アニメ再生かける
+				m_pAnimClip->ResetAnim();
+			}
+
+		};
+	};
+	DS_REGISTER_STATE(DsChrStateDamageF)
+
+	/*********************************************************
+	@brief ダメージ後ろ
+	**********************************************************/
+	class DsChrStateDamageB : public DsChrState
+	{
+	public:
+		DsChrStateDamageB(const INIT_ARG& arg) :DsChrState(arg)
+		{
+			if (m_pAnimClip) {
+				m_pAnimClip->SetLoop(false);
+			}
+		}
+
+	private:
+		virtual void OnActive(double dt) override
+		{
+			DsChrState::OnActive(dt);
+			m_animFlags.SetLockOnTurn(true);
+		}
+		virtual void Update(double dt) override
+		{
+			DsChrState::Update(dt);
+			m_animFlags.SetLockOnTurn(true);
+
+			m_nextState = m_myState;
+
+			if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
+				m_nextState = CHR_STATE::ATTACK1;
+			}
+			else if (m_actReq.IsAction(ACTION_TYPE::MOVE)) {
+				m_nextState = CHR_STATE::RUN;
+			}
+			else if (m_pAnimClip->IsEnd()) {
+				m_nextState = CHR_STATE::IDLE;
+			}
+
+			//ダメージ
+			bool isDmg = _GetDmgState(m_nextState, m_animFlags.GetDmgDir());
+			if (isDmg) {//同じ方向かもしれないので再度アニメ再生かける
+				m_pAnimClip->ResetAnim();
+			}
+		};
+	};
+	DS_REGISTER_STATE(DsChrStateDamageB)
+		
+	/*********************************************************
+	@brief ダメージ左
+	**********************************************************/
+	class DsChrStateDamageL : public DsChrState
+	{
+	public:
+		DsChrStateDamageL(const INIT_ARG& arg) :DsChrState(arg)
+		{
+			if (m_pAnimClip) {
+				m_pAnimClip->SetLoop(false);
+			}
+		}
+
+	private:
+		virtual void OnActive(double dt) override
+		{
+			DsChrState::OnActive(dt);
+			m_animFlags.SetLockOnTurn(true);
+		}
+		virtual void Update(double dt) override
+		{
+			DsChrState::Update(dt);
+			m_animFlags.SetLockOnTurn(true);
+
+			m_nextState = m_myState;
+
+			if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
+				m_nextState = CHR_STATE::ATTACK1;
+			}
+			else if (m_actReq.IsAction(ACTION_TYPE::MOVE)) {
+				m_nextState = CHR_STATE::RUN;
+			}
+			else if (m_pAnimClip->IsEnd()) {
+				m_nextState = CHR_STATE::IDLE;
+			}
+
+			//ダメージ
+			bool isDmg = _GetDmgState(m_nextState, m_animFlags.GetDmgDir());
+			if (isDmg) {//同じ方向かもしれないので再度アニメ再生かける
+				m_pAnimClip->ResetAnim();
+			}
+		};
+	};
+	DS_REGISTER_STATE(DsChrStateDamageL)
+
+	/*********************************************************
+	@brief ダメージ右
+	**********************************************************/
+	class DsChrStateDamageR : public DsChrState
+	{
+	public:
+		DsChrStateDamageR(const INIT_ARG& arg) :DsChrState(arg)
+		{
+			if (m_pAnimClip) {
+				m_pAnimClip->SetLoop(false);
+			}
+		}
+
+	private:
+		virtual void OnActive(double dt) override
+		{
+			DsChrState::OnActive(dt);
+			m_animFlags.SetLockOnTurn(true);
+		}
+		virtual void Update(double dt) override
+		{
+			DsChrState::Update(dt);
+			m_animFlags.SetLockOnTurn(true);
+
+			m_nextState = m_myState;
+
+			if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
+				m_nextState = CHR_STATE::ATTACK1;
+			}
+			else if (m_actReq.IsAction(ACTION_TYPE::MOVE)) {
+				m_nextState = CHR_STATE::RUN;
+			}
+			else if (m_pAnimClip->IsEnd()) {
+				m_nextState = CHR_STATE::IDLE;
+			}
+
+			//ダメージ
+			bool isDmg = _GetDmgState(m_nextState, m_animFlags.GetDmgDir());
+			if (isDmg) {//同じ方向かもしれないので再度アニメ再生かける
+				m_pAnimClip->ResetAnim();
+			}
+		};
+	};
+	DS_REGISTER_STATE(DsChrStateDamageR)
+
+
+	
+	//デフォルトクラス情報
 	static STATE_CLASS_TYPE s_registerClass[] =
 	{
 		{ typeid(DsChrStateIdle), CHR_STATE::IDLE, "idle" },
@@ -309,10 +520,10 @@ namespace
 		{ typeid(DsChrStateAttack2), CHR_STATE::ATTACK2, "Attack2" },
 		{ typeid(DsChrStateAttack3), CHR_STATE::ATTACK3, "Attack3" },
 		{ typeid(DsChrStateAttack4), CHR_STATE::ATTACK4, "Attack4" },
-		//{ typeid(DsChrStateDamageF), CHR_STATE::DAMAGE_F, "DamageF" },
-		//{ typeid(DsChrStateDamageB), CHR_STATE::DAMAGE_B, "DamageB" },
-		//{ typeid(DsChrStateDamageL), CHR_STATE::DAMAGE_L, "DamageL" },
-		//{ typeid(DsChrStateDamageR), CHR_STATE::DAMAGE_R, "DamageR" },
+		{ typeid(DsChrStateDamageF), CHR_STATE::DAMAGE_F, "DamageF" },
+		{ typeid(DsChrStateDamageB), CHR_STATE::DAMAGE_B, "DamageB" },
+		{ typeid(DsChrStateDamageL), CHR_STATE::DAMAGE_L, "DamageL" },
+		{ typeid(DsChrStateDamageR), CHR_STATE::DAMAGE_R, "DamageR" },
 	};
 	//派生クラス登録コンテナ
 	static std::map<int, DsRegisterClass*> s_registerClassContainer;

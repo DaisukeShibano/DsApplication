@@ -15,6 +15,7 @@
 #define Clamp(val, _min, _max)( min(max( (_min), (val) ), (_max) ) )
 #define DsACos(x)( acos( Clamp( (x), -1.0, 1.0 ) ) )
 #define DsASin(x)( asin( Clamp( (x), -1.0, 1.0 ) ) )
+#define DsATan(y, x)( atan2( y, x) )
 
 namespace DsLib
 {

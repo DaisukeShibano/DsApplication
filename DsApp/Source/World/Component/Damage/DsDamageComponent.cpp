@@ -5,6 +5,7 @@
 #include "Res/Param/DsDamageParam.h"
 #include "World/Physics/DsAppCollisionFilter.h"
 #include "World/Component/DsComponentSystem.h"
+#include "World/Field/Action/DsActionFlags.h"
 
 
 using namespace DsApp;
@@ -65,12 +66,41 @@ bool DsDamageComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 							if (m_hitOwners.find(pDefender) == m_hitOwners.end()) {
 								//初回ヒット
 
-								//材質でエフェクト変えるとかありそうなので相手側にリクエスト
+								//ヒットエフェクト
 								DsComponentSystem* pDefCom = pDefender->GetComponentSystem();
 								if (pDefCom) {
 									const DsVec3d hitPos = result.GetPos()[0];
 									const DsVec3d hitDir = DsVec3d::Normalize(end.GetPos() - m_preEndPos);//ここの差分を速度として渡してもいいかも
 									pDefCom->RequestHitEffect(m_hitOwners.size(), param.GetHitEffectId(), hitPos, hitDir);
+								}
+
+								const DsVec3d atk = arg.owner.GetPosition();
+								const DsVec3d def = pDefender->GetPosition();
+								const DsVec3d toAtk = DsVec3d::Normalize(DsVec3d(atk.x, 0, atk.z)- DsVec3d(def.x, 0,def.z) );
+								const DsVec3d defDir= pDefender->GetRotation().GetAxisZ();
+								const double sign = (0.0 < DsVec3d::Cross(defDir, toAtk).y) ? (1.0) :(-1.0);
+								const double ang = DsACos(DsVec3d::Dot(defDir, toAtk));
+
+								//ダメージリアクション
+								DsActionFlags* pFlags = pDefender->GetActionFlags();
+								if (pFlags) {
+
+									DsDmgDir dmgDir = DsDmgDir::F;
+									if (ang < M_PI*0.25) {
+										dmgDir = DsDmgDir::F;
+									}
+									else if ((M_PI*0.25 <= ang) && (ang <= M_PI * 0.75)) {
+										if (0.0 < sign) {
+											dmgDir = DsDmgDir::L;
+										}
+										else {
+											dmgDir = DsDmgDir::R;
+										}
+									}
+									else {
+										dmgDir = DsDmgDir::B;
+									}
+									pFlags->SetDmgDir(dmgDir);
 								}
 
 								//ヒット登録

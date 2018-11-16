@@ -120,13 +120,19 @@ DsActionRequest* DsFieldChr::_CreareActionRequest()
 }
 
 //virtual 
-void DsFieldChr::Update(double dt)
+void DsFieldChr::Update1(double dt)
+{
+	DsFieldObj::Update1(dt);
+}
+
+//virtual 
+void DsFieldChr::Update2(double dt)
 {
 	//y軸はグローバル。x軸はy軸回転後
 	const DsMat33d rot = DsMat33d::RotateY(m_ang.y)*DsMat33d::RotateX(m_ang.x);
 	m_vel = rot * m_vel;
 
-	DsFieldObj::Update(dt);
+	DsFieldObj::Update2(dt);
 	
 	//AnimEventの後
 	if (m_pActReq) {
@@ -150,6 +156,12 @@ void DsFieldChr::Update(double dt)
 	}
 
 	m_pProxy->Drive(dt, move);
+}
+
+//virtual 
+void DsFieldChr::Update3(double dt)
+{
+	DsFieldObj::Update3(dt);
 }
 
 //virtual

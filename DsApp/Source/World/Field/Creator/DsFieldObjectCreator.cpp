@@ -144,13 +144,19 @@ void DsFieldObjectCreator::Update(double dt)
 void DsFieldObjectCreator::UpdateAllIns(double dt)
 {
 	for (DsFieldHit* obj : RefHits()) {
-		obj->Update(dt);
+		obj->Update1(dt);
+		obj->Update2(dt);
+		obj->Update3(dt);
 	}
 	for (DsFieldChr* obj : RefChrs()) {
-		obj->Update(dt);
+		obj->Update1(dt);
+		obj->Update2(dt);
+		obj->Update3(dt);
 	}
 	for (DsFieldObstacle* obj : RefObstacles()) {
-		obj->Update(dt);
+		obj->Update1(dt);
+		obj->Update2(dt);
+		obj->Update3(dt);
 	}
 }
 
