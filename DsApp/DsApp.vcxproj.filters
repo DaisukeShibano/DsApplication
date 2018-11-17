@@ -79,6 +79,9 @@
     <Filter Include="Source\World\Field\Component\Damage">
       <UniqueIdentifier>{34c592f6-e834-4a23-8f65-442aa91a96a2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\World\Field\Component\KnockBack">
+      <UniqueIdentifier>{294a043c-35f0-4bf5-93fe-7f87405c7dac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsAppPch.h">
@@ -252,6 +255,9 @@
     <ClInclude Include="Source\World\Component\Effect\DsHitEffectComponent.h">
       <Filter>Source\World\Field\Component\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Source\World\Component\KnockBack\DsKnockBackComponent.h">
+      <Filter>Source\World\Field\Component\KnockBack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsAppPch.cpp">
@@ -391,6 +397,9 @@
     </ClCompile>
     <ClCompile Include="Source\World\Component\Effect\DsHitEffectComponent.cpp">
       <Filter>Source\World\Field\Component\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Component\KnockBack\DsKnockBackComponent.cpp">
+      <Filter>Source\World\Field\Component\KnockBack</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

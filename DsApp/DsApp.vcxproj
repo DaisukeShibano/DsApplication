@@ -214,6 +214,7 @@
     <ClInclude Include="Source\World\Component\Effect\DsTraceEffectComponent.h" />
     <ClInclude Include="Source\World\Component\Equip\DsEquipComponent.h" />
     <ClInclude Include="Source\World\Component\Item\DsItemBoxComponent.h" />
+    <ClInclude Include="Source\World\Component\KnockBack\DsKnockBackComponent.h" />
     <ClInclude Include="Source\World\Component\LockOn\DsLockOnComponent.h" />
     <ClInclude Include="Source\World\DsGameWorld.h" />
     <ClInclude Include="Source\World\Field\Action\DsActionCtrl.h" />
@@ -271,6 +272,7 @@
     <ClCompile Include="Source\World\Component\Effect\DsTraceEffectComponent.cpp" />
     <ClCompile Include="Source\World\Component\Equip\DsEquipComponent.cpp" />
     <ClCompile Include="Source\World\Component\Item\DsItemBoxComponent.cpp" />
+    <ClCompile Include="Source\World\Component\KnockBack\DsKnockBackComponent.cpp" />
     <ClCompile Include="Source\World\Component\LockOn\DsLockOnComponent.cpp" />
     <ClCompile Include="Source\World\DsGameWorld.cpp" />
     <ClCompile Include="Source\World\Field\Action\DsActionCtrl.cpp" />

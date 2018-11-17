@@ -103,6 +103,18 @@ bool DsDamageComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 									pFlags->SetDmgDir(dmgDir);
 								}
 
+								//ノックバック
+								const double kLenDef = param.GetKnockBackLen()*0.7;
+								const double kLenAtk = param.GetKnockBackLen()*0.3;//相手が下がれなかった分下がるのが理想。
+								const double kTime = param.GetKnockBackTime();
+								DsComponentSystem* pAtkCom = arg.owner.GetComponentSystem();
+								if (pDefCom) {//相手が下がる分
+									pDefCom->RequestKnockBack(-toAtk * kLenDef, kTime);
+								}
+								if (pAtkCom) {//自分が下がる分。
+									pAtkCom->RequestKnockBack(toAtk * kLenAtk, kTime);
+								}
+
 								//ヒット登録
 								m_hitOwners.insert(pDefender);
 							}
@@ -113,10 +125,7 @@ bool DsDamageComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 						}
 					}
 				}
-
-
-				//HP減算
-				//ノックバックをアタッチ
+				
 				
 
 				isCreateDamage = true;

@@ -39,6 +39,7 @@ DsFieldObj::DsFieldObj(DsSys& sys, DsPhysicsWorld& world)
 	, m_pAnimEventCallback(NULL)
 	, m_pComponentSystem(NULL)
 	, m_pAnimEventFlags(NULL)
+	, m_exVelocity(DsVec3d::Zero())
 	, m_reqestIsInit(false)
 	, m_isCompleteInit(false)
 	, m_isRequestDirectAnim(false)
@@ -135,9 +136,9 @@ bool DsFieldObj::GetDmypoly(int id, std::vector<DsMat44d>& outMat, DMYPOLY_SLOT 
 	else if(DMYPOLY_SLOT::WEP == slot){//•Šíƒ‚ƒfƒ‹‚©‚ç
 		const DsComponentSystem* pComSys = GetComponentSystem();
 		if (pComSys) {
-			DsEquipComponent* pEquip = pComSys->GetEquip();
+			const DsEquipComponent* pEquip = pComSys->GetEquip();
 			if (pEquip) {
-				DsAnimation* pAnim = pEquip->GetWep();
+				const DsAnimation* pAnim = pEquip->GetWep();
 				if (pAnim) {
 					pModel = pAnim->GetModel();
 				}

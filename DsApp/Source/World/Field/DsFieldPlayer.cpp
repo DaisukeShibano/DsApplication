@@ -128,7 +128,7 @@ void DsFieldPlayer::Update2(double dt)
 					const DsVec3d toTarget = lockOnPos - GetPosition();
 					const DsVec3d toTargetXZ = DsVec3d::Normalize(DsVec3d(toTarget.x, 0, toTarget.z));
 					lockOnDir = toTargetXZ;
-					angVelDeg = 630.0;
+					angVelDeg = 830.0;
 					isLockOn = true;
 				}
 			}

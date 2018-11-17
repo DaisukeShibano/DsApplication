@@ -7,8 +7,8 @@ namespace
 {
 	static DS_DAMAGE_PARAN_FORMAT s_param[] =
 	{
-		//id	radius	hitEffectId
-		{0,		0.3,	0}
+		//id	radius	hitEffectId	KBLen	KBTime
+		{0,		0.3,	0,			0.65,	0.2}
 	};
 
 

@@ -155,6 +155,10 @@ void DsFieldChr::Update2(double dt)
 		move = rot * m_pAnimation->GetDeltaMotion();
 	}
 
+	//外部速度反映
+	move += GetExVelocity()*dt;
+	SetExVelocity(DsVec3d::Zero());//クリア
+
 	m_pProxy->Drive(dt, move);
 }
 

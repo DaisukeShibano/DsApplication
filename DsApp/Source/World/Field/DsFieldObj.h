@@ -56,6 +56,8 @@ namespace DsApp
 		virtual DsVec3d GetPosition() const = 0;
 		virtual DsMat33d GetRotation() const = 0;
 		virtual DsVec3d GetChrSize() const = 0;
+		void SetExVelocity(const DsVec3d& vel) { m_exVelocity = vel; }
+		DsVec3d GetExVelocity() const { return m_exVelocity; }
 
 	public:
 		const DsLib::DsAnimation* GetAnim() const { return m_pAnimation; }
@@ -80,6 +82,7 @@ namespace DsApp
 		DsAnimEventCallback* m_pAnimEventCallback;
 		DsComponentSystem* m_pComponentSystem;
 		DsActionFlags* m_pAnimEventFlags;
+		DsVec3d m_exVelocity;
 		bool m_reqestIsInit;
 		bool m_isCompleteInit;
 	private:

@@ -21,6 +21,10 @@
 #include "World/Component/LockOn/DsLockOnComponent.h"
 #include "World/Component/Damage/DsDamageComponent.h"
 #include "World/Component/Effect/DsHitEffectComponent.h"
+#include "World/Component/KnockBack/DsKnockBackComponent.h"
+
+
+
 
 using namespace DsApp;
 
@@ -200,6 +204,14 @@ void DsComponentSystem::RequestDamage(ds_int64 key, int damageId, int dmypolyId0
 	DsDamageComponent* pComponent = _CreateGetComponent<DsDamageComponent>((ds_uint64)(&m_owner));
 	if (pComponent) {
 		pComponent->Request(damageId, dmypolyId0, dmypolyId1);
+	}
+}
+
+void DsComponentSystem::RequestKnockBack(const DsVec3d& move, double time)
+{
+	DsKnockBackComponent* pComponent = _CreateGetComponent<DsKnockBackComponent>((ds_uint64)(&m_owner));
+	if (pComponent) {
+		pComponent->Request(move, time);
 	}
 }
 

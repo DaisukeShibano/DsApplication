@@ -82,6 +82,7 @@ namespace DsApp
 		void RequestAttachWithUpdate(const DsMat44d& target, DsAttachEntity* pMove, double dt);
 		void RequestLockOnPoint();
 		void RequestDamage(ds_int64 key, int damageId, int dmypolyId0, int dmypolyId1);
+		void RequestKnockBack(const DsVec3d& move, double time);
 
 	public:
 		DsItemBoxComponent * GetItemBox()const;
