@@ -104,8 +104,8 @@ bool DsDamageComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 								}
 
 								//ノックバック
-								const double kLenDef = param.GetKnockBackLen()*0.7;
-								const double kLenAtk = param.GetKnockBackLen()*0.3;//相手が下がれなかった分下がるのが理想。
+								const double kLenDef = param.GetKnockBackLen()*0.65;
+								const double kLenAtk = param.GetKnockBackLen()*0.35;//相手が下がれなかった分下がるのが理想。
 								const double kTime = param.GetKnockBackTime();
 								DsComponentSystem* pAtkCom = arg.owner.GetComponentSystem();
 								if (pDefCom) {//相手が下がる分

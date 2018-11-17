@@ -191,7 +191,9 @@ void DsSimu::Update(double dt)
 {
 	if (m_pChrIns) {
 		m_pChrIns->SetRequestAnim(m_selectAnimName);
-		m_pChrIns->Update(dt);
+		m_pChrIns->Update1(dt);
+		m_pChrIns->Update2(dt);
+		m_pChrIns->Update3(dt);
 	}
 }
 

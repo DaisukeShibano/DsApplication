@@ -286,7 +286,9 @@ void DsSimu::Update(double dt)
 {
 	for each(DsFieldObj* pObj in m_fieldObjs)
 	{
-		pObj->Update(dt);
+		pObj->Update1(dt);
+		pObj->Update2(dt);
+		pObj->Update3(dt);
 		DsDbgSys::GetIns().RefDrawCom().SetColor(0.9, 1.0, 0.9);
 		pObj->DbgDraw(DsDbgSys::GetIns().RefDrawCom());
 	}
