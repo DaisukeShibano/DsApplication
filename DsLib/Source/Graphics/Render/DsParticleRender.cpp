@@ -43,6 +43,7 @@ void DsParticleRender::Render() const
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_CULL_FACE);
+	glDepthMask(GL_FALSE);
 
 	const DsVec3d camDir = -m_cam.GetRot().GetAxisZ();
 
@@ -83,6 +84,7 @@ void DsParticleRender::Render() const
 		}
 	}
 
+	glDepthMask(GL_TRUE);
 	glEnable(GL_CULL_FACE);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glDisable(GL_BLEND);

@@ -119,7 +119,7 @@ bool DsDamageComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 								m_hitOwners.insert(pDefender);
 							}
 							else {
-								//２回目以降のヒット
+								//２回目以降のヒット(多段ヒット)
 								//何もしない
 							}
 						}
