@@ -11,7 +11,7 @@ namespace DsApp
 {
 	enum class ACTION_TYPE : ds_uint8
 	{
-		NONE,
+		NONE=0,
 		ATTACK,
 		CHANGE_WEP,
 		MOVE,
