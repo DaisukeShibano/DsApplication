@@ -10,6 +10,7 @@ namespace DsApp
 		const int hitEffectId;
 		const double knockBackLen;
 		const double knockBackTime;
+		const double hitStopTime;
 	};
 
 
@@ -30,6 +31,7 @@ namespace DsApp
 		int GetHitEffectId() const { return m_pParam ? m_pParam->hitEffectId : 0; }
 		double GetKnockBackLen() const { return m_pParam ? m_pParam->knockBackLen : 0.0; }
 		double GetKnockBackTime() const { return m_pParam ? m_pParam->knockBackTime : 0.0; }
+		double GetHitStopTime() const { return m_pParam ? m_pParam->hitStopTime : 0.0; }
 
 	private:
 		const DS_DAMAGE_PARAN_FORMAT* m_pParam;

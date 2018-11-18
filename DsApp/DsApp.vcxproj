@@ -236,6 +236,7 @@
     <ClInclude Include="Source\World\Field\DsFieldInitInfo.h" />
     <ClInclude Include="Source\World\Field\DsFieldObj.h" />
     <ClInclude Include="Source\World\Field\DsFieldPlayer.h" />
+    <ClInclude Include="Source\World\Field\HitStop\DsHitStop.h" />
     <ClInclude Include="Source\World\Field\LockOn\DsLockOn.h" />
     <ClInclude Include="Source\World\Field\LockOn\DsLockOnPoint.h" />
     <ClInclude Include="Source\World\Physics\DsAnimRagdollModifier.h" />
@@ -291,6 +292,7 @@
     <ClCompile Include="Source\World\Field\DsFieldHit.cpp" />
     <ClCompile Include="Source\World\Field\DsFieldObj.cpp" />
     <ClCompile Include="Source\World\Field\DsFieldPlayer.cpp" />
+    <ClCompile Include="Source\World\Field\HitStop\DsHitStop.cpp" />
     <ClCompile Include="Source\World\Field\LockOn\DsLockOn.cpp" />
     <ClCompile Include="Source\World\Field\LockOn\DsLockOnPoint.cpp" />
     <ClCompile Include="Source\World\Physics\DsAnimRagdollModifier.cpp" />

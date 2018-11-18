@@ -82,6 +82,9 @@
     <Filter Include="Source\World\Field\Component\KnockBack">
       <UniqueIdentifier>{294a043c-35f0-4bf5-93fe-7f87405c7dac}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\World\Field\HitStop">
+      <UniqueIdentifier>{ae1dc0fa-36d7-4c3e-a391-9a1070d757aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsAppPch.h">
@@ -258,6 +261,9 @@
     <ClInclude Include="Source\World\Component\KnockBack\DsKnockBackComponent.h">
       <Filter>Source\World\Field\Component\KnockBack</Filter>
     </ClInclude>
+    <ClInclude Include="Source\World\Field\HitStop\DsHitStop.h">
+      <Filter>Source\World\Field\HitStop</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsAppPch.cpp">
@@ -400,6 +406,9 @@
     </ClCompile>
     <ClCompile Include="Source\World\Component\KnockBack\DsKnockBackComponent.cpp">
       <Filter>Source\World\Field\Component\KnockBack</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\World\Field\HitStop\DsHitStop.cpp">
+      <Filter>Source\World\Field\HitStop</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

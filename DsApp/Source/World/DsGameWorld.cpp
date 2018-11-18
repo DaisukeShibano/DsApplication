@@ -6,6 +6,8 @@
 #include "Collision/DsCollisionCallback.h"
 #include "World/Physics/DsAppCollisionCallback.h"
 #include "World/Field/Action/DsChrStateDefine.h"
+#include "World/Field/HitStop/DsHitStop.h"
+
 
 using namespace DsApp;
 using namespace DsPhysics;
@@ -56,12 +58,27 @@ void DsGameWorld::Initialize(DsLib::DsSys& sys)
 
 void DsGameWorld::Update(double dt)
 {
+	bool isUpdateIns = true;
+
 	if (m_pPhysWorld) {
 		m_pPhysWorld->Update(dt);
 	}
 
+	if (m_pGameSys) {
+		DsHitStop* pHitStop = m_pGameSys->GetHitStop();
+		if (pHitStop) {
+			pHitStop->Update(dt);
+			if (pHitStop->IsHitStop()) {
+				isUpdateIns = false;
+			}
+		}
+	}
+
 	if (m_pFieldObjectCreator) {
 		m_pFieldObjectCreator->Update(dt);
-		m_pFieldObjectCreator->UpdateAllIns(dt);
+
+		if (isUpdateIns) {
+			m_pFieldObjectCreator->UpdateAllIns(dt);
+		}
 	}
 }

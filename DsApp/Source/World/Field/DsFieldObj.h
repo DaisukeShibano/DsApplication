@@ -60,6 +60,10 @@ namespace DsApp
 		DsVec3d GetExVelocity() const { return m_exVelocity; }
 
 	public:
+		//操作キャラクターかどうか
+		virtual bool IsMainPlayer() const { return false; }
+
+	public:
 		const DsLib::DsAnimation* GetAnim() const { return m_pAnimation; }
 		DsLib::DsAnimation* GetAnim() { return m_pAnimation; }
 		bool GetDmypoly(int id, std::vector<DsMat44d>& outMat, DMYPOLY_SLOT slot)const;

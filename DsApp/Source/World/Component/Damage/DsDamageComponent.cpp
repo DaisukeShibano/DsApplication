@@ -6,6 +6,7 @@
 #include "World/Physics/DsAppCollisionFilter.h"
 #include "World/Component/DsComponentSystem.h"
 #include "World/Field/Action/DsActionFlags.h"
+#include "World/Field/HitStop/DsHitStop.h"
 
 
 using namespace DsApp;
@@ -113,6 +114,14 @@ bool DsDamageComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 								}
 								if (pAtkCom) {//自分が下がる分。
 									pAtkCom->RequestKnockBack(toAtk * kLenAtk, kTime);
+								}
+
+								//ヒットストップ
+								if (arg.owner.IsMainPlayer()) {
+									DsHitStop* pHitStop = (arg.pGameSys) ? (arg.pGameSys->GetHitStop()) : (NULL);
+									if (pHitStop) {
+										pHitStop->RequestHitStop(param.GetHitStopTime());
+									}
 								}
 
 								//ヒット登録

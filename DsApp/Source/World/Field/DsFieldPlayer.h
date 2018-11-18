@@ -31,6 +31,10 @@ namespace DsApp
 		virtual void Update2(double dt);
 		virtual void Update3(double dt);
 
+	public:
+		//操作キャラクターかどうか
+		virtual bool IsMainPlayer() const override { return true; }
+
 	private:
 		void _UpdateCam(double dt);
 
