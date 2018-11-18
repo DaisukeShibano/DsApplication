@@ -10,16 +10,16 @@ namespace
 	//パラメータでもいいかもだけど今はとりあえず決め打ち
 	static const double PARTICLE_LIFE_TIME = 0.4;//パーティクル寿命
 	static const int BASE_CREATE_NUM = 16;
-	static const double GRAVITY = -28.0;
-	static const double BASE_WIDTH = 0.36;
+	static const double GRAVITY = -20.0;
+	static const double BASE_WIDTH = 0.17;
 	static const double RAND_WIDTH_RATE = 0.55;//幅ランダム値
-	static const double START_WIDTH_RATE = 0.2;//始点幅サイズ
+	static const double START_WIDTH_RATE = 0.7;//始点幅サイズ
 	static const double BASE_LEN = 0.1;
 	static const double RAND_LEN_RATE = 2.5;//発生方向長さランダム値
-	static const double BASE_VEL = 14.0;
+	static const double BASE_VEL = 10.0;
 	static const double RAND_VEL_RATE = 0.45;//速度ランダム値
 	static const double VEL_RESIST = 7.0;//速度減衰値
-	static const double RAND_Y_ANG = DegToRad(40.0);//迎角ランダム値
+	static const double RAND_Y_ANG = DegToRad(25.0);//迎角ランダム値
 	static const double RAND_Y_ANG_RATE = 0.9;
 
 
