@@ -217,6 +217,7 @@
     <ClCompile Include="Source\Graphics\Render\DsParticleRender.cpp" />
     <ClCompile Include="Source\Graphics\Render\DsRender.cpp" />
     <ClCompile Include="Source\Graphics\Render\DsRenderCamCaptureImage.cpp" />
+    <ClCompile Include="Source\Graphics\Render\DsSceneBloom.cpp" />
     <ClCompile Include="Source\Graphics\Render\DsShadowMap.cpp" />
     <ClCompile Include="Source\Graphics\Render\DsTexture.cpp" />
     <ClCompile Include="Source\Graphics\Render\Tool\Cloud\DsCloudEmitter.cpp" />
@@ -224,6 +225,7 @@
     <ClCompile Include="Source\Graphics\Render\Tool\Cloud\DsToolCloud.cpp" />
     <ClCompile Include="Source\Graphics\Render\Tool\DsRenderTool.cpp" />
     <ClCompile Include="Source\Graphics\Shader\DsShader.cpp" />
+    <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsBloomShader.cpp" />
     <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsShadowBlurShader.cpp" />
     <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsDefaultShader.cpp" />
     <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsShadowMapShader.cpp" />
@@ -280,6 +282,7 @@
     <ClInclude Include="Source\Graphics\Render\DsParticleRender.h" />
     <ClInclude Include="Source\Graphics\Render\DsRender.h" />
     <ClInclude Include="Source\Graphics\Render\DsRenderCamCaptureImage.h" />
+    <ClInclude Include="Source\Graphics\Render\DsSceneBloom.h" />
     <ClInclude Include="Source\Graphics\Render\DsShadowMap.h" />
     <ClInclude Include="Source\Graphics\Render\DsTexture.h" />
     <ClInclude Include="Source\Graphics\Render\Tool\Cloud\DsCloudEmitter.h" />
@@ -287,6 +290,7 @@
     <ClInclude Include="Source\Graphics\Render\Tool\Cloud\DsToolCloud.h" />
     <ClInclude Include="Source\Graphics\Render\Tool\DsRenderTool.h" />
     <ClInclude Include="Source\Graphics\Shader\DsShader.h" />
+    <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsBloomShader.h" />
     <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsShadowBlurShader.h" />
     <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsDefaultShader.h" />
     <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsShadowMapShader.h" />

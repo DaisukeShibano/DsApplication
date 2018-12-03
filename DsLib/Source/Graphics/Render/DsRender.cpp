@@ -22,6 +22,8 @@
 #ifndef _DS_RENDER_IMAGE_H_
 #include "Graphics/Render/DsRenderCamCaptureImage.h"
 #endif
+#include "Graphics/GL/DsGLFunc.h"
+#include "Graphics/Render/DsSceneBloom.h"
 
 using namespace DsLib;
 
@@ -36,6 +38,7 @@ DsRender& DsRender::Create(DsCamera& cam, DsSys& sys)
 DsRender::DsRender(DsCamera& cam, DsSys& sys)
 :m_cam(cam)
 ,m_pShadow(NULL)
+,m_pBloom(NULL)
 ,m_pShader(NULL)
 ,m_pDrawCom(NULL)
 ,m_light(DsLightMan::GetIns().GetSunLight())
@@ -44,6 +47,9 @@ DsRender::DsRender(DsCamera& cam, DsSys& sys)
 ,m_particleRender(cam)
 ,m_renderImages()
 {
+	if (!DsInitGLFunc()) {
+		DS_ASSERT(false, "GL関数の初期化に失敗しました。GLのバージョンが2.0未満である可能性があります");
+	}
 	
 	m_pDrawCom = &DsDrawCommand::Create(m_animRender, *this);
 	
@@ -63,11 +69,13 @@ DsRender::DsRender(DsCamera& cam, DsSys& sys)
 
 	m_pShader = &DsShader::Create();
 	DS_ASSERT(m_pShader, "メモリ確保失敗");
-	
+	m_pShader->Initialize();
+
 	m_pShadow = &DsShadowMap::Create(*this, *m_pShader);
 	DS_ASSERT(m_pShadow, "メモリ確保失敗");
 
-	m_pShader->Initialize();
+	m_pBloom = DsSceneBloom::Create(*this, *m_pShader);
+	DS_ASSERT(m_pBloom, "メモリ確保失敗");
 
 	m_light.SetPos(DsVec3f::ToVec3(0, 5, 0));
 	m_light.SetDir(DsVec3f::ToVec3(0, -1, 0));
@@ -79,6 +87,7 @@ DsRender::DsRender(DsCamera& cam, DsSys& sys)
 DsRender::~DsRender()
 {
 	delete m_pShadow;m_pShadow=NULL;
+	delete m_pBloom; m_pBloom = NULL;
 	delete m_pShader;m_pShader=NULL;
 	delete m_pDrawCom; m_pDrawCom=NULL;
 }

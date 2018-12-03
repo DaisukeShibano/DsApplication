@@ -19,6 +19,7 @@ namespace DsLib
 	class DsRenderTool;
 	class DsSys;
 	class DsRenderCamCaptureImage;
+	class DsSceneBloom;
 }
 
 namespace DsLib
@@ -71,6 +72,7 @@ namespace DsLib
 	private:
 		DsCamera& m_cam;
 		DsShadowMap* m_pShadow;
+		DsSceneBloom* m_pBloom;
 		DsShader* m_pShader;
 		DsDrawCommand* m_pDrawCom;
 		DsLight& m_light;

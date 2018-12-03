@@ -4,6 +4,7 @@
 #include "Graphics/Shader/ShaderSource/DsDefaultShader.h"
 #include "Graphics/Shader/ShaderSource/DsShadowMapShader.h"
 #include "Graphics/Shader/ShaderSource/DsShadowBlurShader.h"
+#include "Graphics/Shader/ShaderSource/DsBloomShader.h"
 #ifndef _DS_GL_FUNC_
 #include "Graphics/GL/DsGLFunc.h"
 #endif
@@ -121,11 +122,14 @@ namespace
 			std::string pVertexSource;
 			std::string pFragmentSource;
 		};
+
+		//並びはSHADER_TYPEと対応
 		_ShaderSource sources[] =
 		{
 			{ GetDefaultVertexShader(), GetDefaultFragmentShader() },
 			{ GetShadowMapVertexShader(), GetShadowMapFragmentShader() },
 			{ GetShadowBlurVertexShader(), GetShadowBlurFragmentShader() },
+			{ GetShadowBlurVertexShader(), GetBloomFragmentShader() },
 		};
 		const int sourceNum = static_cast<int>(SHADER_TYPE::NUM);
 		static_assert(sizeof(sources)/sizeof(sources[0]) == sourceNum, "シェーダーのソースの数が合いません");

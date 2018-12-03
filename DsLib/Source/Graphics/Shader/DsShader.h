@@ -8,6 +8,7 @@ namespace DsLib
 		DEFAULT,
 		SHADOW_MAP,
 		SHADOW_BLUR,
+		BLOOM,
 		NUM,
 	};
 

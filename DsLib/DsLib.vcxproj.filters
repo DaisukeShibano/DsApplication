@@ -280,6 +280,12 @@
     <ClCompile Include="Source\Graphics\Effect\Particle\DsBloodParticleEmitter.cpp">
       <Filter>Source\Graphics\Effect\Particle</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Graphics\Render\DsSceneBloom.cpp">
+      <Filter>Source\Graphics\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsBloomShader.cpp">
+      <Filter>Source\Graphics\Shader\ShaderSource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsPch.h">
@@ -530,6 +536,12 @@
     </ClInclude>
     <ClInclude Include="Source\Graphics\Effect\Particle\DsParticleEmitter.h">
       <Filter>Source\Graphics\Effect\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Render\DsSceneBloom.h">
+      <Filter>Source\Graphics\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsBloomShader.h">
+      <Filter>Source\Graphics\Shader\ShaderSource</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

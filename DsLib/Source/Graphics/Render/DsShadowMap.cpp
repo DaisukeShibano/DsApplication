@@ -56,10 +56,6 @@ namespace
 	,m_blurFboId(0)
 	,m_blurFboIdColorTextureId(0)
 	{
-		if (!DsInitGLFunc()) {
-			DS_ASSERT(false, "GL関数の初期化に失敗しました。GLのバージョンが2.0未満である可能性があります");
-		}
-
 		m_fDepthSize[0] = static_cast<GLsizei>(s_shadowSize);
 		m_fDepthSize[1] = static_cast<GLsizei>(s_shadowSize);
 
