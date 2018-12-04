@@ -25,7 +25,7 @@ namespace
 			vShadowCoord = gl_TextureMatrix[7] * gl_Vertex;	// 影用座標値(光源中心座標)
 			
 			// 描画用
-			gl_Position = ftransform();	// 頂点位置
+			gl_Position = ftransform();				// 頂点位置
 			gl_FrontColor = gl_Color;				// 頂点色
 			gl_TexCoord[0] = gl_MultiTexCoord0;		// 頂点テクスチャ座標
 		}

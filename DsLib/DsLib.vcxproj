@@ -215,6 +215,7 @@
     <ClCompile Include="Source\Graphics\Light\DsSunLight.cpp" />
     <ClCompile Include="Source\Graphics\Render\DsModelRender.cpp" />
     <ClCompile Include="Source\Graphics\Render\DsParticleRender.cpp" />
+    <ClCompile Include="Source\Graphics\Render\DsPostEffectBuffer.cpp" />
     <ClCompile Include="Source\Graphics\Render\DsRender.cpp" />
     <ClCompile Include="Source\Graphics\Render\DsRenderCamCaptureImage.cpp" />
     <ClCompile Include="Source\Graphics\Render\DsSceneBloom.cpp" />
@@ -280,6 +281,7 @@
     <ClInclude Include="Source\Graphics\Light\DsSunLight.h" />
     <ClInclude Include="Source\Graphics\Render\DsModelRender.h" />
     <ClInclude Include="Source\Graphics\Render\DsParticleRender.h" />
+    <ClInclude Include="Source\Graphics\Render\DsPostEffectBuffer.h" />
     <ClInclude Include="Source\Graphics\Render\DsRender.h" />
     <ClInclude Include="Source\Graphics\Render\DsRenderCamCaptureImage.h" />
     <ClInclude Include="Source\Graphics\Render\DsSceneBloom.h" />

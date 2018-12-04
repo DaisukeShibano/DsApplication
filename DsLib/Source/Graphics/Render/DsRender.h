@@ -20,6 +20,7 @@ namespace DsLib
 	class DsSys;
 	class DsRenderCamCaptureImage;
 	class DsSceneBloom;
+	class DsPostEffectBuffer;
 }
 
 namespace DsLib
@@ -72,6 +73,7 @@ namespace DsLib
 	private:
 		DsCamera& m_cam;
 		DsShadowMap* m_pShadow;
+		DsPostEffectBuffer* m_pPostEffectBuffer;
 		DsSceneBloom* m_pBloom;
 		DsShader* m_pShader;
 		DsDrawCommand* m_pDrawCom;

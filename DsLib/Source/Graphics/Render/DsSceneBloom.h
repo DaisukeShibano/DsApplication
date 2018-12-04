@@ -15,6 +15,9 @@ namespace DsLib
 
 	public:
 		virtual void Bloom()=0;
+
+	public:
+		virtual void DbgDraw() = 0;
 	};
 
 

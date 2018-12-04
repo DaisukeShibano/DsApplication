@@ -24,6 +24,7 @@
 #endif
 #include "Graphics/GL/DsGLFunc.h"
 #include "Graphics/Render/DsSceneBloom.h"
+#include "Graphics/Render/DsPostEffectBuffer.h"
 
 using namespace DsLib;
 
@@ -38,6 +39,7 @@ DsRender& DsRender::Create(DsCamera& cam, DsSys& sys)
 DsRender::DsRender(DsCamera& cam, DsSys& sys)
 :m_cam(cam)
 ,m_pShadow(NULL)
+,m_pPostEffectBuffer(NULL)
 ,m_pBloom(NULL)
 ,m_pShader(NULL)
 ,m_pDrawCom(NULL)
@@ -74,6 +76,9 @@ DsRender::DsRender(DsCamera& cam, DsSys& sys)
 	m_pShadow = &DsShadowMap::Create(*this, *m_pShader);
 	DS_ASSERT(m_pShadow, "メモリ確保失敗");
 
+	m_pPostEffectBuffer = DsPostEffectBuffer::Create(*this, *m_pShader);
+	DS_ASSERT(m_pPostEffectBuffer, "メモリ確保失敗");
+
 	m_pBloom = DsSceneBloom::Create(*this, *m_pShader);
 	DS_ASSERT(m_pBloom, "メモリ確保失敗");
 
@@ -87,6 +92,7 @@ DsRender::DsRender(DsCamera& cam, DsSys& sys)
 DsRender::~DsRender()
 {
 	delete m_pShadow;m_pShadow=NULL;
+	delete m_pPostEffectBuffer; m_pPostEffectBuffer = NULL;
 	delete m_pBloom; m_pBloom = NULL;
 	delete m_pShader;m_pShader=NULL;
 	delete m_pDrawCom; m_pDrawCom=NULL;
@@ -117,10 +123,15 @@ void DsRender::Render( const double dt )
 	//雲描画
 	GetRenderTool().RefCloud().Update(static_cast<float>(dt));
 	
-	//シーン描画
+	//通常シーン描画用シェーダー
 	m_pShader->EnableShader(SHADER_TYPE::DEFAULT);
-	
+
+	//通常シーン描画
 	_RenderModel();
+	
+	//この時点のフレームバッファをポストプロセス用バッファにコピー
+	m_pPostEffectBuffer->CopyFrameBuffer();
+
 	//外部で使う用のレンダリング画像の保存
 	for (DsRenderCamCaptureImage* pImage : m_renderImages) {
 		pImage->BeginCapture();
@@ -132,6 +143,8 @@ void DsRender::Render( const double dt )
 	
 	//デバッグ用
 	//m_pShadow->DrawDepthTex();
+	m_pPostEffectBuffer->DbgDraw();
+	m_pBloom->DbgDraw();
 }
 
 void DsRender::Update( const double dt )
