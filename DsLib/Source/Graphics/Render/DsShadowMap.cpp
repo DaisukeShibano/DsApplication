@@ -319,7 +319,7 @@ namespace
 		m_shader.SetShadowBlurParam(DsVec2f( 1.0f / (static_cast<float>(m_fDepthSize[0])*static_cast<float>( BLUR_COEF) ), 0.0f),		// Bluring horinzontaly
 									0);
 		DsGLActiveTexture(DS_GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, m_colorTextureId);//最初っからm_iFBODepthではダメ？
+		glBindTexture(GL_TEXTURE_2D, m_colorTextureId);//シャドウマップ(距離の2乗が入った方)をテクスチャとしてバインド
 
 		//Preparing to draw quad
 		glMatrixMode(GL_PROJECTION);

@@ -79,7 +79,7 @@ DsRender::DsRender(DsCamera& cam, DsSys& sys)
 	m_pPostEffectBuffer = DsPostEffectBuffer::Create(*this, *m_pShader);
 	DS_ASSERT(m_pPostEffectBuffer, "メモリ確保失敗");
 
-	m_pBloom = DsSceneBloom::Create(*this, *m_pShader);
+	m_pBloom = DsSceneBloom::Create(*this, *m_pShader, *m_pPostEffectBuffer);
 	DS_ASSERT(m_pBloom, "メモリ確保失敗");
 
 	m_light.SetPos(DsVec3f::ToVec3(0, 5, 0));
@@ -129,15 +129,18 @@ void DsRender::Render( const double dt )
 	//通常シーン描画
 	_RenderModel();
 	
-	//この時点のフレームバッファをポストプロセス用バッファにコピー
-	m_pPostEffectBuffer->CopyFrameBuffer();
-
 	//外部で使う用のレンダリング画像の保存
 	for (DsRenderCamCaptureImage* pImage : m_renderImages) {
 		pImage->BeginCapture();
 		_RenderModel();
 		pImage->EndCapture();
 	}
+
+	//この時点のフレームバッファをポストプロセス用バッファにコピー
+	m_pPostEffectBuffer->CopyFrameBuffer();
+
+	//ブルーム
+	m_pBloom->Bloom();
 	
 	m_pShader->DisableShader();
 	

@@ -20,6 +20,7 @@ namespace
 		DsPostEffectBufferImp(const DsRender& ren, DsShader& shader)
 			: m_render(ren)
 			, m_shader(shader)
+			, m_fboId(0)
 			, m_texId(0)
 		{
 			const int width = static_cast<int>(ren.GetWidth());
@@ -33,11 +34,17 @@ namespace
 			glTexImage2D(GL_TEXTURE_2D, 0, DS_GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, 0);
 			glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 0, 0, width, height, 0);
 			glBindTexture(GL_TEXTURE_2D, 0);
+			
+			DsGLGenFramebuffers(1, &m_fboId);
+			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_fboId);
+			DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, DS_GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texId, 0);
+			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
 		}
 
 		~DsPostEffectBufferImp()
 		{
 			glDeleteTextures(1, &m_texId);
+			DsGLDeleteFramebuffers(1, &m_fboId);
 		}
 
 		virtual void CopyFrameBuffer() override
@@ -57,6 +64,16 @@ namespace
 		virtual void UnbindTexture() override
 		{
 			glBindTexture(GL_TEXTURE_2D, 0);
+		}
+
+		virtual void BindFrameBuffer() override
+		{
+			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_fboId);
+		}
+
+		virtual void UnbindFrameBuffer() override
+		{
+			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
 		}
 
 	public:
@@ -101,7 +118,6 @@ namespace
 		DsShader& m_shader;
 		GLuint m_fboId;
 		GLuint m_texId;
-		GLuint m_dboId;
 	};
 }
 
