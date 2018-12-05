@@ -3,7 +3,7 @@
 #include "Config/DsConf.h"
 #include "Graphics/Shader/ShaderSource/DsDefaultShader.h"
 #include "Graphics/Shader/ShaderSource/DsShadowMapShader.h"
-#include "Graphics/Shader/ShaderSource/DsShadowBlurShader.h"
+#include "Graphics/Shader/ShaderSource/DsBlurShader.h"
 #include "Graphics/Shader/ShaderSource/DsBloomShader.h"
 #ifndef _DS_GL_FUNC_
 #include "Graphics/GL/DsGLFunc.h"
@@ -97,7 +97,7 @@ namespace
 		virtual void SetUseTexture(bool isUse) override;
 		virtual void SetUseLight(bool isUse)override;
 		virtual void SetUseShadow(bool isUse)override;
-		virtual void SetShadowBlurParam(DsVec2f s, int ts)override;
+		virtual void SetBlurParam(DsVec2f s, int ts)override;
 
 	private:
 		unsigned int m_currentIdx;
@@ -128,8 +128,9 @@ namespace
 		{
 			{ GetDefaultVertexShader(), GetDefaultFragmentShader() },
 			{ GetShadowMapVertexShader(), GetShadowMapFragmentShader() },
-			{ GetShadowBlurVertexShader(), GetShadowBlurFragmentShader() },
-			{ GetShadowBlurVertexShader(), GetBloomFragmentShader() },
+			{ GetBlurVertexShader(), GetBlurFragmentShader() },
+			{ GetBloomVertexShader1(), GetBloomFragmentShader1() },
+			{ GetBloomVertexShader2(), GetBloomFragmentShader2() },
 		};
 		const int sourceNum = static_cast<int>(SHADER_TYPE::NUM);
 		static_assert(sizeof(sources)/sizeof(sources[0]) == sourceNum, "シェーダーのソースの数が合いません");
@@ -224,7 +225,7 @@ namespace
 	}
 
 	//virtual
-	void DsShaderImp::SetShadowBlurParam(DsVec2f s, int ts)
+	void DsShaderImp::SetBlurParam(DsVec2f s, int ts)
 	{
 		DsGLUniform2f(DsGLGetUniformLocation(m_prog[m_currentIdx], "ScaleU"), s.x, s.y);
 		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "textureSource"), ts);

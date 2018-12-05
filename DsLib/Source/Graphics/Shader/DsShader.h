@@ -7,8 +7,9 @@ namespace DsLib
 	{
 		DEFAULT,
 		SHADOW_MAP,
-		SHADOW_BLUR,
-		BLOOM,
+		BLUR,
+		BLOOM1,
+		BLOOM2,
 		NUM,
 	};
 
@@ -25,7 +26,7 @@ namespace DsLib
 		virtual void SetUseTexture(bool isUse) = NULL;
 		virtual void SetUseLight(bool isUse)=NULL;
 		virtual void SetUseShadow(bool isUse)=NULL;
-		virtual void SetShadowBlurParam(DsVec2f s, int ts)=NULL;
+		virtual void SetBlurParam(DsVec2f s, int ts)=NULL;
 	};
 
 }

@@ -227,7 +227,7 @@
     <ClCompile Include="Source\Graphics\Render\Tool\DsRenderTool.cpp" />
     <ClCompile Include="Source\Graphics\Shader\DsShader.cpp" />
     <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsBloomShader.cpp" />
-    <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsShadowBlurShader.cpp" />
+    <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsBlurShader.cpp" />
     <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsDefaultShader.cpp" />
     <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsShadowMapShader.cpp" />
     <ClCompile Include="Source\Keyboard\DsKeyboard.cpp" />
@@ -293,7 +293,7 @@
     <ClInclude Include="Source\Graphics\Render\Tool\DsRenderTool.h" />
     <ClInclude Include="Source\Graphics\Shader\DsShader.h" />
     <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsBloomShader.h" />
-    <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsShadowBlurShader.h" />
+    <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsBlurShader.h" />
     <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsDefaultShader.h" />
     <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsShadowMapShader.h" />
     <ClInclude Include="Source\Keyboard\DsKeyboard.h" />

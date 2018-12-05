@@ -229,9 +229,6 @@
     <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsShadowMapShader.cpp">
       <Filter>Source\Graphics\Shader\ShaderSource</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsShadowBlurShader.cpp">
-      <Filter>Source\Graphics\Shader\ShaderSource</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Animation\DsAnimSkeleton.cpp">
       <Filter>Source\Animation</Filter>
     </ClCompile>
@@ -288,6 +285,9 @@
     </ClCompile>
     <ClCompile Include="Source\Graphics\Render\DsPostEffectBuffer.cpp">
       <Filter>Source\Graphics\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsBlurShader.cpp">
+      <Filter>Source\Graphics\Shader\ShaderSource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -471,9 +471,6 @@
     <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsShadowMapShader.h">
       <Filter>Source\Graphics\Shader\ShaderSource</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsShadowBlurShader.h">
-      <Filter>Source\Graphics\Shader\ShaderSource</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Animation\DsAnimSkeleton.h">
       <Filter>Source\Animation</Filter>
     </ClInclude>
@@ -548,6 +545,9 @@
     </ClInclude>
     <ClInclude Include="Source\Graphics\Render\DsPostEffectBuffer.h">
       <Filter>Source\Graphics\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsBlurShader.h">
+      <Filter>Source\Graphics\Shader\ShaderSource</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

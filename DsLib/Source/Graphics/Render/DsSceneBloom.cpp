@@ -29,10 +29,31 @@ namespace
 
 		virtual void Bloom() override
 		{
-			m_shader.EnableShader(SHADER_TYPE::BLOOM);
+			{
+				m_shader.EnableShader(SHADER_TYPE::BLOOM1);
+				_Draw();
+			}
+			{
+				const int width = static_cast<int>(m_render.GetWidth());
+				const int height = static_cast<int>(m_render.GetHeight());
+				m_shader.EnableShader(SHADER_TYPE::BLUR);
+				m_shader.SetBlurParam(DsVec2f(1.0f / (static_cast<float>(width)), 0.0f), 0);
+				_Draw();
+				m_shader.SetBlurParam(DsVec2f(0.0f, 1.0f / static_cast<float>(height)),0);
+				_Draw();
+			}
+			{
+				m_shader.EnableShader(SHADER_TYPE::BLOOM2);
+				//_Draw();
+			}
+			m_shader.DisableShader();
+		}
 
+	private:
+		void _Draw()
+		{
 			m_postEffectBuffer.BindFrameBuffer();
-				
+
 			glMatrixMode(GL_PROJECTION);
 			glPushMatrix();
 			glLoadIdentity();
@@ -42,7 +63,7 @@ namespace
 			glLoadIdentity();
 
 			DsGLActiveTexture(DS_GL_TEXTURE0);
-			
+
 			m_postEffectBuffer.BindTexture();
 			glBegin(GL_QUADS);
 			glTexCoord2d(0, 0); glVertex3d(0, 0, 0);
@@ -58,8 +79,6 @@ namespace
 			glPopMatrix();
 
 			m_postEffectBuffer.UnbindFrameBuffer();
-
-			m_shader.DisableShader();
 		}
 
 	public:

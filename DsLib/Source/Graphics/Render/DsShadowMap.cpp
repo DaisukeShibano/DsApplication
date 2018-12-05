@@ -308,7 +308,7 @@ namespace
 
 	void DsShadowMapImp::_Blur()
 	{
-		m_shader.EnableShader(SHADER_TYPE::SHADOW_BLUR);
+		m_shader.EnableShader(SHADER_TYPE::BLUR);
 
 		DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_blurFboId);
 		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -316,10 +316,10 @@ namespace
 		//m_blurFboIdへ横方向にぼかす。m_blurFboIdはm_blurFboIdColorTextureIdと紐づいているのでここに結果が格納される。横をぼかすための一時テクスチャ
 		glViewport(0, 0, static_cast<GLsizei>(m_fDepthSize[0] * BLUR_COEF), static_cast<GLsizei>(m_fDepthSize[1] * BLUR_COEF));
 		
-		m_shader.SetShadowBlurParam(DsVec2f( 1.0f / (static_cast<float>(m_fDepthSize[0])*static_cast<float>( BLUR_COEF) ), 0.0f),		// Bluring horinzontaly
+		m_shader.SetBlurParam(DsVec2f( 1.0f / (static_cast<float>(m_fDepthSize[0])*static_cast<float>( BLUR_COEF) ), 0.0f),		// Bluring horinzontaly
 									0);
 		DsGLActiveTexture(DS_GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, m_colorTextureId);//シャドウマップ(距離の2乗が入った方)をテクスチャとしてバインド
+		glBindTexture(GL_TEXTURE_2D, m_colorTextureId);//シャドウマップ(6と7あって6の方)をテクスチャとしてバインド
 
 		//Preparing to draw quad
 		glMatrixMode(GL_PROJECTION);
@@ -345,7 +345,7 @@ namespace
 		//glClearDepth(1.0f);
 		//m_blurFboIdColorTextureId で横方にぼかされてるので、縦方向にぼかしたものをm_iFBODepthで描画。m_iFBODepthはm_colorTextureIdに紐づいているので最終的なシャドウマップがこれ
 		glViewport(0, 0, m_fDepthSize[0], m_fDepthSize[1]);
-		m_shader.SetShadowBlurParam( DsVec2f(0.0f, 1.0f / static_cast<float>(m_fDepthSize[1])),
+		m_shader.SetBlurParam( DsVec2f(0.0f, 1.0f / static_cast<float>(m_fDepthSize[1])),
 									0);
 		glBindTexture(GL_TEXTURE_2D, m_blurFboIdColorTextureId);//m_blurFboIdColorTextureId
 

@@ -99,9 +99,9 @@ namespace
 			glNormal3d(0, 0, 1);
 			glBegin(GL_QUADS);
 			glTexCoord2d(0, 0); glVertex3d(0.05*w, 0.05*h, 0);
-			glTexCoord2d(1, 0); glVertex3d(0.05*w + 100, 0.05*h, 0);
-			glTexCoord2d(1, 1); glVertex3d(0.05*w + 100, 0.05*h + 100, 0);
-			glTexCoord2d(0, 1); glVertex3d(0.05*w, 0.05*h + 100, 0);
+			glTexCoord2d(1, 0); glVertex3d(0.05*w + 200, 0.05*h, 0);
+			glTexCoord2d(1, 1); glVertex3d(0.05*w + 200, 0.05*h + 200, 0);
+			glTexCoord2d(0, 1); glVertex3d(0.05*w, 0.05*h + 200, 0);
 			glEnd();
 			glBindTexture(GL_TEXTURE_2D, 0);
 			glDisable(GL_TEXTURE_2D);
