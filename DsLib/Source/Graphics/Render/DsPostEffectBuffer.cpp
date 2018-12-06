@@ -23,6 +23,7 @@ namespace
 			, m_fboId(0)
 			, m_texId(0)
 			, m_texOriId(0)
+			, m_fboOriId(0)
 
 		{
 			const int width = static_cast<int>(ren.GetWidth());
@@ -51,17 +52,22 @@ namespace
 			glTexImage2D(GL_TEXTURE_2D, 0, DS_GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, 0);
 			glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 0, 0, width, height, 0);
 			glBindTexture(GL_TEXTURE_2D, 0);
+
+			//DsGLGenFramebuffers(1, &m_fboOriId);
+			//DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_fboOriId);
+			//DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, DS_GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texOriId, 0);
+			//DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
 		}
 
 		~DsPostEffectBufferImp()
 		{
 			glDeleteTextures(1, &m_texId);
 			DsGLDeleteFramebuffers(1, &m_fboId);
+			glDeleteTextures(1, &m_texOriId);
 		}
 
 		virtual void CopyFrameBuffer() override
 		{
-			//DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
 			const int width = static_cast<int>(m_render.GetWidth());
 			const int height = static_cast<int>(m_render.GetHeight());
 			DsGLActiveTexture(DS_GL_TEXTURE0);
@@ -76,6 +82,42 @@ namespace
 
 			DsGLActiveTexture(DS_GL_TEXTURE0);
 		}
+
+		virtual void RenderFrame() override
+		{
+			const double w = m_render.GetWidth();
+			const double h = m_render.GetHeight();
+
+			m_shader.DisableShader();//テクスチャ１枚描画だけなので特別なシェーダーはいらない
+
+			glMatrixMode(GL_PROJECTION);
+			glPushMatrix();
+			glLoadIdentity();
+			glOrtho(0, w, 0, h, 0, 1);
+			glMatrixMode(GL_MODELVIEW);
+			glPushMatrix();
+			glLoadIdentity();
+
+			glDisable(GL_LIGHTING);
+			glColor4f(1, 1, 1, 1);
+			DsGLActiveTexture(DS_GL_TEXTURE0);
+			glEnable(GL_TEXTURE_2D);
+			glBindTexture(GL_TEXTURE_2D, m_texId);
+			glNormal3d(0, 0, 1);
+			glBegin(GL_QUADS);
+			glTexCoord2d(0, 0); glVertex3d(0, 0, 0);
+			glTexCoord2d(1, 0); glVertex3d(w, 0, 0);
+			glTexCoord2d(1, 1); glVertex3d(w, h, 0);
+			glTexCoord2d(0, 1); glVertex3d(0, h, 0);
+			glEnd();
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glDisable(GL_TEXTURE_2D);
+			glMatrixMode(GL_PROJECTION);
+			glPopMatrix();
+			glMatrixMode(GL_MODELVIEW);
+			glPopMatrix();
+		}
+
 
 		virtual void BindTexture() override
 		{
@@ -102,9 +144,14 @@ namespace
 			glBindTexture(GL_TEXTURE_2D, m_texOriId);
 		}
 
-		virtual void UnbindTextureOri() override
+		virtual void BindFrameBufferOri() override
 		{
-			glBindTexture(GL_TEXTURE_2D, 0);
+			//DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_fboOriId);
+		}
+
+		virtual void UnbindFrameBufferOri() override
+		{
+			//DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
 		}
 
 
@@ -151,6 +198,7 @@ namespace
 		GLuint m_fboId;
 		GLuint m_texId;
 		GLuint m_texOriId;
+		GLuint m_fboOriId;
 	};
 }
 

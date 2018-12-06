@@ -29,13 +29,13 @@ namespace
 
 		virtual void Bloom() override
 		{
-			{
+			{//高輝度抽出
 				m_shader.EnableShader(SHADER_TYPE::BLOOM1);
 				DsGLActiveTexture(DS_GL_TEXTURE0);
-				m_postEffectBuffer.BindTexture();
+				m_postEffectBuffer.BindTexture();//加工用バッファ
 				_Draw();
 			}
-			{
+			{//ブラー
 				const int width = static_cast<int>(m_render.GetWidth());
 				const int height = static_cast<int>(m_render.GetHeight());
 				m_shader.EnableShader(SHADER_TYPE::BLUR);
@@ -44,13 +44,16 @@ namespace
 				m_shader.SetBlurParam(DsVec2f(0.0f, 1.0f / static_cast<float>(height)),0);
 				_Draw();
 			}
-			{
+			{//合成
 				m_shader.EnableShader(SHADER_TYPE::BLOOM2);
-				DsGLActiveTexture(DS_GL_TEXTURE1);
-				m_postEffectBuffer.BindTextureOri();
+				DsGLActiveTexture(DS_GL_TEXTURE1);//1番のテスクチャに加工前をバインド
 				m_shader.SetPostEffectParam(1);
+				m_postEffectBuffer.BindTextureOri();
 				_Draw();
 			}
+
+			m_postEffectBuffer.UnbindTexture();
+			DsGLActiveTexture(DS_GL_TEXTURE0);
 			m_shader.DisableShader();
 		}
 

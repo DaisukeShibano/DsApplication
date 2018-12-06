@@ -142,12 +142,13 @@ void DsRender::Render( const double dt )
 	//ブルーム
 	m_pBloom->Bloom();
 	
+	//ポストエフェクトをレンダリング画面へ
+	m_pPostEffectBuffer->RenderFrame();
+
 	m_pShader->DisableShader();
 	
 	//デバッグ用
 	//m_pShadow->DrawDepthTex();
-	m_pPostEffectBuffer->DbgDraw();
-	m_pBloom->DbgDraw();
 }
 
 void DsRender::Update( const double dt )

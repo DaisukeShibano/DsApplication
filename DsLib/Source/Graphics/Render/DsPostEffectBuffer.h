@@ -15,6 +15,7 @@ namespace DsLib
 
 	public:
 		virtual void CopyFrameBuffer() = 0;
+		virtual void RenderFrame()=0;
 
 		virtual void BindTexture() = 0;
 		virtual void UnbindTexture() = 0;
@@ -23,7 +24,9 @@ namespace DsLib
 		virtual void UnbindFrameBuffer() = 0;
 
 		virtual void BindTextureOri() = 0;
-		virtual void UnbindTextureOri() = 0;
+
+		virtual void BindFrameBufferOri() = 0;
+		virtual void UnbindFrameBufferOri() = 0;
 
 
 	public:
