@@ -31,6 +31,8 @@ namespace
 		{
 			{
 				m_shader.EnableShader(SHADER_TYPE::BLOOM1);
+				DsGLActiveTexture(DS_GL_TEXTURE0);
+				m_postEffectBuffer.BindTexture();
 				_Draw();
 			}
 			{
@@ -44,7 +46,10 @@ namespace
 			}
 			{
 				m_shader.EnableShader(SHADER_TYPE::BLOOM2);
-				//_Draw();
+				DsGLActiveTexture(DS_GL_TEXTURE1);
+				m_postEffectBuffer.BindTextureOri();
+				m_shader.SetPostEffectParam(1);
+				_Draw();
 			}
 			m_shader.DisableShader();
 		}
@@ -62,16 +67,12 @@ namespace
 			glPushMatrix();
 			glLoadIdentity();
 
-			DsGLActiveTexture(DS_GL_TEXTURE0);
-
-			m_postEffectBuffer.BindTexture();
 			glBegin(GL_QUADS);
 			glTexCoord2d(0, 0); glVertex3d(0, 0, 0);
 			glTexCoord2d(1, 0); glVertex3d(1, 0, 0);
 			glTexCoord2d(1, 1); glVertex3d(1, 1, 0);
 			glTexCoord2d(0, 1); glVertex3d(0, 1, 0);
 			glEnd();
-			m_postEffectBuffer.UnbindTexture();
 
 			glMatrixMode(GL_PROJECTION);
 			glPopMatrix();

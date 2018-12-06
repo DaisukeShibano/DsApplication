@@ -22,6 +22,10 @@ namespace DsLib
 		virtual void BindFrameBuffer() = 0;
 		virtual void UnbindFrameBuffer() = 0;
 
+		virtual void BindTextureOri() = 0;
+		virtual void UnbindTextureOri() = 0;
+
+
 	public:
 		virtual void DbgDraw() = 0;
 	};

@@ -60,11 +60,11 @@ namespace
 			//color += texture2D(textureSource, gl_TexCoord[0].st + vec2(3.0*ScaleU.x, 3.0*ScaleU.y)) * 0.015625;
 
 			//5*5
-			color += texture2D(textureSource, gl_TexCoord[0].st + vec2(-2.0*ScaleU.x, -2.0*ScaleU.y))*0.0625;
-			color += texture2D(textureSource, gl_TexCoord[0].st + vec2(-1.0*ScaleU.x, -1.0*ScaleU.y))*0.25;
-			color += texture2D(textureSource, gl_TexCoord[0].st + vec2(0.0, 0.0))*0.375;
-			color += texture2D(textureSource, gl_TexCoord[0].st + vec2(1.0*ScaleU.x, 1.0*ScaleU.y))*0.25;
-			color += texture2D(textureSource, gl_TexCoord[0].st + vec2(2.0*ScaleU.x, 2.0*ScaleU.y))*0.0625;
+			//color += texture2D(textureSource, gl_TexCoord[0].st + vec2(-2.0*ScaleU.x, -2.0*ScaleU.y))*0.0625;
+			//color += texture2D(textureSource, gl_TexCoord[0].st + vec2(-1.0*ScaleU.x, -1.0*ScaleU.y))*0.25;
+			//color += texture2D(textureSource, gl_TexCoord[0].st + vec2(0.0, 0.0))*0.375;
+			//color += texture2D(textureSource, gl_TexCoord[0].st + vec2(1.0*ScaleU.x, 1.0*ScaleU.y))*0.25;
+			//color += texture2D(textureSource, gl_TexCoord[0].st + vec2(2.0*ScaleU.x, 2.0*ScaleU.y))*0.0625;
 
 			//3*3
 			//color += texture2D(textureSource, gl_TexCoord[0].st + vec2(-1.0*ScaleU.x, -1.0*ScaleU.y))*0.25;
@@ -74,10 +74,26 @@ namespace
 			//1*1
 			//color += texture2D(textureSource, gl_TexCoord[0].st + vec2(0.0, 0.0));
 
-			gl_FragColor = color;
+			
 			//gl_FragColor = vec4(ScaleU.x*4096, ScaleU.y*4096 ,0 ,0);
 			//gl_FragColor = vec4(1, 0, 0, 0);
 			//gl_FragColor = texture2D(textureSource, gl_TexCoord[0].st);
+
+			float t = 0;
+			for (float i = -9; i < 10; i++)
+			{
+				float r = 1.0 + 2.0 * abs(i);
+				float w = exp(-0.5*(r*r) / 100.0);
+				t += w;
+			}
+			for (float i = -9; i < 10; i++)
+			{
+				float r = 1.0 + 2.0 * abs(i);
+				float w = exp(-0.5*(r*r) / 100.0);
+				color += texture2D(textureSource, gl_TexCoord[0].st + vec2(i*ScaleU.x, i*ScaleU.y))*w / t;
+			}
+
+			gl_FragColor = color;
 		}
 	);
 }

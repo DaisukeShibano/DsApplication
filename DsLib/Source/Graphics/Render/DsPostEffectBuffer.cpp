@@ -22,6 +22,8 @@ namespace
 			, m_shader(shader)
 			, m_fboId(0)
 			, m_texId(0)
+			, m_texOriId(0)
+
 		{
 			const int width = static_cast<int>(ren.GetWidth());
 			const int height = static_cast<int>(ren.GetHeight());
@@ -39,6 +41,16 @@ namespace
 			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_fboId);
 			DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, DS_GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texId, 0);
 			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
+
+			glGenTextures(1, &m_texOriId);
+			glBindTexture(GL_TEXTURE_2D, m_texOriId);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+			glTexImage2D(GL_TEXTURE_2D, 0, DS_GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, 0);
+			glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 0, 0, width, height, 0);
+			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 
 		~DsPostEffectBufferImp()
@@ -52,8 +64,17 @@ namespace
 			//DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
 			const int width = static_cast<int>(m_render.GetWidth());
 			const int height = static_cast<int>(m_render.GetHeight());
+			DsGLActiveTexture(DS_GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, m_texId);
 			glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 0, 0, width, height, 0);
+			glBindTexture(GL_TEXTURE_2D, 0);
+
+			DsGLActiveTexture(DS_GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, m_texOriId);
+			glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 0, 0, width, height, 0);
+			glBindTexture(GL_TEXTURE_2D, 0);
+
+			DsGLActiveTexture(DS_GL_TEXTURE0);
 		}
 
 		virtual void BindTexture() override
@@ -75,6 +96,17 @@ namespace
 		{
 			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
 		}
+
+		virtual void BindTextureOri() override
+		{
+			glBindTexture(GL_TEXTURE_2D, m_texOriId);
+		}
+
+		virtual void UnbindTextureOri() override
+		{
+			glBindTexture(GL_TEXTURE_2D, 0);
+		}
+
 
 	public:
 		virtual void DbgDraw() override
@@ -118,6 +150,7 @@ namespace
 		DsShader& m_shader;
 		GLuint m_fboId;
 		GLuint m_texId;
+		GLuint m_texOriId;
 	};
 }
 

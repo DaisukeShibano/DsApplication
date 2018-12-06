@@ -27,6 +27,8 @@ namespace DsLib
 		virtual void SetUseLight(bool isUse)=NULL;
 		virtual void SetUseShadow(bool isUse)=NULL;
 		virtual void SetBlurParam(DsVec2f s, int ts)=NULL;
+		virtual void SetPostEffectParam(int ts)=NULL;
+
 	};
 
 }

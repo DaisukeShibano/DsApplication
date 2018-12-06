@@ -50,11 +50,13 @@ namespace//çáê¨
 	***************************************************/
 	static const char s_fragment2[] = DS_SHADER_STR(
 		uniform sampler2D textureSource;
+		uniform sampler2D textureSourceOri;
 
 		void main(void)
 		{
-			vec3 texel = max(vec3(0.0), (texture2D(textureSource, gl_TexCoord[0].st) - 0.0).rgb);
-			gl_FragColor = vec4(texel, 1.0);
+			vec4 texel = texture2D(textureSource, gl_TexCoord[0].st);
+			vec4 texelOri = texture2D(textureSourceOri, gl_TexCoord[0].st);
+			gl_FragColor = texel + texelOri;
 		}
 	);
 }
