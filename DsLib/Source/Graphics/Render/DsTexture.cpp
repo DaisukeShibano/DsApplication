@@ -39,7 +39,7 @@ void DsTexture::Load(const DsModel& model)
 		const int tn = pMaterial[mi].textureNum;
 		for (int ti = 0; ti < tn; ++ti)
 		{
-			Load(pTexture[ti].path);
+			Load(pTexture[ti].pathAlbedo);
 		}
 	}
 }
@@ -54,7 +54,7 @@ void DsTexture::UnLoad(const DsModel& model)
 		const int tn = pMaterial[mi].textureNum;
 		for (int ti = 0; ti < tn; ++ti)
 		{
-			UnLoad(pTexture[ti].path);
+			UnLoad(pTexture[ti].pathAlbedo);
 		}
 	}
 }

@@ -69,7 +69,7 @@ namespace
 			// ŠgU”½Ë‚ÌŒvZ
 			float dcoef = max(dot(L, N), 0.0);
 			//ƒAƒjƒ‚Á‚Û‚­
-			dcoef = (0.5 < dcoef) ? 1.0 : 0.9;
+			//dcoef = (0.5 < dcoef) ? 1.0 : 0.9;
 
 			vec4 diffuse = gl_FrontLightProduct[0].diffuse*dcoef;
 

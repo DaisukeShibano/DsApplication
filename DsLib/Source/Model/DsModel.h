@@ -50,7 +50,8 @@ namespace DsLib
 					, pUV(NULL)
 					, refGeomFaces()
 					, refGeomFacesIndex()
-					, path()
+					, pathAlbedo()
+					, pathNormal()
 				{}
 				~Texture()
 				{
@@ -61,7 +62,8 @@ namespace DsLib
 				UV* pUV;
 				std::vector<Face*> refGeomFaces;
 				std::vector<int> refGeomFacesIndex; //インデックス版。クローン作るときに必要
-				std::string path;
+				std::string pathAlbedo;
+				std::string pathNormal;
 			};
 			Material()
 				: textureNum(0)

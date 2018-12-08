@@ -79,14 +79,14 @@ namespace
 			//gl_FragColor = vec4(1, 0, 0, 0);
 			//gl_FragColor = texture2D(textureSource, gl_TexCoord[0].st);
 
-			float t = 0;
-			for (float i = -9; i < 10; i++)
+			float t = 0.0;
+			for (float i = -9.0; i < 10.0; i++)
 			{
 				float r = 1.0 + 2.0 * abs(i);
 				float w = exp(-0.5*(r*r) / 100.0);
 				t += w;
 			}
-			for (float i = -9; i < 10; i++)
+			for (float i = -9.0; i < 10.0; i++)
 			{
 				float r = 1.0 + 2.0 * abs(i);
 				float w = exp(-0.5*(r*r) / 100.0);

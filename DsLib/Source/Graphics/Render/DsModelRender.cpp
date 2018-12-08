@@ -189,7 +189,7 @@ void DsModelRender::Render() const
 			const DsModel::Material::Texture* pTex = pMtr->pTexture;
 			for (int ti = 0; ti < tn; ++ti, ++pTex)
 			{
-				const GLuint texId = m_texture.GetTexId(pTex->path);
+				const GLuint texId = m_texture.GetTexId(pTex->pathAlbedo);
 				glBindTexture(GL_TEXTURE_2D, texId);
 				
 				int uvIdx = 0;

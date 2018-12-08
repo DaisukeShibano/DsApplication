@@ -1151,7 +1151,9 @@ DsModel* DsAnimRes::CreateAnimModel() const
 		{
 			DsModel::Material::Texture& texture = pAnimModel->m_pMaterial[mi].pTexture[ti];
 			const int uvn = pRes->dsAnimModel.pMtr[mi].texture[ti].uvNum;
-			texture.path = pRes->dsAnimModel.pMtr[mi].texture[ti].texPath;
+			texture.pathAlbedo = pRes->dsAnimModel.pMtr[mi].texture[ti].texPath;
+			texture.pathNormal = 
+
 			texture.uvNum = uvn;
 			texture.pUV = new DsModel::Material::Texture::UV[uvn];
 			DS_ASSERT(texture.pUV, "ƒƒ‚ƒŠŠm•Û¸”s");
