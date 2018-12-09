@@ -34,6 +34,9 @@ namespace DsLib
 		void Load(const DsModel& model);
 		void UnLoad(const DsModel& model);
 
+	private:
+		void _RegisterTexture(DsImage* img, std::string mapKey, const unsigned char* pImg, int width, int height);
+	public:
 		void Load(const std::string& path);
 		void UnLoad(const std::string& path);
 
@@ -42,7 +45,6 @@ namespace DsLib
 			auto it = m_texMap.find(texPath);
 			return (m_texMap.end() != it) ? (it->second.id) : (TexMap::INVALID_ID);
 		}
-
 	private:
 		std::vector<DsImage*> m_imgs;
 		std::map<std::string, TexMap> m_texMap;

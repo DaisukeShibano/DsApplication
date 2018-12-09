@@ -42,7 +42,8 @@ namespace
 		varying vec4 vShadowCoord;
 
 		// GLから設定される定数(uniform)
-		uniform sampler2D tex;			//!< 通常テクスチャ
+		uniform sampler2D texAlbedo;	//!< アルベドテクスチャ
+		uniform sampler2D texNormal;	//!< ノーマルテクスチャ
 		uniform sampler2D depth_tex;	//!< デプス値テクスチャ
 		uniform sampler2D depth_tex2;
 
@@ -150,7 +151,7 @@ namespace
 
 		void main(void)
 		{
-			vec4 texColor = texture2D(tex, gl_TexCoord[0].st); //影じゃない普通のテクスチャ
+			vec4 texColor = texture2D(texAlbedo, gl_TexCoord[0].st); //影じゃない普通のテクスチャ
 			vec4 light_col = PhongShading(texColor);	// 表面反射色
 
 			// 光源座標における物体の位置

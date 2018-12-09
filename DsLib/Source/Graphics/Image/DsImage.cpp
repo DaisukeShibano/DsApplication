@@ -11,6 +11,7 @@ DsImage::DsImage()
 	, m_pImgTop(NULL)
 	, m_imgWidth(0)
 	, m_imgHeight(0)
+	, m_path()
 {
 }
 
@@ -29,7 +30,6 @@ namespace
 
 		if (ifs.IsFail())
 		{
-			printf("ファイルオープン失敗 %s\n", path);
 			return false;
 		}
 
@@ -68,7 +68,6 @@ namespace
 		DsFile ifs(path, ios::in | ios::binary);
 		if (ifs.IsFail())
 		{
-			printf("ファイルオープン失敗 %s\n", path);
 			return false;
 		}
 
@@ -118,6 +117,15 @@ namespace
 		return true;
 	}
 
+	//bmp画像の読み込み
+	void _DummyImage(unsigned char** image, int& width, int& height)
+	{
+		static unsigned char dummy[4] = { 0xFF, 0xFF, 0xFF, 0xFF };
+		*image = dummy;
+		width = 1;
+		height = 1;
+	}
+
 }
 
 void DsImage::Load(const char* path)
@@ -143,6 +151,6 @@ void DsImage::Load(const char* path)
 
 	if (!isLoad)
 	{
-		DS_ASSERT(false, "DsImagの読み込みに失敗しました");
+		//テクスチャは全部作らないのでなしは許容
 	}
 }

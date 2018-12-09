@@ -40,6 +40,7 @@ void DsTexture::Load(const DsModel& model)
 		for (int ti = 0; ti < tn; ++ti)
 		{
 			Load(pTexture[ti].pathAlbedo);
+			Load(pTexture[ti].pathNormal);
 		}
 	}
 }
@@ -55,36 +56,53 @@ void DsTexture::UnLoad(const DsModel& model)
 		for (int ti = 0; ti < tn; ++ti)
 		{
 			UnLoad(pTexture[ti].pathAlbedo);
+			UnLoad(pTexture[ti].pathNormal);
 		}
 	}
 }
 
+void DsTexture::_RegisterTexture(DsImage* img, std::string mapKey, const unsigned char* pData, int width, int height)
+{
+	GLuint texName;
+	glGenTextures(1, &texName);
+	glBindTexture(GL_TEXTURE_2D, texName);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);//テクスクチャ繰り返し
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);//テクスクチャ繰り返し
+	glTexImage2D(
+		GL_TEXTURE_2D, 0, GL_RGBA8, width, height,
+		0, GL_RGBA, GL_UNSIGNED_BYTE, pData);
+	glBindTexture(GL_TEXTURE_2D, 0);
 
+	TexMap map;
+	map.pImg = img;
+	map.id = texName;
+	m_texMap[mapKey] = map;
+	m_texMap[mapKey].refCounter = 1;
+}
 void DsTexture::Load(const std::string& path)
 {
 	if (m_texMap.end() == m_texMap.find(path))
 	{
-		DsImage* img = new DsImage;
-		img->Load(path.c_str());
-		m_imgs.push_back(img);
-
-		GLuint texName;
-		glGenTextures(1, &texName);
-		glBindTexture(GL_TEXTURE_2D, texName);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);//テクスクチャ繰り返し
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);//テクスクチャ繰り返し
-		glTexImage2D(
-			GL_TEXTURE_2D, 0, GL_RGBA8, img->GetWidth(), img->GetHeight(),
-			0, GL_RGBA, GL_UNSIGNED_BYTE, img->GetData());
-		glBindTexture(GL_TEXTURE_2D, 0);
-
-		TexMap map;
-		map.pImg = img;
-		map.id = texName;
-		m_texMap[path] = map;
-		m_texMap[path].refCounter = 1;
+		DsImage* pImg = new DsImage;
+		pImg->Load(path.c_str());
+		m_imgs.push_back(pImg);
+		if (pImg->GetData()) {
+			_RegisterTexture(pImg, path, pImg->GetData(), pImg->GetWidth(), pImg->GetHeight());
+		}
+		else 
+		{//ダミー
+			std::string mapKey = "dummy";
+			if (m_texMap.end() == m_texMap.find(mapKey))
+			{
+				static unsigned char dummy[4] = { 0xFF, 0xFF, 0xFF, 0xFF };
+				_RegisterTexture(pImg, mapKey, dummy, 1, 1);
+			}
+			else {
+				m_texMap[mapKey].refCounter += 1;
+			}
+		}
 	}
 	else
 	{

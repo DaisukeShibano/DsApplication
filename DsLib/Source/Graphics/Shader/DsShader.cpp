@@ -187,7 +187,8 @@ namespace
 			int idx = static_cast<int>(sType);
 			m_currentIdx = idx;
 			DsGLUseProgram(m_prog[idx]);
-			DsGLUniform1i(DsGLGetUniformLocation(m_prog[idx], "tex"), 0);//普通のテクスチャは０番に
+			DsGLUniform1i(DsGLGetUniformLocation(m_prog[idx], "texAlbedo"), 0);//普通のテクスチャは０番に
+			DsGLUniform1i(DsGLGetUniformLocation(m_prog[idx], "texNormal"), 1);
 			DsGLUniform1i(DsGLGetUniformLocation(m_prog[idx], "depth_tex"), 7);//GLSLの"depth_tex"という変数に値をセット
 			DsGLUniform1i(DsGLGetUniformLocation(m_prog[idx], "depth_tex2"), 6);
 			DsGLUniform1f(DsGLGetUniformLocation(m_prog[idx], "shadow_ambient"), s_shadowCoef);//GLSLの"shadow_ambient"という変数に値をセット

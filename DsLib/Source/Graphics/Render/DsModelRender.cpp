@@ -1,4 +1,5 @@
 #include "DsPch.h"
+#include "Graphics/GL/DsGLFunc.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 #ifndef _DS_MODEL_RENDER_H_
@@ -189,9 +190,14 @@ void DsModelRender::Render() const
 			const DsModel::Material::Texture* pTex = pMtr->pTexture;
 			for (int ti = 0; ti < tn; ++ti, ++pTex)
 			{
-				const GLuint texId = m_texture.GetTexId(pTex->pathAlbedo);
-				glBindTexture(GL_TEXTURE_2D, texId);
-				
+				DsGLActiveTexture(DS_GL_TEXTURE0);
+				const GLuint albedoTexId = m_texture.GetTexId(pTex->pathAlbedo);
+				glBindTexture(GL_TEXTURE_2D, albedoTexId);
+				DsGLActiveTexture(DS_GL_TEXTURE1);
+				const GLuint normalTexId = m_texture.GetTexId(pTex->pathNormal);
+				glBindTexture(GL_TEXTURE_2D, normalTexId);
+				DsGLActiveTexture(DS_GL_TEXTURE0);
+
 				int uvIdx = 0;
 				const DsModel::Material::Texture::UV *pUV = pTex->pUV;
 				for(const DsModel::Face* pFace : pTex->refGeomFaces)
