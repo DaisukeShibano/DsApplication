@@ -27,6 +27,7 @@ namespace
 	typedef void   (* DS_PFNGLLINKPROGRAMPROC) (GLuint program);
 	typedef void   (* DS_PFNGLUSEPROGRAMPROC) (GLuint program);
 	typedef GLint  (* DS_PFNGLGETUNIFORMLOCATIONPROC) (GLuint program, const GLchar* name);
+	typedef GLint  (* DS_PFNGLGETATTRIBLOCATIONPROC) (GLuint program, const GLchar* name);
 	typedef void   (* DS_PFNGLUNIFORM1IPROC) (GLint location, GLint v0);
 	typedef void   (* DS_PFNGLUNIFORM1FPROC) (GLint location, GLfloat v0);
 	typedef void   (* DS_PFNGLUNIFORM2IPROC) (GLint location, GLint v0, GLint v1);
@@ -57,6 +58,7 @@ namespace
 	DS_PFNGLLINKPROGRAMPROC s_glLinkProgram;
 	DS_PFNGLUSEPROGRAMPROC s_glUseProgram;
 	DS_PFNGLGETUNIFORMLOCATIONPROC s_glGetUniformLocation;
+	DS_PFNGLGETATTRIBLOCATIONPROC s_glGetAttribLocation;
 	DS_PFNGLUNIFORM1IPROC s_glUniform1i;
 	DS_PFNGLUNIFORM1FPROC s_glUniform1f;
 	DS_PFNGLUNIFORM2IPROC s_glUniform2i;
@@ -128,6 +130,10 @@ bool DsLib::DsInitGLFunc()
 	s_glGetUniformLocation = (DS_PFNGLGETUNIFORMLOCATIONPROC)wglGetProcAddress("glGetUniformLocation");
 	if (!s_glGetUniformLocation) {
 		return  false;
+	}
+	s_glGetAttribLocation = (DS_PFNGLGETATTRIBLOCATIONPROC)wglGetProcAddress("glGetAttribLocation");
+	if (!s_glGetAttribLocation) {
+		return false;
 	}
 	s_glUniform1i = (DS_PFNGLUNIFORM1IPROC)wglGetProcAddress("glUniform1i");
 	if (!s_glUniform1i) {
@@ -255,9 +261,14 @@ void DsLib::DsGLUseProgram(unsigned int program)
 	s_glUseProgram(program);
 }
 
-unsigned int DsLib::DsGLGetUniformLocation(unsigned int  program, const char* name)
+unsigned int DsLib::DsGLGetUniformLocation(unsigned int program, const char* name)
 {
 	return s_glGetUniformLocation(program, name);
+}
+
+unsigned int DsLib::DsGLGetAttribLocation(unsigned int program, const char* name)
+{
+	return s_glGetAttribLocation(program, name);
 }
 
 void DsLib::DsGLUniform1i(unsigned int location, int v0)

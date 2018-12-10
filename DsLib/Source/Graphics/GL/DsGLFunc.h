@@ -87,7 +87,8 @@ namespace DsLib
 	void DsGLAttachShader(unsigned int program, unsigned int shader);
 	void DsGLLinkProgram(unsigned int program);
 	void DsGLUseProgram(unsigned int program);
-	unsigned int  DsGLGetUniformLocation(unsigned int  program, const char* name);
+	unsigned int DsGLGetUniformLocation(unsigned int program, const char* name);
+	unsigned int DsGLGetAttribLocation(unsigned int program, const char* name);
 	void DsGLUniform1i(unsigned int location, int v0);
 	void DsGLUniform1f(unsigned int location, float v0);
 	void DsGLUniform2i(unsigned int location, int v0, int v1);

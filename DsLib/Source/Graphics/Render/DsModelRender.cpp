@@ -215,6 +215,7 @@ void DsModelRender::Render() const
 					if (!isUseVertexNormal)
 					{
 						glNormal3dv(pFace->normal.v);
+
 					}
 
 					glBegin(GL_POLYGON);

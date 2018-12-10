@@ -16,6 +16,9 @@ namespace
 		varying vec4 vPos;
 		varying vec3 vNrm;
 		varying vec4 vShadowCoord;	//!< シャドウデプスマップの参照用座標
+		attribute vec3 tangent;
+		varying vec3 normalMapLight;
+		varying vec3 normalMapView;
 
 		void main(void)
 		{
@@ -28,6 +31,30 @@ namespace
 			gl_Position = ftransform();				// 頂点位置
 			gl_FrontColor = gl_Color;				// 頂点色
 			gl_TexCoord[0] = gl_MultiTexCoord0;		// 頂点テクスチャ座標
+
+			//法線マップ用
+			//http://marina.sys.wakayama-u.ac.jp/~tokoi/?date=20051014
+			float tanL = vNrm[0] * vNrm[0] + vNrm[2] * vNrm[2] + 0.00001;
+			float tanSq = sqrt(tanL);
+			vec3 tangent;
+			tangent[0] = vNrm[0] / tanSq;
+			tangent[1] = 0.0;
+			tangent[2] = -vNrm[2] / tanSq;
+
+			vec4 p = gl_ModelViewMatrix * gl_Vertex;
+			vec3 l = normalize((gl_LightSource[0].position * p.w - gl_LightSource[0].position.w * p).xyz);
+			vec3 n = normalize(gl_NormalMatrix * gl_Normal);
+			vec3 t = normalize(gl_NormalMatrix * tangent);
+			vec3 b = cross(n, t);
+			vec3 temp;
+			temp.x = dot(p.xyz, t);
+			temp.y = dot(p.xyz, b);
+			temp.z = dot(p.xyz, n);
+			normalMapView = -normalize(temp);
+			temp.x = dot(l, t);
+			temp.y = dot(l, b);
+			temp.z = dot(l, n);
+			normalMapLight = normalize(temp);
 		}
 	);
 
@@ -40,8 +67,9 @@ namespace
 		varying vec4 vPos;
 		varying vec3 vNrm;
 		varying vec4 vShadowCoord;
+		varying vec3 normalMapLight;
+		varying vec3 normalMapView;
 
-		// GLから設定される定数(uniform)
 		uniform sampler2D texAlbedo;	//!< アルベドテクスチャ
 		uniform sampler2D texNormal;	//!< ノーマルテクスチャ
 		uniform sampler2D depth_tex;	//!< デプス値テクスチャ
@@ -92,6 +120,26 @@ namespace
 		}
 
 		/*
+		法線マップ
+		*/
+		vec4 NormalMap(const vec4 baseColor)
+		{
+			vec4 color = texture2DProj(texNormal, gl_TexCoord[0]);
+			vec3 fnormal = vec3(color) * 2.0 - 1.0;
+			vec3 flight = normalize(normalMapLight);
+			
+			float diffuse = max(dot(flight, fnormal), 0.0);
+			
+			vec3 fview = normalize(normalMapView);
+			vec3 halfway = normalize(flight + fview);
+
+			float specular = pow(max(dot(fnormal, halfway), 0.0), gl_FrontMaterial.shininess);
+
+			return baseColor*(gl_FrontLightProduct[0].diffuse * diffuse + gl_FrontLightProduct[0].ambient)
+				+ gl_FrontLightProduct[0].specular * specular;
+		}
+
+		/*
 			影ぼやかし
 		*/
 		float ChebyshevUpperBound(vec4 shadow_coord, vec4 depth_tex_coord)
@@ -128,7 +176,7 @@ namespace
 			return p_max;//影になる確率？逆？
 		}
 
-		/*!
+		/*
 		* 影生成のための係数(影のあるところで1, それ以外で0)
 		* @return 影係数(影のあるところで1, それ以外で0)
 		*/
@@ -152,7 +200,8 @@ namespace
 		void main(void)
 		{
 			vec4 texColor = texture2D(texAlbedo, gl_TexCoord[0].st); //影じゃない普通のテクスチャ
-			vec4 light_col = PhongShading(texColor);	// 表面反射色
+			//vec4 light_col = PhongShading(texColor);	// 表面反射色
+			vec4 light_col = NormalMap(texColor);	
 
 			// 光源座標における物体の位置
 			vec4 shadow_coord = vShadowCoord / vShadowCoord.w;//これが描画しようとしている座標			

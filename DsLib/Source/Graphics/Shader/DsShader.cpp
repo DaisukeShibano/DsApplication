@@ -10,7 +10,6 @@
 #endif
 #include <gl/GL.h>
 
-
 using namespace DsLib;
 static const float s_shadowCoef = 0.3f;//âeÇÃàÍî‘Ç≠ÇÁÇ¢Ç∆Ç±ÅB0Ç≈ê^Ç¡çï
 
@@ -103,7 +102,7 @@ namespace
 	private:
 		unsigned int m_currentIdx;
 		GLuint m_prog[static_cast<int>(SHADER_TYPE::NUM)];
-		
+		GLuint m_tangent;
 	};
 
 	DsShaderImp::DsShaderImp()
