@@ -8,12 +8,14 @@
 #ifndef _DS_MODEL_
 #include "Model/DsModel.h"
 #endif
+#include "Graphics/Shader/DsShader.h"
 
 using namespace DsLib;
 
 DsModelRender::DsModelRender()
 : m_drawList()
 , m_texture()
+, m_pShader(NULL)
 {
 
 }
@@ -21,6 +23,11 @@ DsModelRender::DsModelRender()
 DsModelRender::~DsModelRender()
 {
 
+}
+
+void DsModelRender::Initialize(DsShader& shader)
+{
+	m_pShader = &shader;
 }
 
 void DsModelRender::Register(const DsModel* pModel)
@@ -193,10 +200,18 @@ void DsModelRender::Render() const
 				DsGLActiveTexture(DS_GL_TEXTURE0);
 				const GLuint albedoTexId = m_texture.GetTexId(pTex->pathAlbedo);
 				glBindTexture(GL_TEXTURE_2D, albedoTexId);
-				DsGLActiveTexture(DS_GL_TEXTURE1);
+
+				//ノーマルマップのある材質だけ有効
 				const GLuint normalTexId = m_texture.GetTexId(pTex->pathNormal);
-				glBindTexture(GL_TEXTURE_2D, normalTexId);
-				DsGLActiveTexture(DS_GL_TEXTURE0);
+				if (m_texture.IsValidId(normalTexId)) {
+					m_pShader->SetUseNormalMap(true);
+					DsGLActiveTexture(DS_GL_TEXTURE1);
+					glBindTexture(GL_TEXTURE_2D, normalTexId);
+					DsGLActiveTexture(DS_GL_TEXTURE0);
+				}
+				else {
+					m_pShader->SetUseNormalMap(false);
+				}
 
 				int uvIdx = 0;
 				const DsModel::Material::Texture::UV *pUV = pTex->pUV;

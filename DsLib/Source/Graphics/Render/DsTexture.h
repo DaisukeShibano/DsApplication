@@ -45,6 +45,15 @@ namespace DsLib
 			auto it = m_texMap.find(texPath);
 			return (m_texMap.end() != it) ? (it->second.id) : (TexMap::INVALID_ID);
 		}
+
+		inline bool IsValidId(unsigned int texId) const
+		{
+			return TexMap::INVALID_ID != texId;
+		}
+
+	private:
+		inline const char* _DummyKey() const { return "dummy"; }
+
 	private:
 		std::vector<DsImage*> m_imgs;
 		std::map<std::string, TexMap> m_texMap;

@@ -19,6 +19,7 @@ namespace
 		attribute vec3 tangent;
 		varying vec3 normalMapLight;
 		varying vec3 normalMapView;
+	
 
 		void main(void)
 		{
@@ -69,7 +70,7 @@ namespace
 		varying vec4 vShadowCoord;
 		varying vec3 normalMapLight;
 		varying vec3 normalMapView;
-
+		
 		uniform sampler2D texAlbedo;	//!< アルベドテクスチャ
 		uniform sampler2D texNormal;	//!< ノーマルテクスチャ
 		uniform sampler2D depth_tex;	//!< デプス値テクスチャ
@@ -81,6 +82,8 @@ namespace
 		// テクスチャの有無
 		uniform bool isUseColorTexture;// = true;//GLSL 1.10でエラー出るのでコメントアウト
 		uniform bool isUseLight;// = true;
+		uniform bool isUseNormalMap;// = true;
+		
 
 		/*!
 		* Phong反射モデルによるシェーディング
@@ -124,7 +127,7 @@ namespace
 		*/
 		vec4 NormalMap(const vec4 baseColor)
 		{
-			vec4 color = texture2DProj(texNormal, gl_TexCoord[0]);
+			vec4 color = isUseNormalMap ? texture2DProj(texNormal, gl_TexCoord[0]) : vec4(0.5, 0.5, 1.0, 1.0);
 			vec3 fnormal = vec3(color) * 2.0 - 1.0;
 			vec3 flight = normalize(normalMapLight);
 			

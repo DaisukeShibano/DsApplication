@@ -8,6 +8,7 @@
 namespace DsLib
 {
 	class DsModel;
+	class DsShader;
 }
 
 namespace DsLib
@@ -19,6 +20,7 @@ namespace DsLib
 		virtual ~DsModelRender();
 
 	public:
+		void Initialize(DsShader& shader);
 		void Register(const DsModel* pModel);
 		void UnRegister(const DsModel* pModel);
 
@@ -30,6 +32,7 @@ namespace DsLib
 	private:
 		std::list<const DsModel*> m_drawList;
 		DsTexture m_texture;
+		DsShader* m_pShader;
 	};
 }
 

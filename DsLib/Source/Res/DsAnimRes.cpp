@@ -1152,7 +1152,9 @@ DsModel* DsAnimRes::CreateAnimModel() const
 			DsModel::Material::Texture& texture = pAnimModel->m_pMaterial[mi].pTexture[ti];
 			const int uvn = pRes->dsAnimModel.pMtr[mi].texture[ti].uvNum;
 			texture.pathAlbedo = pRes->dsAnimModel.pMtr[mi].texture[ti].texPath;
-			texture.pathNormal = 
+			std::wstring texPath = DsPath::ToWstring(texture.pathAlbedo);
+			std::wstring normalTex = DsPath::AddSuffix(texPath, L"_normal");
+			texture.pathNormal = DsPath::ToString(normalTex);
 
 			texture.uvNum = uvn;
 			texture.pUV = new DsModel::Material::Texture::UV[uvn];

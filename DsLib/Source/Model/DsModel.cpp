@@ -84,9 +84,7 @@ DsModel* DsModel::CreateClone() const
 		for (int ti = 0; ti < tn; ++ti)
 		{
 			ret->m_pMaterial[mi].pTexture[ti].pathAlbedo = m_pMaterial[mi].pTexture[ti].pathAlbedo;
-			std::wstring texPath = DsPath::ToWstring(m_pMaterial[mi].pTexture[ti].pathAlbedo);
-			std::wstring normalTex = DsPath::AddSuffix(texPath, L"_normal");
-			ret->m_pMaterial[mi].pTexture[ti].pathNormal = DsPath::ToString(normalTex);
+			ret->m_pMaterial[mi].pTexture[ti].pathNormal = m_pMaterial[mi].pTexture[ti].pathNormal;
 
 			const int uvn = m_pMaterial[mi].pTexture[ti].uvNum;
 			ret->m_pMaterial[mi].pTexture[ti].uvNum = uvn;

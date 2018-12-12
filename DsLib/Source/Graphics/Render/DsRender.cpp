@@ -87,6 +87,8 @@ DsRender::DsRender(DsCamera& cam, DsSys& sys)
 
 	m_pRenderTool = new DsRenderTool(*m_pDrawCom, cam);
 	DS_ASSERT(m_pRenderTool, "ƒƒ‚ƒŠŠm•Û¸”s");
+
+	m_animRender.Initialize(*m_pShader);
 }
 
 DsRender::~DsRender()

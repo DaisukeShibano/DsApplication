@@ -98,6 +98,7 @@ namespace
 		virtual void SetUseShadow(bool isUse)override;
 		virtual void SetBlurParam(DsVec2f s, int ts)override;
 		virtual void SetPostEffectParam(int ts)override;
+		virtual void SetUseNormalMap(bool isUse) override;
 
 	private:
 		unsigned int m_currentIdx;
@@ -237,6 +238,13 @@ namespace
 	{
 		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "textureSourceOri"), ts);
 	}
+
+	//virtual 
+	void DsShaderImp::SetUseNormalMap(bool isUse)
+	{
+		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "isUseNormalMap"), isUse);
+	}
+
 }
 
 //static

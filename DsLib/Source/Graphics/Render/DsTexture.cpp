@@ -17,6 +17,7 @@ using namespace std;
 
 DsTexture::DsTexture()
 	: m_imgs()
+	, m_texMap()
 {
 
 }
@@ -93,15 +94,16 @@ void DsTexture::Load(const std::string& path)
 		}
 		else 
 		{//ダミー
-			std::string mapKey = "dummy";
-			if (m_texMap.end() == m_texMap.find(mapKey))
-			{
-				static unsigned char dummy[4] = { 0xFF, 0xFF, 0xFF, 0xFF };
-				_RegisterTexture(pImg, mapKey, dummy, 1, 1);
-			}
-			else {
-				m_texMap[mapKey].refCounter += 1;
-			}
+			//今のところ出番なし
+			//std::string mapKey = _DummyKey();
+			//if (m_texMap.end() == m_texMap.find(mapKey))
+			//{
+			//	static unsigned char dummy[4] = { 0xFF, 0xFF, 0xFF, 0xFF };
+			//	_RegisterTexture(pImg, mapKey, dummy, 1, 1);
+			//}
+			//else {
+			//	m_texMap[mapKey].refCounter += 1;
+			//}
 		}
 	}
 	else
