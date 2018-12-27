@@ -25,6 +25,7 @@ namespace DsLib
 		void UnRegister(const DsModel* pModel);
 
 	public:
+		void UpdateTime(double dt);
 		void Render() const;
 		void RenderPolygon() const;
 		void RenderNonMaterial() const;
@@ -33,6 +34,7 @@ namespace DsLib
 		std::list<const DsModel*> m_drawList;
 		DsTexture m_texture;
 		DsShader* m_pShader;
+		double m_time;
 	};
 }
 

@@ -119,6 +119,8 @@ void DsRender::Render( const double dt )
 		camLook.x, camLook.y, camLook.z,
 		camUp.x, camUp.y, camUp.z);
 
+	m_animRender.UpdateTime(dt);
+
 	//‰e•`‰æ
 	m_pShadow->DrawShadow();
 
@@ -194,7 +196,6 @@ void DsRender::UnRegisterCaptureImage(DsRenderCamCaptureImage* pImage)
 		}
 	}
 }
-
 
 void DsRender::_RenderModel() const
 {

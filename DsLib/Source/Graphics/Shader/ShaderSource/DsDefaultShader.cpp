@@ -78,6 +78,7 @@ namespace
 
 		// 影の濃さ
 		uniform float shadow_ambient;
+		uniform float time;
 
 		// テクスチャの有無
 		uniform bool isUseColorTexture;// = true;//GLSL 1.10でエラー出るのでコメントアウト
@@ -123,12 +124,28 @@ namespace
 		}
 
 		/*
+		法線を揺らがせる
+		*/
+		vec3 WaveNormalMap(const vec3 baseNormal)
+		{
+			float scale = 60.0;
+			float offset = time * scale;
+			float x = sin(gl_TexCoord[0].st.x*scale+offset);
+			float y = cos(gl_TexCoord[0].st.y*scale+offset);
+
+
+
+			return vec3(0, 0, x*y);
+		}
+
+		/*
 		法線マップ
 		*/
 		vec4 NormalMap(const vec4 baseColor)
 		{
 			vec4 color = isUseNormalMap ? texture2DProj(texNormal, gl_TexCoord[0]) : vec4(0.5, 0.5, 1.0, 1.0);
 			vec3 fnormal = vec3(color) * 2.0 - 1.0;
+			fnormal = WaveNormalMap(fnormal);
 			vec3 flight = normalize(normalMapLight);
 			
 			float diffuse = max(dot(flight, fnormal), 0.0);
@@ -173,10 +190,10 @@ namespace
 			float variance = moments.y - (moments.x*moments.x);//moments.yはmoment2 += 0.25*(dx*dx + dy*dy)だけmoments.xの２乗より多い
 			variance = min(max(variance, 0.000002), 1.0);
 
-			float d = distance - moments.x;//日向と日陰の距離が近いほど１（日向）に近づく 影に遠いと日向に近づいて欲しいんだけど・・・
+			float d = distance - moments.x;//日向と日陰の距離が近いほど１（日向）に近づく
 			float p_max = variance / (variance + d*d);//variance(エッジ)が大きければ大きいほどdの支配は少なくなる。
 
-			return p_max;//影になる確率？逆？
+			return p_max;
 		}
 
 		/*

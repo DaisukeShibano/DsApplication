@@ -99,6 +99,8 @@ namespace
 		virtual void SetBlurParam(DsVec2f s, int ts)override;
 		virtual void SetPostEffectParam(int ts)override;
 		virtual void SetUseNormalMap(bool isUse) override;
+		virtual void SetTime(float t) override;
+
 
 	private:
 		unsigned int m_currentIdx;
@@ -243,6 +245,12 @@ namespace
 	void DsShaderImp::SetUseNormalMap(bool isUse)
 	{
 		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "isUseNormalMap"), isUse);
+	}
+
+	//virtual
+	void DsShaderImp::SetTime(float t)
+	{
+		DsGLUniform1f(DsGLGetUniformLocation(m_prog[m_currentIdx], "time"), t);
 	}
 
 }

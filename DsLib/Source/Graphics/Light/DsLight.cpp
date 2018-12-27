@@ -35,9 +35,9 @@ DsLight::~DsLight()
 
 void DsLight::Enable()
 {
-	const GLfloat diff[4] = { 0.8f, 0.8f, 0.8f, 1.0f };
-	const GLfloat spec[4] = { 0.7f, 0.7f, 0.7f, 1.0f };
-	const GLfloat ambi[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+	const GLfloat diff[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	const GLfloat spec[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	const GLfloat ambi[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	glLightfv(s_glLightNo[m_lightNo], GL_DIFFUSE, diff);
 	glLightfv(s_glLightNo[m_lightNo], GL_SPECULAR, spec);
 	glLightfv(s_glLightNo[m_lightNo], GL_AMBIENT, ambi);
