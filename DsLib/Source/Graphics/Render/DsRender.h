@@ -21,6 +21,7 @@ namespace DsLib
 	class DsRenderCamCaptureImage;
 	class DsSceneBloom;
 	class DsPostEffectBuffer;
+	class DsSSAO;
 }
 
 namespace DsLib
@@ -75,6 +76,7 @@ namespace DsLib
 		DsShadowMap* m_pShadow;
 		DsPostEffectBuffer* m_pPostEffectBuffer;
 		DsSceneBloom* m_pBloom;
+		DsSSAO* m_pSSAO;
 		DsShader* m_pShader;
 		DsDrawCommand* m_pDrawCom;
 		DsLight& m_light;

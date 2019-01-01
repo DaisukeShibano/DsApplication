@@ -289,6 +289,12 @@
     <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsBlurShader.cpp">
       <Filter>Source\Graphics\Shader\ShaderSource</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Graphics\Render\DsSSAO.cpp">
+      <Filter>Source\Graphics\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsSSAOShader.cpp">
+      <Filter>Source\Graphics\Shader\ShaderSource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsPch.h">
@@ -547,6 +553,12 @@
       <Filter>Source\Graphics\Render</Filter>
     </ClInclude>
     <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsBlurShader.h">
+      <Filter>Source\Graphics\Shader\ShaderSource</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Render\DsSSAO.h">
+      <Filter>Source\Graphics\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsSSAOShader.h">
       <Filter>Source\Graphics\Shader\ShaderSource</Filter>
     </ClInclude>
   </ItemGroup>

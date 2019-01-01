@@ -25,6 +25,8 @@
 #include "Graphics/GL/DsGLFunc.h"
 #include "Graphics/Render/DsSceneBloom.h"
 #include "Graphics/Render/DsPostEffectBuffer.h"
+#include "Graphics/Render/DsSSAO.h"
+
 
 using namespace DsLib;
 
@@ -41,6 +43,7 @@ DsRender::DsRender(DsCamera& cam, DsSys& sys)
 ,m_pShadow(NULL)
 ,m_pPostEffectBuffer(NULL)
 ,m_pBloom(NULL)
+,m_pSSAO(NULL)
 ,m_pShader(NULL)
 ,m_pDrawCom(NULL)
 ,m_light(DsLightMan::GetIns().GetSunLight())
@@ -81,6 +84,9 @@ DsRender::DsRender(DsCamera& cam, DsSys& sys)
 
 	m_pBloom = DsSceneBloom::Create(*this, *m_pShader, *m_pPostEffectBuffer);
 	DS_ASSERT(m_pBloom, "メモリ確保失敗");
+
+	m_pSSAO = DsSSAO::Create(*this, *m_pShader, *m_pPostEffectBuffer);
+	DS_ASSERT(m_pSSAO, "メモリ確保失敗");
 
 	m_light.SetPos(DsVec3f::ToVec3(0, 5, 0));
 	m_light.SetDir(DsVec3f::ToVec3(0, -1, 0));
@@ -143,9 +149,12 @@ void DsRender::Render( const double dt )
 	//この時点のフレームバッファをポストプロセス用バッファにコピー
 	m_pPostEffectBuffer->CopyFrameBuffer();
 
+	//SSAO
+	m_pSSAO->SSAO();
+
 	//ブルーム
 	m_pBloom->Bloom();
-	
+
 	//ポストエフェクトをレンダリング画面へ
 	m_pPostEffectBuffer->RenderFrame();
 

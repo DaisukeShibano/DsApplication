@@ -23,8 +23,7 @@ namespace
 			, m_fboId(0)
 			, m_texId(0)
 			, m_texOriId(0)
-			, m_fboOriId(0)
-
+			, m_depTexOriId(0)
 		{
 			const int width = static_cast<int>(ren.GetWidth());
 			const int height = static_cast<int>(ren.GetHeight());
@@ -51,10 +50,16 @@ namespace
 			glTexImage2D(GL_TEXTURE_2D, 0, DS_GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, 0);
 			glBindTexture(GL_TEXTURE_2D, 0);
 
-			//DsGLGenFramebuffers(1, &m_fboOriId);
-			//DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_fboOriId);
-			//DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, DS_GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texOriId, 0);
-			//DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
+			// デプス値テクスチャ
+			glGenTextures(1, &m_depTexOriId);
+			glBindTexture(GL_TEXTURE_2D, m_depTexOriId);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
+			glBindTexture(GL_TEXTURE_2D, 0);
+
 		}
 
 		~DsPostEffectBufferImp()
@@ -62,6 +67,7 @@ namespace
 			glDeleteTextures(1, &m_texId);
 			DsGLDeleteFramebuffers(1, &m_fboId);
 			glDeleteTextures(1, &m_texOriId);
+			glDeleteTextures(1, &m_depTexOriId);
 		}
 
 		virtual void CopyFrameBuffer() override
@@ -76,6 +82,11 @@ namespace
 			DsGLActiveTexture(DS_GL_TEXTURE1);
 			glBindTexture(GL_TEXTURE_2D, m_texOriId);
 			glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 0, 0, width, height, 0);
+			glBindTexture(GL_TEXTURE_2D, 0);
+
+			DsGLActiveTexture(DS_GL_TEXTURE2);
+			glBindTexture(GL_TEXTURE_2D, m_depTexOriId);
+			glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 0, 0, width, height, 0);
 			glBindTexture(GL_TEXTURE_2D, 0);
 
 			DsGLActiveTexture(DS_GL_TEXTURE0);
@@ -142,17 +153,6 @@ namespace
 			glBindTexture(GL_TEXTURE_2D, m_texOriId);
 		}
 
-		virtual void BindFrameBufferOri() override
-		{
-			//DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_fboOriId);
-		}
-
-		virtual void UnbindFrameBufferOri() override
-		{
-			//DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
-		}
-
-
 	public:
 		virtual void DbgDraw() override
 		{
@@ -196,7 +196,7 @@ namespace
 		GLuint m_fboId;
 		GLuint m_texId;
 		GLuint m_texOriId;
-		GLuint m_fboOriId;
+		GLuint m_depTexOriId;
 	};
 }
 

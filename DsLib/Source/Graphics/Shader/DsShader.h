@@ -10,6 +10,7 @@ namespace DsLib
 		BLUR,
 		BLOOM1,
 		BLOOM2,
+		SSAO,
 		NUM,
 	};
 
