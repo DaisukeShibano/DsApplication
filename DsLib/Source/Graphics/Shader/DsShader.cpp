@@ -98,7 +98,7 @@ namespace
 		virtual void SetUseLight(bool isUse)override;
 		virtual void SetUseShadow(bool isUse)override;
 		virtual void SetBlurParam(DsVec2f s, int ts)override;
-		virtual void SetPostEffectParam(int ts)override;
+		virtual void SetPostEffectParam(int effTex, int oriTex, int oriDepTex)override;
 		virtual void SetUseNormalMap(bool isUse) override;
 		virtual void SetTime(float t) override;
 
@@ -238,9 +238,11 @@ namespace
 	}
 
 	//virtual
-	void DsShaderImp::SetPostEffectParam(int ts)
+	void DsShaderImp::SetPostEffectParam(int effTex, int oriTex, int oriDepTex)
 	{
-		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "textureSourceOri"), ts);
+		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "colTexEff"), effTex);
+		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "colTexOri"), oriTex);
+		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "depTexOri"), oriDepTex);
 	}
 
 	//virtual 

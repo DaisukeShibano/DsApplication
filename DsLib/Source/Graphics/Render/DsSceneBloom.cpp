@@ -31,6 +31,7 @@ namespace
 		{
 			{//高輝度抽出
 				m_shader.EnableShader(SHADER_TYPE::BLOOM1);
+				m_shader.SetPostEffectParam(0, 1, 2);
 				DsGLActiveTexture(DS_GL_TEXTURE0);
 				m_postEffectBuffer.BindTexture();//加工用バッファ
 				_Draw();
@@ -46,8 +47,8 @@ namespace
 			}
 			{//合成
 				m_shader.EnableShader(SHADER_TYPE::BLOOM2);
+				m_shader.SetPostEffectParam(0, 1, 2);
 				DsGLActiveTexture(DS_GL_TEXTURE1);//1番のテスクチャに加工前をバインド
-				m_shader.SetPostEffectParam(1);
 				m_postEffectBuffer.BindTextureOri();
 				_Draw();
 			}

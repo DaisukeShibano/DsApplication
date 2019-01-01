@@ -149,11 +149,11 @@ void DsRender::Render( const double dt )
 	//この時点のフレームバッファをポストプロセス用バッファにコピー
 	m_pPostEffectBuffer->CopyFrameBuffer();
 
-	//SSAO
-	m_pSSAO->SSAO();
-
 	//ブルーム
 	m_pBloom->Bloom();
+
+	//ブルームが無加工と合成しているので何となくその前は都合悪いと思ったからその後
+	//m_pSSAO->SSAO();
 
 	//ポストエフェクトをレンダリング画面へ
 	m_pPostEffectBuffer->RenderFrame();

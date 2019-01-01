@@ -21,11 +21,11 @@ namespace//高輝度抽出
 	@brief		フラグメントシェーダー
 	***************************************************/
 	static const char s_fragment1[] = DS_SHADER_STR(
-		uniform sampler2D textureSource;
+		uniform sampler2D colTexEff;
 
 		void main(void)
 		{
-			vec3 texel = max(vec3(0.0), (texture2D(textureSource, gl_TexCoord[0].st) - 0.5).rgb);
+			vec3 texel = max(vec3(0.0), (texture2D(colTexEff, gl_TexCoord[0].st) - 0.5).rgb);
 			gl_FragColor = vec4(texel, 1.0);
 		}
 	);
@@ -49,13 +49,13 @@ namespace//合成
 	@brief		フラグメントシェーダー
 	***************************************************/
 	static const char s_fragment2[] = DS_SHADER_STR(
-		uniform sampler2D textureSource;
-		uniform sampler2D textureSourceOri;
+		uniform sampler2D colTexEff;
+		uniform sampler2D colTexOri;
 
 		void main(void)
 		{
-			vec4 texel = texture2D(textureSource, gl_TexCoord[0].st);
-			vec4 texelOri = texture2D(textureSourceOri, gl_TexCoord[0].st);
+			vec4 texel = texture2D(colTexEff, gl_TexCoord[0].st);
+			vec4 texelOri = texture2D(colTexOri, gl_TexCoord[0].st);
 			gl_FragColor = texel + texelOri;
 		}
 	);

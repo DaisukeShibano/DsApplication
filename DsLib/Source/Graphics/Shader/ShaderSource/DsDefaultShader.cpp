@@ -128,14 +128,13 @@ namespace
 		*/
 		vec3 WaveNormalMap(const vec3 baseNormal)
 		{
-			float scale = 60.0;
-			float offset = time * scale;
-			float x = sin(gl_TexCoord[0].st.x*scale+offset);
-			float y = cos(gl_TexCoord[0].st.y*scale+offset);
+			return baseNormal;
 
-
-
-			return vec3(0, 0, x*y);
+			//float scale = 60.0;
+			//float offset = time * scale;
+			//float x = sin(gl_TexCoord[0].st.x*scale+offset);
+			//float y = cos(gl_TexCoord[0].st.y*scale+offset);
+			//return vec3(0, 0, x*y);
 		}
 
 		/*
