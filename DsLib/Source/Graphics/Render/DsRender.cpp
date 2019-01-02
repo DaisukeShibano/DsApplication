@@ -150,7 +150,7 @@ void DsRender::Render( const double dt )
 	m_pPostEffectBuffer->CopyFrameBuffer();
 
 	//ブルーム
-	//m_pBloom->Bloom();
+	m_pBloom->Bloom();
 
 	//ブルームが無加工と合成しているので何となくその前は都合悪いと思ったからその後
 	m_pSSAO->SSAO();

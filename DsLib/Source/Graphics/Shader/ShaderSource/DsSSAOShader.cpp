@@ -28,15 +28,25 @@ namespace//高輝度抽出
 		{
 			float edge = 0.02;//深度値が近いものだけ影つける
 
-			const int sampleNum = 2;
+			const int sampleNum = 6;
 			const float sampleNumf = float(sampleNum);
 			float offset[sampleNum];
-			offset[0] = 4.0 / 800.0;//大体ピクセル単位
-			offset[1] = 4.0 / 800.0;
+			offset[0] = 5.0 / 800.0;//大体ピクセル単位
+			offset[1] = 5.0 / 800.0;
+			offset[2] = 5.0 / 800.0;
+			offset[3] = 1.0 / 800.0;
+			offset[4] = 1.0 / 800.0;
+			offset[5] = 1.0 / 800.0;
+
 
 			vec2 sampOffset[sampleNum];
-			sampOffset[0] = vec2(offset[0], 0.0);
-			sampOffset[1] = vec2(0.0, offset[1]);
+			//sin(45)=0.707 cos(45)=0.707
+			sampOffset[0] = vec2(offset[0]*0.707, offset[0]*0.707);
+			sampOffset[1] = vec2(offset[1], 0.0);
+			sampOffset[2] = vec2(offset[2] * 0.707, -offset[2] * 0.707);
+			sampOffset[3] = vec2(offset[3] * 0.707, offset[3] * 0.707);
+			sampOffset[4] = vec2(offset[4], 0.0);
+			sampOffset[5] = vec2(offset[5] * 0.707, -offset[5] * 0.707);
 
 			float baseDepth = texture2D(depTexOri, gl_TexCoord[0].st).x;
 			float distBias = 0.0;
@@ -48,12 +58,19 @@ namespace//高輝度抽出
 				
 				//深度値が離れてるほど明るくする
 				//edge以上は影が全く付かない
-				distBias += abs(p - baseDepth);
-				distBias += abs(pr - baseDepth);
+				float dist1 = abs(p - baseDepth);
+				float dist2 = abs(pr - baseDepth);
+				distBias += dist1;
+				distBias += dist2;
 				
 				float s = (p != baseDepth) ? atan(offset[idx], baseDepth - p) : 3.1415;
 				float sr = (pr != baseDepth) ? atan(offset[idx], baseDepth - pr) : 3.1415;
 				float sSum = min(3.1415, s + sr);
+
+				//一定値以上深度が離れてるなら遮蔽とみなさない
+				if ((edge < dist1) || (edge < dist2) ){
+					sSum = 3.1415;
+				}
 				sResult += sSum;
 			}
 
@@ -73,6 +90,7 @@ namespace//高輝度抽出
 			sResult /= sampleNumf;
 			sResult = sResult /3.1415;//角度が狭い=遮蔽され率が高い
 
+			sResult = sResult * sResult;//強調
 			sResult = min(1.0, sResult + distBias);//距離で明るくなる分をプラス
 			
 			vec4 srcCol = texture2D(colTexEff, gl_TexCoord[0].st);
