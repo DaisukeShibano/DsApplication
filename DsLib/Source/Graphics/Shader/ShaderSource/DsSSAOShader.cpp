@@ -27,54 +27,56 @@ namespace//高輝度抽出
 		void main(void)
 		{
 			float edge = 0.02;//深度値が近いものだけ影つける
-			float offset = 4.0/800.0;//大体ピクセル単位
 
-			vec2 sampOffset1 = vec2(offset, 0.00);
-			vec2 sampOffset2 = vec2(0.00, offset);
+			const int sampleNum = 2;
+			const float sampleNumf = float(sampleNum);
+			float offset[sampleNum];
+			offset[0] = 4.0 / 800.0;//大体ピクセル単位
+			offset[1] = 4.0 / 800.0;
+
+			vec2 sampOffset[sampleNum];
+			sampOffset[0] = vec2(offset[0], 0.0);
+			sampOffset[1] = vec2(0.0, offset[1]);
 
 			float baseDepth = texture2D(depTexOri, gl_TexCoord[0].st).x;
-
-			float p1 = texture2D(depTexOri, gl_TexCoord[0].st + sampOffset1).x;
-			float p1r = texture2D(depTexOri, gl_TexCoord[0].st - sampOffset1).x;
-			float p2 = texture2D(depTexOri, gl_TexCoord[0].st + sampOffset2).x;
-			float p2r = texture2D(depTexOri, gl_TexCoord[0].st - sampOffset2).x;
-
-
-			//深度値が離れてるほど明るくする
-			//edge以上は影が全く付かない
 			float distBias = 0.0;
-			distBias += abs(p1 - baseDepth);
-			distBias += abs(p1r - baseDepth);
-			distBias += abs(p2 - baseDepth);
-			distBias += abs(p2r - baseDepth);
-			distBias /= 4.0;
+			float sResult = 0.0;
+
+			for (int idx = 0; idx < sampleNum; ++idx) {
+				float p = texture2D(depTexOri, gl_TexCoord[0].st + sampOffset[idx]).x;
+				float pr = texture2D(depTexOri, gl_TexCoord[0].st - sampOffset[idx]).x;
+				
+				//深度値が離れてるほど明るくする
+				//edge以上は影が全く付かない
+				distBias += abs(p - baseDepth);
+				distBias += abs(pr - baseDepth);
+				
+				float s = (p != baseDepth) ? atan(offset[idx], baseDepth - p) : 3.1415;
+				float sr = (pr != baseDepth) ? atan(offset[idx], baseDepth - pr) : 3.1415;
+				float sSum = min(3.1415, s + sr);
+				sResult += sSum;
+			}
+
+			//平均をとって0.0～1.0へ
+			distBias /= sampleNumf * 2.0;
 			distBias = min(edge, distBias) / edge;
+			//http://d.hatena.ne.jp/nakamura001/20111117/1321539246
+			//【Cubic】
 			float t = distBias;
 			float b = 0.0;
 			float c = 1.0;
 			float d = 1.0;
-
-			//http://d.hatena.ne.jp/nakamura001/20111117/1321539246
-			//【Cubic】
 			t /= d;
 			distBias = c * t*t*t + b;
 
 
-			float s1 = (p1 != baseDepth) ? atan(offset, baseDepth - p1) : 3.1415;
-			float s1r = (p1r != baseDepth) ? atan(offset, baseDepth - p1r) : 3.1415;
-			float s1Sum = min(3.1415, s1 + s1r);
+			sResult /= sampleNumf;
+			sResult = sResult /3.1415;//角度が狭い=遮蔽され率が高い
 
-			float s2 = (p2 != baseDepth) ? atan(offset, baseDepth - p2) : 3.1415;
-			float s2r = (p2r != baseDepth) ? atan(offset, baseDepth - p2r) : 3.1415;
-			float s2Sum = min(3.1415, s2 + s2r);
-
-			float s = (s1Sum + s2Sum) / 2.0;
-			s = s/3.1415;//角度が狭い=遮蔽され率が高い
-
-			s = min(1.0, s + distBias);//距離で明るくなる分をプラス
+			sResult = min(1.0, sResult + distBias);//距離で明るくなる分をプラス
 			
 			vec4 srcCol = texture2D(colTexEff, gl_TexCoord[0].st);
-			gl_FragColor = vec4(srcCol.rgb*s, srcCol.w);
+			gl_FragColor = vec4(srcCol.rgb*sResult, srcCol.w);
 		}
 	);
 }
