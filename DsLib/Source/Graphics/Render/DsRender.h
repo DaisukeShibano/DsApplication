@@ -22,6 +22,7 @@ namespace DsLib
 	class DsSceneBloom;
 	class DsPostEffectBuffer;
 	class DsSSAO;
+	class DsDepthField;
 }
 
 namespace DsLib
@@ -77,6 +78,7 @@ namespace DsLib
 		DsPostEffectBuffer* m_pPostEffectBuffer;
 		DsSceneBloom* m_pBloom;
 		DsSSAO* m_pSSAO;
+		DsDepthField* m_pDepthField;
 		DsShader* m_pShader;
 		DsDrawCommand* m_pDrawCom;
 		DsLight& m_light;

@@ -26,6 +26,7 @@
 #include "Graphics/Render/DsSceneBloom.h"
 #include "Graphics/Render/DsPostEffectBuffer.h"
 #include "Graphics/Render/DsSSAO.h"
+#include "Graphics/Render/DsDepthField.h"
 
 
 using namespace DsLib;
@@ -44,6 +45,7 @@ DsRender::DsRender(DsCamera& cam, DsSys& sys)
 ,m_pPostEffectBuffer(NULL)
 ,m_pBloom(NULL)
 ,m_pSSAO(NULL)
+,m_pDepthField(NULL)
 ,m_pShader(NULL)
 ,m_pDrawCom(NULL)
 ,m_light(DsLightMan::GetIns().GetSunLight())
@@ -88,6 +90,9 @@ DsRender::DsRender(DsCamera& cam, DsSys& sys)
 	m_pSSAO = DsSSAO::Create(*this, *m_pShader, *m_pPostEffectBuffer);
 	DS_ASSERT(m_pSSAO, "メモリ確保失敗");
 
+	m_pDepthField = DsDepthField::Create(*this, *m_pShader, *m_pPostEffectBuffer);
+	DS_ASSERT(m_pDepthField, "メモリ確保失敗");
+
 	m_light.SetPos(DsVec3f::ToVec3(0, 5, 0));
 	m_light.SetDir(DsVec3f::ToVec3(0, -1, 0));
 
@@ -102,7 +107,9 @@ DsRender::~DsRender()
 	delete m_pShadow;m_pShadow=NULL;
 	delete m_pPostEffectBuffer; m_pPostEffectBuffer = NULL;
 	delete m_pBloom; m_pBloom = NULL;
-	delete m_pShader;m_pShader=NULL;
+	delete m_pShader; m_pShader = NULL;
+	delete m_pSSAO; m_pSSAO = NULL;
+	delete m_pDepthField; m_pDepthField = NULL;
 	delete m_pDrawCom; m_pDrawCom=NULL;
 }
 
@@ -154,6 +161,9 @@ void DsRender::Render( const double dt )
 
 	//ブルームが無加工と合成しているので何となくその前は都合悪いと思ったからその後
 	m_pSSAO->SSAO();
+
+	//被写界深度
+	m_pDepthField->DepthField();
 
 	//ポストエフェクトをレンダリング画面へ
 	m_pPostEffectBuffer->RenderFrame();

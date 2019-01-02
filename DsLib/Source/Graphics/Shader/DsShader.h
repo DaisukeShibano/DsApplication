@@ -11,6 +11,8 @@ namespace DsLib
 		BLOOM1,
 		BLOOM2,
 		SSAO,
+		DEPTH_FIELD1,
+		DEPTH_FIELD2,
 		NUM,
 	};
 
@@ -31,6 +33,7 @@ namespace DsLib
 		virtual void SetPostEffectParam(int effTex, int oriTex, int oriDepTex)=NULL;
 		virtual void SetUseNormalMap(bool isUse) = NULL;
 		virtual void SetTime(float t) = NULL;
+		virtual void DepthFieldParam(int depTex, int blurTex) = NULL;
 	};
 
 }

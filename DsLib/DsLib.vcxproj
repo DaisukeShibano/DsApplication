@@ -213,6 +213,7 @@
     <ClCompile Include="Source\Graphics\Light\DsLight.cpp" />
     <ClCompile Include="Source\Graphics\Light\DsLightMan.cpp" />
     <ClCompile Include="Source\Graphics\Light\DsSunLight.cpp" />
+    <ClCompile Include="Source\Graphics\Render\DsDepthField.cpp" />
     <ClCompile Include="Source\Graphics\Render\DsModelRender.cpp" />
     <ClCompile Include="Source\Graphics\Render\DsParticleRender.cpp" />
     <ClCompile Include="Source\Graphics\Render\DsPostEffectBuffer.cpp" />
@@ -230,6 +231,7 @@
     <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsBloomShader.cpp" />
     <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsBlurShader.cpp" />
     <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsDefaultShader.cpp" />
+    <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsDepthFieldShader.cpp" />
     <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsShadowMapShader.cpp" />
     <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsSSAOShader.cpp" />
     <ClCompile Include="Source\Keyboard\DsKeyboard.cpp" />
@@ -281,6 +283,7 @@
     <ClInclude Include="Source\Graphics\Light\DsLight.h" />
     <ClInclude Include="Source\Graphics\Light\DsLightMan.h" />
     <ClInclude Include="Source\Graphics\Light\DsSunLight.h" />
+    <ClInclude Include="Source\Graphics\Render\DsDepthField.h" />
     <ClInclude Include="Source\Graphics\Render\DsModelRender.h" />
     <ClInclude Include="Source\Graphics\Render\DsParticleRender.h" />
     <ClInclude Include="Source\Graphics\Render\DsPostEffectBuffer.h" />
@@ -298,6 +301,7 @@
     <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsBloomShader.h" />
     <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsBlurShader.h" />
     <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsDefaultShader.h" />
+    <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsDepthFieldShader.h" />
     <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsShadowMapShader.h" />
     <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsSSAOShader.h" />
     <ClInclude Include="Source\Keyboard\DsKeyboard.h" />

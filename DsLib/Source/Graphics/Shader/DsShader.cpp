@@ -6,6 +6,7 @@
 #include "Graphics/Shader/ShaderSource/DsBlurShader.h"
 #include "Graphics/Shader/ShaderSource/DsBloomShader.h"
 #include "Graphics/Shader/ShaderSource/DsSSAOShader.h"
+#include "Graphics/Shader/ShaderSource/DsDepthFieldShader.h"
 #ifndef _DS_GL_FUNC_
 #include "Graphics/GL/DsGLFunc.h"
 #endif
@@ -101,6 +102,7 @@ namespace
 		virtual void SetPostEffectParam(int effTex, int oriTex, int oriDepTex)override;
 		virtual void SetUseNormalMap(bool isUse) override;
 		virtual void SetTime(float t) override;
+		virtual void DepthFieldParam(int depTex, int blurTex) override;
 
 
 	private:
@@ -136,6 +138,8 @@ namespace
 			{ GetBloomVertexShader1(), GetBloomFragmentShader1() },
 			{ GetBloomVertexShader2(), GetBloomFragmentShader2() },
 			{ GetSSAOVertexShader(), GetSSAOFragmentShader() },
+			{ GetDepthFieldVertexShader1(), GetDepthFieldFragmentShader1() },
+			{ GetDepthFieldVertexShader2(), GetDepthFieldFragmentShader2() },
 		};
 		const int sourceNum = static_cast<int>(SHADER_TYPE::NUM);
 		static_assert(sizeof(sources)/sizeof(sources[0]) == sourceNum, "シェーダーのソースの数が合いません");
@@ -255,6 +259,13 @@ namespace
 	void DsShaderImp::SetTime(float t)
 	{
 		DsGLUniform1f(DsGLGetUniformLocation(m_prog[m_currentIdx], "time"), t);
+	}
+
+	//virtual
+	void DsShaderImp::DepthFieldParam(int depTex, int blurTex)
+	{
+		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "depTexEff"), depTex);
+		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "blurTex"), blurTex);
 	}
 
 }
