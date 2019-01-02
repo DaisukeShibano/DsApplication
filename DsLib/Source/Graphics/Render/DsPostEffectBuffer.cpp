@@ -133,6 +133,16 @@ namespace
 			glBindTexture(GL_TEXTURE_2D, m_texId);
 		}
 
+		virtual void BindTextureOri() override
+		{
+			glBindTexture(GL_TEXTURE_2D, m_texOriId);
+		}
+
+		virtual void BindDepTextureOri() override
+		{
+			glBindTexture(GL_TEXTURE_2D, m_depTexOriId);
+		}
+
 		virtual void UnbindTexture() override
 		{
 			glBindTexture(GL_TEXTURE_2D, 0);
@@ -148,10 +158,6 @@ namespace
 			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
 		}
 
-		virtual void BindTextureOri() override
-		{
-			glBindTexture(GL_TEXTURE_2D, m_texOriId);
-		}
 
 	public:
 		virtual void DbgDraw() override

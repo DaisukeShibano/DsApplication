@@ -30,8 +30,11 @@ namespace
 		virtual void SSAO() override
 		{
 			m_shader.EnableShader(SHADER_TYPE::SSAO);
+			m_shader.SetPostEffectParam(0, 1, 2);
 			DsGLActiveTexture(DS_GL_TEXTURE0);
 			m_postEffectBuffer.BindTexture();
+			DsGLActiveTexture(DS_GL_TEXTURE2);
+			m_postEffectBuffer.BindDepTextureOri();
 			_Draw();
 			m_postEffectBuffer.UnbindTexture();
 			DsGLActiveTexture(DS_GL_TEXTURE0);

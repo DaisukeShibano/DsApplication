@@ -18,12 +18,13 @@ namespace DsLib
 		virtual void RenderFrame()=0;
 
 		virtual void BindTexture() = 0;
+		virtual void BindTextureOri() = 0;
+		virtual void BindDepTextureOri() = 0;
 		virtual void UnbindTexture() = 0;
 
 		virtual void BindFrameBuffer() = 0;
 		virtual void UnbindFrameBuffer() = 0;
 
-		virtual void BindTextureOri() = 0;
 
 
 	public:

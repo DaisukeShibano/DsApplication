@@ -148,7 +148,9 @@ namespace
 			vec3 flight = normalize(normalMapLight);
 			
 			float diffuse = max(dot(flight, fnormal), 0.0);
-			
+			//ÉAÉjÉÅÇ¡Ç€Ç≠
+			diffuse = (0.5 < diffuse) ? 1.0 : 0.9;
+
 			vec3 fview = normalize(normalMapView);
 			vec3 halfway = normalize(flight + fview);
 
