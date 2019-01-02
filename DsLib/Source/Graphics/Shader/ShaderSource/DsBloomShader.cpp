@@ -25,7 +25,7 @@ namespace//çÇãPìxíäèo
 
 		void main(void)
 		{
-			vec3 texel = max(vec3(0.0), (texture2D(colTexEff, gl_TexCoord[0].st) - 0.5).rgb);
+			vec3 texel = max(vec3(0.0), (texture2D(colTexEff, gl_TexCoord[0].st) - 0.8).rgb);
 			gl_FragColor = vec4(texel, 1.0);
 		}
 	);

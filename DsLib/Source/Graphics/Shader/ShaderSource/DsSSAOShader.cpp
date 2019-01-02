@@ -48,6 +48,7 @@ namespace//‚‹P“x’Šo
 			sampOffset[4] = vec2(offset[4], 0.0);
 			sampOffset[5] = vec2(offset[5] * 0.707, -offset[5] * 0.707);
 
+
 			float baseDepth = texture2D(depTexOri, gl_TexCoord[0].st).x;
 			float distBias = 0.0;
 			float sResult = 0.0;
