@@ -5,6 +5,8 @@ namespace DsLib
 {
 	enum
 	{
+		DS_GL_SHADING_LANGUAGE_VERSION = 0x8B8C,
+
 		DS_GL_TEXTURE0 = 0x84C0,
 		DS_GL_TEXTURE1 = 0x84C1,
 		DS_GL_TEXTURE2 = 0x84C2,

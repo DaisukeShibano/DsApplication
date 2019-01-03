@@ -145,6 +145,16 @@ namespace
 		const int sourceNum = static_cast<int>(SHADER_TYPE::NUM);
 		static_assert(sizeof(sources)/sizeof(sources[0]) == sourceNum, "シェーダーのソースの数が合いません");
 
+
+		{//バージョン確認
+			const GLubyte *version = glGetString(GL_VERSION);
+			const GLubyte *glslVersion = glGetString(DS_GL_SHADING_LANGUAGE_VERSION);
+			DS_LOG("\n============GL version==============");
+			DS_LOG("GL Version(string):%s", version);
+			DS_LOG("GLSL Version:%s", glslVersion);
+			DS_LOG("====================================\n");
+		}
+
 		for (int sIdx=0; sIdx < sourceNum; ++sIdx)
 		{
 			/* シェーダオブジェクトの作成 */
