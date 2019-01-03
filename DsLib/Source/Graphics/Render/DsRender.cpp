@@ -159,7 +159,7 @@ void DsRender::Render( const double dt )
 	//ブルーム
 	m_pBloom->Bloom();
 
-	//ブルームが無加工と合成しているので何となくその前は都合悪いと思ったからその後
+	//SSAO
 	m_pSSAO->SSAO();
 
 	//被写界深度
