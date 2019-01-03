@@ -27,7 +27,7 @@ namespace DsLib
 		};
 	public:
 		static DsShader& Create();
-		static BlurParam GetBlurParam(const int pixNum);
+		static BlurParam GetBlurParam(const int pixNum, float level=1.0f);
 
 	public:
 		virtual void Initialize() = NULL;

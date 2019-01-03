@@ -282,16 +282,19 @@ namespace
 }
 
 //static
- DsShader::BlurParam DsShader::GetBlurParam(const int pixNum)
+ DsShader::BlurParam DsShader::GetBlurParam(const int pixNum, float level/* = 1.0f*/)
 {
 	BlurParam ret;
 
 	DS_ASSERT(sizeof(ret.weight) / sizeof(ret.weight[0]) <= pixNum, "ブラーピクセル数がオーバーしています");
 
+	//式はここを参考
+	//https://wgld.org/d/webgl/w057.html
 	ret.pixNum = pixNum;
 	for (int idx = 0; idx < pixNum; ++idx) {
 		float r = 1.0f + 2.0f * fabsf( static_cast<float>(idx - 9) );
-		float w = exp(-0.5f*(r*r) / 100.0f);
+		float d = level*100.0f;
+		float w = exp(-0.5f*(r*r) / d);
 		ret.weight[idx] = w;
 		ret.weightSum += w;
 	}

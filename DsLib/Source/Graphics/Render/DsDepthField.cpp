@@ -37,12 +37,12 @@ namespace
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-				glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
+				glTexImage2D(GL_TEXTURE_2D, 0, DS_GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, 0);
 				glBindTexture(GL_TEXTURE_2D, 0);
 
 				DsGLGenFramebuffers(1, &m_depFboId);
 				DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_depFboId);
-				DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, DS_GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depTex, 0);
+				DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, DS_GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_depTex, 0);
 				DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
 			}
 
@@ -90,7 +90,7 @@ namespace
 				m_shader.EnableShader(SHADER_TYPE::BLUR);
 
 				DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_blurFboId);
-				const DsShader::BlurParam blurParam = DsShader::GetBlurParam(19);
+				const DsShader::BlurParam blurParam = DsShader::GetBlurParam(29, 100.0f);
 				m_shader.SetBlurParam(DsVec2f(1.0f / (static_cast<float>(width)), 0.0f), 0, blurParam);
 				_Draw();
 				m_shader.SetBlurParam(DsVec2f(0.0f, 1.0f / static_cast<float>(height)), 0, blurParam);

@@ -28,7 +28,35 @@ namespace//デプス値算出
 			//ここで求めた深度値がぼやけた画像とのブレンド率になる
 			//ピント付近は0にしてそこから遠いほど高くする
 
-			gl_FragColor = texture2D(depTexOri, gl_TexCoord[0].st);
+			float beginDepth = 0.50;
+			float endDepth = 0.85;
+
+			vec4 depth = texture2D(depTexOri, gl_TexCoord[0].st);
+			if (depth.x < beginDepth)
+			{//ピンとより近い
+				depth.x = (beginDepth-depth.x) / beginDepth;//０～１へ
+				//depth.xyz = vec3(1.0, 0.0, 0.0);
+			}
+			else if (depth.x < endDepth)
+			{//ピントの中
+				depth.x = 0.0;
+				//depth.xyz = vec3(0.0, 1.0, 0.0);
+			}
+			else if (0.999999 < depth.x)
+			{//空とか何もない空間
+				depth.x = 0.0;
+			}
+			else
+			{//ピンとより遠い
+				depth.x = (depth.x- endDepth) / (1.0-beginDepth);//０～１へ
+				//depth.xyz = vec3(0.0, 0.0, 1.0);
+			}
+
+			//イーズアウト
+			depth.x = depth.x - 1.0;
+			depth.x = depth.x*depth.x*depth.x + 1.0;
+
+			gl_FragColor = depth;
 		}
 	);
 }
@@ -57,7 +85,11 @@ namespace//合成
 
 		void main(void)
 		{
-			gl_FragColor = texture2D(colTexEff, gl_TexCoord[0].st);
+			vec4 blur = texture2D(blurTex, gl_TexCoord[0].st);
+			vec4 src = texture2D(colTexEff, gl_TexCoord[0].st);
+			float blend = texture2D(depTexEff, gl_TexCoord[0].st).x;
+
+			gl_FragColor = (blend * blur) + ((1.0 - blend)*src);
 		}
 	);
 }
