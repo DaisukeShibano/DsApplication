@@ -19,32 +19,58 @@ namespace
 		}
 	);
 
+	/***************************************************
+	@brief		フラグメントシェーダー
+	***************************************************/
+	static const char s_fragmentH[] = DS_SHADER_STR(
+	uniform float scale;
+	uniform sampler2D textureSource;
+
+	//パラメータ
+	const int maxPixNum = 50;
+	uniform int pixNum;
+	uniform float weight[maxPixNum];
+	uniform float weightSum;
+
+	void main(void)
+	{
+		vec4 color = vec4(0.0);
+		int minPix = pixNum / 2;
+		for (int i = 0; i < pixNum; ++i)
+		{
+			float pix = float(i - minPix);
+			color += texture2D(textureSource, gl_TexCoord[0].st + vec2(pix*scale, 0.0))*weight[i] / weightSum;
+		}
+
+		gl_FragColor = color;
+	}
+	);
 
 	/***************************************************
 	@brief		フラグメントシェーダー
 	***************************************************/
-	static const char s_fragment[] = DS_SHADER_STR(
-		uniform vec2 ScaleU;
-		uniform sampler2D textureSource;
+	static const char s_fragmentV[] = DS_SHADER_STR(
+	uniform float scale;
+	uniform sampler2D textureSource;
 
-		//パラメータ
-		const int maxPixNum = 50;
-		uniform int pixNum;
-		uniform float weight[maxPixNum];
-		uniform float weightSum;
+	//パラメータ
+	const int maxPixNum = 50;
+	uniform int pixNum;
+	uniform float weight[maxPixNum];
+	uniform float weightSum;
 
-		void main(void)
+	void main(void)
+	{
+		vec4 color = vec4(0.0);
+		int minPix = pixNum / 2;
+		for (int i = 0; i < pixNum; ++i)
 		{
-			vec4 color = vec4(0.0);
-			int minPix = pixNum / 2;
-			for (int i = 0; i < pixNum; ++i)
-			{
-				float pix = float(i -minPix);
-				color += texture2D(textureSource, gl_TexCoord[0].st + vec2(pix*ScaleU.x, pix*ScaleU.y))*weight[i] / weightSum;
-			}
-
-			gl_FragColor = color;
+			float pix = float(i - minPix);
+			color += texture2D(textureSource, gl_TexCoord[0].st + vec2(0.0, pix*scale))*weight[i] / weightSum;
 		}
+
+		gl_FragColor = color;
+	}
 	);
 }
 
@@ -53,7 +79,12 @@ const char* DsLib::GetBlurVertexShader()
 	return s_vertex;
 }
 
-const char* DsLib::GetBlurFragmentShader()
+const char* DsLib::GetBlurFragmentShaderH()
 {
-	return s_fragment;
+	return s_fragmentH;
+}
+
+const char* DsLib::GetBlurFragmentShaderV()
+{
+	return s_fragmentV;
 }

@@ -87,13 +87,15 @@ namespace
 			{//ÉuÉâÅ[
 				const int width = static_cast<int>(m_render.GetWidth());
 				const int height = static_cast<int>(m_render.GetHeight());
-				m_shader.EnableShader(SHADER_TYPE::BLUR);
+				m_shader.EnableShader(SHADER_TYPE::BLUR_HORIZON);
 
 				DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_blurFboId);
 				const DsShader::BlurParam blurParam = DsShader::GetBlurParam(29, 100.0f);
-				m_shader.SetBlurParam(DsVec2f(1.0f / (static_cast<float>(width)), 0.0f), 0, blurParam);
+				m_shader.SetBlurParam(1.0f / (static_cast<float>(width)), 0, blurParam);
 				_Draw();
-				m_shader.SetBlurParam(DsVec2f(0.0f, 1.0f / static_cast<float>(height)), 0, blurParam);
+
+				m_shader.EnableShader(SHADER_TYPE::BLUR_VERTICAL);
+				m_shader.SetBlurParam(1.0f / static_cast<float>(height), 0, blurParam);
 				_Draw();
 				DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
 			}

@@ -98,7 +98,7 @@ namespace
 		virtual void SetUseTexture(bool isUse) override;
 		virtual void SetUseLight(bool isUse)override;
 		virtual void SetUseShadow(bool isUse)override;
-		virtual void SetBlurParam(DsVec2f s, int ts, const BlurParam& bp )override;
+		virtual void SetBlurParam(float s, int ts, const BlurParam& bp )override;
 		virtual void SetPostEffectParam(int effTex, int oriTex, int oriDepTex)override;
 		virtual void SetUseNormalMap(bool isUse) override;
 		virtual void SetTime(float t) override;
@@ -134,7 +134,8 @@ namespace
 		{
 			{ GetDefaultVertexShader(), GetDefaultFragmentShader() },
 			{ GetShadowMapVertexShader(), GetShadowMapFragmentShader() },
-			{ GetBlurVertexShader(), GetBlurFragmentShader() },
+			{ GetBlurVertexShader(), GetBlurFragmentShaderH() },
+			{ GetBlurVertexShader(), GetBlurFragmentShaderV() },
 			{ GetBloomVertexShader1(), GetBloomFragmentShader1() },
 			{ GetBloomVertexShader2(), GetBloomFragmentShader2() },
 			{ GetSSAOVertexShader(), GetSSAOFragmentShader() },
@@ -235,9 +236,9 @@ namespace
 	}
 
 	//virtual
-	void DsShaderImp::SetBlurParam(DsVec2f s, int ts, const BlurParam& bp)
+	void DsShaderImp::SetBlurParam(float s, int ts, const BlurParam& bp)
 	{
-		DsGLUniform2f(DsGLGetUniformLocation(m_prog[m_currentIdx], "ScaleU"), s.x, s.y);
+		DsGLUniform1f(DsGLGetUniformLocation(m_prog[m_currentIdx], "scale"), s);
 		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "textureSource"), ts);
 		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "pixNum"), bp.pixNum);
 		DsGLUniform1fv(DsGLGetUniformLocation(m_prog[m_currentIdx], "weight"), bp.pixNum, bp.weight);

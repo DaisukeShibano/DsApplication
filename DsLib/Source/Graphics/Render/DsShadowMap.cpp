@@ -308,7 +308,7 @@ namespace
 
 	void DsShadowMapImp::_Blur()
 	{
-		m_shader.EnableShader(SHADER_TYPE::BLUR);
+		m_shader.EnableShader(SHADER_TYPE::BLUR_HORIZON);
 
 		DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_blurFboId);
 		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -318,7 +318,7 @@ namespace
 		
 		// Bluring horinzontaly
 		const DsShader::BlurParam blurParam = DsShader::GetBlurParam(3);
-		m_shader.SetBlurParam(DsVec2f( 1.0f / (static_cast<float>(m_fDepthSize[0])*static_cast<float>( BLUR_COEF) ), 0.0f),	0, blurParam);
+		m_shader.SetBlurParam(1.0f / (static_cast<float>(m_fDepthSize[0])*static_cast<float>(BLUR_COEF)),	0, blurParam);
 		DsGLActiveTexture(DS_GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, m_colorTextureId);//シャドウマップ(6と7あって6の方)をテクスチャとしてバインド
 
@@ -341,12 +341,13 @@ namespace
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		// Bluring vertically
+		m_shader.EnableShader(SHADER_TYPE::BLUR_VERTICAL);
 		DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_iFBODepth);
 		//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		//glClearDepth(1.0f);
 		//m_blurFboIdColorTextureId で横方にぼかされてるので、縦方向にぼかしたものをm_iFBODepthで描画。m_iFBODepthはm_colorTextureIdに紐づいているので最終的なシャドウマップがこれ
 		glViewport(0, 0, m_fDepthSize[0], m_fDepthSize[1]);
-		m_shader.SetBlurParam( DsVec2f(0.0f, 1.0f / static_cast<float>(m_fDepthSize[1])), 0 , blurParam );
+		m_shader.SetBlurParam(1.0f / static_cast<float>(m_fDepthSize[1]), 0 , blurParam );
 		glBindTexture(GL_TEXTURE_2D, m_blurFboIdColorTextureId);//m_blurFboIdColorTextureId
 
 		glBegin(GL_QUADS);

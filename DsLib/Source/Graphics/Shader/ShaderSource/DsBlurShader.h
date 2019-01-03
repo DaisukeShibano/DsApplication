@@ -4,7 +4,8 @@
 namespace DsLib
 {
 	const char* GetBlurVertexShader();
-	const char* GetBlurFragmentShader();
+	const char* GetBlurFragmentShaderH();
+	const char* GetBlurFragmentShaderV();
 }
 
 #endif
