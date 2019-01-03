@@ -93,6 +93,16 @@ namespace DsLib
 	void DsGLUniform1f(unsigned int location, float v0);
 	void DsGLUniform2i(unsigned int location, int v0, int v1);
 	void DsGLUniform2f(unsigned int location, float v0, float v1);
+
+	void DsGLUniform1fv(unsigned int location, int count, const float *value);
+	void DsGLUniform2fv(unsigned int location, int count, const float *value);
+	void DsGLUniform3fv(unsigned int location, int count, const float *value);
+	void DsGLUniform4fv(unsigned int location, int count, const float *value);
+	void DsGLUniform1iv(unsigned int location, int count, const int *value);
+	void DsGLUniform2iv(unsigned int location, int count, const int *value);
+	void DsGLUniform3iv(unsigned int location, int count, const int *value);
+	void DsGLUniform4iv(unsigned int location, int count, const int *value);
+
 	void DsGLActiveTexture(unsigned int texture);
 	void DsGLGenerateMipmap(unsigned int target);
 	void DsGLGenFramebuffers(int n, unsigned int* framebuffers);

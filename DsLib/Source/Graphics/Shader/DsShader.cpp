@@ -98,7 +98,7 @@ namespace
 		virtual void SetUseTexture(bool isUse) override;
 		virtual void SetUseLight(bool isUse)override;
 		virtual void SetUseShadow(bool isUse)override;
-		virtual void SetBlurParam(DsVec2f s, int ts)override;
+		virtual void SetBlurParam(DsVec2f s, int ts, const BlurParam& bp )override;
 		virtual void SetPostEffectParam(int effTex, int oriTex, int oriDepTex)override;
 		virtual void SetUseNormalMap(bool isUse) override;
 		virtual void SetTime(float t) override;
@@ -235,10 +235,13 @@ namespace
 	}
 
 	//virtual
-	void DsShaderImp::SetBlurParam(DsVec2f s, int ts)
+	void DsShaderImp::SetBlurParam(DsVec2f s, int ts, const BlurParam& bp)
 	{
 		DsGLUniform2f(DsGLGetUniformLocation(m_prog[m_currentIdx], "ScaleU"), s.x, s.y);
 		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "textureSource"), ts);
+		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "pixNum"), bp.pixNum);
+		DsGLUniform1fv(DsGLGetUniformLocation(m_prog[m_currentIdx], "weight"), bp.pixNum, bp.weight);
+		DsGLUniform1f(DsGLGetUniformLocation(m_prog[m_currentIdx], "weightSum"), bp.weightSum);
 	}
 
 	//virtual
@@ -276,4 +279,21 @@ namespace
 	DsShader* ret = new DsShaderImp();
 	DS_ASSERT(ret, "メモリ確保失敗");
 	return *ret;
+}
+
+//static
+ DsShader::BlurParam DsShader::GetBlurParam(const int pixNum)
+{
+	BlurParam ret;
+
+	DS_ASSERT(sizeof(ret.weight) / sizeof(ret.weight[0]) <= pixNum, "ブラーピクセル数がオーバーしています");
+
+	ret.pixNum = pixNum;
+	for (int idx = 0; idx < pixNum; ++idx) {
+		float r = 1.0f + 2.0f * fabsf( static_cast<float>(idx - 9) );
+		float w = exp(-0.5f*(r*r) / 100.0f);
+		ret.weight[idx] = w;
+		ret.weightSum += w;
+	}
+	return ret;
 }

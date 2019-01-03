@@ -316,8 +316,9 @@ namespace
 		//m_blurFboIdへ横方向にぼかす。m_blurFboIdはm_blurFboIdColorTextureIdと紐づいているのでここに結果が格納される。横をぼかすための一時テクスチャ
 		glViewport(0, 0, static_cast<GLsizei>(m_fDepthSize[0] * BLUR_COEF), static_cast<GLsizei>(m_fDepthSize[1] * BLUR_COEF));
 		
-		m_shader.SetBlurParam(DsVec2f( 1.0f / (static_cast<float>(m_fDepthSize[0])*static_cast<float>( BLUR_COEF) ), 0.0f),		// Bluring horinzontaly
-									0);
+		// Bluring horinzontaly
+		const DsShader::BlurParam blurParam = DsShader::GetBlurParam(3);
+		m_shader.SetBlurParam(DsVec2f( 1.0f / (static_cast<float>(m_fDepthSize[0])*static_cast<float>( BLUR_COEF) ), 0.0f),	0, blurParam);
 		DsGLActiveTexture(DS_GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, m_colorTextureId);//シャドウマップ(6と7あって6の方)をテクスチャとしてバインド
 
@@ -345,8 +346,7 @@ namespace
 		//glClearDepth(1.0f);
 		//m_blurFboIdColorTextureId で横方にぼかされてるので、縦方向にぼかしたものをm_iFBODepthで描画。m_iFBODepthはm_colorTextureIdに紐づいているので最終的なシャドウマップがこれ
 		glViewport(0, 0, m_fDepthSize[0], m_fDepthSize[1]);
-		m_shader.SetBlurParam( DsVec2f(0.0f, 1.0f / static_cast<float>(m_fDepthSize[1])),
-									0);
+		m_shader.SetBlurParam( DsVec2f(0.0f, 1.0f / static_cast<float>(m_fDepthSize[1])), 0 , blurParam );
 		glBindTexture(GL_TEXTURE_2D, m_blurFboIdColorTextureId);//m_blurFboIdColorTextureId
 
 		glBegin(GL_QUADS);

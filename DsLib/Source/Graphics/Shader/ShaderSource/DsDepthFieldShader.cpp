@@ -25,6 +25,9 @@ namespace//デプス値算出
 
 		void main(void)
 		{
+			//ここで求めた深度値がぼやけた画像とのブレンド率になる
+			//ピント付近は0にしてそこから遠いほど高くする
+
 			gl_FragColor = texture2D(depTexOri, gl_TexCoord[0].st);
 		}
 	);

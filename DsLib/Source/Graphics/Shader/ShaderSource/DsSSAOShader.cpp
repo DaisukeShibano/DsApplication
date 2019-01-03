@@ -69,7 +69,7 @@ namespace//高輝度抽出
 				float sSum = min(3.1415, s + sr);
 
 				//一定値以上深度が離れてるなら遮蔽とみなさない
-				if ((edge < dist1) || (edge < dist2) ){
+				if ( (edge < dist1) || (edge < dist2) ){
 					sSum = 3.1415;
 				}
 				sResult += sSum;
@@ -89,7 +89,7 @@ namespace//高輝度抽出
 
 
 			sResult /= sampleNumf;
-			sResult = sResult /3.1415;//角度が狭い=遮蔽され率が高い
+			sResult = sResult /3.1415;//角度が狭い=遮蔽され率が高い⇒小さいほど影
 
 			sResult = sResult * sResult;//強調
 			sResult = min(1.0, sResult + distBias);//距離で明るくなる分をプラス

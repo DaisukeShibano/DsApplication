@@ -19,7 +19,15 @@ namespace DsLib
 	class DsShader
 	{
 	public:
+		struct BlurParam
+		{
+			int pixNum;
+			float weight[50];
+			float weightSum;
+		};
+	public:
 		static DsShader& Create();
+		static BlurParam GetBlurParam(const int pixNum);
 
 	public:
 		virtual void Initialize() = NULL;
@@ -29,11 +37,12 @@ namespace DsLib
 		virtual void SetUseTexture(bool isUse) = NULL;
 		virtual void SetUseLight(bool isUse)=NULL;
 		virtual void SetUseShadow(bool isUse)=NULL;
-		virtual void SetBlurParam(DsVec2f s, int ts)=NULL;
+		virtual void SetBlurParam(DsVec2f s, int ts, const BlurParam& bp )=NULL;
 		virtual void SetPostEffectParam(int effTex, int oriTex, int oriDepTex)=NULL;
 		virtual void SetUseNormalMap(bool isUse) = NULL;
 		virtual void SetTime(float t) = NULL;
 		virtual void DepthFieldParam(int depTex, int blurTex) = NULL;
+
 	};
 
 }

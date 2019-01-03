@@ -295,8 +295,12 @@
     <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsSSAOShader.cpp">
       <Filter>Source\Graphics\Shader\ShaderSource</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsDepthFieldShader.cpp" />
-    <ClCompile Include="Source\Graphics\Render\DsDepthField.cpp" />
+    <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsDepthFieldShader.cpp">
+      <Filter>Source\Graphics\Shader\ShaderSource</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Render\DsDepthField.cpp">
+      <Filter>Source\Graphics\Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsPch.h">
@@ -563,7 +567,11 @@
     <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsSSAOShader.h">
       <Filter>Source\Graphics\Shader\ShaderSource</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsDepthFieldShader.h" />
-    <ClInclude Include="Source\Graphics\Render\DsDepthField.h" />
+    <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsDepthFieldShader.h">
+      <Filter>Source\Graphics\Shader\ShaderSource</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Render\DsDepthField.h">
+      <Filter>Source\Graphics\Render</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

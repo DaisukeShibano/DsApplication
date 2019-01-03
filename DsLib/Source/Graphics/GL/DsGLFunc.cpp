@@ -32,6 +32,14 @@ namespace
 	typedef void   (* DS_PFNGLUNIFORM1FPROC) (GLint location, GLfloat v0);
 	typedef void   (* DS_PFNGLUNIFORM2IPROC) (GLint location, GLint v0, GLint v1);
 	typedef void   (* DS_PFNGLUNIFORM2FPROC) (GLint location, GLfloat v0, GLfloat v1);
+	typedef void   (* DS_PFNGLUNIFORM1FVPROC) (GLint location, GLsizei count, const GLfloat *value);
+	typedef void   (* DS_PFNGLUNIFORM2FVPROC) (GLint location, GLsizei count, const GLfloat *value);
+	typedef void   (* DS_PFNGLUNIFORM3FVPROC) (GLint location, GLsizei count, const GLfloat *value);
+	typedef void   (* DS_PFNGLUNIFORM4FVPROC) (GLint location, GLsizei count, const GLfloat *value);
+	typedef void   (* DS_PFNGLUNIFORM1IVPROC) (GLint location, GLsizei count, const GLint *value);
+	typedef void   (* DS_PFNGLUNIFORM2IVPROC) (GLint location, GLsizei count, const GLint *value);
+	typedef void   (* DS_PFNGLUNIFORM3IVPROC) (GLint location, GLsizei count, const GLint *value);
+	typedef void   (* DS_PFNGLUNIFORM4IVPROC) (GLint location, GLsizei count, const GLint *value);
 	typedef void   (* DS_PFNGLACTIVETEXTUREPROC) (GLenum texture);
 	typedef void   (* DS_PFNGLGENERATEMIPMAPEXTPROC) (GLenum target);
 	typedef void   (* DS_PFNGLGENFRAMEBUFFERSEXTPROC) (GLsizei n, GLuint* framebuffers);
@@ -63,6 +71,14 @@ namespace
 	DS_PFNGLUNIFORM1FPROC s_glUniform1f;
 	DS_PFNGLUNIFORM2IPROC s_glUniform2i;
 	DS_PFNGLUNIFORM2FPROC s_glUniform2f;
+	DS_PFNGLUNIFORM1FVPROC s_glUniform1fv;
+	DS_PFNGLUNIFORM2FVPROC s_glUniform2fv;
+	DS_PFNGLUNIFORM3FVPROC s_glUniform3fv;
+	DS_PFNGLUNIFORM4FVPROC s_glUniform4fv;
+	DS_PFNGLUNIFORM1IVPROC s_glUniform1iv;
+	DS_PFNGLUNIFORM2IVPROC s_glUniform2iv;
+	DS_PFNGLUNIFORM3IVPROC s_glUniform3iv;
+	DS_PFNGLUNIFORM4IVPROC s_glUniform4iv;
 	DS_PFNGLACTIVETEXTUREPROC s_glActiveTexture;
 	DS_PFNGLGENERATEMIPMAPEXTPROC s_glGenerateMipmap;
 	DS_PFNGLGENFRAMEBUFFERSEXTPROC s_glGenFramebuffers;
@@ -149,6 +165,38 @@ bool DsLib::DsInitGLFunc()
 	}
 	s_glUniform2f = (DS_PFNGLUNIFORM2FPROC)wglGetProcAddress("glUniform2f");
 	if (!s_glUniform2f) {
+		return false;
+	}
+	s_glUniform1fv = (DS_PFNGLUNIFORM1FVPROC)wglGetProcAddress("glUniform1fv");
+	if (!s_glUniform1fv) {
+		return false;
+	}
+	s_glUniform2fv = (DS_PFNGLUNIFORM2FVPROC)wglGetProcAddress("glUniform2fv");
+	if (!s_glUniform2fv) {
+		return false;
+	}
+	s_glUniform3fv = (DS_PFNGLUNIFORM3FVPROC)wglGetProcAddress("glUniform3fv");
+	if (!s_glUniform3fv) {
+		return false;
+	}
+	s_glUniform4fv = (DS_PFNGLUNIFORM4FVPROC)wglGetProcAddress("glUniform4fv");
+	if (!s_glUniform4fv) {
+		return false;
+	}
+	s_glUniform1iv = (DS_PFNGLUNIFORM1IVPROC)wglGetProcAddress("glUniform1iv");
+	if (!s_glUniform1iv) {
+		return false;
+	}
+	s_glUniform2iv = (DS_PFNGLUNIFORM2IVPROC)wglGetProcAddress("glUniform2iv");
+	if (!s_glUniform2iv) {
+		return false;
+	}
+	s_glUniform3iv = (DS_PFNGLUNIFORM3IVPROC)wglGetProcAddress("glUniform3iv");
+	if (!s_glUniform3iv) {
+		return false;
+	}
+	s_glUniform4iv = (DS_PFNGLUNIFORM4IVPROC)wglGetProcAddress("glUniform4iv");
+	if (!s_glUniform4iv) {
 		return false;
 	}
 	s_glActiveTexture = (DS_PFNGLACTIVETEXTUREPROC)wglGetProcAddress("glActiveTexture");
@@ -288,6 +336,46 @@ void DsLib::DsGLUniform2i(unsigned int location, int v0, int v1)
 void DsLib::DsGLUniform2f(unsigned int location, float v0, float v1)
 {
 	s_glUniform2f(location, v0, v1);
+}
+
+void DsLib::DsGLUniform1fv(unsigned int location, int count, const float *value)
+{
+	s_glUniform1fv(location, count, value);
+}
+
+void DsLib::DsGLUniform2fv(unsigned int location, int count, const float *value)
+{
+	s_glUniform2fv(location, count, value);
+}
+
+void DsLib::DsGLUniform3fv(unsigned int location, int count, const float *value)
+{
+	s_glUniform3fv(location, count, value);
+}
+
+void DsLib::DsGLUniform4fv(unsigned int location, int count, const float *value)
+{
+	s_glUniform4fv(location, count, value);
+}
+
+void DsLib::DsGLUniform1iv(unsigned int location, int count, const int *value)
+{
+	s_glUniform1iv(location, count, value);
+}
+
+void DsLib::DsGLUniform2iv(unsigned int location, int count, const int *value)
+{
+	s_glUniform2iv(location, count, value);
+}
+
+void DsLib::DsGLUniform3iv(unsigned int location, int count, const int *value)
+{
+	s_glUniform3iv(location, count, value);
+}
+
+void DsLib::DsGLUniform4iv(unsigned int location, int count, const int *value)
+{
+	s_glUniform4iv(location, count, value);
 }
 
 void DsLib::DsGLActiveTexture(unsigned int texture)
