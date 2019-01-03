@@ -29,7 +29,7 @@ namespace//デプス値算出
 			//ピント付近は0にしてそこから遠いほど高くする
 
 			float beginDepth = 0.50;
-			float endDepth = 0.85;
+			float endDepth = 0.80;
 
 			vec4 depth = texture2D(depTexOri, gl_TexCoord[0].st);
 			if (depth.x < beginDepth)

@@ -24,8 +24,10 @@ namespace
 			, m_shader(shader)
 			, m_postEffectBuffer(postEffectBuffer)
 			, m_depTex(0)
-			, m_blurTex(0)
-			, m_blurFboId(0)
+			, m_blurTexTmp(0)
+			, m_blurFboIdTmp(0)
+			, m_blurTexResult(0)
+			, m_blurFboIdResult(0)
 		{
 			const int width = static_cast<int>(ren.GetWidth());
 			const int height = static_cast<int>(ren.GetHeight());
@@ -47,8 +49,8 @@ namespace
 			}
 
 			{//îÌé äEê[ìxópÉuÉâÅ[
-				glGenTextures(1, &m_blurTex);
-				glBindTexture(GL_TEXTURE_2D, m_blurTex);
+				glGenTextures(1, &m_blurTexTmp);
+				glBindTexture(GL_TEXTURE_2D, m_blurTexTmp);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
@@ -56,9 +58,23 @@ namespace
 				glTexImage2D(GL_TEXTURE_2D, 0, DS_GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, 0);
 				glBindTexture(GL_TEXTURE_2D, 0);
 
-				DsGLGenFramebuffers(1, &m_blurFboId);
-				DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_blurFboId);
-				DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, DS_GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_blurTex, 0);
+				DsGLGenFramebuffers(1, &m_blurFboIdTmp);
+				DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_blurFboIdTmp);
+				DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, DS_GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_blurTexTmp, 0);
+				DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
+
+				glGenTextures(1, &m_blurTexResult);
+				glBindTexture(GL_TEXTURE_2D, m_blurTexResult);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+				glTexImage2D(GL_TEXTURE_2D, 0, DS_GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, 0);
+				glBindTexture(GL_TEXTURE_2D, 0);
+
+				DsGLGenFramebuffers(1, &m_blurFboIdResult);
+				DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_blurFboIdResult);
+				DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, DS_GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_blurTexResult, 0);
 				DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
 			}
 		}
@@ -67,8 +83,11 @@ namespace
 		{
 			glDeleteTextures(1, &m_depTex);
 			DsGLDeleteFramebuffers(1, &m_depFboId);
-			glDeleteTextures(1, &m_blurTex);
-			DsGLDeleteFramebuffers(1, &m_blurFboId);
+			glDeleteTextures(1, &m_blurTexTmp);
+			DsGLDeleteFramebuffers(1, &m_blurFboIdTmp);
+			glDeleteTextures(1, &m_blurTexResult);
+			DsGLDeleteFramebuffers(1, &m_blurFboIdResult);
+
 		}
 
 		virtual void DepthField() override
@@ -87,17 +106,25 @@ namespace
 			{//ÉuÉâÅ[
 				const int width = static_cast<int>(m_render.GetWidth());
 				const int height = static_cast<int>(m_render.GetHeight());
-				m_shader.EnableShader(SHADER_TYPE::BLUR_HORIZON);
 
-				DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_blurFboId);
 				const DsShader::BlurParam blurParam = DsShader::GetBlurParam(29, 100.0f);
+
+				DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_blurFboIdTmp);//â°ï˚å¸Ç÷äiî[
+				DsGLActiveTexture(DS_GL_TEXTURE0);
+				m_postEffectBuffer.BindTexture();//å≥âÊëúÇéQè∆
+				m_shader.EnableShader(SHADER_TYPE::BLUR_HORIZON);
 				m_shader.SetBlurParam(1.0f / (static_cast<float>(width)), 0, blurParam);
 				_Draw();
 
+				DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_blurFboIdResult);//åãâ Çäiî[
+				DsGLActiveTexture(DS_GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, m_blurTexTmp);//â°ï˚å¸ÇéQè∆
 				m_shader.EnableShader(SHADER_TYPE::BLUR_VERTICAL);
 				m_shader.SetBlurParam(1.0f / static_cast<float>(height), 0, blurParam);
 				_Draw();
+
 				DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
+				m_postEffectBuffer.UnbindFrameBuffer();
 			}
 
 			{//îÌé äEê[ìxçáê¨
@@ -109,7 +136,7 @@ namespace
 				DsGLActiveTexture(DS_GL_TEXTURE3);
 				glBindTexture(GL_TEXTURE_2D, m_depTex);
 				DsGLActiveTexture(DS_GL_TEXTURE4);
-				glBindTexture(GL_TEXTURE_2D, m_blurTex);
+				glBindTexture(GL_TEXTURE_2D, m_blurTexResult);
 
 				m_postEffectBuffer.BindFrameBuffer();
 				_Draw();
@@ -158,8 +185,10 @@ namespace
 		DsPostEffectBuffer& m_postEffectBuffer;
 		GLuint m_depTex;
 		GLuint m_depFboId;
-		GLuint m_blurTex;
-		GLuint m_blurFboId;
+		GLuint m_blurTexTmp;
+		GLuint m_blurFboIdTmp;
+		GLuint m_blurTexResult;
+		GLuint m_blurFboIdResult;
 	};
 
 }
