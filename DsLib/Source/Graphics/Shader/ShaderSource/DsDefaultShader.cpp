@@ -129,12 +129,14 @@ namespace
 		vec3 WaveNormalMap(const vec3 baseNormal)
 		{
 			return baseNormal;
+			float scale = 3.1415 / 1.0;//ÇPïbÇ≈êiÇﬁï™
+			float offset = time * scale;
 
-			//float scale = 60.0;
-			//float offset = time * scale;
-			//float x = sin(gl_TexCoord[0].st.x*scale+offset);
-			//float y = cos(gl_TexCoord[0].st.y*scale+offset);
-			//return vec3(0, 0, x*y);
+			//gl_TexCoordÇÕ0Å`1.îgí∑Çí≤êÆ
+			float len = (800.0/10.0) * 3.1415;
+			float x = sin(gl_TexCoord[0].st.x*len + offset)*0.5 + 0.5;//0Å`ÇPÇ÷í≤êÆ
+			float y = sin(gl_TexCoord[0].st.y*len + offset)*0.5 + 0.5;
+			return vec3(x, y, x*y);
 		}
 
 		/*
@@ -149,7 +151,7 @@ namespace
 			
 			float diffuse = max(dot(flight, fnormal), 0.0);
 			//ÉAÉjÉÅÇ¡Ç€Ç≠
-			diffuse = (0.5 < diffuse) ? 1.0 : 0.9;
+			//diffuse = (0.5 < diffuse) ? 1.0 : 0.9;
 
 			vec3 fview = normalize(normalMapView);
 			vec3 halfway = normalize(flight + fview);

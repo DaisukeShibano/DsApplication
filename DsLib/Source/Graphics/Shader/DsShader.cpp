@@ -150,7 +150,7 @@ namespace
 			const GLubyte *version = glGetString(GL_VERSION);
 			const GLubyte *glslVersion = glGetString(DS_GL_SHADING_LANGUAGE_VERSION);
 			DS_LOG("\n============GL version==============");
-			DS_LOG("GL Version(string):%s", version);
+			DS_LOG("GL Version:%s", version);
 			DS_LOG("GLSL Version:%s", glslVersion);
 			DS_LOG("====================================\n");
 		}
@@ -297,11 +297,12 @@ namespace
 {
 	BlurParam ret;
 
-	DS_ASSERT(sizeof(ret.weight) / sizeof(ret.weight[0]) <= pixNum, "ブラーピクセル数がオーバーしています");
+	DS_ASSERT( pixNum <= sizeof(ret.weight) / sizeof(ret.weight[0]), "ブラーピクセル数がオーバーしています");
 
 	//式はここを参考
 	//https://wgld.org/d/webgl/w057.html
 	ret.pixNum = pixNum;
+	ret.weightSum = 0.0;
 	for (int idx = 0; idx < pixNum; ++idx) {
 		float r = 1.0f + 2.0f * fabsf( static_cast<float>(idx - 9) );
 		float d = level*100.0f;

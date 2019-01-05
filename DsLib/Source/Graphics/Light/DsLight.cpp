@@ -71,6 +71,7 @@ void DsLight::ApplyPos(float x, float y, float z, float w)
 
 void DsLight::ApplyDir(float x, float y, float z, float w)
 {
-	const GLfloat light_dir[4] = { x, y, z, w };
+	const DsVec3f dir = DsVec3f::Normalize(DsVec3f(x, y, z));
+	const GLfloat light_dir[4] = { dir.x, dir.y, dir.z, w };
 	glLightfv(s_glLightNo[m_lightNo], GL_SPOT_DIRECTION, light_dir);
 }
