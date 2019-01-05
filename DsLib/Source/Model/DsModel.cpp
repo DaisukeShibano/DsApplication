@@ -77,6 +77,13 @@ DsModel* DsModel::CreateClone() const
 	DS_ASSERT(ret->m_pMaterial, "ƒƒ‚ƒŠŠm•Û¸”s");
 	for (int mi = 0; mi < m_mn; ++mi)
 	{
+		ret->m_pMaterial[mi].ambient = m_pMaterial[mi].ambient;
+		ret->m_pMaterial[mi].diffuse = m_pMaterial[mi].diffuse;
+		ret->m_pMaterial[mi].specular = m_pMaterial[mi].specular;
+		ret->m_pMaterial[mi].shininess = m_pMaterial[mi].shininess;
+
+		ret->m_pMaterial[mi].isWaveNormal = m_pMaterial[mi].isWaveNormal;
+
 		const int tn = m_pMaterial[mi].textureNum;
 		ret->m_pMaterial[mi].textureNum = tn;
 		ret->m_pMaterial[mi].pTexture = new Material::Texture[tn];

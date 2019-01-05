@@ -116,6 +116,9 @@
     <Filter Include="Source\Model">
       <UniqueIdentifier>{a7973de5-12db-4e8c-a429-ad1d65f7b573}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Res\Param">
+      <UniqueIdentifier>{c02fd804-9f12-4d01-8702-7241772aa7b4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsPch.cpp">
@@ -300,6 +303,9 @@
     </ClCompile>
     <ClCompile Include="Source\Graphics\Render\DsDepthField.cpp">
       <Filter>Source\Graphics\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Res\Param\DsMaterialParam.cpp">
+      <Filter>Source\Res\Param</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -572,6 +578,9 @@
     </ClInclude>
     <ClInclude Include="Source\Graphics\Render\DsDepthField.h">
       <Filter>Source\Graphics\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Res\Param\DsMaterialParam.h">
+      <Filter>Source\Res\Param</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

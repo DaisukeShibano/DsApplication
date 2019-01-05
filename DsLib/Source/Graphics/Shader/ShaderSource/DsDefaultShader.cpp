@@ -84,7 +84,7 @@ namespace
 		uniform bool isUseColorTexture;// = true;//GLSL 1.10でエラー出るのでコメントアウト
 		uniform bool isUseLight;// = true;
 		uniform bool isUseNormalMap;// = true;
-		
+		uniform bool isUseWaveNormalMap;//=false;
 
 		/*!
 		* Phong反射モデルによるシェーディング
@@ -128,14 +128,18 @@ namespace
 		*/
 		vec3 WaveNormalMap(const vec3 baseNormal)
 		{
-			return baseNormal;
 			float scale = 3.1415 / 1.0;//１秒で進む分
 			float offset = time * scale;
 
+			float noiseSpeedX = sin(time*2.0)*cos(time*1.5)*3.1415;//適当
+			float noiseSpeedY = sin(time*0.5)*cos(time)*3.1415;//適当
+
 			//gl_TexCoordは0～1.波長を調整
-			float len = (800.0/10.0) * 3.1415;
-			float x = sin(gl_TexCoord[0].st.x*len + offset)*0.5 + 0.5;//0～１へ調整
-			float y = sin(gl_TexCoord[0].st.y*len + offset)*0.5 + 0.5;
+			float len = (800.0/30.0) * 3.1415;
+			float noiseLenX = sin(gl_TexCoord[0].st.y*len*2.0)*1.0;//適当
+			float noiseLenY = sin(gl_TexCoord[0].st.x*len*0.5)*1.0;//適当
+			float x = sin(gl_TexCoord[0].st.x*(len + noiseLenX) + offset + noiseSpeedX)*0.5 + 0.5;//0～１へ調整
+			float y = sin(gl_TexCoord[0].st.y*(len + noiseLenY) + offset + noiseSpeedY)*0.5 + 0.5;
 			return vec3(x, y, x*y);
 		}
 
@@ -146,7 +150,9 @@ namespace
 		{
 			vec4 color = isUseNormalMap ? texture2DProj(texNormal, gl_TexCoord[0]) : vec4(0.5, 0.5, 1.0, 1.0);
 			vec3 fnormal = vec3(color) * 2.0 - 1.0;
-			fnormal = WaveNormalMap(fnormal);
+			if (isUseWaveNormalMap) {//法線を波で揺らす
+				fnormal = WaveNormalMap(fnormal);
+			}
 			vec3 flight = normalize(normalMapLight);
 			
 			float diffuse = max(dot(flight, fnormal), 0.0);

@@ -94,6 +94,16 @@ void DsModelRender::Render() const
 		
 		for (int mi = 0; mi < mn; ++mi, ++pMtr)
 		{
+			glMaterialfv(GL_FRONT, GL_SPECULAR, pMtr->specular.v);
+			glMaterialfv(GL_FRONT, GL_AMBIENT, pMtr->ambient.v);
+			glMaterialfv(GL_FRONT, GL_DIFFUSE, pMtr->diffuse.v);
+			glMaterialf(GL_FRONT, GL_SHININESS, pMtr->shininess);
+			//材質の色は適当
+			const GLfloat col[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+			glColor3fv(col);
+
+			m_pShader->SetUseWaveNormalMap(pMtr->isWaveNormal);
+
 			const int tn = pMtr->textureNum;
 			const DsModel::Material::Texture* pTex = pMtr->pTexture;
 			for (int ti = 0; ti < tn; ++ti, ++pTex)
@@ -118,16 +128,6 @@ void DsModelRender::Render() const
 				const DsModel::Material::Texture::UV *pUV = pTex->pUV;
 				for(const DsModel::Face* pFace : pTex->refGeomFaces)
 				{
-					//材質の色は適当
-					const GLfloat col[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-					const GLfloat spec[] = { 0.0f, 0.0f, 0.0f, 1.0f };	// 鏡面反射色
-					const GLfloat ambi[] = { 0.1f, 0.1f, 0.1f, 1.0f };	// 環境光
-					glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
-					glMaterialfv(GL_FRONT, GL_AMBIENT, ambi);
-					glMaterialf(GL_FRONT, GL_SHININESS, 30);
-					glMaterialfv(GL_FRONT, GL_DIFFUSE, col);
-					glColor3fv(col);
-
 					if (!isUseVertexNormal)
 					{
 						glNormal3dv(pFace->normal.v);

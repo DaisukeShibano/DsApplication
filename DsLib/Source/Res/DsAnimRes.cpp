@@ -19,6 +19,7 @@
 #ifndef _DS_AMIM_RAGDOLL_INFO_
 #include "Animation/DsAnimCustomProperty.h"
 #endif
+#include "Res/Param/DsMaterialParam.h"
 
 using namespace DsLib;
 
@@ -152,6 +153,11 @@ namespace
 		DS_MATERIAL()
 			: textureNum(0)
 			, texture(0)
+			, ambient{}
+			, diffuse{}
+			, specular{}
+			, shininess(0)
+			, materialParamId(0)
 		{
 		}
 		~DS_MATERIAL()
@@ -161,6 +167,11 @@ namespace
 		}
 		int textureNum;
 		DS_TEXTURE* texture;
+		float ambient[3];
+		float diffuse[3];
+		float specular[3];
+		float shininess;
+		int materialParamId;
 	};
 
 	struct DS_ANIM_MODEL
@@ -548,6 +559,13 @@ namespace
 
 			for (vari_size mi = 0; mi < mn; ++mi)
 			{
+				fs.Read((ds_uint8*)(&res.dsAnimModel.pMtr[mi].ambient[0]), sizeof(res.dsAnimModel.pMtr[mi].ambient));
+				fs.Read((ds_uint8*)(&res.dsAnimModel.pMtr[mi].diffuse[0]), sizeof(res.dsAnimModel.pMtr[mi].diffuse));
+				fs.Read((ds_uint8*)(&res.dsAnimModel.pMtr[mi].specular[0]), sizeof(res.dsAnimModel.pMtr[mi].specular));
+				fs.Read((ds_uint8*)(&res.dsAnimModel.pMtr[mi].shininess), sizeof(res.dsAnimModel.pMtr[mi].shininess));
+
+				fs.Read((ds_uint8*)(&res.dsAnimModel.pMtr[mi].materialParamId), sizeof(res.dsAnimModel.pMtr[mi].materialParamId));
+
 				vari_size tn;
 				fs.Read((ds_uint8*)(&tn), sizeof(tn));
 				res.dsAnimModel.pMtr[mi].textureNum = tn;
@@ -1143,6 +1161,14 @@ DsModel* DsAnimRes::CreateAnimModel() const
 	DS_ASSERT(pAnimModel->m_pMaterial, "ÉÅÉÇÉäämï€é∏îs");
 	for (int mi = 0; mi < pAnimModel->m_mn; ++mi)
 	{
+		pAnimModel->m_pMaterial[mi].ambient = DsVec3f::ToVec3( pRes->dsAnimModel.pMtr[mi].ambient);
+		pAnimModel->m_pMaterial[mi].diffuse = DsVec3f::ToVec3(pRes->dsAnimModel.pMtr[mi].diffuse);
+		pAnimModel->m_pMaterial[mi].specular = DsVec3f::ToVec3(pRes->dsAnimModel.pMtr[mi].specular);
+		pAnimModel->m_pMaterial[mi].shininess = pRes->dsAnimModel.pMtr[mi].shininess;
+
+		DsMaterialParam mtrParam(pRes->dsAnimModel.pMtr[mi].materialParamId);
+		pAnimModel->m_pMaterial[mi].isWaveNormal = mtrParam.IsWaveNormal();
+
 		const int tn = pRes->dsAnimModel.pMtr[mi].textureNum;
 		pAnimModel->m_pMaterial[mi].textureNum = tn;
 		pAnimModel->m_pMaterial[mi].pTexture = new DsModel::Material::Texture[tn];

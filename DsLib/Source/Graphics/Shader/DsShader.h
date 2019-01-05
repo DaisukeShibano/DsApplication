@@ -41,6 +41,7 @@ namespace DsLib
 		virtual void SetBlurParam(float s, int ts, const BlurParam& bp )=NULL;
 		virtual void SetPostEffectParam(int effTex, int oriTex, int oriDepTex)=NULL;
 		virtual void SetUseNormalMap(bool isUse) = NULL;
+		virtual void SetUseWaveNormalMap(bool isUse) = NULL;
 		virtual void SetTime(float t) = NULL;
 		virtual void DepthFieldParam(int depTex, int blurTex) = NULL;
 

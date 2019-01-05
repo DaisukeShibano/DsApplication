@@ -243,6 +243,7 @@
     <ClCompile Include="Source\Res\DsHitRes.cpp" />
     <ClCompile Include="Source\Res\DsMapRes.cpp" />
     <ClCompile Include="Source\Res\DsResource.cpp" />
+    <ClCompile Include="Source\Res\Param\DsMaterialParam.cpp" />
     <ClCompile Include="Source\System\DsDbgSys.cpp" />
     <ClCompile Include="Source\System\DsFile.cpp" />
     <ClCompile Include="Source\System\DsPath.cpp" />
@@ -332,6 +333,7 @@
     <ClInclude Include="Source\Res\DsMapRes.h" />
     <ClInclude Include="Source\Res\DsResItem.h" />
     <ClInclude Include="Source\Res\DsResource.h" />
+    <ClInclude Include="Source\Res\Param\DsMaterialParam.h" />
     <ClInclude Include="Source\System\DsDbgSys.h" />
     <ClInclude Include="Source\System\DsFile.h" />
     <ClInclude Include="Source\System\DsMainLoop.h" />

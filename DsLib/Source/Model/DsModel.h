@@ -68,6 +68,11 @@ namespace DsLib
 			Material()
 				: textureNum(0)
 				, pTexture(NULL)
+				, ambient()
+				, diffuse()
+				, specular()
+				, shininess(0)
+				, isWaveNormal(false)
 			{}
 			~Material()
 			{
@@ -76,6 +81,12 @@ namespace DsLib
 			}
 			int textureNum;
 			Texture* pTexture;
+			DsVec3f ambient;
+			DsVec3f diffuse;
+			DsVec3f specular;
+			float shininess;
+			bool isWaveNormal;
+
 		};
 
 	public:

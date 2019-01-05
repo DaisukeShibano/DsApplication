@@ -101,6 +101,7 @@ namespace
 		virtual void SetBlurParam(float s, int ts, const BlurParam& bp )override;
 		virtual void SetPostEffectParam(int effTex, int oriTex, int oriDepTex)override;
 		virtual void SetUseNormalMap(bool isUse) override;
+		virtual void SetUseWaveNormalMap(bool isUse) override;
 		virtual void SetTime(float t) override;
 		virtual void DepthFieldParam(int depTex, int blurTex) override;
 
@@ -267,6 +268,12 @@ namespace
 	void DsShaderImp::SetUseNormalMap(bool isUse)
 	{
 		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "isUseNormalMap"), isUse);
+	}
+
+	//virtual
+	void DsShaderImp::SetUseWaveNormalMap(bool isUse)
+	{
+		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "isUseWaveNormalMap"), isUse);
 	}
 
 	//virtual
