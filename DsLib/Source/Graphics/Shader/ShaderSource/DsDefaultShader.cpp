@@ -128,19 +128,20 @@ namespace
 		*/
 		vec3 WaveNormalMap(const vec3 baseNormal)
 		{
-			float scale = 3.1415 / 1.0;//ÇPïbÇ≈êiÇﬁï™
+			float scale = 3.1415 * 5.0;
 			float offset = time * scale;
 
-			float noiseSpeedX = sin(time*2.0)*cos(time*1.5)*3.1415;//ìKìñ
-			float noiseSpeedY = sin(time*0.5)*cos(time)*3.1415;//ìKìñ
+			float noiseSpeedX = cos(time*1.5)*3.1415;//ìKìñ
+			float noiseSpeedY = sin(time*0.5)*3.1415;//ìKìñ
 
 			//gl_TexCoordÇÕ0Å`1.îgí∑Çí≤êÆ
-			float len = (800.0/30.0) * 3.1415;
+			float len = (800.0/20.0) * 3.1415;
 			float noiseLenX = sin(gl_TexCoord[0].st.y*len*2.0)*1.0;//ìKìñ
-			float noiseLenY = sin(gl_TexCoord[0].st.x*len*0.5)*1.0;//ìKìñ
+			float noiseLenY = sin(gl_TexCoord[0].st.x*len*0.5)*2.0;//ìKìñ
 			float x = sin(gl_TexCoord[0].st.x*(len + noiseLenX) + offset + noiseSpeedX)*0.5 + 0.5;//0Å`ÇPÇ÷í≤êÆ
 			float y = sin(gl_TexCoord[0].st.y*(len + noiseLenY) + offset + noiseSpeedY)*0.5 + 0.5;
-			return vec3(x, y, x*y);
+
+			return normalize(vec3(x, y, x*y));
 		}
 
 		/*

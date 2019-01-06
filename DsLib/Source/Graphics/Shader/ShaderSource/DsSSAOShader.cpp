@@ -37,6 +37,10 @@ namespace//高輝度抽出
 			offset[3] = 1.0 / 800.0;
 			offset[4] = 1.0 / 800.0;
 			offset[5] = 1.0 / 800.0;
+			//offset[6] = 9.0 / 800.0;
+			//offset[7] = 9.0 / 800.0;
+			//offset[8] = 9.0 / 800.0;
+
 
 
 			vec2 sampOffset[sampleNum];
@@ -47,7 +51,9 @@ namespace//高輝度抽出
 			sampOffset[3] = vec2(offset[3] * 0.707, offset[3] * 0.707);
 			sampOffset[4] = vec2(offset[4], 0.0);
 			sampOffset[5] = vec2(offset[5] * 0.707, -offset[5] * 0.707);
-
+			//sampOffset[6] = vec2(offset[6] * 0.707, offset[6] * 0.707);
+			//sampOffset[7] = vec2(offset[7], 0.0);
+			//sampOffset[8] = vec2(offset[8] * 0.707, -offset[8] * 0.707);
 
 			float baseDepth = texture2D(depTexOri, gl_TexCoord[0].st).x;
 			float distBias = 0.0;

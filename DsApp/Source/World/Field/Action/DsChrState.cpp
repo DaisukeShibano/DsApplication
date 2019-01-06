@@ -108,7 +108,10 @@ namespace
 			//いつでもキャンセル可能
 			m_actReq.SetCancelAll();
 
-			if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
+			if (m_actReq.IsAction(ACTION_TYPE::STEP)) {
+				m_nextState = CHR_STATE::STEP_F;
+			}
+			else if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
 				m_nextState = CHR_STATE::ATTACK1;
 			}
 			else if (m_actReq.IsMove()) {
@@ -146,7 +149,10 @@ namespace
 			//いつでもキャンセル可能
 			m_actReq.SetCancelAll();
 
-			if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
+			if (m_actReq.IsAction(ACTION_TYPE::STEP)) {
+				m_nextState = CHR_STATE::STEP_F;
+			}
+			else if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
 				m_nextState = CHR_STATE::ATTACK1;
 			}
 			else if (!m_actReq.IsMove()) {
@@ -345,12 +351,10 @@ namespace
 		virtual void OnActive(double dt) override
 		{
 			DsChrState::OnActive(dt);
-			m_animFlags.SetLockOnTurn(true);
 		}
 		virtual void Update(double dt) override
 		{
 			DsChrState::Update(dt);
-			m_animFlags.SetLockOnTurn(true);
 
 			m_nextState = m_myState;
 
@@ -391,12 +395,10 @@ namespace
 		virtual void OnActive(double dt) override
 		{
 			DsChrState::OnActive(dt);
-			m_animFlags.SetLockOnTurn(true);
 		}
 		virtual void Update(double dt) override
 		{
 			DsChrState::Update(dt);
-			m_animFlags.SetLockOnTurn(true);
 
 			m_nextState = m_myState;
 
@@ -436,12 +438,10 @@ namespace
 		virtual void OnActive(double dt) override
 		{
 			DsChrState::OnActive(dt);
-			m_animFlags.SetLockOnTurn(true);
 		}
 		virtual void Update(double dt) override
 		{
 			DsChrState::Update(dt);
-			m_animFlags.SetLockOnTurn(true);
 
 			m_nextState = m_myState;
 
@@ -481,12 +481,10 @@ namespace
 		virtual void OnActive(double dt) override
 		{
 			DsChrState::OnActive(dt);
-			m_animFlags.SetLockOnTurn(true);
 		}
 		virtual void Update(double dt) override
 		{
 			DsChrState::Update(dt);
-			m_animFlags.SetLockOnTurn(true);
 
 			m_nextState = m_myState;
 
@@ -510,6 +508,52 @@ namespace
 	DS_REGISTER_STATE(DsChrStateDamageR)
 
 
+	/*********************************************************
+	@brief ステップ前
+	**********************************************************/
+	class DsChrStateStepF : public DsChrState
+	{
+	public:
+		DsChrStateStepF(const INIT_ARG& arg) : DsChrState(arg)
+		{
+			if (m_pAnimClip) {
+				m_pAnimClip->SetLoop(false);
+			}
+		}
+
+	private:
+		virtual void OnActive(double dt) override
+		{
+			DsChrState::OnActive(dt);
+		}
+		virtual void Update(double dt) override
+		{
+			DsChrState::Update(dt);
+
+			m_nextState = m_myState;
+
+			if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
+				m_nextState = CHR_STATE::ATTACK2;
+			}
+			else if (m_actReq.IsAction(ACTION_TYPE::STEP)) {
+				m_nextState = CHR_STATE::STEP_F;
+			}
+			else if (m_actReq.IsAction(ACTION_TYPE::MOVE)) {
+				m_nextState = CHR_STATE::RUN;
+			}
+			else if (m_pAnimClip->IsEnd()) {
+				m_nextState = CHR_STATE::IDLE;
+			}
+
+			//ダメージ
+			bool isDmg = _GetDmgState(m_nextState, m_animFlags.GetDmgDir());
+			if (isDmg) {//同じ方向かもしれないので再度アニメ再生かける
+				m_pAnimClip->ResetAnim();
+			}
+		};
+	};
+	DS_REGISTER_STATE(DsChrStateStepF)
+
 	
 	//デフォルトクラス情報
 	static STATE_CLASS_TYPE s_registerClass[] =
@@ -524,6 +568,10 @@ namespace
 		{ typeid(DsChrStateDamageB), CHR_STATE::DAMAGE_B, "DamageB" },
 		{ typeid(DsChrStateDamageL), CHR_STATE::DAMAGE_L, "DamageL" },
 		{ typeid(DsChrStateDamageR), CHR_STATE::DAMAGE_R, "DamageR" },
+		{ typeid(DsChrStateStepF), CHR_STATE::STEP_F, "StepF" },
+		{ typeid(DsChrStateStepF), CHR_STATE::STEP_B, "StepB" },
+		{ typeid(DsChrStateStepF), CHR_STATE::STEP_L, "StepL" },
+		{ typeid(DsChrStateStepF), CHR_STATE::STEP_R, "StepR" },
 	};
 	//派生クラス登録コンテナ
 	static std::map<int, DsRegisterClass*> s_registerClassContainer;

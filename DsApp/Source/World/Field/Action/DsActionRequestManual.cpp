@@ -80,6 +80,9 @@ void DsActionRequestManual::Update(double dt)
 		SetRequest(ACTION_TYPE::MOVE);
 	}
 
+	if (m_key.IsPush(' ')) {
+		SetRequest(ACTION_TYPE::STEP);
+	}
 
 	if (m_key.IsPush('r') || m_key.IsPush('R')) {
 		SetRequest(ACTION_TYPE::CHANGE_WEP);

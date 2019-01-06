@@ -894,21 +894,26 @@ namespace EventTrackEditor {
 		DataGridView^ grid = (DataGridView^)sender;
 
 		Object^ val = grid->Rows[e->RowIndex]->Cells[e->ColumnIndex]->Value;
-		Int32 iVal = -1;
-		if (val->GetType() == Int32::typeid) {
-			iVal = (Int32)val;
+		Object^ tag = grid->Rows[e->RowIndex]->Cells[e->ColumnIndex]->Tag;
+		String^ str = (String^)val;
+		if (tag->GetType() == Int32::typeid) {
+			Int32 iVal = 0;
+			if (Int32::TryParse(str, iVal)) {
+				Int32^ src = (Int32^)tag;
+				(*src) = iVal;
+			}
+
 		}
-		else {
-			String^ str = (String^)val;
-			if (!Int32::TryParse(str, iVal)) {
-				iVal = -1;
+		else if (tag->GetType() == Decimal::typeid) {
+			Decimal dVal = 0;
+			if (Decimal::TryParse(str, dVal)) {
+				Decimal^ src = (Decimal^)tag;
+				(*src) = dVal;
 			}
 		}
-
-		//編集したパラメータをデータに反映
-		grid->Rows[e->RowIndex]->Cells[e->ColumnIndex]->Value = iVal;
-		Int32^ src = (Int32^)grid->Rows[e->RowIndex]->Cells[e->ColumnIndex]->Tag;
-		(*src) = iVal;
+		else {
+			assert("予期しない型");
+		}
 	}
 #pragma endregion
 

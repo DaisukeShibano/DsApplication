@@ -43,7 +43,10 @@ namespace
 			//‚¢‚Â‚Å‚àƒLƒƒƒ“ƒZƒ‹‰Â”\
 			m_actReq.SetCancelAll();
 
-			if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
+			if (m_actReq.IsAction(ACTION_TYPE::STEP)) {
+				m_nextState = CHR_STATE::STEP_F;
+			}
+			else if (m_actReq.IsAction(ACTION_TYPE::ATTACK)) {
 				m_nextState = CHR_STATE::ATTACK1;
 			}
 			else if (m_actReq.IsMove()) {

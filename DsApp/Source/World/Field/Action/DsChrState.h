@@ -47,6 +47,10 @@ namespace DsApp
 		DAMAGE_B,
 		DAMAGE_L,
 		DAMAGE_R,
+		STEP_F,
+		STEP_B,
+		STEP_L,
+		STEP_R,
 		NUM
 	};
 
