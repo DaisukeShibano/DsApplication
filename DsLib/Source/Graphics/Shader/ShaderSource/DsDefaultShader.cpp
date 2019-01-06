@@ -164,7 +164,7 @@ namespace
 
 			float specular = pow(max(dot(fnormal, halfway), 0.0), gl_FrontMaterial.shininess);
 
-			return baseColor*(gl_FrontLightProduct[0].diffuse * diffuse + gl_FrontLightProduct[0].ambient)
+			return baseColor*(gl_FrontLightProduct[0].diffuse * diffuse + gl_FrontLightProduct[0].ambient + gl_FrontMaterial.emission)
 				+ gl_FrontLightProduct[0].specular * specular;
 		}
 

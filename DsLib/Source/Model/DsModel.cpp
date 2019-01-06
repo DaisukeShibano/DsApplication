@@ -79,6 +79,7 @@ DsModel* DsModel::CreateClone() const
 	{
 		ret->m_pMaterial[mi].ambient = m_pMaterial[mi].ambient;
 		ret->m_pMaterial[mi].diffuse = m_pMaterial[mi].diffuse;
+		ret->m_pMaterial[mi].emissive = m_pMaterial[mi].emissive;
 		ret->m_pMaterial[mi].specular = m_pMaterial[mi].specular;
 		ret->m_pMaterial[mi].shininess = m_pMaterial[mi].shininess;
 

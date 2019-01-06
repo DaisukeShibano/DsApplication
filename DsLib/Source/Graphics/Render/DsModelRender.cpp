@@ -97,7 +97,7 @@ void DsModelRender::Render() const
 			glMaterialfv(GL_FRONT, GL_SPECULAR, pMtr->specular.v);
 			glMaterialfv(GL_FRONT, GL_AMBIENT, pMtr->ambient.v);
 			glMaterialfv(GL_FRONT, GL_DIFFUSE, pMtr->diffuse.v);
-			glMaterialf(GL_FRONT, GL_SHININESS, pMtr->shininess);
+			glMaterialfv(GL_FRONT, GL_EMISSION, pMtr->emissive.v);
 			//Ş¿‚ÌF‚Í“K“–
 			const GLfloat col[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 			glColor3fv(col);

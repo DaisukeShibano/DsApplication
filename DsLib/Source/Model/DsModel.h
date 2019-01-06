@@ -70,6 +70,7 @@ namespace DsLib
 				, pTexture(NULL)
 				, ambient()
 				, diffuse()
+				, emissive()
 				, specular()
 				, shininess(0)
 				, isWaveNormal(false)
@@ -83,6 +84,7 @@ namespace DsLib
 			Texture* pTexture;
 			DsVec3f ambient;
 			DsVec3f diffuse;
+			DsVec3f emissive;
 			DsVec3f specular;
 			float shininess;
 			bool isWaveNormal;

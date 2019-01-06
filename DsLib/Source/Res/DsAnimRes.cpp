@@ -155,6 +155,7 @@ namespace
 			, texture(0)
 			, ambient{}
 			, diffuse{}
+			, emissive{}
 			, specular{}
 			, shininess(0)
 			, materialParamId(0)
@@ -169,6 +170,7 @@ namespace
 		DS_TEXTURE* texture;
 		float ambient[3];
 		float diffuse[3];
+		float emissive[3];
 		float specular[3];
 		float shininess;
 		int materialParamId;
@@ -561,6 +563,7 @@ namespace
 			{
 				fs.Read((ds_uint8*)(&res.dsAnimModel.pMtr[mi].ambient[0]), sizeof(res.dsAnimModel.pMtr[mi].ambient));
 				fs.Read((ds_uint8*)(&res.dsAnimModel.pMtr[mi].diffuse[0]), sizeof(res.dsAnimModel.pMtr[mi].diffuse));
+				fs.Read((ds_uint8*)(&res.dsAnimModel.pMtr[mi].emissive[0]), sizeof(res.dsAnimModel.pMtr[mi].emissive));
 				fs.Read((ds_uint8*)(&res.dsAnimModel.pMtr[mi].specular[0]), sizeof(res.dsAnimModel.pMtr[mi].specular));
 				fs.Read((ds_uint8*)(&res.dsAnimModel.pMtr[mi].shininess), sizeof(res.dsAnimModel.pMtr[mi].shininess));
 
@@ -1163,6 +1166,7 @@ DsModel* DsAnimRes::CreateAnimModel() const
 	{
 		pAnimModel->m_pMaterial[mi].ambient = DsVec3f::ToVec3( pRes->dsAnimModel.pMtr[mi].ambient);
 		pAnimModel->m_pMaterial[mi].diffuse = DsVec3f::ToVec3(pRes->dsAnimModel.pMtr[mi].diffuse);
+		pAnimModel->m_pMaterial[mi].emissive = DsVec3f::ToVec3(pRes->dsAnimModel.pMtr[mi].emissive);
 		pAnimModel->m_pMaterial[mi].specular = DsVec3f::ToVec3(pRes->dsAnimModel.pMtr[mi].specular);
 		pAnimModel->m_pMaterial[mi].shininess = pRes->dsAnimModel.pMtr[mi].shininess;
 
