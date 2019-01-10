@@ -85,11 +85,6 @@ namespace
 
 	struct DS_TEXTURE
 	{
-		enum TEXTURE_TYPE
-		{
-			DIFFUSE,
-		};
-
 		struct UV
 		{
 			UV()
@@ -121,31 +116,31 @@ namespace
 
 
 		DS_TEXTURE()
-			: texPathSize(0)
-			, texPath(0)
+			: albedoTexPath(0)
+			, normalTexPath(0)
 			, uvNum(0)
 			, uv(0)
-			, textType(DIFFUSE)
 		{
 		}
 
 		~DS_TEXTURE()
 		{
-			delete[] texPath;
-			texPath = 0;
+			delete[] albedoTexPath;
+			albedoTexPath = 0;
+			delete[] normalTexPath;
+			normalTexPath = 0;
 			delete[] uv;
 			uv = 0;
 			delete[] uvFace;
 			uvFaceNum = 0;
 		}
 
-		int texPathSize;
-		char* texPath;
+		char* albedoTexPath;
+		char* normalTexPath;
 		int uvNum;
 		UV* uv;
 		int uvFaceNum;
 		UV_FACE * uvFace;
-		int textType;
 	};
 
 	struct DS_MATERIAL
@@ -576,16 +571,20 @@ namespace
 				
 				for (vari_size ti = 0; ti < tn; ++ti)
 				{
-					int nameSize;
-					fs.Read((ds_uint8*)(&nameSize), sizeof(nameSize));
-					res.dsAnimModel.pMtr[mi].texture[ti].texPathSize = nameSize;
-					res.dsAnimModel.pMtr[mi].texture[ti].texPath = new char[nameSize+1];
-					fs.Read((ds_uint8*)res.dsAnimModel.pMtr[mi].texture[ti].texPath, nameSize);
-					res.dsAnimModel.pMtr[mi].texture[ti].texPath[nameSize] = '\0'; //終端文字が入ってないので。
-
-					int textureType;
-					fs.Read((ds_uint8*)(&textureType), sizeof(textureType));
-					res.dsAnimModel.pMtr[mi].texture[ti].textType = textureType;
+					{
+						int nameSize;
+						fs.Read((ds_uint8*)(&nameSize), sizeof(nameSize));
+						res.dsAnimModel.pMtr[mi].texture[ti].albedoTexPath = new char[nameSize + 1];
+						fs.Read((ds_uint8*)res.dsAnimModel.pMtr[mi].texture[ti].albedoTexPath, nameSize);
+						res.dsAnimModel.pMtr[mi].texture[ti].albedoTexPath[nameSize] = '\0'; //終端文字が入ってないので。
+					}
+					{
+						int nameSize;
+						fs.Read((ds_uint8*)(&nameSize), sizeof(nameSize));
+						res.dsAnimModel.pMtr[mi].texture[ti].normalTexPath = new char[nameSize + 1];
+						fs.Read((ds_uint8*)res.dsAnimModel.pMtr[mi].texture[ti].normalTexPath, nameSize);
+						res.dsAnimModel.pMtr[mi].texture[ti].normalTexPath[nameSize] = '\0'; //終端文字が入ってないので。
+					}
 
 					vari_size uvNum;
 					fs.Read((ds_uint8*)(&uvNum), sizeof(uvNum));
@@ -1181,10 +1180,8 @@ DsModel* DsAnimRes::CreateAnimModel() const
 		{
 			DsModel::Material::Texture& texture = pAnimModel->m_pMaterial[mi].pTexture[ti];
 			const int uvn = pRes->dsAnimModel.pMtr[mi].texture[ti].uvNum;
-			texture.pathAlbedo = pRes->dsAnimModel.pMtr[mi].texture[ti].texPath;
-			std::wstring texPath = DsPath::ToWstring(texture.pathAlbedo);
-			std::wstring normalTex = DsPath::AddSuffix(texPath, L"_normal");
-			texture.pathNormal = DsPath::ToString(normalTex);
+			texture.pathAlbedo = pRes->dsAnimModel.pMtr[mi].texture[ti].albedoTexPath;
+			texture.pathNormal = pRes->dsAnimModel.pMtr[mi].texture[ti].normalTexPath;
 
 			texture.uvNum = uvn;
 			texture.pUV = new DsModel::Material::Texture::UV[uvn];
