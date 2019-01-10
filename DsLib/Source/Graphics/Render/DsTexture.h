@@ -55,7 +55,6 @@ namespace DsLib
 		inline const char* _DummyKey() const { return "dummy"; }
 
 	private:
-		std::vector<DsImage*> m_imgs;
 		std::map<std::string, TexMap> m_texMap;
 	};
 }

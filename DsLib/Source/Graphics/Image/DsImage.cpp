@@ -128,7 +128,7 @@ namespace
 
 }
 
-void DsImage::Load(const char* path)
+bool DsImage::Load(const char* path)
 {
 	m_path = path;
 	const size_t strLen = m_path.length();
@@ -153,4 +153,6 @@ void DsImage::Load(const char* path)
 	{
 		//テクスチャは全部作らないのでなしは許容
 	}
+
+	return isLoad;
 }

@@ -16,18 +16,17 @@ using namespace DsLib;
 using namespace std;
 
 DsTexture::DsTexture()
-	: m_imgs()
-	, m_texMap()
+	: m_texMap()
 {
 
 }
 DsTexture::~DsTexture()
 {
-	for each(DsImage* pImg in m_imgs)
-	{
-		delete pImg;
+	for (auto tex : m_texMap) {
+		glDeleteTextures(1, &tex.second.id);
+		delete tex.second.pImg;
 	}
-	m_imgs.clear();
+	m_texMap.clear();
 }
 
 void DsTexture::Load(const DsModel& model)
@@ -87,9 +86,8 @@ void DsTexture::Load(const std::string& path)
 	if (m_texMap.end() == m_texMap.find(path))
 	{
 		DsImage* pImg = new DsImage;
-		pImg->Load(path.c_str());
-		m_imgs.push_back(pImg);
-		if (pImg->GetData()) {
+		const bool isLoad = pImg->Load(path.c_str());
+		if (pImg->GetData() && isLoad) {
 			_RegisterTexture(pImg, path, pImg->GetData(), pImg->GetWidth(), pImg->GetHeight());
 		}
 		else 
@@ -104,6 +102,7 @@ void DsTexture::Load(const std::string& path)
 			//else {
 			//	m_texMap[mapKey].refCounter += 1;
 			//}
+			delete pImg;//ダミーも使わないので消す
 		}
 	}
 	else
@@ -123,6 +122,7 @@ void DsTexture::UnLoad(const std::string& path)
 		if (it->second.refCounter <= 0)
 		{
 			glDeleteTextures(1, &it->second.id);
+			delete it->second.pImg;
 			m_texMap.erase(it);
 		}
 	}
