@@ -19,9 +19,6 @@
     <Filter Include="Source\Constraint\ConstraintSolver">
       <UniqueIdentifier>{f361c600-384a-4712-98df-f3ede0ecab05}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\Doll">
-      <UniqueIdentifier>{bc0565c4-0d30-4ecb-877c-3770b5f78bbd}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\Joint">
       <UniqueIdentifier>{68463de9-36ed-4efb-af28-13baa611934c}</UniqueIdentifier>
     </Filter>
@@ -104,15 +101,6 @@
     </ClInclude>
     <ClInclude Include="Source\Constraint\ConstraintSolver\DsConstraintSolver.h">
       <Filter>Source\Constraint\ConstraintSolver</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Doll\DsDollJoint.h">
-      <Filter>Source\Doll</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Doll\DsDollJointChain.h">
-      <Filter>Source\Doll</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Doll\DsDoll.h">
-      <Filter>Source\Doll</Filter>
     </ClInclude>
     <ClInclude Include="Source\Joint\DsJoint.h">
       <Filter>Source\Joint</Filter>
@@ -274,15 +262,6 @@
     </ClCompile>
     <ClCompile Include="Source\Constraint\ConstraintSolver\DsConstraintSolver.cpp">
       <Filter>Source\Constraint\ConstraintSolver</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Doll\DsDollJoint.cpp">
-      <Filter>Source\Doll</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Doll\DsDollJointChain.cpp">
-      <Filter>Source\Doll</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Doll\DsDoll.cpp">
-      <Filter>Source\Doll</Filter>
     </ClCompile>
     <ClCompile Include="Source\Joint\DsHingeJoint.cpp">
       <Filter>Source\Joint</Filter>

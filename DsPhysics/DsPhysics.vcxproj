@@ -226,9 +226,6 @@
     <ClInclude Include="Source\Constraint\DsHinge2Constraint.h" />
     <ClInclude Include="Source\Constraint\DsHingeConstraint.h" />
     <ClInclude Include="Source\Constraint\IConstraint.h" />
-    <ClInclude Include="Source\Doll\DsDoll.h" />
-    <ClInclude Include="Source\Doll\DsDollJoint.h" />
-    <ClInclude Include="Source\Doll\DsDollJointChain.h" />
     <ClInclude Include="Source\DsFace.h" />
     <ClInclude Include="Source\DsLine.h" />
     <ClInclude Include="Source\DsMass.h" />
@@ -283,9 +280,6 @@
     <ClCompile Include="Source\Constraint\DsConstraint.cpp" />
     <ClCompile Include="Source\Constraint\DsHinge2Constraint.cpp" />
     <ClCompile Include="Source\Constraint\DsHingeConstraint .cpp" />
-    <ClCompile Include="Source\Doll\DsDoll.cpp" />
-    <ClCompile Include="Source\Doll\DsDollJoint.cpp" />
-    <ClCompile Include="Source\Doll\DsDollJointChain.cpp" />
     <ClCompile Include="Source\DsPhysicsDefine.cpp" />
     <ClCompile Include="Source\DsPhysicsManager.cpp" />
     <ClCompile Include="Source\DsPhysicsPch.cpp">
