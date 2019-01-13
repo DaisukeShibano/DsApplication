@@ -10,8 +10,8 @@ namespace
 	//パラメータでもいいかもだけど今はとりあえず決め打ち
 	static const double PARTICLE_LIFE_TIME = 0.4;//パーティクル寿命
 	static const int BASE_CREATE_NUM = 16;
-	static const double GRAVITY = -20.0;
-	static const double BASE_WIDTH = 0.17;
+	static const double GRAVITY = -8.0;
+	static const double BASE_WIDTH = 0.34;
 	static const double RAND_WIDTH_RATE = 0.55;//幅ランダム値
 	static const double START_WIDTH_RATE = 0.7;//始点幅サイズ
 	static const double BASE_LEN = 0.1;
@@ -19,8 +19,8 @@ namespace
 	static const double BASE_VEL = 10.0;
 	static const double RAND_VEL_RATE = 0.45;//速度ランダム値
 	static const double VEL_RESIST = 7.0;//速度減衰値
-	static const double RAND_Y_ANG = DegToRad(25.0);//迎角ランダム値
-	static const double RAND_Y_ANG_RATE = 0.9;
+	static const double RAND_Y_ANG = DegToRad(45.0);//迎角ランダム値
+	static const double RAND_Y_ANG_RATE = 1.4;
 
 
 	double _Rand(double val, double rate)
@@ -54,7 +54,9 @@ DsBloodParticleEmitter::DsBloodParticleEmitter()
 	, m_lifeTime(-1)
 	, m_isRequest(false)
 {
-	m_texPath = "blood.tga";
+	m_albedoTexPath = "blood.tga";
+	m_normalTexPath = "blood_normal.tga";
+	m_isUseNormalMap = true;
 	m_particle.reserve(BASE_CREATE_NUM);
 }
 

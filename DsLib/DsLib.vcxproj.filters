@@ -307,6 +307,9 @@
     <ClCompile Include="Source\Res\Param\DsMaterialParam.cpp">
       <Filter>Source\Res\Param</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Error\DsError.cpp">
+      <Filter>Source\Error</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsPch.h">

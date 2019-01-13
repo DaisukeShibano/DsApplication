@@ -22,18 +22,24 @@ namespace DsLib
 
 	public:
 		DsParticleEmitter()
-			:m_texPath()
+			: m_albedoTexPath()
+			, m_normalTexPath()
+			, m_isUseNormalMap(false)
 		{}
 
 	public:
-		std::string GetTexPath() const { return m_texPath; }
+		std::string GetAlbedoTexPath() const { return m_albedoTexPath; }
+		std::string GetNormalTexPath() const { return m_normalTexPath; }
+		bool IsUseNormalMap() const { return m_isUseNormalMap; }
 		virtual double GetAlpha(const double lifeTime)const = 0;
 
 	public:
 		virtual void EnumParticle(const EnumType& func) const = 0;
 
 	protected:
-		std::string m_texPath;
+		std::string m_albedoTexPath;
+		std::string m_normalTexPath;
+		bool m_isUseNormalMap;
 	};
 
 }

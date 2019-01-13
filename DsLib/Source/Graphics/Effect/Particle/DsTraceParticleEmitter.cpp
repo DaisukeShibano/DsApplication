@@ -27,7 +27,9 @@ DsTraceParticleEmitter::DsTraceParticleEmitter()
 	, m_isRequestEmit(false)
 	, m_isRequestEmitPre(false)
 {
-	m_texPath = "TestParticle.tga";
+	m_albedoTexPath = "TestParticle.tga";
+	//m_normalTexPath = "TestParticle_normal.tga";
+	m_isUseNormalMap = false;
 }
 
 DsTraceParticleEmitter::~DsTraceParticleEmitter()

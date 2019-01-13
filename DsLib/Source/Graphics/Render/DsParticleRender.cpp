@@ -1,6 +1,7 @@
 #include "DsPch.h"
 
 #include <gl/GL.h>
+#include "Graphics/GL/DsGLFunc.h"
 #include <gl/GLU.h>
 
 #ifndef _DS_PARTICLE_RENDER_
@@ -11,6 +12,7 @@
 #ifndef _DS_CAMERA_H_
 #include "Graphics/Camera/DsCamera.h"
 #endif
+#include "Graphics/Shader/DsShader.h"
 
 using namespace DsLib;
 
@@ -19,6 +21,7 @@ DsParticleRender::DsParticleRender(const DsCamera& cam)
 	: m_emitterList()
 	, m_texture()
 	, m_cam(cam)
+	, m_pShader(NULL)
 {
 }
 
@@ -26,15 +29,26 @@ DsParticleRender::~DsParticleRender()
 {
 }
 
+void DsParticleRender::Initialize(DsShader& shader)
+{
+	m_pShader = &shader;
+}
+
 void DsParticleRender::Register(const DsParticleEmitter& emitter)
 {
 	m_emitterList.push_back(&emitter);
-	m_texture.Load(emitter.GetTexPath());
+	m_texture.Load(emitter.GetAlbedoTexPath());
+	if (emitter.IsUseNormalMap()) {
+		m_texture.Load(emitter.GetNormalTexPath());
+	}
 }
 
 void DsParticleRender::UnRegister(const DsParticleEmitter& emitter)
 {
-	m_texture.UnLoad(emitter.GetTexPath());
+	m_texture.UnLoad(emitter.GetAlbedoTexPath());
+	if (emitter.IsUseNormalMap()) {
+		m_texture.UnLoad(emitter.GetNormalTexPath());
+	}
 	m_emitterList.remove(&emitter);
 }
 
@@ -48,20 +62,38 @@ void DsParticleRender::Render() const
 	const DsVec3d camDir = -m_cam.GetRot().GetAxisZ();
 
 	for (const DsParticleEmitter* pEmitter : m_emitterList) {
-		const GLuint texId = m_texture.GetTexId(pEmitter->GetTexPath());
-		glBindTexture(GL_TEXTURE_2D, texId);
+		DsGLActiveTexture(DS_GL_TEXTURE0);
+		const GLuint albedoTexId = m_texture.GetTexId(pEmitter->GetAlbedoTexPath());
+		glBindTexture(GL_TEXTURE_2D, albedoTexId);
+
+		//ノーマルマップのある材質だけ有効
+		bool isUseNormal = false;
+		if (pEmitter->IsUseNormalMap()) {
+			const GLuint normalTexId = m_texture.GetTexId(pEmitter->GetNormalTexPath());
+			if (m_texture.IsValidId(normalTexId)) {
+				DsGLActiveTexture(DS_GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, normalTexId);
+				DsGLActiveTexture(DS_GL_TEXTURE0);
+				isUseNormal = true;
+			}
+		}
+		m_pShader->SetUseNormalMap(isUseNormal);
+
+
 		//材質の色は適当
-		const GLfloat diff[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-		const GLfloat spec[] = { 0.0f, 0.0f, 0.0f, 1.0f };	// 鏡面反射色
-		const GLfloat ambi[] = { 0.1f, 0.1f, 0.1f, 1.0f };	// 環境光
+		const GLfloat diff[] = { 0.0f, 0.0f, 0.0f, 1.0f };
+		const GLfloat spec[] = { 1.0f, 1.0f, 1.0f, 1.0f };	// 鏡面反射色
+		const GLfloat ambi[] = { 0.0f, 0.0f, 0.0f, 1.0f };	// 環境光
+		const GLfloat emis[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 		glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
 		glMaterialfv(GL_FRONT, GL_AMBIENT, ambi);
 		glMaterialf(GL_FRONT, GL_SHININESS, 30);
 		glMaterialfv(GL_FRONT, GL_DIFFUSE, diff);
+		glMaterialfv(GL_FRONT, GL_EMISSION, emis);
 
 		//パーティクルループ
 		{
-			auto func = [this, texId, camDir, pEmitter](const DsSquareParticle& particle) {
+			auto func = [this, camDir, pEmitter](const DsSquareParticle& particle) {
 				const DsVec2f* pUv = particle.uvPos;
 				const DsVec3d* pPos = particle.pos;
 				const double alpha = pEmitter->GetAlpha(particle.lifeTime);

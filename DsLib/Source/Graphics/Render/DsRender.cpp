@@ -100,6 +100,8 @@ DsRender::DsRender(DsCamera& cam, DsSys& sys)
 	DS_ASSERT(m_pRenderTool, "ƒƒ‚ƒŠŠm•Û¸”s");
 
 	m_animRender.Initialize(*m_pShader);
+
+	m_particleRender.Initialize(*m_pShader);
 }
 
 DsRender::~DsRender()

@@ -204,6 +204,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Source\DsUtil.cpp" />
+    <ClCompile Include="Source\Error\DsError.cpp" />
     <ClCompile Include="Source\Graphics\Camera\DsCamera.cpp" />
     <ClCompile Include="Source\Graphics\Command\DsDrawCommand.cpp" />
     <ClCompile Include="Source\Graphics\Effect\Particle\DsBloodParticleEmitter.cpp" />

@@ -1,13 +1,19 @@
+#pragma once
+
 #ifndef _DS_ERROR_H_
 #define _DS_ERROR_H_
 
 namespace DsLib
 {
-//#define DS_ASSERT( flag, ex ) ( (flag) ? (flag) : assert( (flag) && (ex) ) )
+
+	void DsAssertDummyFunc();
+
+	//#define DS_ASSERT( flag, ex ) ( (flag) ? (flag) : assert( (flag) && (ex) ) )
 #ifdef _DEBUG
 #define DS_ASSERTW( flag, ex, ...)\
 	{\
 		if(!(flag)){\
+			DsAssertDummyFunc();\
 			wchar_t c[1024]; \
 			int num = swprintf_s(c, 1023, ex, __VA_ARGS__); \
 			c[num] = L'\n'; \

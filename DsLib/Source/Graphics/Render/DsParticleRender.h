@@ -9,6 +9,7 @@ namespace DsLib
 {
 	class DsParticleEmitter;
 	class DsCamera;
+	class DsShader;
 }
 
 namespace DsLib
@@ -18,6 +19,8 @@ namespace DsLib
 	public:
 		DsParticleRender(const DsCamera& cam);
 		~DsParticleRender();
+
+		void Initialize(DsShader& shader);
 
 	public:
 		void Register(const DsParticleEmitter& emitter);
@@ -30,6 +33,7 @@ namespace DsLib
 		std::list<const DsParticleEmitter*> m_emitterList;
 		DsTexture m_texture;
 		const DsCamera& m_cam;
+		DsShader* m_pShader;
 	};
 
 }
