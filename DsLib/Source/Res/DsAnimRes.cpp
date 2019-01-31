@@ -118,6 +118,7 @@ namespace
 		DS_TEXTURE()
 			: albedoTexPath(0)
 			, normalTexPath(0)
+			, specularTexPath(0)
 			, uvNum(0)
 			, uv(0)
 		{
@@ -129,6 +130,8 @@ namespace
 			albedoTexPath = 0;
 			delete[] normalTexPath;
 			normalTexPath = 0;
+			delete[] specularTexPath;
+			specularTexPath = 0;
 			delete[] uv;
 			uv = 0;
 			delete[] uvFace;
@@ -137,6 +140,7 @@ namespace
 
 		char* albedoTexPath;
 		char* normalTexPath;
+		char* specularTexPath;
 		int uvNum;
 		UV* uv;
 		int uvFaceNum;
@@ -584,6 +588,13 @@ namespace
 						res.dsAnimModel.pMtr[mi].texture[ti].normalTexPath = new char[nameSize + 1];
 						fs.Read((ds_uint8*)res.dsAnimModel.pMtr[mi].texture[ti].normalTexPath, nameSize);
 						res.dsAnimModel.pMtr[mi].texture[ti].normalTexPath[nameSize] = '\0'; //終端文字が入ってないので。
+					}
+					{
+						int nameSize;
+						fs.Read((ds_uint8*)(&nameSize), sizeof(nameSize));
+						res.dsAnimModel.pMtr[mi].texture[ti].specularTexPath = new char[nameSize + 1];
+						fs.Read((ds_uint8*)res.dsAnimModel.pMtr[mi].texture[ti].specularTexPath, nameSize);
+						res.dsAnimModel.pMtr[mi].texture[ti].specularTexPath[nameSize] = '\0'; //終端文字が入ってないので。
 					}
 
 					vari_size uvNum;
@@ -1182,6 +1193,7 @@ DsModel* DsAnimRes::CreateAnimModel() const
 			const int uvn = pRes->dsAnimModel.pMtr[mi].texture[ti].uvNum;
 			texture.pathAlbedo = pRes->dsAnimModel.pMtr[mi].texture[ti].albedoTexPath;
 			texture.pathNormal = pRes->dsAnimModel.pMtr[mi].texture[ti].normalTexPath;
+			texture.pathSpecular = pRes->dsAnimModel.pMtr[mi].texture[ti].specularTexPath;
 
 			texture.uvNum = uvn;
 			texture.pUV = new DsModel::Material::Texture::UV[uvn];

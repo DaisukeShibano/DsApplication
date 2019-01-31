@@ -102,6 +102,7 @@ namespace
 		virtual void SetPostEffectParam(int effTex, int oriTex, int oriDepTex)override;
 		virtual void SetUseNormalMap(bool isUse) override;
 		virtual void SetUseWaveNormalMap(bool isUse) override;
+		virtual void SetUseSpecularMap(bool isUse) override;
 		virtual void SetTime(float t) override;
 		virtual void DepthFieldParam(int depTex, int blurTex) override;
 
@@ -209,7 +210,8 @@ namespace
 			DsGLUseProgram(m_prog[idx]);
 			DsGLUniform1i(DsGLGetUniformLocation(m_prog[idx], "texAlbedo"), 0);//普通のテクスチャは０番に
 			DsGLUniform1i(DsGLGetUniformLocation(m_prog[idx], "texNormal"), 1);
-			DsGLUniform1i(DsGLGetUniformLocation(m_prog[idx], "depth_tex"), 7);//GLSLの"depth_tex"という変数に値をセット
+			DsGLUniform1i(DsGLGetUniformLocation(m_prog[idx], "texSpecular"), 2);
+			DsGLUniform1i(DsGLGetUniformLocation(m_prog[idx], "depth_tex"), 7);
 			DsGLUniform1i(DsGLGetUniformLocation(m_prog[idx], "depth_tex2"), 6);
 			DsGLUniform1f(DsGLGetUniformLocation(m_prog[idx], "shadow_ambient"), s_shadowCoef);//GLSLの"shadow_ambient"という変数に値をセット
 		}
@@ -274,6 +276,12 @@ namespace
 	void DsShaderImp::SetUseWaveNormalMap(bool isUse)
 	{
 		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "isUseWaveNormalMap"), isUse);
+	}
+
+	//virtual 
+	void DsShaderImp::SetUseSpecularMap(bool isUse)
+	{
+		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "isUseSpecularMap"), isUse);
 	}
 
 	//virtual

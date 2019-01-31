@@ -52,6 +52,7 @@ namespace DsLib
 					, refGeomFacesIndex()
 					, pathAlbedo()
 					, pathNormal()
+					, pathSpecular()
 				{}
 				~Texture()
 				{
@@ -64,6 +65,7 @@ namespace DsLib
 				std::vector<int> refGeomFacesIndex; //インデックス版。クローン作るときに必要
 				std::string pathAlbedo;
 				std::string pathNormal;
+				std::string pathSpecular;
 			};
 			Material()
 				: textureNum(0)

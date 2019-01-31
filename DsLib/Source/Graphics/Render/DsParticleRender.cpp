@@ -73,12 +73,24 @@ void DsParticleRender::Render() const
 			if (m_texture.IsValidId(normalTexId)) {
 				DsGLActiveTexture(DS_GL_TEXTURE1);
 				glBindTexture(GL_TEXTURE_2D, normalTexId);
-				DsGLActiveTexture(DS_GL_TEXTURE0);
 				isUseNormal = true;
 			}
 		}
 		m_pShader->SetUseNormalMap(isUseNormal);
 
+		bool isUseSpecular = false;
+		if (pEmitter->IsUseSpecularMap()) {
+			const GLuint specularTexId = m_texture.GetTexId(pEmitter->GetSpecularTexPath());
+			if (m_texture.IsValidId(specularTexId)) {
+				DsGLActiveTexture(DS_GL_TEXTURE2);
+				glBindTexture(GL_TEXTURE_2D, specularTexId);
+				isUseSpecular = true;
+			}
+		}
+		m_pShader->SetUseSpecularMap(isUseSpecular);
+
+		//–ß‚·
+		DsGLActiveTexture(DS_GL_TEXTURE0);
 
 		//Ş¿‚ÌF‚Í“K“–
 		const GLfloat diff[] = { 0.0f, 0.0f, 0.0f, 1.0f };

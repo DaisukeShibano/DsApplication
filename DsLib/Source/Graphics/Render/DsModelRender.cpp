@@ -118,11 +118,21 @@ void DsModelRender::Render() const
 					m_pShader->SetUseNormalMap(true);
 					DsGLActiveTexture(DS_GL_TEXTURE1);
 					glBindTexture(GL_TEXTURE_2D, normalTexId);
-					DsGLActiveTexture(DS_GL_TEXTURE0);
 				}
 				else {
 					m_pShader->SetUseNormalMap(false);
 				}
+
+				const GLuint specularTexId = m_texture.GetTexId(pTex->pathSpecular);
+				if (m_texture.IsValidId(specularTexId)) {
+					m_pShader->SetUseSpecularMap(true);
+					DsGLActiveTexture(DS_GL_TEXTURE2);
+					glBindTexture(GL_TEXTURE_2D, specularTexId);
+				}
+				else {
+					m_pShader->SetUseSpecularMap(false);
+				}
+				DsGLActiveTexture(DS_GL_TEXTURE0);
 
 				int uvIdx = 0;
 				const DsModel::Material::Texture::UV *pUV = pTex->pUV;

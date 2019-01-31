@@ -73,6 +73,7 @@ namespace
 		
 		uniform sampler2D texAlbedo;	//!< アルベドテクスチャ
 		uniform sampler2D texNormal;	//!< ノーマルテクスチャ
+		uniform sampler2D texSpecular;	//!< スペキュラテクスチャ
 		uniform sampler2D depth_tex;	//!< デプス値テクスチャ
 		uniform sampler2D depth_tex2;
 
@@ -85,6 +86,8 @@ namespace
 		uniform bool isUseLight;// = true;
 		uniform bool isUseNormalMap;// = true;
 		uniform bool isUseWaveNormalMap;//=false;
+		uniform bool isUseSpecularMap;// = true;
+
 
 		/*!
 		* Phong反射モデルによるシェーディング
@@ -149,8 +152,8 @@ namespace
 		*/
 		vec4 NormalMap(const vec4 baseColor)
 		{
-			vec4 color = isUseNormalMap ? texture2DProj(texNormal, gl_TexCoord[0]) : vec4(0.5, 0.5, 1.0, 1.0);
-			vec3 fnormal = vec3(color) * 2.0 - 1.0;
+			vec4 normalColor = isUseNormalMap ? texture2DProj(texNormal, gl_TexCoord[0]) : vec4(0.5, 0.5, 1.0, 1.0);
+			vec3 fnormal = vec3(normalColor) * 2.0 - 1.0;
 			if (isUseWaveNormalMap) {//法線を波で揺らす
 				fnormal = WaveNormalMap(fnormal);
 			}
@@ -163,10 +166,11 @@ namespace
 			vec3 fview = normalize(normalMapView);
 			vec3 halfway = normalize(flight + fview);
 
+			vec4 specularColor = isUseSpecularMap ? texture2DProj(texSpecular, gl_TexCoord[0]) : gl_FrontLightProduct[0].specular;
 			float specular = pow(max(dot(fnormal, halfway), 0.0), gl_FrontMaterial.shininess);
 
 			return baseColor*(gl_FrontLightProduct[0].diffuse * diffuse + gl_FrontLightProduct[0].ambient + gl_FrontMaterial.emission)
-				+ gl_FrontLightProduct[0].specular * specular;
+				+ specularColor * specular;
 		}
 
 		/*

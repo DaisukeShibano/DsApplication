@@ -41,6 +41,7 @@ void DsTexture::Load(const DsModel& model)
 		{
 			Load(pTexture[ti].pathAlbedo);
 			Load(pTexture[ti].pathNormal);
+			Load(pTexture[ti].pathSpecular);
 		}
 	}
 }
@@ -57,6 +58,7 @@ void DsTexture::UnLoad(const DsModel& model)
 		{
 			UnLoad(pTexture[ti].pathAlbedo);
 			UnLoad(pTexture[ti].pathNormal);
+			UnLoad(pTexture[ti].pathSpecular);
 		}
 	}
 }

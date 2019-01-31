@@ -93,6 +93,7 @@ DsModel* DsModel::CreateClone() const
 		{
 			ret->m_pMaterial[mi].pTexture[ti].pathAlbedo = m_pMaterial[mi].pTexture[ti].pathAlbedo;
 			ret->m_pMaterial[mi].pTexture[ti].pathNormal = m_pMaterial[mi].pTexture[ti].pathNormal;
+			ret->m_pMaterial[mi].pTexture[ti].pathSpecular = m_pMaterial[mi].pTexture[ti].pathSpecular;
 
 			const int uvn = m_pMaterial[mi].pTexture[ti].uvNum;
 			ret->m_pMaterial[mi].pTexture[ti].uvNum = uvn;

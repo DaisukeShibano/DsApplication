@@ -36,8 +36,10 @@ namespace DsLib
 	public:
 		enum
 		{
-			INIT_WINDOW_W = 1280,
-			INIT_WINDOW_H = 720,
+			//INIT_WINDOW_W = 1280,
+			//INIT_WINDOW_H = 720,
+			INIT_WINDOW_W = 1920,
+			INIT_WINDOW_H = 1080,
 			DEFAULT_FPS = 60,
 		};
 

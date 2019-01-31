@@ -24,13 +24,17 @@ namespace DsLib
 		DsParticleEmitter()
 			: m_albedoTexPath()
 			, m_normalTexPath()
+			, m_specularTexPath()
 			, m_isUseNormalMap(false)
+			, m_isUseSpecularMap(false)
 		{}
 
 	public:
 		std::string GetAlbedoTexPath() const { return m_albedoTexPath; }
 		std::string GetNormalTexPath() const { return m_normalTexPath; }
+		std::string GetSpecularTexPath() const { return m_specularTexPath; }
 		bool IsUseNormalMap() const { return m_isUseNormalMap; }
+		bool IsUseSpecularMap() const { return m_isUseSpecularMap; }
 		virtual double GetAlpha(const double lifeTime)const = 0;
 
 	public:
@@ -39,7 +43,9 @@ namespace DsLib
 	protected:
 		std::string m_albedoTexPath;
 		std::string m_normalTexPath;
+		std::string m_specularTexPath;
 		bool m_isUseNormalMap;
+		bool m_isUseSpecularMap;
 	};
 
 }
