@@ -148,9 +148,9 @@ namespace
 		}
 
 		/*
-		法線マップ
+		法線やスペキュラマップを適用
 		*/
-		vec4 NormalMap(const vec4 baseColor)
+		vec4 ApplyMap(const vec4 baseColor)
 		{
 			vec4 normalColor = isUseNormalMap ? texture2DProj(texNormal, gl_TexCoord[0]) : vec4(0.5, 0.5, 1.0, 1.0);
 			vec3 fnormal = vec3(normalColor) * 2.0 - 1.0;
@@ -160,8 +160,6 @@ namespace
 			vec3 flight = normalize(normalMapLight);
 			
 			float diffuse = max(dot(flight, fnormal), 0.0);
-			//アニメっぽく
-			//diffuse = (0.5 < diffuse) ? 1.0 : 0.9;
 
 			vec3 fview = normalize(normalMapView);
 			vec3 halfway = normalize(flight + fview);
@@ -235,7 +233,7 @@ namespace
 		{
 			vec4 texColor = texture2D(texAlbedo, gl_TexCoord[0].st); //影じゃない普通のテクスチャ
 			//vec4 light_col = PhongShading(texColor);	// 表面反射色
-			vec4 light_col = NormalMap(texColor);	
+			vec4 light_col = ApplyMap(texColor);
 
 			// 光源座標における物体の位置
 			vec4 shadow_coord = vShadowCoord / vShadowCoord.w;//これが描画しようとしている座標			
