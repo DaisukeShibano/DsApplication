@@ -43,7 +43,7 @@ namespace DsLib
 	public:
 		DsHitRes();
 		DsHitRes(const Shape& shape);
-		~DsHitRes();
+		virtual ~DsHitRes();
 
 	public:
 		virtual bool Initialize(const char* path, DsResource& resource) override;
@@ -53,6 +53,8 @@ namespace DsLib
 	private:
 		DsAnimRes* m_pAnimRes;
 		Shape m_shape;
+		std::string m_path;
+		DsResource* m_pResource;
 	};
 
 	

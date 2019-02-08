@@ -19,7 +19,7 @@ namespace DsApp
 		DsFieldInitInfo()
 			: pos()
 			, ang()
-			, name(NULL)
+			, name()
 			, hitName()
 			, animName()
 			, physicsType()
@@ -29,7 +29,7 @@ namespace DsApp
 		{}
 		DsVec3d pos;
 		DsVec3d ang;
-		const char* name;
+		std::string name;
 		std::string hitName;
 		std::string animName;
 		DS_MAP_OBJ_TYPE physicsType;

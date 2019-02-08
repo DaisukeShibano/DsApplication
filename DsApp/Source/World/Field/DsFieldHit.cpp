@@ -40,7 +40,7 @@ void DsFieldHit::Initialize(const DsFieldInitInfo& initInfo)
 	m_hitName = initInfo.hitName;
 	const DsHitRes* pHitRes = m_sys.RefResource().RegisterItem<DsHitRes>(m_hitName.c_str());
 	if (pHitRes) {
-		m_actorId = DsPhysicsCreator::Create(m_world, *pHitRes, initInfo.physicsType, initInfo.pos, initInfo.ang, initInfo.name);
+		m_actorId = DsPhysicsCreator::Create(m_world, *pHitRes, initInfo.physicsType, initInfo.pos, initInfo.ang, initInfo.name.c_str());
 	}
 	else {
 		DS_LOG("オブジェ初期化情報が無かったのでオブジェは作られませんでした %s", m_name.c_str());

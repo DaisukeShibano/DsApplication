@@ -95,6 +95,8 @@ void DsFieldObjectCreator::Create(const char* resPath, DsPhysicsWorld& world, Ds
 			break;
 		}
 	}
+
+	m_sys.RefResource().UnregisterItem<DsMapRes>(pMapRes);
 }
 
 void DsFieldObjectCreator::Update(double dt)

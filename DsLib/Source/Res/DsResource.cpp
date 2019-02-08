@@ -39,6 +39,11 @@ DsResource::~DsResource()
 
 void DsResource::Finalize()
 {
+	if (!m_resItems.empty())
+	{
+		DS_ASSERT(0, "ƒŠƒ\[ƒX‚Ì“o˜^‰ğœ–Y‚ê‚ª‚ ‚è‚Ü‚·");
+	}
+
 	for (auto pRes : m_resItems) {
 		delete pRes.second;
 	}

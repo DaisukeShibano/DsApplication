@@ -113,26 +113,33 @@ DsHitRes::DsHitRes(const Shape& shape)
 	: DsResItem()
 	, m_pAnimRes(NULL)
 	, m_shape(shape)
+	, m_path()
+	, m_pResource(NULL)
 {
 
 }
 
 DsHitRes::~DsHitRes()
 {
+	if (m_pResource) {
+		m_pAnimRes = m_pResource->UnregisterItem<DsAnimRes>(m_path);
+	}
+	m_pResource = NULL;
 }
 
 //virtual
 bool DsHitRes::Initialize(const char* path, DsResource& resource)
 {
 	bool ret = false;
-	string tmpStr = path;
-	if (tmpStr.find(".dmdl") != string::npos)
+	m_path = path;
+	m_pResource = &resource;
+	if (m_path.find(".dmdl") != string::npos)
 	{
 		//アニメモデルからヒット作成
 		m_pAnimRes = resource.RegisterItem<DsAnimRes>(path);
 		ret = true;
 	}
-	else if (tmpStr.find(".txt") != string::npos)
+	else if (m_path.find(".txt") != string::npos)
 	{
 		m_shape = _LoadRes(path);
 		m_pAnimRes = NULL;

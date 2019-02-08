@@ -51,6 +51,7 @@ namespace DsLib
 			const KEY key(name, typeid(CLASS));
 			const auto find = m_resItems.find(key);
 			if (find != m_resItems.end()){
+				find->second->Ref();
 				return dynamic_cast<CLASS*>(find->second);
 			}
 			else{
@@ -74,6 +75,7 @@ namespace DsLib
 			const KEY key(name, typeid(CLASS));
 			const auto it = m_resItems.find(key);
 			if (it != m_resItems.end()) {
+				//CLASS* pItem = dynamic_cast<CLASS*>(it->second);
 				DsResItem* pItem = it->second;
 				pItem->Unref();
 				if (pItem->GetCount() <= 0) {
