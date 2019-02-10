@@ -44,6 +44,7 @@ void DsResource::Finalize()
 		DS_ASSERT(0, "ƒŠƒ\[ƒX‚Ì“o˜^‰ğœ–Y‚ê‚ª‚ ‚è‚Ü‚·");
 	}
 
+	//ˆê‰‰ğ•ú‚µ‚Ä‚¨‚­
 	for (auto pRes : m_resItems) {
 		delete pRes.second;
 	}

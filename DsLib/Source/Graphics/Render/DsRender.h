@@ -54,7 +54,7 @@ namespace DsLib
 		const DsLight& RefLight() const { return m_light; }
 		double GetWidth() const;
 		double GetHeight() const;
-		DsModelRender& RefAnimRender() { return m_animRender; }
+		DsModelRender& RefModelRender() { return m_modelRender; }
 		DsParticleRender& RefParticleRender() { return m_particleRender; }
 
 	public:
@@ -86,7 +86,7 @@ namespace DsLib
 		DsSys& m_sys;
 
 	private:
-		DsModelRender m_animRender;
+		DsModelRender m_modelRender;
 		DsParticleRender m_particleRender;
 
 	private:

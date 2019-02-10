@@ -760,18 +760,18 @@ namespace
 }
 
 //static
-DsDrawCommand& DsDrawCommand::Create(DsModelRender& animRender, DsRender& render)
+DsDrawCommand& DsDrawCommand::Create(DsModelRender& modelRender, DsRender& render)
 {
-	DsDrawCommand* ret = new DsDrawCommand(animRender, render);
+	DsDrawCommand* ret = new DsDrawCommand(modelRender, render);
 	DS_ASSERT(ret, "ÉÅÉÇÉäämï€é∏îs");
 	return *ret;
 }
 
-DsDrawCommand::DsDrawCommand(DsModelRender& animRender, DsRender& render)
+DsDrawCommand::DsDrawCommand(DsModelRender& modelRender, DsRender& render)
 : m_coms()
 , m_pBuffer(NULL)
 , m_useMemory(0)
-, m_animRender(animRender)
+, m_modelRender(modelRender)
 , m_render(render)
 , m_dummyTexId(0)
 , m_texIdMap()

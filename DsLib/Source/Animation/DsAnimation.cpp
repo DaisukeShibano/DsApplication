@@ -109,7 +109,7 @@ DsAnimation::DsAnimation(const char* pResName, DsDrawCommand& com, DsResource& r
 DsAnimation::~DsAnimation()
 {
 	m_pAnimRes = m_resource.UnregisterItem<DsAnimRes>(m_pAnimRes);
-	m_com.RefAnimRender().UnRegister(GetModel());
+	m_com.RefModelRender().UnRegister(GetModel());
 	delete m_pSkeleton; m_pSkeleton = NULL;
 	delete m_pKeyframeAnim; m_pKeyframeAnim = NULL;
 	delete m_pAnimModel; m_pAnimModel = NULL;
@@ -133,7 +133,7 @@ void DsAnimation::RegisterDraw()
 			pModel->CreateVertexNormal();//頂点法線計算のための配列確保
 			pModel->UpdateNormal();
 		}
-		m_com.RefAnimRender().Register(pModel);
+		m_com.RefModelRender().Register(pModel);
 	}
 }
 

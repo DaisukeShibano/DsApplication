@@ -50,7 +50,7 @@ DsRender::DsRender(DsCamera& cam, DsSys& sys)
 ,m_pDrawCom(NULL)
 ,m_light(DsLightMan::GetIns().GetSunLight())
 ,m_sys(sys)
-,m_animRender()
+,m_modelRender()
 ,m_particleRender(cam)
 ,m_renderImages()
 {
@@ -58,7 +58,7 @@ DsRender::DsRender(DsCamera& cam, DsSys& sys)
 		DS_ASSERT(false, "GLŠÖ”‚Ì‰Šú‰»‚ÉŽ¸”s‚µ‚Ü‚µ‚½BGL‚Ìƒo[ƒWƒ‡ƒ“‚ª2.0–¢–ž‚Å‚ ‚é‰Â”\«‚ª‚ ‚è‚Ü‚·");
 	}
 	
-	m_pDrawCom = &DsDrawCommand::Create(m_animRender, *this);
+	m_pDrawCom = &DsDrawCommand::Create(m_modelRender, *this);
 	
 	glClearDepth(1.0f);
 	glEnable(GL_DEPTH_TEST);
@@ -99,7 +99,7 @@ DsRender::DsRender(DsCamera& cam, DsSys& sys)
 	m_pRenderTool = new DsRenderTool(*m_pDrawCom, cam);
 	DS_ASSERT(m_pRenderTool, "ƒƒ‚ƒŠŠm•ÛŽ¸”s");
 
-	m_animRender.Initialize(*m_pShader);
+	m_modelRender.Initialize(*m_pShader);
 
 	m_particleRender.Initialize(*m_pShader);
 }
@@ -118,7 +118,7 @@ DsRender::~DsRender()
 //d‚É‰e‚Ì‘ÎÛ‚Ì•`‰æ
 void DsRender::RendPolygon() const
 {
-	m_animRender.RenderPolygon();
+	m_modelRender.RenderPolygon();
 	m_pDrawCom->Exe();
 }
 
@@ -134,7 +134,7 @@ void DsRender::Render( const double dt )
 		camLook.x, camLook.y, camLook.z,
 		camUp.x, camUp.y, camUp.z);
 
-	m_animRender.UpdateTime(dt);
+	m_modelRender.UpdateTime(dt);
 
 	//‰e•`‰æ
 	m_pShadow->DrawShadow();
@@ -225,11 +225,11 @@ void DsRender::_RenderModel() const
 	//DsDbgSys::GetIns().RefDrawCom().DrawSphere(m_light.GetPos(), 0.1f);
 	m_pShader->SetUseLight(true);
 	m_pShader->SetUseTexture(true);
-	m_animRender.Render();
+	m_modelRender.Render();
 	m_particleRender.Render();
 
 	m_pShader->SetUseTexture(false);
-	m_animRender.RenderNonMaterial();
+	m_modelRender.RenderNonMaterial();
 
 	m_pShader->SetUseLight(false);
 	m_pDrawCom->Exe();
