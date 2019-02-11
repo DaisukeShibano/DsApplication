@@ -30,7 +30,21 @@ namespace
 	{
 	public:
 		_TrimeshCapsuleCollider(const DsCollisionGeometry* s)
-			:m_pCapsule(s)
+			: m_pCapsule(s)
+			, m_pV(NULL)
+			, m_vN(DsVec3d::Zero())
+			, m_vE0(DsVec3d::Zero())
+			, m_vE1(DsVec3d::Zero())
+			, m_vE2(DsVec3d::Zero())
+			, m_vCapsuleAxis(DsVec3d::Zero())
+			, m_vV0(DsVec3d::Zero())
+			, m_vV1(DsVec3d::Zero())
+			, m_vV2(DsVec3d::Zero())
+			, m_fBestDepth(0.0)
+			, m_fBestCenter(0.0)
+			, m_fBestrt(0.0)
+			, m_iBestAxis(0)
+			, m_vNormal(DsVec3d::Zero())
 		{
 
 		}
@@ -64,7 +78,6 @@ namespace
 				return;
 			}
 
-			m_iBestAxis = 0;
 			m_fBestDepth = -DBL_MAX;
 			m_fBestCenter = 0;
 			m_fBestrt = 0;
@@ -518,7 +531,7 @@ namespace
 		double m_fBestDepth;//Õ“ËŒ‹‰Ê
 		double m_fBestCenter;//Õ“ËŒ‹‰Ê
 		double m_fBestrt;//Õ“ËŒ‹‰Ê
-		double m_iBestAxis;//Õ“ËŒ‹‰Ê
+		int m_iBestAxis;//Õ“ËŒ‹‰Ê
 		DsVec3d m_vNormal;//Õ“ËŒ‹‰Ê
 
 	};
@@ -528,7 +541,9 @@ namespace
 DsCollisionResult& DsCollisionCapsuleMesh::Collide()
 {
 	m_info.Clear();
-	if (_ColideAABB()){
+
+	if (_ColideAABB())
+	{
 		const DsActorId& o1 = m_pCapsule->RefOwnerId();
 		const DsActorId& o2 = m_pMesh->RefOwnerId();
 
@@ -553,7 +568,6 @@ DsCollisionResult& DsCollisionCapsuleMesh::Collide()
 			colider.Initialize(v, pFace->normal);
 			colider.Colide(m_info, o1, o2);
 		}
-
 	}
 
 	return m_info;

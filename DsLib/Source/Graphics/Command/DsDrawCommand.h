@@ -68,6 +68,7 @@ namespace DsLib
 		DsDrawCommand& SetColor(const DsVec3d& color){ return SetColor(ToVec3f(color)); }
 		DsDrawCommand& SetColor(float r, float g, float b){ return SetColor(DsVec3d(r, g, b)); }
 		DsDrawCommand& SetColor(double r, double g, double b){ return SetColor(ToVec3f(DsVec3d(r,g,b))); }
+		DsDrawCommand& SetColor(int r, int g, int b) { return SetColor(DsVec3d(r, g, b)); }
 		DsDrawCommand& DrawText(const DsVec3d& pos, const wchar_t* pText, ...);
 		DsDrawCommand& DrawTextScreen(const DsVec2d& pos, const wchar_t* pText, ...);//ç¿ïWÇÕè„â∫Ç≈-0.5,0.5ÇÃîÕàÕ
 

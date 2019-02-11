@@ -118,8 +118,8 @@ void DsRigidBody::_Update( const DsVec3d& deltaPos, const DsMat33d& deltaRot )
 		//法線更新
 		for (int fn = 0; fn < gi.fn; ++fn)
 		{
-			const DsVec3d rotN = deltaRot * gi.pFace[fn].normal;//なんフレかに一回求め直したほうがいいかも。
-			gi.pFace[fn].normal = DsVec3d::Normalize(rotN);//正規化は毎フレやらなくても良い気がする
+			gi.pFace[fn].normal = pi.rotation * gi.pFace[fn].normalOriginal;
+			gi.pFace[fn].normal = DsVec3d::Normalize(gi.pFace[fn].normal);//正規化は毎フレやらなくても良い気がする
 		}
 
 		//位置更新

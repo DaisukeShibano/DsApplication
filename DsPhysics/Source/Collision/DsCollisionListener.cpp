@@ -153,8 +153,8 @@ void DsCollisionListener::Collide( DsCollisionGroup& group )
 			//[‚³—Dæ‚ÅƒcƒŠ[‚ğ’H‚é
 			if (pNode->child && (!isBack)){
 				pNode = pNode->child;
-			}else if(pNode->brother){
-				pNode = pNode->brother;
+			}else if(pNode->right){
+				pNode = pNode->right;
 				isBack = false;
 			}else {
 				pNode = pNode->parent;

@@ -167,8 +167,10 @@ namespace
 			vec4 specularColor = isUseSpecularMap ? texture2DProj(texSpecular, gl_TexCoord[0]) : gl_FrontLightProduct[0].specular;
 			float specular = pow(max(dot(fnormal, halfway), 0.0), gl_FrontMaterial.shininess);
 
-			return baseColor*(gl_FrontLightProduct[0].diffuse * diffuse + gl_FrontLightProduct[0].ambient + gl_FrontMaterial.emission)
+			vec4 ret = baseColor*(gl_FrontLightProduct[0].diffuse * diffuse + gl_FrontLightProduct[0].ambient + gl_FrontMaterial.emission)
 				+ specularColor * specular;
+
+			return (isUseLight) ? (ret) : (baseColor);
 		}
 
 		/*
@@ -231,7 +233,7 @@ namespace
 
 		void main(void)
 		{
-			vec4 texColor = texture2D(texAlbedo, gl_TexCoord[0].st); //影じゃない普通のテクスチャ
+			vec4 texColor = (isUseColorTexture) ? (texture2D(texAlbedo, gl_TexCoord[0].st)) : (gl_Color); //影じゃない普通のテクスチャ
 			//vec4 light_col = PhongShading(texColor);	// 表面反射色
 			vec4 light_col = ApplyMap(texColor);
 

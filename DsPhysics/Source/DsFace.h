@@ -13,6 +13,7 @@ namespace DsPhysics
 		int index[4];
 		int vn;
 		DsVec3d normal;
+		DsVec3d normalOriginal;
 
 		DsVec3d CalcCenterPos(const DsVec3d* pV ) const
 		{

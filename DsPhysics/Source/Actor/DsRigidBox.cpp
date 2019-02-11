@@ -66,7 +66,7 @@ void DsRigidBox::Create(const DsVec3d* pv, const double mass )
 		for(int fn=0; FACE_NUM > fn; ++fn)
 		{
 			const DsVec3d normal = DsVec3d::Cross( pv[gi.pFace[fn].index[1]] - pv[gi.pFace[fn].index[0]], pv[gi.pFace[fn].index[3]] - pv[gi.pFace[fn].index[0]] );
-			gi.pFace[fn].normal = DsVec3d::Normalize(normal);
+			gi.pFace[fn].normalOriginal = DsVec3d::Normalize(normal);
 		}
 
 		gi.pLine[0].index[0] = 0;	gi.pLine[0].index[1] = 1;	//è„ñ 

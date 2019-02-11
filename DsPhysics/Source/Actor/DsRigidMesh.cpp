@@ -59,7 +59,7 @@ void DsRigidMesh::Create(const DsModel& animModel)
 			//法線を求める。animModelのを使う場合は頂点法線なので注意
 			const int* tmpIdx = animModel.GetFace()[i].pIndex;
 			const DsVec4d* tmpV = animModel.GetVertex();
-			m_geomInfo.pFace[i].normal = DsVec3d::CalcNormal(tmpV[tmpIdx[0]], tmpV[tmpIdx[1]], tmpV[tmpIdx[2]]);
+			m_geomInfo.pFace[i].normalOriginal = DsVec3d::CalcNormal(tmpV[tmpIdx[0]], tmpV[tmpIdx[1]], tmpV[tmpIdx[2]]);
 
 		}
 		else if ( 4 <= vn)
@@ -75,7 +75,7 @@ void DsRigidMesh::Create(const DsModel& animModel)
 			//法線を求める。animModelのを使う場合は頂点法線なので注意
 			const int* tmpIdx = animModel.GetFace()[i].pIndex;
 			const DsVec4d* tmpV = animModel.GetVertex();
-			m_geomInfo.pFace[i].normal = DsVec3d::CalcNormal(tmpV[tmpIdx[0]], tmpV[tmpIdx[1]], tmpV[tmpIdx[2]]);
+			m_geomInfo.pFace[i].normalOriginal = DsVec3d::CalcNormal(tmpV[tmpIdx[0]], tmpV[tmpIdx[1]], tmpV[tmpIdx[2]]);
 			
 
 			//3つめの頂点以降から面を分割。隙間なく分割するには０番目を最後にする。3番目、4番目、０番目、のように分割させる
@@ -95,7 +95,7 @@ void DsRigidMesh::Create(const DsModel& animModel)
 					addFace.index[vi] = animModel.GetFace()[i].pIndex[curIndex+vi];
 				}
 				addFace.index[addFace.vn - 1] = animModel.GetFace()[i].pIndex[0];
-				addFace.normal = DsVec3d::CalcNormal(m_geomInfo.pVertex[addFace.index[0]], m_geomInfo.pVertex[addFace.index[1]], m_geomInfo.pVertex[addFace.index[2]]);
+				addFace.normalOriginal = DsVec3d::CalcNormal(m_geomInfo.pVertex[addFace.index[0]], m_geomInfo.pVertex[addFace.index[1]], m_geomInfo.pVertex[addFace.index[2]]);
 				addFaces.push_back(addFace);
 
 				curIndex += addFaceVn;
@@ -232,6 +232,17 @@ void DsRigidMesh::Draw(DsDrawCommand& com)
 	com.SetColor(m_dbgColor);
 	for (int fIdx = 0; faceNum > fIdx; ++fIdx)
 	{
+		//if (GetNameString() == "aliceMap043") 
+		{
+			if (fIdx == 82) {
+				com.SetColor(0, 0, 0);
+				continue;
+			}
+			else {
+				com.SetColor(1, 1, 1);
+			}
+		}
+
 		const DsQuad& face = m_geomInfo.pFace[fIdx];
 		if (face.vn == 3)
 		{
