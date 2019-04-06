@@ -48,7 +48,7 @@ bool DsDamageComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 				std::vector<DsCollisionResult> results;
 				bool isHit = arg.physWorld.SphereCast(start.GetPos(), end.GetPos(), radius, filter, &arg.owner, results);
 
-				//‚Q‰ñ–ÚˆÈ~‚Í‘OƒtƒŒ‚Æ‚Ì•âŠ®”»’è
+				//‚Q‰ñ–ÚˆÈ~‚Í‘OƒtƒŒ‚Æ‚Ì•âŠ®”»’è(ƒ_ƒ[ƒW‚·‚è”²‚¯–h~)
 				if (!isHit) {
 					if (m_isCreateDamage) {
 						isHit = arg.physWorld.SphereCast(m_preEndPos, end.GetPos(), radius, filter, &arg.owner, results);

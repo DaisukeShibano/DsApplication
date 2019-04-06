@@ -493,8 +493,6 @@ namespace
 
 	OutputRes* _LoadAnim(const char* path)
 	{
-		//DsAnimEventTrackRes ‚Ì‚æ‚¤‚Éƒƒ‚ƒŠŠm•Û‚Íˆê‰ñ‚ÅÏ‚Ü‚¹‚½‚¢‚¯‚Ç–Ê“|‚È‚Ì‚Å‚±‚Ì‚Ü‚ÜB
-
 		OutputRes& res= *(new OutputRes());
 
 		DsFile fs(path, std::ios::out | std::ios::binary);
