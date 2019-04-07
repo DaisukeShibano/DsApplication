@@ -19,6 +19,7 @@ namespace DsApp
 	class DsComponent
 	{
 	public:
+		virtual ~DsComponent() {};
 		//!<@retval true:Œp‘± false:”jŠü
 		virtual bool Update(const COMPONENT_UPDATE_ARG& arg) = 0;
 

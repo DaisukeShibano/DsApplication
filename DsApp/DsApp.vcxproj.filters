@@ -31,9 +31,6 @@
     <Filter Include="Source\World\Field">
       <UniqueIdentifier>{e3a2205a-f979-4fab-a003-f9e15efcfdaa}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\World\Field\Creator">
-      <UniqueIdentifier>{97cb237c-b61c-4373-8d5a-44e1d81eb2a4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source\World\Field\Controller">
       <UniqueIdentifier>{e57b3ea2-9d3c-472c-b08e-8fd31eb26d75}</UniqueIdentifier>
     </Filter>
@@ -84,6 +81,9 @@
     </Filter>
     <Filter Include="Source\World\Field\HitStop">
       <UniqueIdentifier>{ae1dc0fa-36d7-4c3e-a391-9a1070d757aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\World\Field\Creator">
+      <UniqueIdentifier>{97cb237c-b61c-4373-8d5a-44e1d81eb2a4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

@@ -1,8 +1,6 @@
 #pragma once
 
-#ifndef _DS_COMPONENT_
 #include "World/Component/DsComponent.h"
-#endif
 
 namespace DsApp
 {

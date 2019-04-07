@@ -7,7 +7,8 @@ using namespace DsApp;
 
 
 DsHitEffectComponent::DsHitEffectComponent()
-	: m_isRequest(false)
+	: DsComponent()
+	, m_isRequest(false)
 	, m_effectId(-1)
 	, m_hitPos(DsVec3d::Zero())
 	, m_hitDir(DsVec3d::Zero())

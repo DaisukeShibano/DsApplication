@@ -133,121 +133,6 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 
 void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 {
-	//DsPhysicsWorld* pWorld = DsPhysicsManager::GetDefaultWorld();
-	//if (pWorld) {
-	//	int color = 0;
-	//	for (DsActor* actor : pWorld->GetActors())
-	//	{
-	//		if( (actor->GetType() == DsActor::RIGID_MESH) ||
-	//			(actor->GetType() == DsActor::RIGID_CAPSULE) )
-	//		{
-	//			if (actor->GetNameString() == "aliceMap043") {
-	//
-	//				const double rC = (actor->IsRest()) ? (0.5) : (1.0);
-	//				if (color == 0) {
-	//					actor->SetColor(DsVec4d(1.0, 0.6, 0.2, 1)*rC);
-	//				}
-	//				else if (color == 1) {
-	//					actor->SetColor(DsVec4d(0.2, 1.0, 0.6, 1)*rC);
-	//				}
-	//				else {
-	//					actor->SetColor(DsVec4d(0.4, 0.6, 1.0, 1)*rC);
-	//				}
-	//				actor->SetLineColor(DsVec4d(0, 0, 0, 1));
-	//				actor->Draw(args.drawCom);
-	//			}
-	//		}
-	//		++color;
-	//		color %= 3;
-	//	}
-	//}
-
-	//DsPhysicsWorld* pWorld = DsPhysicsManager::GetDefaultWorld();
-	//if (pWorld)
-	//{
-	//	pWorld->Update(args.dt);
-	//	int color = 0;
-	//	for(DsActor* actor : pWorld->GetActors())
-	//	{
-	//		std::string tmp = actor->GetName();
-	//		//if( (tmp != "robo_0") && (tmp!="ragdoll") )
-	//		if ((tmp == "” ‚P") || (tmp == "” ‚Q") || (tmp == "_ChrProxy"))
-	//		//if (actor->GetType() == DsActor::RIGID_CAPSULE)
-	//		{
-	//			const double rC = (actor->IsRest()) ? (0.5) : (1.0);
-	//			if (color == 0) {
-	//				actor->SetColor(DsVec4d(1.0, 0.6, 0.2, 1)*rC);
-	//			}
-	//			else if (color == 1) {
-	//				actor->SetColor(DsVec4d(0.2, 1.0, 0.6, 1)*rC);
-	//			}
-	//			else {
-	//				actor->SetColor(DsVec4d(0.4, 0.6, 1.0, 1)*rC);
-	//			}
-	//			actor->SetLineColor(DsVec4d(0, 0, 0, 1));
-	//			actor->Draw(args.drawCom);
-	//		}
-	//		++color;
-	//		color %= 3;
-	//	}
-	//	m_joint->Update(args.dt);
-	//	m_joint->DbgDraw(args.drawCom);
-	//
-	//	m_joint2->Update(args.dt);
-	//	m_joint2->DbgDraw(args.drawCom);
-	//
-	//}
-	//
-	//m_pCreator->Update(args.dt);
-	//
-	//for(DsFieldHit* obj : m_pCreator->RefHits())
-	//{
-	//	obj->Update(args.dt);
-	//}
-	//for(DsFieldChr* obj : m_pCreator->RefChrs())
-	//{
-	//	obj->Update(args.dt);
-	//}
-	//for(DsFieldObj* obj : m_pCreator->RefObstacles())
-	//{
-	//	obj->Update(args.dt);
-	//}
-	//
-	//const DsCamera& sysCam = args.sys.RefCam();
-	//m_cam = sysCam;
-	//m_cam.SetRot(DsMat33d::RotateY(RadToDeg(10))*sysCam.GetRot());
-	//m_cam2 = sysCam;
-	//m_cam2.SetRot(DsMat33d::RotateY(RadToDeg(-10))*sysCam.GetRot());
-	//
-	//DsVec3d poly[] =
-	//{
-	//	{ 1+3,-1,0},
-	//	{ -1+3,-1,0 },
-	//	{ -1+3,1,0 },
-	//	{ 1+3,1,0 },
-	//};
-	//DsVec3d poly2[] =
-	//{
-	//	{ 1-1,-1,0 },
-	//	{ -1-1,-1,0 },
-	//	{ -1-1,1,0 },
-	//	{ 1-1,1,0 },
-	//};
-	//DsVec2d tex[] =
-	//{
-	//	{ 0,0},
-	//	{ 1,0},
-	//	{ 1,1},
-	//	{ 0,1},
-	//};
-	//
-	//args.drawCom.DrawTexQuad(poly[0], poly[1], poly[2], poly[3], 
-	//	tex[0], tex[1], tex[2], tex[3],
-	//	m_pImage->GetImage(), m_pImage->GetWidth(), m_pImage->GetHeight());
-	//args.drawCom.DrawTexQuad(poly2[0], poly2[1], poly2[2], poly2[3],
-	//	tex[0], tex[1], tex[2], tex[3],
-	//	m_pImage2->GetImage(), m_pImage2->GetWidth(), m_pImage2->GetHeight());
-	
 	m_gameWorld.Update(args.dt);
 
 	DsPerf::RefPerfTotalFps().DbgDrawFps();
@@ -257,6 +142,7 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 	//args.drawCom.SetColor(DsVec3d(0, 0, 0)).DrawTextScreen(DsVec2d(-0.33, 0.28), L" s");
 	//args.drawCom.SetColor(DsVec3d(0, 0, 0)).DrawTextScreen(DsVec2d(-0.33, 0.20), L"drag Ž‹“_‰ñ“]");
 }
+
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, int nCmdShow)
 {
