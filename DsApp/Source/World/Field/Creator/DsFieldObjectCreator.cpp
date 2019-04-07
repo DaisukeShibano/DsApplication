@@ -164,19 +164,19 @@ void DsFieldObjectCreator::UpdateAllIns(double dt)
 
 void DsFieldObjectCreator::Destoroy()
 {
-	for each(DsFieldHit* pHit in m_hits)
+	for(DsFieldHit* pHit : m_hits)
 	{
 		delete pHit;
 	}
 	m_hits.clear();
 
-	for each(DsFieldObstacle* pObstacle in m_obstacles)
+	for(DsFieldObstacle* pObstacle : m_obstacles)
 	{
 		delete pObstacle;
 	}
 	m_obstacles.clear();
 	
-	for each(DsFieldChr* pChr in m_chrs)
+	for(DsFieldChr* pChr : m_chrs)
 	{
 		delete pChr;
 	}

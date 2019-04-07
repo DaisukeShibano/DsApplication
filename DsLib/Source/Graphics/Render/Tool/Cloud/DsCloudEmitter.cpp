@@ -20,7 +20,7 @@ DsCloudEmitter::DsCloudEmitter(const DsCamera& cam)
 
 DsCloudEmitter::~DsCloudEmitter()
 {
-	for each(DsCloudIns* pCloud in m_clouds)
+	for(DsCloudIns* pCloud : m_clouds)
 	{
 		delete pCloud;
 	}
@@ -42,7 +42,7 @@ void DsCloudEmitter::Initialize(unsigned int texId)
 
 void DsCloudEmitter::Update(float dt)
 {
-	for each(DsCloudIns* pCloud in m_clouds)
+	for(DsCloudIns* pCloud : m_clouds)
 	{
 		if (!pCloud->IsDead())
 		{

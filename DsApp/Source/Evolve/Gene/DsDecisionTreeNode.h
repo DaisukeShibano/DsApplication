@@ -139,14 +139,14 @@ namespace DsApp
 			:DsDecisionTreeNode(DECISION_TREE_NODE_TYPE::ROOT)
 			,m_args()
 		{
-			for each(DsDecisionTreeNode* pNode in args){
+			for(DsDecisionTreeNode* pNode : args){
 				m_args.push_back(pNode);
 			}
 		}
 	public:
 		virtual DsDecisionTreeData Eval() override
 		{
-			for each(DsDecisionTreeNode* pNode in m_args){
+			for(DsDecisionTreeNode* pNode : m_args){
 				pNode->Eval();
 			}
 			return DsDecisionTreeData();

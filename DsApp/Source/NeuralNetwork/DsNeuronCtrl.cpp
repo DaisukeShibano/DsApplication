@@ -85,7 +85,7 @@ void DsNeuronCtrl::CalcOutput(DsNeuralNetwork* pNet)
 	for (int layerNum = 0; layerNum < innerLayerNum; ++layerNum) {
 		for (int innerIdx = 0; innerIdx < innnerNum; ++innerIdx) {
 			float sum = 0;
-			for each(const DsNeuronInput& input in pInner[layerNum][innerIdx].input) {
+			for (const DsNeuronInput& input : pInner[layerNum][innerIdx].input) {
 				sum += input.w * input.pNeuron->outVal;
 			}
 
@@ -98,7 +98,7 @@ void DsNeuronCtrl::CalcOutput(DsNeuralNetwork* pNet)
 	//’†ŠÔ‘w-o—Í‘w
 	for (int outIdx = 0; outIdx < outputNum; ++outIdx) {
 		float sum = 0;
-		for each(const DsNeuronInput& input in pOutput[outIdx].input) {
+		for (const DsNeuronInput& input : pOutput[outIdx].input) {
 			sum += input.w * input.pNeuron->outVal;
 		}
 		pOutput[outIdx].outVal = 0;

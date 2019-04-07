@@ -836,7 +836,7 @@ DsDrawCommand::~DsDrawCommand()
 
 void DsDrawCommand::Exe()
 {
-	for each(DsDrawComBase* com in m_coms)
+	for(DsDrawComBase* com : m_coms)
 	{
 		com->Exe(*this);
 	}

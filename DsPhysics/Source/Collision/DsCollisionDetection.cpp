@@ -496,7 +496,7 @@ inline bool _DsCD_TriangleFace(const DsActorId& meshActorId, const DsQuad& tri, 
 
 	ret = (0 < colPoints.size());
 
-	for each(const _CollisionPoint& cp in colPoints)
+	for(const _CollisionPoint& cp : colPoints)
 	{
 		double depth = cp.depth;//交差してないときのデフォは終端
 
@@ -504,7 +504,7 @@ inline bool _DsCD_TriangleFace(const DsActorId& meshActorId, const DsQuad& tri, 
 		DsVec3d colVec = cp.intersctionEnd - cp.hitPos;
 		colVec = colVec - (face.normal*DsVec3d::Dot(colVec, face.normal));//faceを貫通する辺のface上のベクトル
 		DsVec3d intersection;;
-		for each(const _Edge& edge in edges)
+		for(const _Edge& edge : edges)
 		{
 			if (DsVec3d::GetIntersection(cp.hitPos, colVec, edge.start, edge.edge, intersection))
 			{

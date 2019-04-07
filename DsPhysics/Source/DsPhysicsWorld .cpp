@@ -180,7 +180,7 @@ void DsPhysicsWorld::DriveActor(double dt, DsActorId id, DsVec3d move)
 
 void DsPhysicsWorld::_ApplyGravity()
 {
-	for each(DsActor* pActor in m_actors)
+	for (DsActor* pActor : m_actors)
 	{
 		//‚±‚±‚Åd—Í‚ð‚©‚¯‚é
 		if (m_isGravity && pActor->RefOption().isGravity)
@@ -205,7 +205,7 @@ void DsPhysicsWorld::_UpdateConstraint(double dt)
 
 void DsPhysicsWorld::_UpdateActor()
 {
-	for each( DsActor* pActor in m_actors )
+	for ( DsActor* pActor : m_actors )
 	{
 		pActor->Update();
 	}

@@ -32,7 +32,7 @@ DsBoundingTreeAabb::DsBoundingTreeAabb(const DsActor& actor, const DsVec3d& pos,
 
 DsBoundingTreeAabb::~DsBoundingTreeAabb()
 {
-	for each(DsBoundingTreeAabb* pNode in m_child){
+	for(DsBoundingTreeAabb* pNode : m_child){
 		delete pNode;
 	}
 }
@@ -40,7 +40,7 @@ DsBoundingTreeAabb::~DsBoundingTreeAabb()
 //virtual 
 void DsBoundingTreeAabb::ConstructTree()
 {
-	for each(DsBoundingTreeAabb* pNode in m_child){
+	for(DsBoundingTreeAabb* pNode : m_child){
 		delete pNode;
 	}
 	m_child.clear();
@@ -54,7 +54,7 @@ void DsBoundingTreeAabb::_ConstructTree(int depth)
 	if (isTerminal){
 		//三角形のaabbを得る
 		const double extraLen = 0.2;//ぴったり面にくっついたAABBだと接してるときに安定しない
-		for each(int faceIdx in m_containFaceIdxs){
+		for(int faceIdx : m_containFaceIdxs){
 			const DsQuad& face = m_pFace[faceIdx];
 			const int vn = face.vn;
 			DsVec3d maxP = DsVec3d(-DBL_MAX, -DBL_MAX, -DBL_MAX);
@@ -104,7 +104,7 @@ void DsBoundingTreeAabb::_ConstructTree(int depth)
 			std::vector<int> containFaceIdxs;
 
 			//三角形のaabbを得る。どこ所属の三角形かを算出
-			for each(int faceIdx in m_containFaceIdxs){
+			for(int faceIdx : m_containFaceIdxs){
 				const DsQuad& face = m_pFace[faceIdx];
 				const int vn = face.vn;
 				DsVec3d maxP = DsVec3d(-DBL_MAX, -DBL_MAX, -DBL_MAX);
@@ -151,7 +151,7 @@ bool DsBoundingTreeAabb::IsContain(const DsBoundingTreeAabb& cmp) const
 	//まずは自分にcmpが含まれているか検査
 	const bool isContain = DsAabb::IsContain(a, b);
 	if (isContain){//含まれてたのでさらに内部の子を検索
-		for each(const DsBoundingTreeAabb* pChild in m_child){
+		for(const DsBoundingTreeAabb* pChild : m_child){
 			if (pChild->IsContain(cmp)){
 				return true;
 			}
@@ -174,7 +174,7 @@ bool DsBoundingTreeAabb::IsContain(const DsAabb& cmp) const
 	//まずは自分にcmpが含まれているか検査
 	const bool isContain = DsAabb::IsContain(a, b);
 	if (isContain) {//含まれてたのでさらに内部の子を検索
-		for each(const DsBoundingTreeAabb* pChild in m_child) {
+		for(const DsBoundingTreeAabb* pChild : m_child) {
 			if (pChild->IsContain(cmp)) {
 				return true;
 			}
@@ -191,7 +191,7 @@ void DsBoundingTreeAabb::Draw(DsDrawCommand& com) const
 	a.Setup(m_pos + m_boxSize, m_pos - m_boxSize);
 	a.Draw(com);
 	
-	for each(DsBoundingTreeAabb* pChild in m_child){
+	for(DsBoundingTreeAabb* pChild : m_child){
 		pChild->Draw(com);
 	}
 }

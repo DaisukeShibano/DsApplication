@@ -32,6 +32,7 @@ namespace DsLib
 
 	public:
 		virtual void Initialize() = NULL;
+		virtual void Initialize(std::string& vertex, std::string& flagment) = NULL;
 		virtual void EnableShader( SHADER_TYPE sType ) = NULL;
 		virtual void DisableShader() = NULL;
 		virtual void SetTextureUnit(int unit) = NULL;

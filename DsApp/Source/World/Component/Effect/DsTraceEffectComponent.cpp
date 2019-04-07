@@ -22,7 +22,7 @@ DsTraceEffectComponent::DsTraceEffectComponent()
 
 DsTraceEffectComponent::~DsTraceEffectComponent()
 {
-	if (m_pSys) {
+	if (m_pSys && m_pEmitter) {
 		m_pSys->RefRender().RefParticleRender().UnRegister(*m_pEmitter);
 	}
 	delete m_pEmitter; m_pEmitter = NULL;

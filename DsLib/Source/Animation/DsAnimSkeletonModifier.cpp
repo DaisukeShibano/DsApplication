@@ -21,7 +21,7 @@ void DsAnimSkeletonModifier::UtilKeyframeAnim(double dt, const DsKeyframeAnim& a
 		const int idx = pBone->arrayIdx;
 		const DsVec4d& rot = anim.RefCurrentRot(idx);
 		const DsQuaterniond q(rot.x, rot.y, rot.z, rot.w);
-		const DsMat33d mat = (pBone->isMaster) ? (DsMat33d::Identity()) : (DsMathUtil::ToMat33d<double>(q));
+		const DsMat33d mat = (pBone->isMaster) ? (DsMat33d::Identity()) : (DsQuaterniond::ToMat33d(q));
 		const DsVec3d pos = (pBone->isMaster) ? (DsVec3d::Zero()) : (anim.RefCurrentPos(idx));
 		//const DsVec3d& scale = anim.RefCurrentScale(idx);//Žg‚í‚È‚¢
 		pBone->localPose = DsMat44d::Get(mat, pos);
@@ -43,7 +43,7 @@ void DsAnimSkeletonModifier::UtilGetMasterMove(double dt, const DsLib::DsKeyfram
 		//FBX•ÏŠ·
 		const DsMat33d fbxR = DsMat33d::RotateX(-M_PI*0.5);
 		if (pRot) {
-			*pRot = fbxR * DsMathUtil::ToMat33d<double>(q);
+			*pRot = fbxR * DsQuaterniond::ToMat33d(q);
 		}
 		if (pPos) {
 			*pPos = fbxR * anim.RefMasterMovePos();

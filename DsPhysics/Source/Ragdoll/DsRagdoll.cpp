@@ -116,7 +116,8 @@ void DsRagdoll::_ConstractRagdoll(const DsAnimBone* pBone, DsActor* pParentpActo
 
 				if (pParentpActor) {
 					//一つ前の親剛体（アニメボーンは一つ前の親とは限らない）と今回の剛体をつなぐ
-					DsHinge2Joint* pJoint = static_cast<DsHinge2Joint*>( m_world.CreateJoint(DsHinge2JointFactory(m_world)) );
+					DsHinge2JointFactory factory(m_world);
+					DsHinge2Joint* pJoint = static_cast<DsHinge2Joint*>( m_world.CreateJoint(factory) );
 					if (pJoint) {
 						pJoint->AttachJoint(pParentpActor->GetId(), pActor->GetId(), attachPos, DsVec3d::GetX(), DsVec3d::GetZ());
 						m_joints.push_back(pJoint);

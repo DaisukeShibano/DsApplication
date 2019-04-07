@@ -104,15 +104,15 @@ void DsConstraintSolver::Solve(const int maxIteration, double dt)
 		pConstraint->SetUp();//ƒZƒbƒgƒAƒbƒv‚Í‹ts—ñ‹‚ß‚½‚èd‚¢‚Ì‚ÅÅ‰‚Ì‚P‰ñ‚¾‚¯
 	}
 	for (int i = 0; i < maxIteration; ++i) {
-		for each(IConstraint* pConstraint in m_constraints)//‚PS‘©‚²‚Æ‚É‚P‰ñ
+		for(IConstraint* pConstraint : m_constraints)//‚PS‘©‚²‚Æ‚É‚P‰ñ
 		{
 			pConstraint->UpdateExForce();
 		}
-		for each(IConstraint* pConstraint in m_constraints)//‚PS‘©‚²‚Æ‚É‚P‰ñ
+		for(IConstraint* pConstraint : m_constraints)//‚PS‘©‚²‚Æ‚É‚P‰ñ
 		{
 			pConstraint->CalclateConstraintForce();
 		}
-		for each(IConstraint* pConstraint in m_constraints)//‚PS‘©‚²‚Æ‚É‚P‰ñ
+		for(IConstraint* pConstraint : m_constraints)//‚PS‘©‚²‚Æ‚É‚P‰ñ
 		{
 			pConstraint->ApplyConstraintForce();
 		}

@@ -108,7 +108,7 @@ DsModel* DsModel::CreateClone() const
 			}
 
 			ret->m_pMaterial[mi].pTexture[ti].refGeomFacesIndex.assign(m_pMaterial[mi].pTexture[ti].refGeomFacesIndex.begin(), m_pMaterial[mi].pTexture[ti].refGeomFacesIndex.end());
-			for each(const int fIdx in ret->m_pMaterial[mi].pTexture[ti].refGeomFacesIndex)
+			for(const int fIdx : ret->m_pMaterial[mi].pTexture[ti].refGeomFacesIndex)
 			{
 				Face* pRefFace = &ret->m_pFace[fIdx];
 				ret->m_pMaterial[mi].pTexture[ti].refGeomFaces.push_back(pRefFace);
@@ -171,7 +171,7 @@ void DsModel::UpdateNormal()
 		for (int vi = 0; vi < vn; ++vi)
 		{
 			DsVec3d normal = DsVec3d::Zero();
-			for each(int fIdx in m_pVertexNormalIdxs[vi])
+			for (int fIdx : m_pVertexNormalIdxs[vi])
 			{
 				//頂点法線を、隣接している面の法線の合計から求める
 				normal = normal + DsVec3d::ToVec3(static_cast<float>(pFace[fIdx].normal.x), static_cast<float>(pFace[fIdx].normal.y), static_cast<float>(pFace[fIdx].normal.z));

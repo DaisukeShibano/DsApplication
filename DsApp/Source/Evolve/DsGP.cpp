@@ -38,7 +38,7 @@ DsGP::DsGP()
 
 DsGP::~DsGP()
 {
-	for each(DsGene* pGene in m_pop){
+	for(DsGene* pGene : m_pop){
 		delete pGene;
 	}
 	m_pop.clear();

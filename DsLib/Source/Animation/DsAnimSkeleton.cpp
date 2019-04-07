@@ -26,7 +26,7 @@ DsAnimSkeleton::DsAnimSkeleton(const std::vector<DsAnimBone*>& pRootBone, const 
 
 DsAnimSkeleton::~DsAnimSkeleton()
 {
-	for each(DsAnimBone* pBone in m_pRootBone)
+	for(DsAnimBone* pBone : m_pRootBone)
 	{
 		delete pBone;
 	}
@@ -85,7 +85,7 @@ namespace
 		draw.DrawSphere(pos, 0.1);
 		draw.DrawLine(pos, pos + rot.GetAxisY());
 		
-		for each(const DsAnimBone* pBone in pParent->child)
+		for(const DsAnimBone* pBone : pParent->child)
 		{
 			//位置は親の座標から見た位置っぽい
 			DsVec3d local = pBone->localPose.GetPos();
@@ -101,7 +101,7 @@ namespace
 
 void DsAnimSkeleton::DbgDraw() const
 {
-	for each(const DsAnimBone* pBone in m_pRootBone)
+	for(const DsAnimBone* pBone : m_pRootBone)
 	{
 		//_DbgDraw(pBone, pBone->localPose.ToMat33(), pBone->localPose.GetPos());
 		//_DbgDraw(pBone, pBone->initWorldPose.ToMat33(), pBone->initWorldPose.GetPos());

@@ -82,6 +82,61 @@ namespace
 		return 0;
 	}
 
+	static bool _compileShader(GLuint& result, std::string& vSrc, std::string& fSrc)
+	{
+		bool ret = false;
+		/* シェーダオブジェクトの作成 */
+		const GLuint vtxShader = DsGLCreateShader(DS_GL_VERTEX_SHADER);
+		const GLuint frgShader = DsGLCreateShader(DS_GL_FRAGMENT_SHADER);
+
+		/* バーテックスシェーダのロードとコンパイル */
+		if (_loadShader(vtxShader, vSrc) < 0)
+		{
+			return false;
+		}
+
+		/* フラグメントシェーダのロードとコンパイル */
+		if (_loadShader(frgShader, fSrc) < 0)
+		{
+			return false;
+		}
+
+		/* プログラムオブジェクトの作成 */
+		const GLuint prog = DsGLCreateProgram();
+
+		/* シェーダオブジェクトのシェーダプログラムへの登録 */
+		DsGLAttachShader(prog, vtxShader);
+		DsGLAttachShader(prog, frgShader);
+
+		/* シェーダオブジェクトの削除 */
+		DsGLDeleteShader(vtxShader);
+		DsGLDeleteShader(frgShader);
+
+		/* シェーダプログラムのリンク */
+		GLint linked;
+		DsGLLinkProgram(prog);
+		DsGLGetProgramiv(prog, DS_GL_LINK_STATUS, &linked);
+		_printProgramInfoLog(prog);
+		if (linked == GL_FALSE)
+		{
+			DS_ERROR("Link error of shader!!\n");
+			return false;
+		}
+
+		result = prog;
+		return true;
+	}
+
+	static void _versionDisp()
+	{
+		const GLubyte *version = glGetString(GL_VERSION);
+		const GLubyte *glslVersion = glGetString(DS_GL_SHADING_LANGUAGE_VERSION);
+		DS_LOG("\n============GL version==============");
+		DS_LOG("GL Version:%s", version);
+		DS_LOG("GLSL Version:%s", glslVersion);
+		DS_LOG("====================================\n");
+	}
+
 	/*****************************************************
 	@brief	シェーダー実装クラス
 	******************************************************/
@@ -92,6 +147,7 @@ namespace
 		virtual ~DsShaderImp();
 	public:
 		virtual void Initialize() override;
+		virtual void Initialize(std::string& vertex, std::string& flagment) override;
 		virtual void EnableShader(SHADER_TYPE sType) override;
 		virtual void DisableShader() override;
 		virtual void SetTextureUnit(int unit) override;
@@ -147,58 +203,19 @@ namespace
 		const int sourceNum = static_cast<int>(SHADER_TYPE::NUM);
 		static_assert(sizeof(sources)/sizeof(sources[0]) == sourceNum, "シェーダーのソースの数が合いません");
 
-
-		{//バージョン確認
-			const GLubyte *version = glGetString(GL_VERSION);
-			const GLubyte *glslVersion = glGetString(DS_GL_SHADING_LANGUAGE_VERSION);
-			DS_LOG("\n============GL version==============");
-			DS_LOG("GL Version:%s", version);
-			DS_LOG("GLSL Version:%s", glslVersion);
-			DS_LOG("====================================\n");
-		}
+		_versionDisp();
 
 		for (int sIdx=0; sIdx < sourceNum; ++sIdx)
 		{
-			/* シェーダオブジェクトの作成 */
-			const GLuint vtxShader = DsGLCreateShader(DS_GL_VERTEX_SHADER);
-			const GLuint frgShader = DsGLCreateShader(DS_GL_FRAGMENT_SHADER);
-
-			/* バーテックスシェーダのロードとコンパイル */
-			if (_loadShader(vtxShader, sources[sIdx].pVertexSource) < 0)
-			{
-				return;
-			}
-
-			/* フラグメントシェーダのロードとコンパイル */
-			if (_loadShader(frgShader, sources[sIdx].pFragmentSource) < 0)
-			{
-				return;
-			}
-
-			/* プログラムオブジェクトの作成 */
-			const GLuint prog = DsGLCreateProgram();
-
-			/* シェーダオブジェクトのシェーダプログラムへの登録 */
-			DsGLAttachShader(prog, vtxShader);
-			DsGLAttachShader(prog, frgShader);
-
-			/* シェーダオブジェクトの削除 */
-			DsGLDeleteShader(vtxShader);
-			DsGLDeleteShader(frgShader);
-
-			/* シェーダプログラムのリンク */
-			GLint linked;
-			DsGLLinkProgram(prog);
-			DsGLGetProgramiv(prog, DS_GL_LINK_STATUS, &linked);
-			_printProgramInfoLog(prog);
-			if (linked == GL_FALSE)
-			{
-				DS_ERROR("Link error of shader!!\n");
-				return;
-			}
-
-			m_prog[sIdx] = prog;
+			_compileShader(m_prog[sIdx], sources[sIdx].pVertexSource, sources[sIdx].pFragmentSource);
 		}
+	}
+
+	//virtual
+	void DsShaderImp::Initialize(std::string& vertex, std::string& flagment)
+	{
+		_versionDisp();
+		_compileShader(m_prog[0], vertex, flagment);
 	}
 
 	//virtula

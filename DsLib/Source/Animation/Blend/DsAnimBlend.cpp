@@ -58,13 +58,13 @@ void DsAnimBlend::_BlendPoseModel(const DsAnimBone* bone,
 	const int idx = bone->arrayIdx;
 
 	//アニメAのモデル座標
-	const DsMat33d localRotA = DsMathUtil::ToMat33d<double>(DsQuaterniond(animA.RefCurrentRot(idx)));
+	const DsMat33d localRotA = DsQuaterniond::ToMat33d(DsQuaterniond(animA.RefCurrentRot(idx)));
 	const DsVec3d localPosA = animA.RefCurrentPos(idx);
 	const DsMat33d modelRotA = localRotA;
 	const DsVec3d modelPosA = localPosA;
 
 	//アニメBのモデル座標
-	const DsMat33d localRotB = DsMathUtil::ToMat33d<double>(DsQuaterniond(animB.RefCurrentRot(idx)));
+	const DsMat33d localRotB = DsQuaterniond::ToMat33d(DsQuaterniond(animB.RefCurrentRot(idx)));
 	const DsVec3d localPosB = animB.RefCurrentPos(idx);
 	const DsMat33d modelRotB = localRotB;
 	const DsVec3d modelPosB = localPosB;
@@ -85,7 +85,7 @@ void DsAnimBlend::_BlendPoseModel(const DsAnimBone* bone,
 		const DsQuaterniond qB(modelRotB);
 		const DsQuaterniond q = qA.LinearInterpolation(qB, rateB);
 		//const DsQuaterniond q = DsQuaterniond::LinearInterpolation(qB, qA, rateA);
-		blendRot = DsMathUtil::ToMat33d<double>(q);
+		blendRot = DsQuaterniond::ToMat33d(q);
 		const DsQuaterniond localQ = DsQuaterniond(blendRot);//ローカル座標へ変換
 		m_pBlendAnim->m_pBone[idx].m_pRot[0].val = DsVec4d::ToVec4(localQ.x, localQ.y, localQ.z, localQ.w);
 	}
@@ -115,13 +115,13 @@ void DsAnimBlend::_BlendPoseModel(const DsAnimBone* bone,
 		const int idx = pChild->arrayIdx;
 			
 		//アニメAのモデル座標
-		const DsMat33d localRotA = DsMathUtil::ToMat33d<double>(DsQuaterniond(animA.RefCurrentRot(idx)));
+		const DsMat33d localRotA = DsQuaterniond::ToMat33d(DsQuaterniond(animA.RefCurrentRot(idx)));
 		const DsVec3d localPosA = animA.RefCurrentPos(idx);
 		const DsMat33d modelRotA = parentARot * localRotA;//回転はブレンドがかかっていないもの同士を補間した姿勢にすることで親がブレンドされたことによる余計な回転を防ぐ
 		const DsVec3d modelPosA = (parentBlendRot * localPosA) + parentBlendPos;//位置は実際に骨の位置になるブレンドされたPos,Rotを使わないと長さが一定に保てない
 	
 		//アニメBのモデル座標
-		const DsMat33d localRotB = DsMathUtil::ToMat33d<double>(DsQuaterniond(animB.RefCurrentRot(idx)));
+		const DsMat33d localRotB = DsQuaterniond::ToMat33d(DsQuaterniond(animB.RefCurrentRot(idx)));
 		const DsVec3d localPosB = animB.RefCurrentPos(idx);
 		const DsMat33d modelRotB = parentBRot * localRotB;
 		const DsVec3d modelPosB = (parentBlendRot * localPosB) + parentBlendPos;
@@ -142,7 +142,7 @@ void DsAnimBlend::_BlendPoseModel(const DsAnimBone* bone,
 			const DsQuaterniond qB(modelRotB);
 			const DsQuaterniond q = qA.LinearInterpolation(qB, rateB);
 			//const DsQuaterniond q = DsQuaterniond::LinearInterpolation(qB, qA, rateA);
-			blendRot = DsMathUtil::ToMat33d<double>(q);
+			blendRot = DsQuaterniond::ToMat33d(q);
 			const DsQuaterniond localQ = DsQuaterniond(parentBlendRot.ToTransposition()*blendRot);//ローカル座標へ変換
 			m_pBlendAnim->m_pBone[idx].m_pRot[0].val = DsVec4d::ToVec4(localQ.x, localQ.y, localQ.z, localQ.w);
 		}

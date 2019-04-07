@@ -9,6 +9,9 @@
 #include "Math/DsMatrix33.h"
 #endif
 
+#ifndef _DS_MATRIX33D_H_
+#include "Math/DsMatrix33d.h"
+#endif
 
 #define RadToDeg(a)(a*static_cast<double>(180.0 / M_PI))
 #define DegToRad(a)(a*static_cast<double>(M_PI / 180.0))
@@ -22,109 +25,6 @@ namespace DsLib
 	namespace DsMathUtil
 	{
 		extern double DS_INFINITY_D;
-
-		template<typename TYPE>
-		DsQuaternion<TYPE> ToQuaternion(const DsMat33d& mat)
-		{
-			DsQuaternion<TYPE> ret;
-
-			// 最大成分を検索
-			TYPE elem[4]; // 0:x, 1:y, 2:z, 3:w
-			elem[0] = mat.m00 - mat.m11 - mat.m22 + 1.0;
-			elem[1] = -mat.m00 + mat.m11 - mat.m22 + 1.0;
-			elem[2] = -mat.m00 - mat.m11 + mat.m22 + 1.0;
-			elem[3] = mat.m00 + mat.m11 + mat.m22 + 1.0;
-
-			unsigned biggestIndex = 0;
-			for (int i = 1; i < 4; i++) {
-				if (elem[i] > elem[biggestIndex])
-					biggestIndex = i;
-			}
-
-			if (elem[biggestIndex] < 0.0)
-			{
-				return ret; // 引数の行列に間違いあり！
-			}
-
-			// 最大要素の値を算出
-			TYPE *q[4] = { &ret.x, &ret.y, &ret.z, &ret.w };
-			TYPE v = static_cast<TYPE>(sqrt(elem[biggestIndex]) * 0.5);
-			*q[biggestIndex] = v;
-			TYPE mult = 0.25 / v;
-
-			switch (biggestIndex) {
-			case 0: // x
-				*q[1] = (mat.m01 + mat.m10) * mult;
-				*q[2] = (mat.m20 + mat.m02) * mult;
-				*q[3] = (mat.m12 - mat.m21) * mult;
-				break;
-			case 1: // y
-				*q[0] = (mat.m01 + mat.m10) * mult;
-				*q[2] = (mat.m12 + mat.m21) * mult;
-				*q[3] = (mat.m20 - mat.m02) * mult;
-				break;
-			case 2: // z
-				*q[0] = (mat.m20 + mat.m02) * mult;
-				*q[1] = (mat.m12 + mat.m21) * mult;
-				*q[3] = (mat.m01 - mat.m10) * mult;
-				break;
-			case 3: // w
-				*q[0] = (mat.m12 - mat.m21) * mult;
-				*q[1] = (mat.m20 - mat.m02) * mult;
-				*q[2] = (mat.m01 - mat.m10) * mult;
-				break;
-			}
-			return ret;
-		}
-
-		template<typename TYPE>
-		DsMat33d ToMat33d(const DsQuaternion<TYPE>& q)
-		{
-			DsMat33d ret;
-			const double qx = static_cast<double>(q.x);
-			const double qy = static_cast<double>(q.y);
-			const double qz = static_cast<double>(q.z);
-			const double qw = static_cast<double>(q.w);
-
-			ret.m00 = 1.0 - 2.0 * qy * qy - 2.0 * qz * qz;
-			ret.m01 = 2.0 * qx * qy + 2.0 * qw * qz;
-			ret.m02 = 2.0 * qx * qz - 2.0 * qw * qy;
-
-			ret.m10 = 2.0 * qx * qy - 2.0 * qw * qz;
-			ret.m11 = 1.0 - 2.0 * qx * qx - 2.0f * qz * qz;
-			ret.m12 = 2.0 * qy * qz + 2.0 * qw * qx;
-
-			ret.m20 = 2.0 * qx * qz + 2.0 * qw * qy;
-			ret.m21 = 2.0 * qy * qz - 2.0 * qw * qx;
-			ret.m22 = 1.0 - 2.0 * qx * qx - 2.0 * qy * qy;
-
-			return ret;
-		}
-
-		template<typename TYPE>
-		DsMat33f ToMat33f(const DsQuaternion<TYPE>& q)
-		{
-			DsMat33f ret;
-			const float qx = static_cast<float>(q.x);
-			const float qy = static_cast<float>(q.y);
-			const float qz = static_cast<float>(q.z);
-			const float qw = static_cast<float>(q.w);
-
-			ret.m00 = 1.0f - 2.0f * qy * qy - 2.0f * qz * qz;
-			ret.m01 = 2.0f * qx * qy + 2.0f * qw * qz;
-			ret.m02 = 2.0f * qx * qz - 2.0f * qw * qy;
-
-			ret.m10 = 2.0f * qx * qy - 2.0f * qw * qz;
-			ret.m11 = 1.0f - 2.0f * qx * qx - 2.0f * qz * qz;
-			ret.m12 = 2.0f * qy * qz + 2.0f * qw * qx;
-
-			ret.m20 = 2.0f * qx * qz + 2.0f * qw * qy;
-			ret.m21 = 2.0f * qy * qz - 2.0f * qw * qx;
-			ret.m22 = 1.0f - 2.0f * qx * qx - 2.0f * qy * qy;
-
-			return ret;
-		}
-
 
 		template<int N>
 		void MultiMat(double dst[N][N], const double src1[N][N], const double src2[N][N])

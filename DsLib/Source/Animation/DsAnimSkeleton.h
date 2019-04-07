@@ -24,7 +24,7 @@ namespace DsLib
 			delete[] pIndex; pIndex = NULL;
 			delete[] pWeight; pWeight = NULL;
 
-			for each(DsAnimBone* pBone in child)
+			for(DsAnimBone* pBone : child)
 			{
 				delete pBone;
 			}
@@ -72,7 +72,7 @@ namespace DsLib
 		template<typename FUNC>
 		void GetAllBone(FUNC func)
 		{
-			for each(DsAnimBone* bone in m_pRootBone)
+			for(DsAnimBone* bone : m_pRootBone)
 			{
 				_GetAllBone(bone, func);
 			}
@@ -82,7 +82,7 @@ namespace DsLib
 		void _GetAllBone(DsAnimBone* b, FUNC func)
 		{
 			func(b);
-			for each(DsAnimBone* child in b->child)
+			for(DsAnimBone* child : b->child)
 			{
 				_GetAllBone(child, func);
 			}

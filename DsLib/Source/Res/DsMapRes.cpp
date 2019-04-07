@@ -40,7 +40,7 @@ namespace
 	{
 		~OutputRes()
 		{
-			for each(ObjInsFormat* obj in objs)
+			for(ObjInsFormat* obj : objs)
 			{
 				delete obj;
 			}

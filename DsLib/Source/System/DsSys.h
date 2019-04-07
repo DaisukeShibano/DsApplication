@@ -28,7 +28,7 @@ namespace DsLib
 		int argc;
 		char** argv;
 		DsMainLoop* pLoop;
-		char* pConfPath;
+		const char* pConfPath;
 		char* pResourcePath;
 		int windowType;
 		ds_uint64 windowHandle;

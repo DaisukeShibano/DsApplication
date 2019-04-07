@@ -182,7 +182,7 @@ void DsModelRender::Render() const
 
 void DsModelRender::RenderPolygon() const
 {
-	for each(const DsModel* pModel in m_drawList)
+	for(const DsModel* pModel : m_drawList)
 	{
 #ifndef		USE_OLD_MODEL_COOD
 		const DsMat44d modelMat = DsMat44d::GetTranspose(pModel->GetRotation(), pModel->GetPosition());
@@ -215,7 +215,7 @@ void DsModelRender::RenderPolygon() const
 
 void DsModelRender::RenderNonMaterial() const
 {
-	for each(const DsModel* pModel in m_drawList)
+	for(const DsModel* pModel : m_drawList)
 	{
 #ifndef		USE_OLD_MODEL_COOD
 		//ç¿ïW
