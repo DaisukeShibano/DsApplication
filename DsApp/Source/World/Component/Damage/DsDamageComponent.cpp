@@ -28,7 +28,7 @@ DsDamageComponent::~DsDamageComponent()
 }
 
 //virtual
-bool DsDamageComponent::Update(COMPONENT_UPDATE_RESULT& result, const COMPONENT_UPDATE_ARG& arg)
+bool DsDamageComponent::Update(COMPONENT_UPDATE_RESULT& outResult, const COMPONENT_UPDATE_ARG& arg)
 {
 	const bool ret = m_isRequest;
 
@@ -67,12 +67,17 @@ bool DsDamageComponent::Update(COMPONENT_UPDATE_RESULT& result, const COMPONENT_
 							if (m_hitOwners.find(pDefender) == m_hitOwners.end()) {
 								//初回ヒット
 
+								COMPONENT_UPDATE_RESULT::DAMAGE dmgResult;
+
 								//ヒットエフェクト
 								DsComponentSystem* pDefCom = pDefender->GetComponentSystem();
 								if (pDefCom) {
 									const DsVec3d hitPos = result.GetPos()[0];
 									const DsVec3d hitDir = DsVec3d::Normalize(end.GetPos() - m_preEndPos);//ここの差分を速度として渡してもいいかも
 									pDefCom->RequestOneShotHitEffect(param.GetHitEffectId(), hitPos, hitDir);
+									dmgResult.hitEffectId = param.GetHitEffectId();
+									dmgResult.hitPos = hitPos;
+									dmgResult.hitDir = hitDir;
 								}
 
 								const DsVec3d atk = arg.owner.GetPosition();
@@ -115,6 +120,10 @@ bool DsDamageComponent::Update(COMPONENT_UPDATE_RESULT& result, const COMPONENT_
 								if (pAtkCom) {//自分が下がる分。
 									pAtkCom->RequestKnockBack(toAtk * kLenAtk, kTime);
 								}
+								dmgResult.toAtk = toAtk;
+								dmgResult.kLenAtk = kLenAtk;
+								dmgResult.kLenDef = kLenDef;
+								dmgResult.kTime = kTime;
 
 								//ヒットストップ
 								if (arg.owner.IsMainPlayer()) {
@@ -122,6 +131,7 @@ bool DsDamageComponent::Update(COMPONENT_UPDATE_RESULT& result, const COMPONENT_
 									if (pHitStop) {
 										pHitStop->RequestHitStop(param.GetHitStopTime());
 									}
+									dmgResult.hitStopTime = param.GetHitStopTime();
 								}
 
 								//ヒット登録

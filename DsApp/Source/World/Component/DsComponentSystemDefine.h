@@ -32,27 +32,38 @@ namespace DsApp
 
 	struct COMPONENT_UPDATE_RESULT
 	{
+		struct DAMAGE
+		{
+			DAMAGE()
+				: hitPos()
+				, hitDir()
+				, hitEffectId(-1)
+				, toAtk()
+				, kLenDef(0)
+				, kLenAtk(0)
+				, kTime(0)
+				, pAtk(NULL)
+				, hitStopTime(0)
+			{}
+
+			DsVec3d hitPos;
+			DsVec3d hitDir;
+			int hitEffectId;
+
+			DsVec3d toAtk;
+			double kLenDef;
+			double kLenAtk;
+			double kTime;
+			DsComponentSystem* pAtk;
+
+			double hitStopTime;
+		};
+
 		COMPONENT_UPDATE_RESULT()
-			: hitPos()
-			, hitDir()
-			, effectId(-1)
-			, kLenDef(0)
-			, kLenAtk(0)
-			, kTime(0)
-			, pAtk(NULL)
-			, HitStopTime(0)
-		{}
+			: damage()
+			{}
 
-		DsVec3d hitPos;
-		DsVec3d hitDir;
-		int effectId;
-
-		double kLenDef;
-		double kLenAtk;
-		double kTime;
-		DsComponentSystem* pAtk;
-
-		double HitStopTime;
+		std::vector<DAMAGE> damage;
 	};
 
 }

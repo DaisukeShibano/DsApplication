@@ -63,6 +63,8 @@ namespace DsApp
 	public:
 		void Update(double dt);
 
+		const COMPONENT_UPDATE_RESULT& RefResult() const { return m_componentResult; }
+
 	private:
 		template<class CLASS>
 		CLASS* _CreateGetComponent(ds_int64 key);
@@ -92,7 +94,7 @@ namespace DsApp
 
 		std::unordered_map<std::type_index, KeyMap, TypeHash> m_components;
 		std::list<DsComponent*> m_oneShotComponents;
-		std::vector<COMPONENT_UPDATE_RESULT> m_componentResult;
+		COMPONENT_UPDATE_RESULT m_componentResult;
 		DsFieldObj& m_owner;
 		DsLib::DsSys& m_sys;
 		DsPhysics::DsPhysicsWorld& m_physWorld;

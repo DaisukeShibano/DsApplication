@@ -26,7 +26,7 @@ DsAttachComponent::~DsAttachComponent()
 }
 
 //virtual
-bool DsAttachComponent::Update(COMPONENT_UPDATE_RESULT& result, const COMPONENT_UPDATE_ARG& arg)
+bool DsAttachComponent::Update(COMPONENT_UPDATE_RESULT& outResult, const COMPONENT_UPDATE_ARG& arg)
 {
 	const bool ret = m_reqAttach;
 

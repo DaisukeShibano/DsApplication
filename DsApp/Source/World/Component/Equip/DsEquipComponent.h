@@ -32,7 +32,7 @@ namespace DsApp
 		virtual ~DsEquipComponent();
 
 	public:
-		virtual bool Update(COMPONENT_UPDATE_RESULT& result, const COMPONENT_UPDATE_ARG& arg) override;
+		virtual bool Update(COMPONENT_UPDATE_RESULT& outResult, const COMPONENT_UPDATE_ARG& arg) override;
 		DsLib::DsAnimation* GetWep()const { return m_pWep; }
 
 	private:

@@ -23,7 +23,7 @@ DsLockOnComponent::~DsLockOnComponent()
 }
 
 //virtual 
-bool DsLockOnComponent::Update(COMPONENT_UPDATE_RESULT& result, const COMPONENT_UPDATE_ARG& arg)
+bool DsLockOnComponent::Update(COMPONENT_UPDATE_RESULT& outResult, const COMPONENT_UPDATE_ARG& arg)
 {
 	if (m_pLockOnPoint && arg.pGameSys) {
 

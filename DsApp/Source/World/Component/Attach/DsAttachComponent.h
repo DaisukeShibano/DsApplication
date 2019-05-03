@@ -20,7 +20,7 @@ namespace DsApp
 		virtual ~DsAttachComponent();
 
 	public:
-		virtual bool Update(COMPONENT_UPDATE_RESULT& result, const COMPONENT_UPDATE_ARG& arg) override;
+		virtual bool Update(COMPONENT_UPDATE_RESULT& outResult, const COMPONENT_UPDATE_ARG& arg) override;
 		void Request(const DsMat44d target, DsAttachEntity* pMove);
 
 	private:

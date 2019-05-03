@@ -11,7 +11,7 @@ namespace DsApp
 		virtual ~DsDamageComponent();
 
 	public:
-		virtual bool Update(COMPONENT_UPDATE_RESULT& result, const COMPONENT_UPDATE_ARG& arg) override;
+		virtual bool Update(COMPONENT_UPDATE_RESULT& outResult, const COMPONENT_UPDATE_ARG& arg) override;
 
 	public:
 		void Request(int damageId, int dmypolyId0, int dmypolyId1);

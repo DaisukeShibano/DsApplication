@@ -51,7 +51,7 @@ DsEquipComponent::~DsEquipComponent()
 }
 
 //virtual
-bool DsEquipComponent::Update(COMPONENT_UPDATE_RESULT& result, const COMPONENT_UPDATE_ARG& arg)
+bool DsEquipComponent::Update(COMPONENT_UPDATE_RESULT& outResult, const COMPONENT_UPDATE_ARG& arg)
 {
 	DsComponentSystem* pComSys = arg.owner.GetComponentSystem();
 	if (!pComSys) {

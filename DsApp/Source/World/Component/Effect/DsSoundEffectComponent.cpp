@@ -20,7 +20,7 @@ DsSoundEffectComponent::~DsSoundEffectComponent()
 }
 
 //virtual
-bool DsSoundEffectComponent::Update(COMPONENT_UPDATE_RESULT& result, const COMPONENT_UPDATE_ARG& arg)
+bool DsSoundEffectComponent::Update(COMPONENT_UPDATE_RESULT& outResult, const COMPONENT_UPDATE_ARG& arg)
 {
 	//–¢ŽÀ‘•
 	return false;

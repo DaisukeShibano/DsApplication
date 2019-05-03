@@ -59,8 +59,6 @@ void DsComponentSystem::Update(double dt)
 {
 	const COMPONENT_UPDATE_ARG arg(dt, m_owner, m_sys, m_physWorld, m_pGameSys);
 
-	m_componentResult.clear();
-
 	{//キー管理コンポーネント更新
 		struct _KEY_PAIR
 		{
@@ -71,9 +69,7 @@ void DsComponentSystem::Update(double dt)
 		std::vector<_KEY_PAIR> eraseList;
 		for (auto t : m_components) {
 			for (auto c : t.second) {
-				COMPONENT_UPDATE_RESULT result;
-				const bool isAlive = c.second->Update(result, arg);
-				m_componentResult.push_back(result);
+				const bool isAlive = c.second->Update(m_componentResult, arg);
 				if (!isAlive) {
 					eraseList.push_back({ t.first, c.first });
 				}
@@ -95,9 +91,7 @@ void DsComponentSystem::Update(double dt)
 	{//ワンショットコンポートネント更新
 		auto it = m_oneShotComponents.begin();
 		while (it != m_oneShotComponents.end()) {
-			COMPONENT_UPDATE_RESULT result;
-			const bool isAlive = (*it)->Update(result, arg);
-			m_componentResult.push_back(result);
+			const bool isAlive = (*it)->Update(m_componentResult, arg);
 			if (!isAlive) {
 				it = m_oneShotComponents.erase(it);
 			}
