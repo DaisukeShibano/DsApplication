@@ -66,6 +66,8 @@ void DsComponentSystem::Update(double dt)
 			KEY key;
 		};
 
+		m_componentResult.Clear();
+
 		std::vector<_KEY_PAIR> eraseList;
 		for (auto t : m_components) {
 			for (auto c : t.second) {

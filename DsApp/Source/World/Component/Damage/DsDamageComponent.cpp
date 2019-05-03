@@ -120,6 +120,7 @@ bool DsDamageComponent::Update(COMPONENT_UPDATE_RESULT& outResult, const COMPONE
 								if (pAtkCom) {//Ž©•ª‚ª‰º‚ª‚é•ªB
 									pAtkCom->RequestKnockBack(toAtk * kLenAtk, kTime);
 								}
+								dmgResult.pAtk = pAtkCom;
 								dmgResult.toAtk = toAtk;
 								dmgResult.kLenAtk = kLenAtk;
 								dmgResult.kLenDef = kLenDef;
@@ -133,6 +134,8 @@ bool DsDamageComponent::Update(COMPONENT_UPDATE_RESULT& outResult, const COMPONE
 									}
 									dmgResult.hitStopTime = param.GetHitStopTime();
 								}
+
+								outResult.AddDamage(dmgResult);
 
 								//ƒqƒbƒg“o˜^
 								m_hitOwners.insert(pDefender);

@@ -30,8 +30,9 @@ namespace DsApp
 		DsGameSys* pGameSys;
 	};
 
-	struct COMPONENT_UPDATE_RESULT
+	class COMPONENT_UPDATE_RESULT
 	{
+	public:
 		struct DAMAGE
 		{
 			DAMAGE()
@@ -60,10 +61,23 @@ namespace DsApp
 		};
 
 		COMPONENT_UPDATE_RESULT()
-			: damage()
-			{}
+			: m_damage()
+		{}
 
-		std::vector<DAMAGE> damage;
+		void AddDamage(const DAMAGE& damage)
+		{
+			m_damage.push_back(damage);
+		}
+
+		void Clear()
+		{
+			m_damage.clear();
+		}
+
+		const std::vector<DAMAGE>& RefDamage() const { return m_damage; }
+
+	private:
+		std::vector<DAMAGE> m_damage;
 	};
 
 }
