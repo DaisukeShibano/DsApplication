@@ -9,6 +9,7 @@
 namespace DsApp
 {
 	class DsFieldObj;
+	class DsComponentSystem;
 }
 
 namespace DsApp
@@ -27,6 +28,31 @@ namespace DsApp
 		DsLib::DsSys& sys;
 		DsPhysics::DsPhysicsWorld& physWorld;
 		DsGameSys* pGameSys;
+	};
+
+	struct COMPONENT_UPDATE_RESULT
+	{
+		COMPONENT_UPDATE_RESULT()
+			: hitPos()
+			, hitDir()
+			, effectId(-1)
+			, kLenDef(0)
+			, kLenAtk(0)
+			, kTime(0)
+			, pAtk(NULL)
+			, HitStopTime(0)
+		{}
+
+		DsVec3d hitPos;
+		DsVec3d hitDir;
+		int effectId;
+
+		double kLenDef;
+		double kLenAtk;
+		double kTime;
+		DsComponentSystem* pAtk;
+
+		double HitStopTime;
 	};
 
 }

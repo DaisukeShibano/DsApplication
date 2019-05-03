@@ -21,7 +21,7 @@ namespace DsApp
 		virtual ~DsItemBoxComponent();
 
 	public:
-		virtual bool Update(const COMPONENT_UPDATE_ARG& arg) override { return true; };
+		virtual bool Update(COMPONENT_UPDATE_RESULT& result, const COMPONENT_UPDATE_ARG& arg) override { return true; };
 
 	public:
 		void AddItem(int itemId);

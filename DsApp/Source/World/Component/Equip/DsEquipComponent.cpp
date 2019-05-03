@@ -51,7 +51,7 @@ DsEquipComponent::~DsEquipComponent()
 }
 
 //virtual
-bool DsEquipComponent::Update(const COMPONENT_UPDATE_ARG& arg)
+bool DsEquipComponent::Update(COMPONENT_UPDATE_RESULT& result, const COMPONENT_UPDATE_ARG& arg)
 {
 	DsComponentSystem* pComSys = arg.owner.GetComponentSystem();
 	if (!pComSys) {
@@ -92,7 +92,6 @@ bool DsEquipComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 		DsMat44d mat = DsMat44d::Identity();
 		arg.owner.GetDmypoly(m_attachDmypolyId, mat, DMYPOLY_SLOT::MAIN_BODY);
 		m_pWep->SetRootMatrix(mat.GetPos(), mat.ToMat33());
-		//pComSys->RequestAttachWithUpdate(mat, &m_attachEntity, arg.dt);
 		m_pWep->Update(arg.dt);
 	}
 

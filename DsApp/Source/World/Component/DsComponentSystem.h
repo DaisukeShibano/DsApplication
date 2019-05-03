@@ -68,18 +68,17 @@ namespace DsApp
 		CLASS* _CreateGetComponent(ds_int64 key);
 
 		template<class CLASS>
-		CLASS* _CreateOneShotComponent(ds_int64 key);
+		CLASS* _CreateOneShotComponent();
 
 		template<class CLASS>
 		CLASS* _GetComponent(ds_int64 key)const;
 
 	public:
 		void RequestTraceEffect(ds_int64 key, int effectId, int dmypolyId0, int dmypolyId1);
-		void RequestHitEffect(ds_int64 key, int effectId, const DsVec3d& hitPos, DsVec3d hitDir);
+		void RequestOneShotHitEffect(int effectId, const DsVec3d& hitPos, DsVec3d hitDir);
 		void RequestSoundEffect(ds_int64 key, int soundId, int dmypolyId);
 		void RequestEquip();
 		void RequestItemBox();
-		void RequestAttachWithUpdate(const DsMat44d& target, DsAttachEntity* pMove, double dt);
 		void RequestLockOnPoint();
 		void RequestDamage(ds_int64 key, int damageId, int dmypolyId0, int dmypolyId1);
 		void RequestKnockBack(const DsVec3d& move, double time);
@@ -93,6 +92,7 @@ namespace DsApp
 
 		std::unordered_map<std::type_index, KeyMap, TypeHash> m_components;
 		std::list<DsComponent*> m_oneShotComponents;
+		std::vector<COMPONENT_UPDATE_RESULT> m_componentResult;
 		DsFieldObj& m_owner;
 		DsLib::DsSys& m_sys;
 		DsPhysics::DsPhysicsWorld& m_physWorld;

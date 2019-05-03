@@ -13,7 +13,7 @@ namespace DsApp
 		virtual ~DsKnockBackComponent();
 
 	public:
-		virtual bool Update(const COMPONENT_UPDATE_ARG& arg) override;
+		virtual bool Update(COMPONENT_UPDATE_RESULT& result, const COMPONENT_UPDATE_ARG& arg) override;
 
 	public:
 		void Request(const DsVec3d& move, double time);

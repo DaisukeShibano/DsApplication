@@ -37,7 +37,7 @@ void DsTraceEffectComponent::Request(int effectId, int dmypolyId0, int dmypolyId
 }
 
 //virtual
-bool DsTraceEffectComponent::Update(const COMPONENT_UPDATE_ARG& arg)
+bool DsTraceEffectComponent::Update(COMPONENT_UPDATE_RESULT& result, const COMPONENT_UPDATE_ARG& arg)
 {
 	bool ret = true;
 

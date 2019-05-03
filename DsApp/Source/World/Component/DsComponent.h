@@ -21,7 +21,7 @@ namespace DsApp
 	public:
 		virtual ~DsComponent() {};
 		//!<@retval true:Œp‘± false:”jŠü
-		virtual bool Update(const COMPONENT_UPDATE_ARG& arg) = 0;
+		virtual bool Update(COMPONENT_UPDATE_RESULT& result, const COMPONENT_UPDATE_ARG& arg) = 0;
 
 	};
 }

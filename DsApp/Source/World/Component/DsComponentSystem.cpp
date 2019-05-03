@@ -31,6 +31,7 @@ using namespace DsApp;
 DsComponentSystem::DsComponentSystem(DsFieldObj& owner, DsLib::DsSys& sys, DsPhysics::DsPhysicsWorld& physWorld, DsGameSys* pGameSys)
 	: m_components()
 	, m_oneShotComponents()
+	, m_componentResult()
 	, m_owner(owner)
 	, m_sys(sys)
 	, m_physWorld(physWorld)
@@ -58,6 +59,8 @@ void DsComponentSystem::Update(double dt)
 {
 	const COMPONENT_UPDATE_ARG arg(dt, m_owner, m_sys, m_physWorld, m_pGameSys);
 
+	m_componentResult.clear();
+
 	{//キー管理コンポーネント更新
 		struct _KEY_PAIR
 		{
@@ -68,7 +71,9 @@ void DsComponentSystem::Update(double dt)
 		std::vector<_KEY_PAIR> eraseList;
 		for (auto t : m_components) {
 			for (auto c : t.second) {
-				const bool isAlive = c.second->Update(arg);
+				COMPONENT_UPDATE_RESULT result;
+				const bool isAlive = c.second->Update(result, arg);
+				m_componentResult.push_back(result);
 				if (!isAlive) {
 					eraseList.push_back({ t.first, c.first });
 				}
@@ -90,7 +95,9 @@ void DsComponentSystem::Update(double dt)
 	{//ワンショットコンポートネント更新
 		auto it = m_oneShotComponents.begin();
 		while (it != m_oneShotComponents.end()) {
-			const bool isAlive = (*it)->Update(arg);
+			COMPONENT_UPDATE_RESULT result;
+			const bool isAlive = (*it)->Update(result, arg);
+			m_componentResult.push_back(result);
 			if (!isAlive) {
 				it = m_oneShotComponents.erase(it);
 			}
@@ -123,7 +130,7 @@ CLASS* DsComponentSystem::_CreateGetComponent(ds_int64 key)
 }
 
 template<class CLASS>
-CLASS* DsComponentSystem::_CreateOneShotComponent(ds_int64 key)
+CLASS* DsComponentSystem::_CreateOneShotComponent()
 {
 	CLASS* pComponent = new CLASS();
 	DS_ASSERT(pComponent, "メモリ確保失敗");
@@ -154,9 +161,9 @@ void DsComponentSystem::RequestTraceEffect(ds_int64 key, int effectId, int dmypo
 	}
 }
 
-void DsComponentSystem::RequestHitEffect(ds_int64 key, int effectId, const DsVec3d& hitPos, DsVec3d hitDir)
+void DsComponentSystem::RequestOneShotHitEffect(int effectId, const DsVec3d& hitPos, DsVec3d hitDir)
 {
-	DsHitEffectComponent* pComponent = _CreateOneShotComponent<DsHitEffectComponent>(key);
+	DsHitEffectComponent* pComponent = _CreateOneShotComponent<DsHitEffectComponent>();
 	if (pComponent) {
 		pComponent->Request(effectId, hitPos, hitDir);
 	}
@@ -178,17 +185,6 @@ void DsComponentSystem::RequestEquip()
 void DsComponentSystem::RequestItemBox()
 {
 	_CreateGetComponent<DsItemBoxComponent>((ds_uint64)(&m_owner));
-}
-
-void DsComponentSystem::RequestAttachWithUpdate(const DsMat44d& target, DsAttachEntity* pMove, double dt)
-{
-	DsAttachComponent* pComponent = _CreateGetComponent<DsAttachComponent>((ds_uint64)(&m_owner));
-	if (pComponent) {
-		pComponent->Request(target, pMove);
-		const COMPONENT_UPDATE_ARG arg(dt, m_owner, m_sys, m_physWorld, m_pGameSys);
-		pComponent->Update(arg);
-		pComponent->Request(target, pMove);
-	}
 }
 
 void DsComponentSystem::RequestLockOnPoint()

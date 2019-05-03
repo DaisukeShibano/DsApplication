@@ -28,7 +28,7 @@ DsDamageComponent::~DsDamageComponent()
 }
 
 //virtual
-bool DsDamageComponent::Update(const COMPONENT_UPDATE_ARG& arg)
+bool DsDamageComponent::Update(COMPONENT_UPDATE_RESULT& result, const COMPONENT_UPDATE_ARG& arg)
 {
 	const bool ret = m_isRequest;
 
@@ -72,7 +72,7 @@ bool DsDamageComponent::Update(const COMPONENT_UPDATE_ARG& arg)
 								if (pDefCom) {
 									const DsVec3d hitPos = result.GetPos()[0];
 									const DsVec3d hitDir = DsVec3d::Normalize(end.GetPos() - m_preEndPos);//‚±‚±‚Ì·•ª‚ð‘¬“x‚Æ‚µ‚Ä“n‚µ‚Ä‚à‚¢‚¢‚©‚à
-									pDefCom->RequestHitEffect(m_hitOwners.size(), param.GetHitEffectId(), hitPos, hitDir);
+									pDefCom->RequestOneShotHitEffect(param.GetHitEffectId(), hitPos, hitDir);
 								}
 
 								const DsVec3d atk = arg.owner.GetPosition();

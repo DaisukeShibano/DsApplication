@@ -18,7 +18,7 @@ namespace DsApp
 		void Request(int effectId, int dmypolyId0, int dmypolyId1);
 
 	public:
-		virtual bool Update(const COMPONENT_UPDATE_ARG& arg) override;
+		virtual bool Update(COMPONENT_UPDATE_RESULT& result, const COMPONENT_UPDATE_ARG& arg) override;
 
 	private:
 		DsLib::DsTraceParticleEmitter* m_pEmitter;
