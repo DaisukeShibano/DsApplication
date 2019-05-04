@@ -6,7 +6,6 @@
 #include "World/Physics/DsAppCollisionFilter.h"
 #include "World/Component/DsComponentSystem.h"
 #include "World/Field/Action/DsActionFlags.h"
-#include "World/Field/HitStop/DsHitStop.h"
 
 
 using namespace DsApp;
@@ -74,7 +73,7 @@ bool DsDamageComponent::Update(COMPONENT_UPDATE_RESULT& outResult, const COMPONE
 								if (pDefCom) {
 									const DsVec3d hitPos = result.GetPos()[0];
 									const DsVec3d hitDir = DsVec3d::Normalize(end.GetPos() - m_preEndPos);//ここの差分を速度として渡してもいいかも
-									pDefCom->RequestOneShotHitEffect(param.GetHitEffectId(), hitPos, hitDir);
+									dmgResult.pDef = pDefCom;
 									dmgResult.hitEffectId = param.GetHitEffectId();
 									dmgResult.hitPos = hitPos;
 									dmgResult.hitDir = hitDir;
@@ -110,31 +109,15 @@ bool DsDamageComponent::Update(COMPONENT_UPDATE_RESULT& outResult, const COMPONE
 								}
 
 								//ノックバック
-								const double kLenDef = param.GetKnockBackLen()*0.65;
-								const double kLenAtk = param.GetKnockBackLen()*0.35;//相手が下がれなかった分下がるのが理想。
-								const double kTime = param.GetKnockBackTime();
-								DsComponentSystem* pAtkCom = arg.owner.GetComponentSystem();
-								if (pDefCom) {//相手が下がる分
-									pDefCom->RequestKnockBack(-toAtk * kLenDef, kTime);
-								}
-								if (pAtkCom) {//自分が下がる分。
-									pAtkCom->RequestKnockBack(toAtk * kLenAtk, kTime);
-								}
-								dmgResult.pAtk = pAtkCom;
 								dmgResult.toAtk = toAtk;
-								dmgResult.kLenAtk = kLenAtk;
-								dmgResult.kLenDef = kLenDef;
-								dmgResult.kTime = kTime;
+								dmgResult.kLenAtk = param.GetKnockBackLen()*0.35;//相手が下がれなかった分下がるのが理想。
+								dmgResult.kLenDef = param.GetKnockBackLen()*0.65;
+								dmgResult.kTime = param.GetKnockBackTime();
 
 								//ヒットストップ
-								if (arg.owner.IsMainPlayer()) {
-									DsHitStop* pHitStop = (arg.pGameSys) ? (arg.pGameSys->GetHitStop()) : (NULL);
-									if (pHitStop) {
-										pHitStop->RequestHitStop(param.GetHitStopTime());
-									}
-									dmgResult.hitStopTime = param.GetHitStopTime();
-								}
+								dmgResult.hitStopTime = param.GetHitStopTime();
 
+								//ダメージ確定
 								outResult.AddDamage(dmgResult);
 
 								//ヒット登録

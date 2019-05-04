@@ -25,6 +25,7 @@
 #endif
 #include "World/Field/Action/DsActionFlags.h"
 
+
 using namespace DsLib;
 using namespace DsPhysics;
 using namespace DsApp;
@@ -39,6 +40,7 @@ DsFieldObj::DsFieldObj(DsSys& sys, DsPhysicsWorld& world)
 	, m_pAnimEventCallback(NULL)
 	, m_pComponentSystem(NULL)
 	, m_pAnimEventFlags(NULL)
+	, m_pGameSys(NULL)
 	, m_exVelocity(DsVec3d::Zero())
 	, m_reqestIsInit(false)
 	, m_isCompleteInit(false)
@@ -59,6 +61,7 @@ DsFieldObj::~DsFieldObj()
 void DsFieldObj::Initialize(const DsFieldInitInfo& initInfo)
 {
 	m_name = initInfo.name;
+	m_pGameSys = initInfo.pGameSys;
 
 	m_pComponentSystem = new DsComponentSystem(*this, m_sys, m_world, initInfo.pGameSys);
 	DS_ASSERT(m_pComponentSystem, "ÉÅÉÇÉäämï€é∏îs");

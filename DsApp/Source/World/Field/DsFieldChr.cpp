@@ -29,8 +29,11 @@
 #ifndef _DS_ACTION_CTRL_
 #include "World/Field/Action/DsActionCtrl.h"
 #endif
+#ifndef _DS_COMPONENT_SYSTEM_
+#include "World/Component/DsComponentSystem.h"
+#endif
 #include "Res/Param/DsChrParam.h"
-
+#include "World/Field/HitStop/DsHitStop.h"
 
 using namespace DsLib;
 using namespace DsPhysics;
@@ -134,6 +137,33 @@ void DsFieldChr::Update2(double dt)
 
 	DsFieldObj::Update2(dt);
 	
+	DsComponentSystem* pComSys = GetComponentSystem();
+	if (pComSys) {
+		const COMPONENT_UPDATE_RESULT& result = pComSys->RefResult();
+		for (const COMPONENT_UPDATE_RESULT::DAMAGE& damage : result.RefDamage()) {
+			if (damage.pDef) {
+				//ヒットエフェクト
+				damage.pDef->RequestOneShotHitEffect(damage.hitEffectId, damage.hitPos, damage.hitDir);
+
+				//ノックバック
+				{//相手が下がる分
+					damage.pDef->RequestKnockBack(-damage.toAtk * damage.kLenDef, damage.kTime);
+				}
+				{//自分が下がる分。
+					pComSys->RequestKnockBack(damage.toAtk * damage.kLenAtk, damage.kTime);
+				}
+			}
+
+			//ヒットストップ
+			if (IsMainPlayer()){
+				DsHitStop* pHitStop = (m_pGameSys) ? (m_pGameSys->GetHitStop()) : (NULL);
+				if (pHitStop) {
+					pHitStop->RequestHitStop(damage.hitStopTime);
+				}
+			}
+		}
+	}
+
 	//AnimEventの後
 	if (m_pActReq) {
 		m_pActReq->Update(dt);

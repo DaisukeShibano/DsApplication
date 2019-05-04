@@ -20,6 +20,7 @@ namespace DsApp
 	class DsComponentSystem;
 	class DsActionRequest;
 	class DsActionFlags;
+	class DsGameSys;
 }
 
 namespace DsApp
@@ -86,6 +87,7 @@ namespace DsApp
 		DsAnimEventCallback* m_pAnimEventCallback;
 		DsComponentSystem* m_pComponentSystem;
 		DsActionFlags* m_pAnimEventFlags;
+		DsGameSys* m_pGameSys;
 		DsVec3d m_exVelocity;
 		bool m_reqestIsInit;
 		bool m_isCompleteInit;

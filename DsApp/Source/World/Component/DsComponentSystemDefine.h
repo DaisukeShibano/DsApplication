@@ -43,7 +43,7 @@ namespace DsApp
 				, kLenDef(0)
 				, kLenAtk(0)
 				, kTime(0)
-				, pAtk(NULL)
+				, pDef(NULL)
 				, hitStopTime(0)
 			{}
 
@@ -55,7 +55,7 @@ namespace DsApp
 			double kLenDef;
 			double kLenAtk;
 			double kTime;
-			DsComponentSystem* pAtk;
+			DsComponentSystem* pDef;
 
 			double hitStopTime;
 		};
