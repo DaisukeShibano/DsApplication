@@ -200,8 +200,8 @@ namespace DsLib
 		{
 			const DsMat22<TYPE> dst =
 			{
-				mat33[0][0], mat33[0][1],
-				mat33[1][0], mat33[1][1],
+				mat22[0][0], mat22[0][1],
+				mat22[1][0], mat22[1][1],
 			};
 			return dst;
 		}
