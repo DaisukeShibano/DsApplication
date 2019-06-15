@@ -1,6 +1,11 @@
 #ifndef __DS_COLLISION_LISTENER__
 #define __DS_COLLISION_LISTENER__
 
+#ifndef __DS_BOUNDING_OCTREE__
+#include "Collision/BoundingTree/DsBoundingOctree.h"
+#endif
+
+
 namespace DsPhysics
 {
 	class DsCollisionGroup;

@@ -1,12 +1,15 @@
 #ifndef _DS_RESOURCE_
 #define _DS_RESOURCE_
 
+#ifndef _DS_RES_ITEM_
+#include "Res/DsResItem.h"
+#endif
+
 namespace DsLib
 {
 	class DsAnimRes;
 	class DsMapRes;
 	class DsHitRes;
-	class DsResItem;
 	class DsResItemFactory;
 }
 
