@@ -40,6 +40,9 @@ namespace
 	typedef void   (* DS_PFNGLUNIFORM2IVPROC) (GLint location, GLsizei count, const GLint *value);
 	typedef void   (* DS_PFNGLUNIFORM3IVPROC) (GLint location, GLsizei count, const GLint *value);
 	typedef void   (* DS_PFNGLUNIFORM4IVPROC) (GLint location, GLsizei count, const GLint *value);
+	typedef void   (* DS_PFNGLUNIFORMMATRIX2FVPROC) (GLint location, GLsizei count, GLboolean transpose, const GLfloat* value);
+	typedef void   (* DS_PFNGLUNIFORMMATRIX3FVPROC) (GLint location, GLsizei count, GLboolean transpose, const GLfloat* value);
+	typedef void   (* DS_PFNGLUNIFORMMATRIX4FVPROC) (GLint location, GLsizei count, GLboolean transpose, const GLfloat* value);
 	typedef void   (* DS_PFNGLACTIVETEXTUREPROC) (GLenum texture);
 	typedef void   (* DS_PFNGLGENERATEMIPMAPEXTPROC) (GLenum target);
 	typedef void   (* DS_PFNGLGENFRAMEBUFFERSEXTPROC) (GLsizei n, GLuint* framebuffers);
@@ -79,6 +82,9 @@ namespace
 	DS_PFNGLUNIFORM2IVPROC s_glUniform2iv;
 	DS_PFNGLUNIFORM3IVPROC s_glUniform3iv;
 	DS_PFNGLUNIFORM4IVPROC s_glUniform4iv;
+	DS_PFNGLUNIFORMMATRIX2FVPROC s_glUniformMatrix2fv;
+	DS_PFNGLUNIFORMMATRIX3FVPROC s_glUniformMatrix3fv;
+	DS_PFNGLUNIFORMMATRIX4FVPROC s_glUniformMatrix4fv;
 	DS_PFNGLACTIVETEXTUREPROC s_glActiveTexture;
 	DS_PFNGLGENERATEMIPMAPEXTPROC s_glGenerateMipmap;
 	DS_PFNGLGENFRAMEBUFFERSEXTPROC s_glGenFramebuffers;
@@ -197,6 +203,18 @@ bool DsLib::DsInitGLFunc()
 	}
 	s_glUniform4iv = (DS_PFNGLUNIFORM4IVPROC)wglGetProcAddress("glUniform4iv");
 	if (!s_glUniform4iv) {
+		return false;
+	}
+	s_glUniformMatrix2fv = (DS_PFNGLUNIFORMMATRIX2FVPROC)wglGetProcAddress("glUniformMatrix2fv");
+	if (!s_glUniformMatrix2fv) {
+		return false;
+	}
+	s_glUniformMatrix3fv = (DS_PFNGLUNIFORMMATRIX3FVPROC)wglGetProcAddress("glUniformMatrix3fv");
+	if (!s_glUniformMatrix3fv) {
+		return false;
+	}
+	s_glUniformMatrix4fv = (DS_PFNGLUNIFORMMATRIX4FVPROC)wglGetProcAddress("glUniformMatrix4fv");
+	if (!s_glUniformMatrix4fv) {
 		return false;
 	}
 	s_glActiveTexture = (DS_PFNGLACTIVETEXTUREPROC)wglGetProcAddress("glActiveTexture");
@@ -377,7 +395,18 @@ void DsLib::DsGLUniform4iv(unsigned int location, int count, const int *value)
 {
 	s_glUniform4iv(location, count, value);
 }
-
+void DsLib::DsGLUniformMatrix2fv(unsigned int location, int count, bool transpose, const float *value)
+{
+	s_glUniformMatrix2fv(location, count, transpose, value);
+}
+void DsLib::DsGLUniformMatrix3fv(unsigned int location, int count, bool transpose, const float *value)
+{
+	s_glUniformMatrix3fv(location, count, transpose, value);
+}
+void DsLib::DsGLUniformMatrix4fv(unsigned int location, int count, bool transpose, const float *value)
+{
+	s_glUniformMatrix4fv(location, count, transpose, value);
+}
 void DsLib::DsGLActiveTexture(unsigned int texture)
 {
 	s_glActiveTexture(texture);

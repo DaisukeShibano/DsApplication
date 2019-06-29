@@ -67,15 +67,11 @@ void DsModelRender::Render() const
 	{
 #ifndef		USE_OLD_MODEL_COOD
 		//À•W
-		const DsMat44d modelMat = DsMat44d::GetTranspose(pModel->GetRotation(), pModel->GetPosition());
+		const DsMat44f modelMat = DsMathUtil::ToMat44f(DsMat44d::GetTranspose(pModel->GetRotation(), pModel->GetPosition()));
 		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
-		//glMultMatrixd(modelMat.mat);
-
-		//glActiveTexture(GL_TEXTURE7);
-		//glMatrixMode(GL_TEXTURE);
-		//glPushMatrix();
-		//glMultMatrixd(modelMat.mat);
+		glMultMatrixf(modelMat.mat);
+		m_pShader->SetDrawModelTransform(modelMat.mat);
 #endif
 
 
@@ -156,9 +152,7 @@ void DsModelRender::Render() const
 							glNormal3dv(pVertexNormals[vIdx].v);
 						}
 						glTexCoord2f(uv.x, uv.y);
-						DsVec3d tmp = pModel->GetRotation()*pVertex[vIdx] + pModel->GetPosition();//glMultMatrixd‚ðŽg‚¦‚é‚æ‚¤‚É‚¹‚Ë‚Î
-						glVertex3dv(tmp.v);
-
+						glVertex3dv(pVertex[vIdx].v);
 						++uvIdx;
 					}
 					glEnd();
@@ -168,10 +162,6 @@ void DsModelRender::Render() const
 			}
 		}
 #ifndef		USE_OLD_MODEL_COOD
-		//glMatrixMode(GL_TEXTURE);
-		//glPopMatrix();
-		//glActiveTexture(GL_TEXTURE0);
-
 		glMatrixMode(GL_MODELVIEW);
 		glPopMatrix();
 #endif

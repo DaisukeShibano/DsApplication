@@ -104,6 +104,9 @@ namespace DsLib
 	void DsGLUniform2iv(unsigned int location, int count, const int *value);
 	void DsGLUniform3iv(unsigned int location, int count, const int *value);
 	void DsGLUniform4iv(unsigned int location, int count, const int *value);
+	void DsGLUniformMatrix2fv(unsigned int location, int count, bool transpose, const float *value);
+	void DsGLUniformMatrix3fv(unsigned int location, int count, bool transpose, const float *value);
+	void DsGLUniformMatrix4fv(unsigned int location, int count, bool transpose, const float *value);
 
 	void DsGLActiveTexture(unsigned int texture);
 	void DsGLGenerateMipmap(unsigned int target);

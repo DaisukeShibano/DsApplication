@@ -16,15 +16,15 @@ using namespace DsLib;
 static const float s_shadowCoef = 0.3f;//影の一番くらいとこ。0で真っ黒
 
 namespace
-{		
+{
 	/* シェーダコンパイルエラーの出力 */
-	static void _printShaderInfoLog( GLuint shader)
+	static void _printShaderInfoLog(GLuint shader)
 	{
 		int logSize;
 		int length;
 
 		/* ログの長さは、最後のNULL文字も含む */
-		DsGLGetShaderiv(shader, DS_GL_INFO_LOG_LENGTH , &logSize);
+		DsGLGetShaderiv(shader, DS_GL_INFO_LOG_LENGTH, &logSize);
 
 		if (logSize > 1)
 		{
@@ -37,13 +37,13 @@ namespace
 
 
 	/* シェーダリンクエラーの出力 */
-	static void _printProgramInfoLog( GLuint program )
+	static void _printProgramInfoLog(GLuint program)
 	{
 		int logSize;
 		int length;
 
 		/* ログの長さは、最後のNULL文字も含む */
-		DsGLGetProgramiv(program, DS_GL_INFO_LOG_LENGTH , &logSize);
+		DsGLGetProgramiv(program, DS_GL_INFO_LOG_LENGTH, &logSize);
 
 		if (logSize > 1)
 		{
@@ -58,17 +58,17 @@ namespace
 	/*
 	 * シェーダープログラムをロードし、コンパイル
 	 */
-	static int _loadShader( const GLuint shader, std::string& shaderSrc )
+	static int _loadShader(const GLuint shader, std::string& shaderSrc)
 	{
 		const void *buf = shaderSrc.data();
 		const int size = static_cast<int>(shaderSrc.size());
-		
+
 		/* シェーダオブジェクトにプログラムをセット */
 		DsGLShaderSource(shader, 1, (char **)&buf, &size);
-  
+
 		/* シェーダのコンパイル */
 		DsGLCompileShader(shader);
-		
+
 		GLint compiled;
 		DsGLGetShaderiv(shader, DS_GL_COMPILE_STATUS, &compiled);
 		_printShaderInfoLog(shader);		/* コンパイルログの出力 */
@@ -150,11 +150,12 @@ namespace
 		virtual void Initialize(std::string& vertex, std::string& flagment) override;
 		virtual void EnableShader(SHADER_TYPE sType) override;
 		virtual void DisableShader() override;
+		virtual void SetDrawModelTransform(const float m[16]) override;
 		virtual void SetTextureUnit(int unit) override;
 		virtual void SetUseTexture(bool isUse) override;
 		virtual void SetUseLight(bool isUse)override;
 		virtual void SetUseShadow(bool isUse)override;
-		virtual void SetBlurParam(float s, int ts, const BlurParam& bp )override;
+		virtual void SetBlurParam(float s, int ts, const BlurParam& bp)override;
 		virtual void SetPostEffectParam(int effTex, int oriTex, int oriDepTex)override;
 		virtual void SetUseNormalMap(bool isUse) override;
 		virtual void SetUseWaveNormalMap(bool isUse) override;
@@ -170,8 +171,8 @@ namespace
 	};
 
 	DsShaderImp::DsShaderImp()
-	:m_currentIdx(0)
-	//,m_prog()
+		:m_currentIdx(0)
+		//,m_prog()
 	{
 	}
 
@@ -201,11 +202,11 @@ namespace
 			{ GetDepthFieldVertexShader2(), GetDepthFieldFragmentShader2() },
 		};
 		const int sourceNum = static_cast<int>(SHADER_TYPE::NUM);
-		static_assert(sizeof(sources)/sizeof(sources[0]) == sourceNum, "シェーダーのソースの数が合いません");
+		static_assert(sizeof(sources) / sizeof(sources[0]) == sourceNum, "シェーダーのソースの数が合いません");
 
 		_versionDisp();
 
-		for (int sIdx=0; sIdx < sourceNum; ++sIdx)
+		for (int sIdx = 0; sIdx < sourceNum; ++sIdx)
 		{
 			_compileShader(m_prog[sIdx], sources[sIdx].pVertexSource, sources[sIdx].pFragmentSource);
 		}
@@ -221,7 +222,7 @@ namespace
 	//virtula
 	void DsShaderImp::EnableShader(SHADER_TYPE sType)
 	{
-		if (SHADER_TYPE::NUM > sType ) {
+		if (SHADER_TYPE::NUM > sType) {
 			int idx = static_cast<int>(sType);
 			m_currentIdx = idx;
 			DsGLUseProgram(m_prog[idx]);
@@ -238,6 +239,10 @@ namespace
 	void DsShaderImp::DisableShader()
 	{
 		DsGLUseProgram(0);
+	}
+	//virtual
+	void DsShaderImp::SetDrawModelTransform(const float m[16]) {
+		DsGLUniformMatrix4fv(DsGLGetUniformLocation(m_prog[m_currentIdx], "drawModelTransform"), 1, false, m);
 	}
 
 	//virtual 

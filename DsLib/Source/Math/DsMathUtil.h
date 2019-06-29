@@ -13,6 +13,15 @@
 #include "Math/DsMatrix33d.h"
 #endif
 
+#ifndef _DS_MATRIX44F_H_
+#include "Math/DsMatrix44f.h"
+#endif
+
+#ifndef _DS_MATRIX44D_H_
+#include "Math/DsMatrix44d.h"
+#endif
+
+
 #define RadToDeg(a)(a*static_cast<double>(180.0 / M_PI))
 #define DegToRad(a)(a*static_cast<double>(M_PI / 180.0))
 #define Clamp(val, _min, _max)( min(max( (_min), (val) ), (_max) ) )
@@ -121,6 +130,19 @@ namespace DsLib
 			{
 				dst += src1[i] * src2[i];
 			}
+		}
+
+		inline
+		DsMat44f ToMat44f(const DsMat44d& src)
+		{
+			const DsMat44f ret =
+			{
+				static_cast<float>(src.m00), static_cast<float>(src.m01), static_cast<float>(src.m02), static_cast<float>(src.m03),
+				static_cast<float>(src.m10), static_cast<float>(src.m11), static_cast<float>(src.m12), static_cast<float>(src.m13),
+				static_cast<float>(src.m20), static_cast<float>(src.m21), static_cast<float>(src.m22), static_cast<float>(src.m23),
+				static_cast<float>(src.m30), static_cast<float>(src.m31), static_cast<float>(src.m32), static_cast<float>(src.m33),
+			};
+			return ret;
 		}
 
 	}

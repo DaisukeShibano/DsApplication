@@ -13,20 +13,20 @@ namespace
 	***************************************************/
 	static const char s_vertex[] = DS_SHADER_STR(
 		// フラグメントシェーダに値を渡すための変数
-		varying vec4 vPos;
+		//varying vec4 vPos;
 		varying vec3 vNrm;
 		varying vec4 vShadowCoord;	//!< シャドウデプスマップの参照用座標
 		attribute vec3 tangent;
 		varying vec3 normalMapLight;
 		varying vec3 normalMapView;
-	
+		uniform mat4 drawModelTransform;//!<描画モデル座標系
 
 		void main(void)
 		{
 			// フラグメントシェーダでの計算用(モデルビュー変換のみ)
-			vPos = gl_ModelViewMatrix*gl_Vertex;			// 頂点位置
+			//vPos = gl_ModelViewMatrix*gl_Vertex;			// 頂点位置
 			vNrm = normalize(gl_NormalMatrix*gl_Normal);	// 頂点法線
-			vShadowCoord = gl_TextureMatrix[7] * gl_Vertex;	// 影用座標値(光源中心座標)
+			vShadowCoord = gl_TextureMatrix[7] * drawModelTransform * gl_Vertex;	// 影用座標値(光源中心座標)
 			
 			// 描画用
 			gl_Position = ftransform();				// 頂点位置
@@ -93,38 +93,38 @@ namespace
 		* Phong反射モデルによるシェーディング
 		* @return 表面反射色
 		*/
-		vec4 PhongShading(const vec4 texColor)
-		{
-			vec3 N = normalize(vNrm);			// 法線ベクトル
-			vec3 L = normalize(gl_LightSource[0].position.xyz - vPos.xyz);	// ライトベクトル
-
-			// 環境光の計算
-			//  - OpenGLが計算した光源強度と反射係数の積(gl_FrontLightProduct)を用いる．
-			vec4 ambient = gl_FrontLightProduct[0].ambient;
-
-			// 拡散反射の計算
-			float dcoef = max(dot(L, N), 0.0);
-			//アニメっぽく
-			//dcoef = (0.5 < dcoef) ? 1.0 : 0.9;
-
-			vec4 diffuse = gl_FrontLightProduct[0].diffuse*dcoef;
-
-
-			// 鏡面反射の計算
-			vec4 specular = vec4(0.0);
-			if (dcoef > 0.0){
-				vec3 V = normalize(-vPos.xyz);		// 視線ベクトル
-
-				// 反射ベクトルの計算(フォン反射モデル)
-				vec3 R = reflect(-L, N);
-				//vec3 R = 2.0*dot(N, L)*N-L;	// reflect関数を用いない場合
-				float specularLight = pow(max(dot(R, V), 0.0), gl_FrontMaterial.shininess);
-
-				specular = gl_FrontLightProduct[0].specular*specularLight;
-			}
-			vec4 baseColor = (isUseColorTexture) ? (texColor) : (gl_Color);
-			return (isUseLight) ? (baseColor*(ambient + diffuse) + specular) : (baseColor);
-		}
+		//vec4 PhongShading(const vec4 texColor)
+		//{
+		//	vec3 N = normalize(vNrm);			// 法線ベクトル
+		//	vec3 L = normalize(gl_LightSource[0].position.xyz - vPos.xyz);	// ライトベクトル
+		//
+		//	// 環境光の計算
+		//	//  - OpenGLが計算した光源強度と反射係数の積(gl_FrontLightProduct)を用いる．
+		//	vec4 ambient = gl_FrontLightProduct[0].ambient;
+		//
+		//	// 拡散反射の計算
+		//	float dcoef = max(dot(L, N), 0.0);
+		//	//アニメっぽく
+		//	//dcoef = (0.5 < dcoef) ? 1.0 : 0.9;
+		//
+		//	vec4 diffuse = gl_FrontLightProduct[0].diffuse*dcoef;
+		//
+		//
+		//	// 鏡面反射の計算
+		//	vec4 specular = vec4(0.0);
+		//	if (dcoef > 0.0){
+		//		vec3 V = normalize(-vPos.xyz);		// 視線ベクトル
+		//
+		//		// 反射ベクトルの計算(フォン反射モデル)
+		//		vec3 R = reflect(-L, N);
+		//		//vec3 R = 2.0*dot(N, L)*N-L;	// reflect関数を用いない場合
+		//		float specularLight = pow(max(dot(R, V), 0.0), gl_FrontMaterial.shininess);
+		//
+		//		specular = gl_FrontLightProduct[0].specular*specularLight;
+		//	}
+		//	vec4 baseColor = (isUseColorTexture) ? (texColor) : (gl_Color);
+		//	return (isUseLight) ? (baseColor*(ambient + diffuse) + specular) : (baseColor);
+		//}
 
 		/*
 		法線を揺らがせる

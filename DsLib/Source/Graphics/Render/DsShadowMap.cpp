@@ -176,16 +176,7 @@ namespace
 
 		// ビューポートをシャドウマップの大きさに変更
 		glViewport(0, 0, m_fDepthSize[0], m_fDepthSize[1]);
-	
-		// 光源を視点として設定
-		//glMatrixMode(GL_PROJECTION);
-		//glLoadMatrixd(light_proj);
-		//glMatrixMode(GL_MODELVIEW);
-		//glLoadMatrixd(light_modelview);//もう既になってて意味ない気がするのでコメントアウト
-	
-		// デプス値以外の色のレンダリングを無効にする
-		//glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);//rgをぼかしの計算で使う
-		
+			
 		glPolygonOffset(1.1f, 4.0f);
 		glEnable(GL_POLYGON_OFFSET_FILL);
 
