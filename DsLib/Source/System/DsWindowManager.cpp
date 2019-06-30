@@ -60,7 +60,6 @@ namespace
 			{
 				if (s_pSys) {
 					if (s_isOneFrame) {
-						s_pSys->RefWindow().Reshape();
 						s_pSys->RefWindow().Display();
 						s_isOneFrame = false;
 					}
@@ -224,6 +223,7 @@ bool DsWindowManager::MainWindowUpdate(ds_uint64 _hwnd, DsSys& sys)
 	}
 
 	s_pSys = &sys;
+	s_pSys->RefWindow().Reshape();
 
 	LARGE_INTEGER freq;
 	BOOL isEnableTimer = QueryPerformanceFrequency(&freq);
