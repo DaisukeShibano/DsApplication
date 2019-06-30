@@ -83,7 +83,7 @@ void DsModelRender::Render() const
 		const int fn = pModel->GetFaceNum();
 		const DsVec4d* pVertex = pModel->GetVertex();
 		const DsModel::Face* pFace = pModel->GetFace();
-		
+
 		//ƒ}ƒeƒŠƒAƒ‹
 		const int mn = pModel->GetMaterialNum();
 		const DsModel::Material* pMtr = pModel->GetMaterial();

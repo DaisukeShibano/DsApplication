@@ -167,12 +167,60 @@ namespace
 	private:
 		unsigned int m_currentIdx;
 		GLuint m_prog[static_cast<int>(SHADER_TYPE::NUM)];
-		GLuint m_tangent;
+		unsigned int m_uniform_drawModelTransform;
+		unsigned int m_uniform_texAlbedo;
+		unsigned int m_uniform_texNormal;
+		unsigned int m_uniform_texSpecular;
+		unsigned int m_uniform_depth_tex;
+		unsigned int m_uniform_depth_tex2;
+		unsigned int m_uniform_shadow_ambient;
+		unsigned int m_uniform_tex;
+		unsigned int m_uniform_isUseColorTexture;
+		unsigned int m_uniform_isUseLight;
+		unsigned int m_uniform_scale;
+		unsigned int m_uniform_textureSource;
+		unsigned int m_uniform_pixNum;
+		unsigned int m_uniform_weight;
+		unsigned int m_uniform_weightSum;
+		unsigned int m_uniform_colTexEff;
+		unsigned int m_uniform_colTexOri;
+		unsigned int m_uniform_depTexOri;
+		unsigned int m_uniform_isUseNormalMap;
+		unsigned int m_uniform_isUseWaveNormalMap;
+		unsigned int m_uniform_isUseSpecularMap;
+		unsigned int m_uniform_time;
+		unsigned int m_uniform_depTexEff;
+		unsigned int m_uniform_blurTex;
+		
 	};
 
 	DsShaderImp::DsShaderImp()
-		:m_currentIdx(0)
-		//,m_prog()
+		: m_currentIdx(0)
+		, m_prog{}
+		, m_uniform_drawModelTransform(0)
+		, m_uniform_texAlbedo(0)
+		, m_uniform_texNormal(0)
+		, m_uniform_texSpecular(0)
+		, m_uniform_depth_tex(0)
+		, m_uniform_depth_tex2(0)
+		, m_uniform_shadow_ambient(0)
+		, m_uniform_tex(0)
+		, m_uniform_isUseColorTexture(0)
+		, m_uniform_isUseLight(0)
+		, m_uniform_scale(0)
+		, m_uniform_textureSource(0)
+		, m_uniform_pixNum(0)
+		, m_uniform_weight(0)
+		, m_uniform_weightSum(0)
+		, m_uniform_colTexEff(0)
+		, m_uniform_colTexOri(0)
+		, m_uniform_depTexOri(0)
+		, m_uniform_isUseNormalMap(0)
+		, m_uniform_isUseWaveNormalMap(0)
+		, m_uniform_isUseSpecularMap(0)
+		, m_uniform_time(0)
+		, m_uniform_depTexEff(0)
+		, m_uniform_blurTex(0)
 	{
 	}
 
@@ -226,12 +274,40 @@ namespace
 			int idx = static_cast<int>(sType);
 			m_currentIdx = idx;
 			DsGLUseProgram(m_prog[idx]);
-			DsGLUniform1i(DsGLGetUniformLocation(m_prog[idx], "texAlbedo"), 0);//普通のテクスチャは０番に
-			DsGLUniform1i(DsGLGetUniformLocation(m_prog[idx], "texNormal"), 1);
-			DsGLUniform1i(DsGLGetUniformLocation(m_prog[idx], "texSpecular"), 2);
-			DsGLUniform1i(DsGLGetUniformLocation(m_prog[idx], "depth_tex"), 7);
-			DsGLUniform1i(DsGLGetUniformLocation(m_prog[idx], "depth_tex2"), 6);
-			DsGLUniform1f(DsGLGetUniformLocation(m_prog[idx], "shadow_ambient"), s_shadowCoef);//GLSLの"shadow_ambient"という変数に値をセット
+
+			//呼び出し回数が多く負荷になってるので最初に求めておく
+			m_uniform_drawModelTransform      = DsGLGetUniformLocation(m_prog[idx], "drawModelTransform");
+			m_uniform_texAlbedo               = DsGLGetUniformLocation(m_prog[idx], "texAlbedo");
+			m_uniform_texNormal               = DsGLGetUniformLocation(m_prog[idx], "texNormal");
+			m_uniform_texSpecular			  = DsGLGetUniformLocation(m_prog[idx], "texSpecular");
+			m_uniform_depth_tex				  = DsGLGetUniformLocation(m_prog[idx], "depth_tex");
+			m_uniform_depth_tex2			  = DsGLGetUniformLocation(m_prog[idx], "depth_tex2");
+			m_uniform_shadow_ambient		  = DsGLGetUniformLocation(m_prog[idx], "shadow_ambient");
+			m_uniform_tex					  = DsGLGetUniformLocation(m_prog[idx], "tex");
+			m_uniform_isUseColorTexture		  = DsGLGetUniformLocation(m_prog[idx], "isUseColorTexture");
+			m_uniform_isUseLight			  = DsGLGetUniformLocation(m_prog[idx], "isUseLight");
+			m_uniform_scale					  = DsGLGetUniformLocation(m_prog[idx], "scale");
+			m_uniform_textureSource			  = DsGLGetUniformLocation(m_prog[idx], "textureSource");
+			m_uniform_pixNum				  = DsGLGetUniformLocation(m_prog[idx], "pixNum");
+			m_uniform_weight				  = DsGLGetUniformLocation(m_prog[idx], "weight");
+			m_uniform_weightSum				  = DsGLGetUniformLocation(m_prog[idx], "weightSum");
+			m_uniform_colTexEff				  = DsGLGetUniformLocation(m_prog[idx], "colTexEff");
+			m_uniform_colTexOri				  = DsGLGetUniformLocation(m_prog[idx], "colTexOri");
+			m_uniform_depTexOri				  = DsGLGetUniformLocation(m_prog[idx], "depTexOri");
+			m_uniform_isUseNormalMap		  = DsGLGetUniformLocation(m_prog[idx], "isUseNormalMap");
+			m_uniform_isUseWaveNormalMap	  = DsGLGetUniformLocation(m_prog[idx], "isUseWaveNormalMap");
+			m_uniform_isUseSpecularMap		  = DsGLGetUniformLocation(m_prog[idx], "isUseSpecularMap");
+			m_uniform_time					  = DsGLGetUniformLocation(m_prog[idx], "time");
+			m_uniform_depTexEff				  = DsGLGetUniformLocation(m_prog[idx], "depTexEff");
+			m_uniform_blurTex				  = DsGLGetUniformLocation(m_prog[idx], "blurTex");
+
+
+			DsGLUniform1i(m_uniform_texAlbedo, 0);//普通のテクスチャは０番に
+			DsGLUniform1i(m_uniform_texNormal, 1);
+			DsGLUniform1i(m_uniform_texSpecular, 2);
+			DsGLUniform1i(m_uniform_depth_tex, 7);
+			DsGLUniform1i(m_uniform_depth_tex2, 6);
+			DsGLUniform1f(m_uniform_shadow_ambient, s_shadowCoef);
 		}
 	}
 
@@ -242,81 +318,81 @@ namespace
 	}
 	//virtual
 	void DsShaderImp::SetDrawModelTransform(const float m[16]) {
-		DsGLUniformMatrix4fv(DsGLGetUniformLocation(m_prog[m_currentIdx], "drawModelTransform"), 1, false, m);
+		DsGLUniformMatrix4fv(m_uniform_drawModelTransform, 1, false, m);
 	}
 
 	//virtual 
 	void DsShaderImp::SetTextureUnit(int unit)
 	{
-		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "tex"), unit);
+		DsGLUniform1i(m_uniform_tex, unit);
 	}
 
 	//virtual 
 	void DsShaderImp::SetUseTexture(bool isUse)
 	{
-		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "isUseColorTexture"), isUse);
+		DsGLUniform1i(m_uniform_isUseColorTexture, isUse);
 	}
 
 	//virtual 
 	void DsShaderImp::SetUseLight(bool isUse)
 	{
-		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "isUseLight"), isUse);
+		DsGLUniform1i(m_uniform_isUseLight, isUse);
 	}
 
 	//virtual 
 	void DsShaderImp::SetUseShadow(bool isUse)
 	{
 		const float val = (isUse) ? (s_shadowCoef) : (0.0f);
-		DsGLUniform1f(DsGLGetUniformLocation(m_prog[m_currentIdx], "shadow_ambient"), val);
+		DsGLUniform1f(m_uniform_shadow_ambient, val);
 	}
 
 	//virtual
 	void DsShaderImp::SetBlurParam(float s, int ts, const BlurParam& bp)
 	{
-		DsGLUniform1f(DsGLGetUniformLocation(m_prog[m_currentIdx], "scale"), s);
-		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "textureSource"), ts);
-		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "pixNum"), bp.pixNum);
-		DsGLUniform1fv(DsGLGetUniformLocation(m_prog[m_currentIdx], "weight"), bp.pixNum, bp.weight);
-		DsGLUniform1f(DsGLGetUniformLocation(m_prog[m_currentIdx], "weightSum"), bp.weightSum);
+		DsGLUniform1f(m_uniform_scale, s);
+		DsGLUniform1i(m_uniform_textureSource, ts);
+		DsGLUniform1i(m_uniform_pixNum, bp.pixNum);
+		DsGLUniform1fv(m_uniform_weight, bp.pixNum, bp.weight);
+		DsGLUniform1f(m_uniform_weightSum, bp.weightSum);
 	}
 
 	//virtual
 	void DsShaderImp::SetPostEffectParam(int effTex, int oriTex, int oriDepTex)
 	{
-		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "colTexEff"), effTex);
-		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "colTexOri"), oriTex);
-		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "depTexOri"), oriDepTex);
+		DsGLUniform1i(m_uniform_colTexEff, effTex);
+		DsGLUniform1i(m_uniform_colTexOri, oriTex);
+		DsGLUniform1i(m_uniform_depTexOri, oriDepTex);
 	}
 
 	//virtual 
 	void DsShaderImp::SetUseNormalMap(bool isUse)
 	{
-		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "isUseNormalMap"), isUse);
+		DsGLUniform1i(m_uniform_isUseNormalMap, isUse);
 	}
 
 	//virtual
 	void DsShaderImp::SetUseWaveNormalMap(bool isUse)
 	{
-		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "isUseWaveNormalMap"), isUse);
+		DsGLUniform1i(m_uniform_isUseWaveNormalMap, isUse);
 	}
 
 	//virtual 
 	void DsShaderImp::SetUseSpecularMap(bool isUse)
 	{
-		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "isUseSpecularMap"), isUse);
+		DsGLUniform1i(m_uniform_isUseSpecularMap, isUse);
 	}
 
 	//virtual
 	void DsShaderImp::SetTime(float t)
 	{
-		DsGLUniform1f(DsGLGetUniformLocation(m_prog[m_currentIdx], "time"), t);
+		DsGLUniform1f(m_uniform_time, t);
 	}
 
 	//virtual
 	void DsShaderImp::DepthFieldParam(int depTex, int blurTex)
 	{
-		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "depTexEff"), depTex);
-		DsGLUniform1i(DsGLGetUniformLocation(m_prog[m_currentIdx], "blurTex"), blurTex);
+		DsGLUniform1i(m_uniform_depTexEff, depTex);
+		DsGLUniform1i(m_uniform_blurTex, blurTex);
 	}
 
 }

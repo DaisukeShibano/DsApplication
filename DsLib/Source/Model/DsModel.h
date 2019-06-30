@@ -145,6 +145,10 @@ namespace DsLib
 		typedef std::vector<int> ShareNlmIdxs;
 		ShareNlmIdxs* m_pVertexNormalIdxs;
 		DsVec3d* m_pVertexNormals;
+
+	private:
+		int m_updateNormalFIdx;
+		int m_updateNormalVIdx;
 	};
 }
 

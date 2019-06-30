@@ -5,6 +5,12 @@
 
 using namespace DsLib;
 
+namespace
+{
+	const int UPDATE_NORMAL_F_NUM = 200;
+	const int UPDATE_NORMAL_V_NUM = 200;
+}
+
 DsModel::DsModel() 
 	: m_pVertex(0)
 	, m_vn(0)
@@ -18,6 +24,8 @@ DsModel::DsModel()
 	, m_rot(DsMat33d::Identity())
 	, m_pVertexNormalIdxs(NULL)
 	, m_pVertexNormals(NULL)
+	, m_updateNormalFIdx(0)
+	, m_updateNormalVIdx(0)
 {
 
 }
@@ -157,18 +165,27 @@ void DsModel::UpdateNormal()
 	Face* pFace = GetFace();
 	const DsVec4d* pVertex = GetVertex();
 	const int fn = GetFaceNum();
-	for (int fi = 0; fi < fn; ++fi)
+	const int endFn = min(fn, m_updateNormalFIdx + UPDATE_NORMAL_F_NUM);
+	int fi = m_updateNormalFIdx;
+	for (; fi < endFn; ++fi)
 	{
 		const int fvn = pFace[fi].vn;
 		DS_ASSERT((3 <= fvn), "DsModelの面の頂点数が３未満");
 		pFace[fi].normal = DsVec4d::CalcNormal(pVertex[pFace[fi].pIndex[0]], pVertex[pFace[fi].pIndex[1]], pVertex[pFace[fi].pIndex[2]]);
 	}
+	m_updateNormalFIdx += fi;
+	if (fn <= m_updateNormalFIdx) {
+		m_updateNormalFIdx = 0;
+	}
+
 
 	//頂点法線更新
 	if (m_pVertexNormalIdxs && m_pVertexNormals)
 	{
 		const int vn = GetVertexNum();
-		for (int vi = 0; vi < vn; ++vi)
+		const int endVn = min(vn, m_updateNormalVIdx + UPDATE_NORMAL_V_NUM);
+		int vi = m_updateNormalVIdx;
+		for (; vi < endVn; ++vi)
 		{
 			DsVec3d normal = DsVec3d::Zero();
 			for (int fIdx : m_pVertexNormalIdxs[vi])
@@ -177,6 +194,10 @@ void DsModel::UpdateNormal()
 				normal = normal + DsVec3d::ToVec3(static_cast<float>(pFace[fIdx].normal.x), static_cast<float>(pFace[fIdx].normal.y), static_cast<float>(pFace[fIdx].normal.z));
 			}
 			m_pVertexNormals[vi] = DsVec3d::Normalize(normal);
+		}
+		m_updateNormalVIdx += vi;
+		if (vn <= m_updateNormalVIdx) {
+			m_updateNormalVIdx = 0;
 		}
 	}
 }
