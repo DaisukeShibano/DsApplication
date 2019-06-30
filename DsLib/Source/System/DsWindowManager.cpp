@@ -223,7 +223,12 @@ bool DsWindowManager::MainWindowUpdate(ds_uint64 _hwnd, DsSys& sys)
 	}
 
 	s_pSys = &sys;
-	s_pSys->RefWindow().Reshape();
+
+	static bool isInit = false;
+	if (!isInit) {
+		s_pSys->RefWindow().Reshape();
+		isInit = true;
+	}
 
 	LARGE_INTEGER freq;
 	BOOL isEnableTimer = QueryPerformanceFrequency(&freq);
