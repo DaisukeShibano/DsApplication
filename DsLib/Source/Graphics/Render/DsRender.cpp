@@ -145,6 +145,9 @@ void DsRender::Render( const double dt )
 	//通常シーン描画用シェーダー
 	m_pShader->EnableShader(SHADER_TYPE::DEFAULT);
 
+	//ポストプロセス用バッファの準備
+	m_pPostEffectBuffer->SetupBuffer(DS_GL_TEXTURE3, DS_GL_TEXTURE4, DS_GL_TEXTURE5);//2まではモデルレンダーの中で使っている
+
 	//通常シーン描画
 	_RenderModel();
 	
@@ -162,10 +165,10 @@ void DsRender::Render( const double dt )
 	m_pBloom->Bloom();
 
 	//SSAO
-	m_pSSAO->SSAO();
+	//m_pSSAO->SSAO();
 
 	//被写界深度
-	m_pDepthField->DepthField();
+	//m_pDepthField->DepthField();
 
 	//ポストエフェクトをレンダリング画面へ
 	m_pPostEffectBuffer->RenderFrame();

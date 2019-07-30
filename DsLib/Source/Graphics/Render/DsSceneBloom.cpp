@@ -23,32 +23,12 @@ namespace
 			: m_render(ren)
 			, m_shader(shader)
 			, m_postEffectBuffer(postEffectBuffer)
-			, m_blurTexTmp(0)
-			, m_blurFboIdTmp(0)
 		{
-			const int width = static_cast<int>(ren.GetWidth());
-			const int height = static_cast<int>(ren.GetHeight());
-
-			//ブラー用
-			glGenTextures(1, &m_blurTexTmp);
-			glBindTexture(GL_TEXTURE_2D, m_blurTexTmp);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-			glTexImage2D(GL_TEXTURE_2D, 0, DS_GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, 0);
-			glBindTexture(GL_TEXTURE_2D, 0);
-
-			DsGLGenFramebuffers(1, &m_blurFboIdTmp);
-			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_blurFboIdTmp);
-			DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, DS_GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_blurTexTmp, 0);
-			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
+			
 		}
 
 		virtual ~DsSceneBloomImp()
 		{
-			glDeleteTextures(1, &m_blurTexTmp);
-			DsGLDeleteFramebuffers(1, &m_blurFboIdTmp);
 		}
 
 		virtual void Bloom() override
@@ -57,7 +37,7 @@ namespace
 				m_shader.EnableShader(SHADER_TYPE::BLOOM1);
 				m_shader.SetPostEffectParam(0, 1, 2);
 				DsGLActiveTexture(DS_GL_TEXTURE0);
-				m_postEffectBuffer.BindTexture();//加工用バッファ
+				m_postEffectBuffer.BindTextureOri();//加工前バッファ
 				m_postEffectBuffer.BindFrameBuffer();
 				_Draw();
 				m_postEffectBuffer.UnbindFrameBuffer();
@@ -70,16 +50,16 @@ namespace
 				const DsShader::BlurParam blurParam = DsShader::GetBlurParam(19);
 				m_shader.SetBlurParam(1.0f / (static_cast<float>(width)), 0, blurParam);
 				DsGLActiveTexture(DS_GL_TEXTURE0);
-				m_postEffectBuffer.BindTexture();//0番目に加工前をバインド
-				DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_blurFboIdTmp);//結果を横方向バッファへ
+				m_postEffectBuffer.BindTexture();//0番目に輝度抽出したテクスチャをバインド
+				m_postEffectBuffer.BindTmpFrameBuffer1();//結果を横方向バッファへ
 				_Draw();
-				DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
+				m_postEffectBuffer.UnbindFrameBuffer();
 
 				m_shader.EnableShader(SHADER_TYPE::BLUR_VERTICAL);
 				m_shader.SetBlurParam(1.0f / static_cast<float>(height), 0, blurParam);
 				DsGLActiveTexture(DS_GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, m_blurTexTmp);//0番目に横方向加工済みをバインド
-				m_postEffectBuffer.BindFrameBuffer();//結果をm_postEffectBufferへ
+				m_postEffectBuffer.BindTmpColorTexture1();//0番目に横方向加工済みをバインド
+				m_postEffectBuffer.BindTmpFrameBuffer2();//結果を縦方向バッファへ
 				_Draw();
 				m_postEffectBuffer.UnbindFrameBuffer();
 			}
@@ -87,7 +67,7 @@ namespace
 				m_shader.EnableShader(SHADER_TYPE::BLOOM2);
 				m_shader.SetPostEffectParam(0, 1, 2);
 				DsGLActiveTexture(DS_GL_TEXTURE0);
-				m_postEffectBuffer.BindTexture();//0番のテスクチャにぼかしをバインド
+				m_postEffectBuffer.BindTmpColorTexture2();//0番目に縦横方向加工済みをバインド
 				DsGLActiveTexture(DS_GL_TEXTURE1);
 				m_postEffectBuffer.BindTextureOri();//1番のテスクチャに加工前をバインド
 				//2は使わない
@@ -136,8 +116,6 @@ namespace
 		const DsRender& m_render;
 		DsShader& m_shader;
 		DsPostEffectBuffer& m_postEffectBuffer;
-		GLuint m_blurTexTmp;
-		GLuint m_blurFboIdTmp;
 	};
 
 }

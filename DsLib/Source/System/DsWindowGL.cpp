@@ -78,7 +78,7 @@ void DsWindowGL::Display()
 		*(m_pSys),
 		m_pSys->GetDt()
 		);
-	wglMakeCurrent((HDC)m_hDC, (HGLRC)m_hGLRC);
+	//wglMakeCurrent((HDC)m_hDC, (HGLRC)m_hGLRC);//–ˆƒtƒŒ[ƒ€ŒÄ‚Ô‚Æ•‰‰×
 	m_pLoop->BeforeWindowUpdate(args);
 	m_pSys->Update();
 	m_pLoop->AfterWindowUpdate();

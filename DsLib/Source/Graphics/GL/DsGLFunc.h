@@ -120,6 +120,7 @@ namespace DsLib
 	void DsGLFramebufferRenderbuffer(unsigned int target, unsigned int attachment, unsigned int renderbuffertarget, unsigned int renderbuffer);
 	void DsGLDeleteFramebuffers(int n, const unsigned int* framebuffers);
 	void DsGLDeleteRenderbuffers(int n, const unsigned int* renderbuffers);
+	void DsGLDrawBuffers(int n, const unsigned int* bufs);
 
 }
 

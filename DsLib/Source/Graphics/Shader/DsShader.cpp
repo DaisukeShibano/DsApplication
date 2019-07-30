@@ -301,7 +301,6 @@ namespace
 			m_uniform_depTexEff				  = DsGLGetUniformLocation(m_prog[idx], "depTexEff");
 			m_uniform_blurTex				  = DsGLGetUniformLocation(m_prog[idx], "blurTex");
 
-
 			DsGLUniform1i(m_uniform_texAlbedo, 0);//普通のテクスチャは０番に
 			DsGLUniform1i(m_uniform_texNormal, 1);
 			DsGLUniform1i(m_uniform_texSpecular, 2);

@@ -14,6 +14,14 @@ using namespace DsLib;
 
 namespace
 {
+	static const int _TEMP_TEX_NUM = 2;
+
+	static const GLenum s_bufEnum[] = {
+		DS_GL_COLOR_ATTACHMENT0, //   加工用カラーバッファ
+		DS_GL_COLOR_ATTACHMENT1, //   元画像カラーバッファ
+		DS_GL_COLOR_ATTACHMENT2, //   法線バッファ
+	};
+
 	class DsPostEffectBufferImp : public DsPostEffectBuffer
 	{
 	public:
@@ -21,9 +29,13 @@ namespace
 			: m_render(ren)
 			, m_shader(shader)
 			, m_fboId(0)
+			, m_fboPostId(0)
 			, m_texId(0)
 			, m_texOriId(0)
 			, m_depTexOriId(0)
+			, m_normalOriId(0)
+			, m_tempFbo{}
+			, m_tempColorTex{}
 		{
 			const int width = static_cast<int>(ren.GetWidth());
 			const int height = static_cast<int>(ren.GetHeight());
@@ -36,11 +48,7 @@ namespace
 			glTexImage2D(GL_TEXTURE_2D, 0, DS_GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, 0);
 			glBindTexture(GL_TEXTURE_2D, 0);
 			
-			DsGLGenFramebuffers(1, &m_fboId);
-			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_fboId);
-			DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, DS_GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texId, 0);
-			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
-
+			//カラーテクスチャ
 			glGenTextures(1, &m_texOriId);
 			glBindTexture(GL_TEXTURE_2D, m_texOriId);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -60,36 +68,98 @@ namespace
 			glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_BYTE, 0);
 			glBindTexture(GL_TEXTURE_2D, 0);
 
+			//法線テクスチャ
+			glGenTextures(1, &m_normalOriId);
+			glBindTexture(GL_TEXTURE_2D, m_normalOriId);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+			glTexImage2D(GL_TEXTURE_2D, 0, DS_GL_RGB32F, width, height, 0, GL_RGBA, GL_FLOAT, 0);
+			glBindTexture(GL_TEXTURE_2D, 0);
+
+			//シーンレンダリングの情報保存用フレームバッファオブジェクト
+			DsGLGenFramebuffers(1, &m_fboId);
+			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_fboId);
+			DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, s_bufEnum[0], GL_TEXTURE_2D, m_texId, 0);
+			DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, s_bufEnum[1], GL_TEXTURE_2D, m_texOriId, 0);
+			DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, s_bufEnum[2], GL_TEXTURE_2D, m_normalOriId, 0);
+			DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, DS_GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depTexOriId, 0);
+			
+			//ポストエフェクト用fbo
+			DsGLGenFramebuffers(1, &m_fboPostId);
+			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_fboPostId);
+			DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, DS_GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texId, 0);
+
+			//一時計算用テクスチャとfbo
+			glGenTextures(2, m_tempColorTex);
+			for (int i = 0; i < _TEMP_TEX_NUM; ++i) {
+				glBindTexture(GL_TEXTURE_2D, m_tempColorTex[i]);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+				glTexImage2D(GL_TEXTURE_2D, 0, DS_GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, 0);
+			}
+			DsGLGenFramebuffers(2, m_tempFbo);
+			for (int i = 0; i < _TEMP_TEX_NUM; ++i) {
+				DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_tempFbo[i]);
+				DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, DS_GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_tempColorTex[i], 0);
+			}
+
+			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
+			
 		}
 
-		~DsPostEffectBufferImp()
+		virtual ~DsPostEffectBufferImp()
 		{
 			glDeleteTextures(1, &m_texId);
 			DsGLDeleteFramebuffers(1, &m_fboId);
+			DsGLDeleteFramebuffers(1, &m_fboPostId);
 			glDeleteTextures(1, &m_texOriId);
 			glDeleteTextures(1, &m_depTexOriId);
+			glDeleteTextures(1, &m_normalOriId);
+			DsGLDeleteFramebuffers(2, m_tempFbo);
+			glDeleteTextures(2, m_tempColorTex);
+		}
+
+		virtual void SetupBuffer(unsigned int tex1, unsigned int tex2, unsigned int tex3) override
+		{
+			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_fboId);
+
+			DsGLActiveTexture(tex1);
+			glBindTexture(GL_TEXTURE_2D, m_texId);
+			DsGLActiveTexture(tex2);
+			glBindTexture(GL_TEXTURE_2D, m_texOriId);
+			DsGLActiveTexture(tex3);
+			glBindTexture(GL_TEXTURE_2D, m_normalOriId);
+			DsGLActiveTexture(DS_GL_TEXTURE0);
+
+			// レンダーターゲットを指定する
+			// フラグメントシェーダー内でgl_FragData[]で対応するバッファに書き出せる
+			DsGLDrawBuffers(sizeof(s_bufEnum) / sizeof(s_bufEnum[0]), s_bufEnum);
+
+			//バッファ切り替えたので再クリア
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		}
 
 		virtual void CopyFrameBuffer() override
 		{
-			const int width = static_cast<int>(m_render.GetWidth());
-			const int height = static_cast<int>(m_render.GetHeight());
-			DsGLActiveTexture(DS_GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_2D, m_texId);
-			glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 0, 0, width, height, 0);
-			glBindTexture(GL_TEXTURE_2D, 0);
+			//バインドし直し
+			//シェーダー内で参照する番号に合わせる
+			//毎回バインドしなおしてるのでいらない
+			//DsGLActiveTexture(DS_GL_TEXTURE0);
+			//glBindTexture(GL_TEXTURE_2D, m_texId);
+			//DsGLActiveTexture(DS_GL_TEXTURE1);
+			//glBindTexture(GL_TEXTURE_2D, m_texOriId);
+			//DsGLActiveTexture(DS_GL_TEXTURE2);
+			//glBindTexture(GL_TEXTURE_2D, m_depTexOriId);
+			//DsGLActiveTexture(DS_GL_TEXTURE3);
+			//glBindTexture(GL_TEXTURE_2D, m_normalOriId);
+			//DsGLActiveTexture(DS_GL_TEXTURE0);
 
-			DsGLActiveTexture(DS_GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, m_texOriId);
-			glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 0, 0, width, height, 0);
-			glBindTexture(GL_TEXTURE_2D, 0);
+			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
 
-			DsGLActiveTexture(DS_GL_TEXTURE2);
-			glBindTexture(GL_TEXTURE_2D, m_depTexOriId);
-			glCopyTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, 0, 0, width, height, 0);
-			glBindTexture(GL_TEXTURE_2D, 0);
-
-			DsGLActiveTexture(DS_GL_TEXTURE0);
 		}
 
 		virtual void RenderFrame() override
@@ -143,6 +213,16 @@ namespace
 			glBindTexture(GL_TEXTURE_2D, m_depTexOriId);
 		}
 
+		virtual void BindTmpColorTexture1()override
+		{
+			glBindTexture(GL_TEXTURE_2D, m_tempColorTex[0]);
+		}
+
+		virtual void BindTmpColorTexture2()override
+		{
+			glBindTexture(GL_TEXTURE_2D, m_tempColorTex[1]);
+		}
+
 		virtual void UnbindTexture() override
 		{
 			glBindTexture(GL_TEXTURE_2D, 0);
@@ -150,7 +230,17 @@ namespace
 
 		virtual void BindFrameBuffer() override
 		{
-			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_fboId);
+			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_fboPostId);
+		}
+
+		virtual void BindTmpFrameBuffer1()override
+		{
+			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_tempFbo[0]);
+		}
+
+		virtual void BindTmpFrameBuffer2()override
+		{
+			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_tempFbo[1]);
 		}
 
 		virtual void UnbindFrameBuffer() override
@@ -200,9 +290,13 @@ namespace
 		const DsRender& m_render;
 		DsShader& m_shader;
 		GLuint m_fboId;
+		GLuint m_fboPostId;
 		GLuint m_texId;
 		GLuint m_texOriId;
 		GLuint m_depTexOriId;
+		GLuint m_normalOriId;
+		GLuint m_tempFbo[_TEMP_TEX_NUM];
+		GLuint m_tempColorTex[_TEMP_TEX_NUM];
 	};
 }
 

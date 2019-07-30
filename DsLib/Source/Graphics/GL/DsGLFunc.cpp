@@ -55,6 +55,7 @@ namespace
 	typedef void   (* DS_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC) (GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer);
 	typedef void   (* DS_PFNGLDELETEFRAMEBUFFERSEXTPROC) (GLsizei n, const GLuint* framebuffers);
 	typedef void   (* DS_PFNGLDELETERENDERBUFFERSEXTPROC) (GLsizei n, const GLuint* renderbuffers);
+	typedef void   (* DS_PFNGLDRAWBUFFERSPROC) (GLsizei n, const GLenum* bufs);
 
 	DS_PFNGLGETSHADERIVPROC s_glGetShaderiv;
 	DS_PFNGLGETSHADERINFOLOGPROC s_glGetShaderInfoLog;
@@ -97,6 +98,7 @@ namespace
 	DS_PFNGLFRAMEBUFFERRENDERBUFFEREXTPROC s_glFramebufferRenderbuffer;
 	DS_PFNGLDELETEFRAMEBUFFERSEXTPROC s_glDeleteFramebuffers;
 	DS_PFNGLDELETERENDERBUFFERSEXTPROC s_glDeleteRenderbuffers;
+	DS_PFNGLDRAWBUFFERSPROC s_glDrawBuffers;
 }
 
 bool DsLib::DsInitGLFunc()
@@ -265,7 +267,10 @@ bool DsLib::DsInitGLFunc()
 	if (!s_glDeleteRenderbuffers) {
 		return false;
 	}
-
+	s_glDrawBuffers = (DS_PFNGLDRAWBUFFERSPROC)wglGetProcAddress("glDrawBuffers");
+	if (!s_glDrawBuffers) {
+		return false;
+	}
 	return true;
 }
 
@@ -465,4 +470,9 @@ void DsLib::DsGLDeleteFramebuffers(int n, const unsigned int* framebuffers)
 void DsLib::DsGLDeleteRenderbuffers(int n, const unsigned int* renderbuffers)
 {
 	s_glDeleteRenderbuffers(n, renderbuffers);
+}
+
+void DsLib::DsGLDrawBuffers(int n, const unsigned int* bufs)
+{
+	s_glDrawBuffers(n, bufs);
 }

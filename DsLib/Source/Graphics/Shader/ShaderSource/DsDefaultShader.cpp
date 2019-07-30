@@ -65,7 +65,7 @@ namespace
 	***************************************************/
 	static const char s_fragment[] = DS_SHADER_STR(
 		// バーテックスシェーダから受け取る変数
-		varying vec4 vPos;
+		//varying vec4 vPos;
 		varying vec3 vNrm;
 		varying vec4 vShadowCoord;
 		varying vec3 normalMapLight;
@@ -252,11 +252,16 @@ namespace
 			vec4 depth_tex_coord2 = texture2D(depth_tex2, shadow_coord.xy);//ぼかし要素が入ってる影テクスチャ
 			float shadow_blurry = ChebyshevUpperBound(shadow_coord, depth_tex_coord2);
 			float shadow_blurry_modify = min(shadow_ambient + shadow_blurry, 1.0);
-			gl_FragColor = vec4(shadow_blurry_modify)*light_col;
+			vec4 fragColor = vec4(shadow_blurry_modify)*light_col;
 
 			//アルファ値は個別で算出
 			//glColor4f()のアルファ値だけを適用する。フェードアウト用など
-			gl_FragColor.w = gl_Color.w * texColor.w;
+			fragColor.w = gl_Color.w * texColor.w;
+
+			//gl_FragColor = fragColor;
+			gl_FragData[0] = fragColor;
+			gl_FragData[1] = fragColor;
+			gl_FragData[2] = fragColor;
 		}
 	);
 }
