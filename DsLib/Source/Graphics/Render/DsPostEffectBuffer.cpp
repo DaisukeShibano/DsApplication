@@ -14,12 +14,16 @@ using namespace DsLib;
 
 namespace
 {
-	static const int _TEMP_TEX_NUM = 2;
+	static const int _TEMP_TEX_NUM = 3;
 
 	static const GLenum s_bufEnum[] = {
 		DS_GL_COLOR_ATTACHMENT0, //   加工用カラーバッファ
 		DS_GL_COLOR_ATTACHMENT1, //   元画像カラーバッファ
 		DS_GL_COLOR_ATTACHMENT2, //   法線バッファ
+	};
+
+	static const GLenum s_bufEnumPost[] = {
+		DS_GL_COLOR_ATTACHMENT0, //   加工用カラーバッファ
 	};
 
 	class DsPostEffectBufferImp : public DsPostEffectBuffer
@@ -36,6 +40,7 @@ namespace
 			, m_normalOriId(0)
 			, m_tempFbo{}
 			, m_tempColorTex{}
+			, m_currentResultTex(0)
 		{
 			const int width = static_cast<int>(ren.GetWidth());
 			const int height = static_cast<int>(ren.GetHeight());
@@ -85,14 +90,9 @@ namespace
 			DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, s_bufEnum[1], GL_TEXTURE_2D, m_texOriId, 0);
 			DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, s_bufEnum[2], GL_TEXTURE_2D, m_normalOriId, 0);
 			DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, DS_GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depTexOriId, 0);
-			
-			//ポストエフェクト用fbo
-			DsGLGenFramebuffers(1, &m_fboPostId);
-			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_fboPostId);
-			DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, DS_GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texId, 0);
 
 			//一時計算用テクスチャとfbo
-			glGenTextures(2, m_tempColorTex);
+			glGenTextures(_TEMP_TEX_NUM, m_tempColorTex);
 			for (int i = 0; i < _TEMP_TEX_NUM; ++i) {
 				glBindTexture(GL_TEXTURE_2D, m_tempColorTex[i]);
 				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -101,14 +101,21 @@ namespace
 				glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 				glTexImage2D(GL_TEXTURE_2D, 0, DS_GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, 0);
 			}
-			DsGLGenFramebuffers(2, m_tempFbo);
+			DsGLGenFramebuffers(_TEMP_TEX_NUM, m_tempFbo);
 			for (int i = 0; i < _TEMP_TEX_NUM; ++i) {
 				DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_tempFbo[i]);
 				DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, DS_GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_tempColorTex[i], 0);
 			}
 
+			//ポストエフェクト用fbo
+			DsGLGenFramebuffers(1, &m_fboPostId);
+			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_fboPostId);
+			DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, s_bufEnumPost[0], GL_TEXTURE_2D, m_texId, 0);
+
 			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
 			
+			//デフォルトは加工前を指す
+			m_currentResultTex = m_texId;
 		}
 
 		virtual ~DsPostEffectBufferImp()
@@ -145,21 +152,15 @@ namespace
 
 		virtual void CopyFrameBuffer() override
 		{
-			//バインドし直し
-			//シェーダー内で参照する番号に合わせる
-			//毎回バインドしなおしてるのでいらない
-			//DsGLActiveTexture(DS_GL_TEXTURE0);
-			//glBindTexture(GL_TEXTURE_2D, m_texId);
-			//DsGLActiveTexture(DS_GL_TEXTURE1);
-			//glBindTexture(GL_TEXTURE_2D, m_texOriId);
-			//DsGLActiveTexture(DS_GL_TEXTURE2);
-			//glBindTexture(GL_TEXTURE_2D, m_depTexOriId);
-			//DsGLActiveTexture(DS_GL_TEXTURE3);
-			//glBindTexture(GL_TEXTURE_2D, m_normalOriId);
-			//DsGLActiveTexture(DS_GL_TEXTURE0);
+			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_fboPostId);
+
+			//ポストエフェクト用に切り替え
+			DsGLDrawBuffers(sizeof(s_bufEnumPost) / sizeof(s_bufEnumPost[0]), s_bufEnumPost);
+
+			//バッファ切り替えたので再クリア
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
-
 		}
 
 		virtual void RenderFrame() override
@@ -181,7 +182,7 @@ namespace
 			glColor4f(1, 1, 1, 1);
 			DsGLActiveTexture(DS_GL_TEXTURE0);
 			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, m_texId);
+			glBindTexture(GL_TEXTURE_2D, m_currentResultTex);
 			glNormal3d(0, 0, 1);
 			glBegin(GL_QUADS);
 			glTexCoord2d(0, 0); glVertex3d(0, 0, 0);
@@ -213,8 +214,8 @@ namespace
 			glBindTexture(GL_TEXTURE_2D, m_depTexOriId);
 		}
 
-		//ここには直前のポストエフェクトの結果が入るように組む
-		//計算途中のテンポラリとして使っても良い
+		//直前のポストエフェクトの結果として使う
+		//計算途中のテンポラリとしても使う
 		virtual void BindTmpColorTexture1()override
 		{
 			glBindTexture(GL_TEXTURE_2D, m_tempColorTex[0]);
@@ -224,6 +225,12 @@ namespace
 		virtual void BindTmpColorTexture2()override
 		{
 			glBindTexture(GL_TEXTURE_2D, m_tempColorTex[1]);
+		}
+
+		//好きにつかっていい奴
+		virtual void BindTmpColorTexture3()override
+		{
+			glBindTexture(GL_TEXTURE_2D, m_tempColorTex[2]);
 		}
 
 		virtual void UnbindTexture() override
@@ -246,26 +253,34 @@ namespace
 			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_tempFbo[1]);
 		}
 
+		virtual void BindTmpFrameBuffer3()override
+		{
+			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_tempFbo[2]);
+		}
+
 		virtual void UnbindFrameBuffer() override
 		{
 			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
 		}
 
-		
-		virtual void CopyTmpColorTexture1() override
+
+		virtual void SetCurrentResult(int idx) override
 		{
-			const int width = static_cast<int>(m_render.GetWidth());
-			const int height = static_cast<int>(m_render.GetHeight());
-			glCopyTexSubImage2D(m_tempColorTex[0], 0, 0, 0, 0, 0, width, height);
+			if (idx == 0) {
+				m_currentResultTex = m_texId;
+			}
+			else if( (1<=idx)&&(idx<=_TEMP_TEX_NUM)){
+				m_currentResultTex = m_tempColorTex[idx - 1];
+			}
+			else {
+				m_currentResultTex = 0;
+			}
 		}
 
-		virtual void CopyTmpColorTexture2() override
+		virtual void BindCurrentResultTexture() override
 		{
-			const int width = static_cast<int>(m_render.GetWidth());
-			const int height = static_cast<int>(m_render.GetHeight());
-			glCopyTexSubImage2D(m_tempColorTex[1], 0, 0, 0, 0, 0, width, height);
+			glBindTexture(GL_TEXTURE_2D, m_currentResultTex);
 		}
-
 
 	public:
 		virtual void DbgDraw() override
@@ -286,7 +301,7 @@ namespace
 			glColor4f(1, 1, 1, 1);
 			DsGLActiveTexture(DS_GL_TEXTURE0);
 			glEnable(GL_TEXTURE_2D);
-			glBindTexture(GL_TEXTURE_2D, m_texId);
+			glBindTexture(GL_TEXTURE_2D, m_currentResultTex);
 			glNormal3d(0, 0, 1);
 			glBegin(GL_QUADS);
 			glTexCoord2d(0, 0); glVertex3d(0.05*w, 0.05*h, 0);
@@ -315,6 +330,7 @@ namespace
 		GLuint m_normalOriId;
 		GLuint m_tempFbo[_TEMP_TEX_NUM];
 		GLuint m_tempColorTex[_TEMP_TEX_NUM];
+		GLuint m_currentResultTex;
 	};
 }
 

@@ -72,9 +72,11 @@ namespace
 				m_postEffectBuffer.BindTextureOri();//1番のテスクチャに加工前をバインド
 				//2は使わない
 
-				m_postEffectBuffer.BindTmpFrameBuffer1();//次のポストエフェクトへ渡す
+				m_postEffectBuffer.BindFrameBuffer();
 				_Draw();
 				m_postEffectBuffer.UnbindFrameBuffer();
+
+				m_postEffectBuffer.SetCurrentResult(0);//0番目を結果に
 			}
 
 			m_postEffectBuffer.UnbindTexture();

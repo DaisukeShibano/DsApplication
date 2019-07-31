@@ -101,6 +101,7 @@ namespace//高輝度抽出
 			sResult = min(1.0, sResult + distBias);//距離で明るくなる分をプラス
 			
 			vec4 srcCol = texture2D(colTexEff, gl_TexCoord[0].st);
+
 			gl_FragColor = vec4(srcCol.rgb*sResult, srcCol.w);
 		}
 	);

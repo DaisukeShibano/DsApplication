@@ -31,15 +31,17 @@ namespace
 			m_shader.EnableShader(SHADER_TYPE::SSAO);
 			m_shader.SetPostEffectParam(0, 1, 2);
 			DsGLActiveTexture(DS_GL_TEXTURE0);
-			m_postEffectBuffer.BindTmpColorTexture1();//一つ前のポストエフェクトの結果をもらう
+			m_postEffectBuffer.BindCurrentResultTexture();//一つ前のポストエフェクトの結果をもらう
 			DsGLActiveTexture(DS_GL_TEXTURE2);
 			m_postEffectBuffer.BindDepTextureOri();
-			m_postEffectBuffer.BindFrameBuffer();
+			m_postEffectBuffer.BindTmpFrameBuffer1();
 			_Draw();
 			m_postEffectBuffer.UnbindFrameBuffer();
 			m_postEffectBuffer.UnbindTexture();
 			DsGLActiveTexture(DS_GL_TEXTURE0);
 			m_shader.DisableShader();
+
+			m_postEffectBuffer.SetCurrentResult(1);//1番目を結果に
 		}
 
 	private:

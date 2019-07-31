@@ -23,15 +23,17 @@ namespace DsLib
 		virtual void BindDepTextureOri() = 0;
 		virtual void BindTmpColorTexture1() = 0;
 		virtual void BindTmpColorTexture2() = 0;
+		virtual void BindTmpColorTexture3() = 0;
 		virtual void UnbindTexture() = 0;
 
 		virtual void BindFrameBuffer() = 0;
 		virtual void BindTmpFrameBuffer1() = 0;
 		virtual void BindTmpFrameBuffer2() = 0;
+		virtual void BindTmpFrameBuffer3() = 0;
 		virtual void UnbindFrameBuffer() = 0;
 
-		virtual void CopyTmpColorTexture1() = 0;
-		virtual void CopyTmpColorTexture2() = 0;
+		virtual void SetCurrentResult(int idx) = 0;
+		virtual void BindCurrentResultTexture() = 0;
 
 	public:
 		virtual void DbgDraw() = 0;
