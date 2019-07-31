@@ -37,7 +37,7 @@ namespace
 				m_shader.EnableShader(SHADER_TYPE::BLOOM1);
 				m_shader.SetPostEffectParam(0, 1, 2);
 				DsGLActiveTexture(DS_GL_TEXTURE0);
-				m_postEffectBuffer.BindTextureOri();//加工前バッファ
+				m_postEffectBuffer.BindTextureOri();//一番最初のオリジナルカラーバッファ
 				m_postEffectBuffer.BindFrameBuffer();
 				_Draw();
 				m_postEffectBuffer.UnbindFrameBuffer();
@@ -72,7 +72,7 @@ namespace
 				m_postEffectBuffer.BindTextureOri();//1番のテスクチャに加工前をバインド
 				//2は使わない
 
-				m_postEffectBuffer.BindFrameBuffer();
+				m_postEffectBuffer.BindTmpFrameBuffer1();//次のポストエフェクトへ渡す
 				_Draw();
 				m_postEffectBuffer.UnbindFrameBuffer();
 			}

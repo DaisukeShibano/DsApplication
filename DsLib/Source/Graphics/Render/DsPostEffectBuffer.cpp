@@ -213,11 +213,14 @@ namespace
 			glBindTexture(GL_TEXTURE_2D, m_depTexOriId);
 		}
 
+		//ここには直前のポストエフェクトの結果が入るように組む
+		//計算途中のテンポラリとして使っても良い
 		virtual void BindTmpColorTexture1()override
 		{
 			glBindTexture(GL_TEXTURE_2D, m_tempColorTex[0]);
 		}
 
+		//好きにつかっていい奴
 		virtual void BindTmpColorTexture2()override
 		{
 			glBindTexture(GL_TEXTURE_2D, m_tempColorTex[1]);
@@ -246,6 +249,21 @@ namespace
 		virtual void UnbindFrameBuffer() override
 		{
 			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
+		}
+
+		
+		virtual void CopyTmpColorTexture1() override
+		{
+			const int width = static_cast<int>(m_render.GetWidth());
+			const int height = static_cast<int>(m_render.GetHeight());
+			glCopyTexSubImage2D(m_tempColorTex[0], 0, 0, 0, 0, 0, width, height);
+		}
+
+		virtual void CopyTmpColorTexture2() override
+		{
+			const int width = static_cast<int>(m_render.GetWidth());
+			const int height = static_cast<int>(m_render.GetHeight());
+			glCopyTexSubImage2D(m_tempColorTex[1], 0, 0, 0, 0, 0, width, height);
 		}
 
 

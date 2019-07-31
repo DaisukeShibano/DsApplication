@@ -262,6 +262,7 @@ namespace
 			gl_FragData[0] = fragColor;
 			gl_FragData[1] = fragColor;
 			gl_FragData[2] = fragColor;
+			gl_FragData[3] = fragColor;
 		}
 	);
 }

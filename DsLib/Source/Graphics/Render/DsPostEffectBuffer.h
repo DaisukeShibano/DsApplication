@@ -30,6 +30,9 @@ namespace DsLib
 		virtual void BindTmpFrameBuffer2() = 0;
 		virtual void UnbindFrameBuffer() = 0;
 
+		virtual void CopyTmpColorTexture1() = 0;
+		virtual void CopyTmpColorTexture2() = 0;
+
 	public:
 		virtual void DbgDraw() = 0;
 	};

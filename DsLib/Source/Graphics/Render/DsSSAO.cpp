@@ -24,7 +24,6 @@ namespace
 			, m_shader(shader)
 			, m_postEffectBuffer(postEffectBuffer)
 		{
-			
 		}
 
 		virtual void SSAO() override
@@ -32,10 +31,12 @@ namespace
 			m_shader.EnableShader(SHADER_TYPE::SSAO);
 			m_shader.SetPostEffectParam(0, 1, 2);
 			DsGLActiveTexture(DS_GL_TEXTURE0);
-			m_postEffectBuffer.BindTexture();
+			m_postEffectBuffer.BindTmpColorTexture1();//一つ前のポストエフェクトの結果をもらう
 			DsGLActiveTexture(DS_GL_TEXTURE2);
 			m_postEffectBuffer.BindDepTextureOri();
+			m_postEffectBuffer.BindFrameBuffer();
 			_Draw();
+			m_postEffectBuffer.UnbindFrameBuffer();
 			m_postEffectBuffer.UnbindTexture();
 			DsGLActiveTexture(DS_GL_TEXTURE0);
 			m_shader.DisableShader();
@@ -44,8 +45,6 @@ namespace
 	private:
 		void _Draw()
 		{
-			m_postEffectBuffer.BindFrameBuffer();
-
 			glMatrixMode(GL_PROJECTION);
 			glPushMatrix();
 			glLoadIdentity();
@@ -65,8 +64,6 @@ namespace
 			glPopMatrix();
 			glMatrixMode(GL_MODELVIEW);
 			glPopMatrix();
-
-			m_postEffectBuffer.UnbindFrameBuffer();
 		}
 
 	public:
