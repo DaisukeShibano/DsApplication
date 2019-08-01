@@ -38,7 +38,7 @@ namespace
 				DsGLActiveTexture(DS_GL_TEXTURE2);
 				m_postEffectBuffer.BindDepTextureOri();
 				
-				m_postEffectBuffer.BindFrameBuffer();//‚±‚±‚É[“x‚ğ‘‚«‚İ
+				m_postEffectBuffer.BindTmpFrameBuffer1();//‚±‚±‚É[“x‚ğ‘‚«‚İ
 				_Draw();
 				m_postEffectBuffer.UnbindFrameBuffer();
 			}
@@ -49,18 +49,18 @@ namespace
 
 				const DsShader::BlurParam blurParam = DsShader::GetBlurParam(29, 100.0f);
 
-				m_postEffectBuffer.BindTmpFrameBuffer2();//‰¡•ûŒü‚ÖŠi”[
-				DsGLActiveTexture(DS_GL_TEXTURE0);
-				m_postEffectBuffer.BindCurrentResultTexture();//Œ³‰æ‘œ‚ğQÆ
 				m_shader.EnableShader(SHADER_TYPE::BLUR_HORIZON);
 				m_shader.SetBlurParam(1.0f / (static_cast<float>(width)), 0, blurParam);
+				DsGLActiveTexture(DS_GL_TEXTURE0);
+				m_postEffectBuffer.BindCurrentResultTexture();//Œ³‰æ‘œ‚ğQÆ
+				m_postEffectBuffer.BindTmpFrameBuffer2();//‰¡•ûŒü‚ÖŠi”[
 				_Draw();
 
-				m_postEffectBuffer.BindTmpFrameBuffer3();//Œ‹‰Ê‚ğŠi”[
-				DsGLActiveTexture(DS_GL_TEXTURE0);
-				m_postEffectBuffer.BindTmpColorTexture2();//‰¡•ûŒü‚ğQÆ
 				m_shader.EnableShader(SHADER_TYPE::BLUR_VERTICAL);
 				m_shader.SetBlurParam(1.0f / static_cast<float>(height), 0, blurParam);
+				DsGLActiveTexture(DS_GL_TEXTURE0);
+				m_postEffectBuffer.BindTmpColorTexture2();//‰¡•ûŒü‚ğQÆ
+				m_postEffectBuffer.BindTmpFrameBuffer3();//Œ‹‰Ê‚ğŠi”[
 				_Draw();
 
 				DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
@@ -74,7 +74,7 @@ namespace
 				DsGLActiveTexture(DS_GL_TEXTURE0);
 				m_postEffectBuffer.BindCurrentResultTexture();//‰ÁH‘O
 				DsGLActiveTexture(DS_GL_TEXTURE3);
-				m_postEffectBuffer.BindTexture();//[“x
+				m_postEffectBuffer.BindTmpColorTexture1();//[“x
 				DsGLActiveTexture(DS_GL_TEXTURE4);
 				m_postEffectBuffer.BindTmpColorTexture3();//ƒuƒ‰[
 

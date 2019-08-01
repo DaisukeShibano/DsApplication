@@ -37,7 +37,7 @@ namespace
 				m_shader.EnableShader(SHADER_TYPE::BLOOM1);
 				m_shader.SetPostEffectParam(0, 1, 2);
 				DsGLActiveTexture(DS_GL_TEXTURE0);
-				m_postEffectBuffer.BindTextureOri();//一番最初のオリジナルカラーバッファ
+				m_postEffectBuffer.BindCurrentResultTexture();
 				m_postEffectBuffer.BindFrameBuffer();
 				_Draw();
 				m_postEffectBuffer.UnbindFrameBuffer();
@@ -51,15 +51,15 @@ namespace
 				m_shader.SetBlurParam(1.0f / (static_cast<float>(width)), 0, blurParam);
 				DsGLActiveTexture(DS_GL_TEXTURE0);
 				m_postEffectBuffer.BindTexture();//0番目に輝度抽出したテクスチャをバインド
-				m_postEffectBuffer.BindTmpFrameBuffer1();//結果を横方向バッファへ
+				m_postEffectBuffer.BindTmpFrameBuffer2();//結果を横方向バッファへ
 				_Draw();
 				m_postEffectBuffer.UnbindFrameBuffer();
 
 				m_shader.EnableShader(SHADER_TYPE::BLUR_VERTICAL);
 				m_shader.SetBlurParam(1.0f / static_cast<float>(height), 0, blurParam);
 				DsGLActiveTexture(DS_GL_TEXTURE0);
-				m_postEffectBuffer.BindTmpColorTexture1();//0番目に横方向加工済みをバインド
-				m_postEffectBuffer.BindTmpFrameBuffer2();//結果を縦方向バッファへ
+				m_postEffectBuffer.BindTmpColorTexture2();//横方向加工済みをバインド
+				m_postEffectBuffer.BindTmpFrameBuffer3();//結果を縦方向バッファへ
 				_Draw();
 				m_postEffectBuffer.UnbindFrameBuffer();
 			}
@@ -67,9 +67,9 @@ namespace
 				m_shader.EnableShader(SHADER_TYPE::BLOOM2);
 				m_shader.SetPostEffectParam(0, 1, 2);
 				DsGLActiveTexture(DS_GL_TEXTURE0);
-				m_postEffectBuffer.BindTmpColorTexture2();//0番目に縦横方向加工済みをバインド
+				m_postEffectBuffer.BindTmpColorTexture3();//0番目に縦横方向加工済みをバインド
 				DsGLActiveTexture(DS_GL_TEXTURE1);
-				m_postEffectBuffer.BindTextureOri();//1番のテスクチャに加工前をバインド
+				m_postEffectBuffer.BindCurrentResultTexture();//1番のテスクチャに加工前をバインド
 				//2は使わない
 
 				m_postEffectBuffer.BindFrameBuffer();

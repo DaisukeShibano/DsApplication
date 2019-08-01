@@ -113,9 +113,6 @@ namespace
 			DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, s_bufEnumPost[0], GL_TEXTURE_2D, m_texId, 0);
 
 			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
-			
-			//デフォルトは加工前を指す
-			m_currentResultTex = m_texId;
 		}
 
 		virtual ~DsPostEffectBufferImp()
@@ -161,6 +158,9 @@ namespace
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, 0);
+
+			//デフォルトは加工前を指す
+			m_currentResultTex = m_texId;
 		}
 
 		virtual void RenderFrame() override

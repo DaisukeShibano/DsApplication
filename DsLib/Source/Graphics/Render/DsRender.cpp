@@ -170,12 +170,12 @@ void DsRender::Render( const double dt )
 	//SSR
 	m_pSSR->SSR();
 
+	//SSAO
+	m_pSSAO->SSAO();
+
 	//ブルーム
 	m_pBloom->Bloom();
-
-	//SSAO
-	m_pSSAO->SSAO();//ブルームよりも先の方がいい
-
+	
 	//被写界深度
 	m_pDepthField->DepthField();
 
