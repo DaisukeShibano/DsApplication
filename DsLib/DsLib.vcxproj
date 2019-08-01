@@ -225,6 +225,7 @@
     <ClCompile Include="Source\Graphics\Render\DsSceneBloom.cpp" />
     <ClCompile Include="Source\Graphics\Render\DsShadowMap.cpp" />
     <ClCompile Include="Source\Graphics\Render\DsSSAO.cpp" />
+    <ClCompile Include="Source\Graphics\Render\DsSSR.cpp" />
     <ClCompile Include="Source\Graphics\Render\DsTexture.cpp" />
     <ClCompile Include="Source\Graphics\Render\Tool\Cloud\DsCloudEmitter.cpp" />
     <ClCompile Include="Source\Graphics\Render\Tool\Cloud\DsCloudIns.cpp" />
@@ -237,6 +238,7 @@
     <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsDepthFieldShader.cpp" />
     <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsShadowMapShader.cpp" />
     <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsSSAOShader.cpp" />
+    <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsSSRShader.cpp" />
     <ClCompile Include="Source\Keyboard\DsKeyboard.cpp" />
     <ClCompile Include="Source\Math\DsAabb.cpp" />
     <ClCompile Include="Source\Math\DsMathUtil.cpp" />
@@ -296,6 +298,7 @@
     <ClInclude Include="Source\Graphics\Render\DsSceneBloom.h" />
     <ClInclude Include="Source\Graphics\Render\DsShadowMap.h" />
     <ClInclude Include="Source\Graphics\Render\DsSSAO.h" />
+    <ClInclude Include="Source\Graphics\Render\DsSSR.h" />
     <ClInclude Include="Source\Graphics\Render\DsTexture.h" />
     <ClInclude Include="Source\Graphics\Render\Tool\Cloud\DsCloudEmitter.h" />
     <ClInclude Include="Source\Graphics\Render\Tool\Cloud\DsCloudIns.h" />
@@ -308,6 +311,7 @@
     <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsDepthFieldShader.h" />
     <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsShadowMapShader.h" />
     <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsSSAOShader.h" />
+    <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsSSRShader.h" />
     <ClInclude Include="Source\Keyboard\DsKeyboard.h" />
     <ClInclude Include="Source\Math\DsAabb.h" />
     <ClInclude Include="Source\Math\DsInverseMatIteration.h" />

@@ -27,6 +27,7 @@
 #include "Graphics/Render/DsPostEffectBuffer.h"
 #include "Graphics/Render/DsSSAO.h"
 #include "Graphics/Render/DsDepthField.h"
+#include "Graphics/Render/DsSSR.h"
 
 
 using namespace DsLib;
@@ -46,6 +47,7 @@ DsRender::DsRender(DsCamera& cam, DsSys& sys)
 ,m_pBloom(NULL)
 ,m_pSSAO(NULL)
 ,m_pDepthField(NULL)
+,m_pSSR(NULL)
 ,m_pShader(NULL)
 ,m_pDrawCom(NULL)
 ,m_light(DsLightMan::GetIns().GetSunLight())
@@ -93,6 +95,9 @@ DsRender::DsRender(DsCamera& cam, DsSys& sys)
 	m_pDepthField = DsDepthField::Create(*this, *m_pShader, *m_pPostEffectBuffer);
 	DS_ASSERT(m_pDepthField, "メモリ確保失敗");
 
+	m_pSSR = DsSSR::Create(*this, *m_pShader, *m_pPostEffectBuffer);
+	DS_ASSERT(m_pSSR, "メモリ確保失敗");
+
 	m_light.SetPos(DsVec3f::ToVec3(0, 5, 0));
 	m_light.SetDir(DsVec3f::ToVec3(0, -1, 0));
 
@@ -112,6 +117,7 @@ DsRender::~DsRender()
 	delete m_pShader; m_pShader = NULL;
 	delete m_pSSAO; m_pSSAO = NULL;
 	delete m_pDepthField; m_pDepthField = NULL;
+	delete m_pSSR; m_pSSR = NULL;
 	delete m_pDrawCom; m_pDrawCom=NULL;
 }
 
@@ -161,11 +167,14 @@ void DsRender::Render( const double dt )
 	//この時点のフレームバッファをポストプロセス用バッファにコピー
 	m_pPostEffectBuffer->CopyFrameBuffer();
 
+	//SSR
+	m_pSSR->SSR();
+
 	//ブルーム
 	m_pBloom->Bloom();
 
 	//SSAO
-	m_pSSAO->SSAO();
+	m_pSSAO->SSAO();//ブルームよりも先の方がいい
 
 	//被写界深度
 	m_pDepthField->DepthField();

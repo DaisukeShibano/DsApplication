@@ -14,6 +14,7 @@ namespace DsLib
 		SSAO,
 		DEPTH_FIELD1,
 		DEPTH_FIELD2,
+		SSR,
 		NUM,
 	};
 

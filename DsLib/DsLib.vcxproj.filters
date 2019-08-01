@@ -310,6 +310,12 @@
     <ClCompile Include="Source\Error\DsError.cpp">
       <Filter>Source\Error</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Graphics\Render\DsSSR.cpp">
+      <Filter>Source\Graphics\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsSSRShader.cpp">
+      <Filter>Source\Graphics\Shader\ShaderSource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsPch.h">
@@ -584,6 +590,12 @@
     </ClInclude>
     <ClInclude Include="Source\Res\Param\DsMaterialParam.h">
       <Filter>Source\Res\Param</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Render\DsSSR.h">
+      <Filter>Source\Graphics\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsSSRShader.h">
+      <Filter>Source\Graphics\Shader\ShaderSource</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

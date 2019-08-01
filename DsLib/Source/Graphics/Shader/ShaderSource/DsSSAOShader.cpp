@@ -5,7 +5,7 @@ using namespace DsLib;
 #define DS_SHADER_STR(str) #str
 
 
-namespace//高輝度抽出
+namespace
 {
 	/***************************************************
 	@brief		バーテックスシェーダー

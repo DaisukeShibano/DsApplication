@@ -7,6 +7,7 @@
 #include "Graphics/Shader/ShaderSource/DsBloomShader.h"
 #include "Graphics/Shader/ShaderSource/DsSSAOShader.h"
 #include "Graphics/Shader/ShaderSource/DsDepthFieldShader.h"
+#include "Graphics/Shader/ShaderSource/DsSSRShader.h"
 #ifndef _DS_GL_FUNC_
 #include "Graphics/GL/DsGLFunc.h"
 #endif
@@ -248,6 +249,7 @@ namespace
 			{ GetSSAOVertexShader(), GetSSAOFragmentShader() },
 			{ GetDepthFieldVertexShader1(), GetDepthFieldFragmentShader1() },
 			{ GetDepthFieldVertexShader2(), GetDepthFieldFragmentShader2() },
+			{ GetSSRVertexShader(), GetSSRFragmentShader() },
 		};
 		const int sourceNum = static_cast<int>(SHADER_TYPE::NUM);
 		static_assert(sizeof(sources) / sizeof(sources[0]) == sourceNum, "シェーダーのソースの数が合いません");
