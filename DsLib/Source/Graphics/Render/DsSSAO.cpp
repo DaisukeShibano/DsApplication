@@ -31,7 +31,7 @@ namespace
 			m_shader.EnableShader(SHADER_TYPE::SSAO);
 			m_shader.SetPostEffectParam(0, 1, 2);
 			DsGLActiveTexture(DS_GL_TEXTURE0);
-			m_postEffectBuffer.BindTextureOri();//SSRóàÇΩÇÁïœçX
+			m_postEffectBuffer.BindCurrentResultTexture();
 			DsGLActiveTexture(DS_GL_TEXTURE2);
 			m_postEffectBuffer.BindDepTextureOri();
 			m_postEffectBuffer.BindTmpFrameBuffer1();

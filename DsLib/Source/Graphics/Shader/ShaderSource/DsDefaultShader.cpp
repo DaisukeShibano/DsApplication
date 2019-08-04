@@ -261,7 +261,7 @@ namespace
 			//gl_FragColor = fragColor;
 			gl_FragData[0] = fragColor;
 			gl_FragData[1] = fragColor;
-			gl_FragData[2] = fragColor;
+			gl_FragData[2] = vec4(vec3(vNrm + 1.0), 0.0);
 		}
 	);
 }

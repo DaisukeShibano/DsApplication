@@ -163,7 +163,7 @@ namespace
 		virtual void SetUseSpecularMap(bool isUse) override;
 		virtual void SetTime(float t) override;
 		virtual void DepthFieldParam(int depTex, int blurTex) override;
-
+		virtual void NormalTex(int normalTex) override;
 
 	private:
 		unsigned int m_currentIdx;
@@ -192,6 +192,7 @@ namespace
 		unsigned int m_uniform_time;
 		unsigned int m_uniform_depTexEff;
 		unsigned int m_uniform_blurTex;
+		unsigned int m_uniform_normalTex;
 		
 	};
 
@@ -222,6 +223,7 @@ namespace
 		, m_uniform_time(0)
 		, m_uniform_depTexEff(0)
 		, m_uniform_blurTex(0)
+
 	{
 	}
 
@@ -302,6 +304,7 @@ namespace
 			m_uniform_time					  = DsGLGetUniformLocation(m_prog[idx], "time");
 			m_uniform_depTexEff				  = DsGLGetUniformLocation(m_prog[idx], "depTexEff");
 			m_uniform_blurTex				  = DsGLGetUniformLocation(m_prog[idx], "blurTex");
+			m_uniform_normalTex				  = DsGLGetUniformLocation(m_prog[idx], "normalTex");
 
 			DsGLUniform1i(m_uniform_texAlbedo, 0);//普通のテクスチャは０番に
 			DsGLUniform1i(m_uniform_texNormal, 1);
@@ -396,6 +399,11 @@ namespace
 		DsGLUniform1i(m_uniform_blurTex, blurTex);
 	}
 
+	//virtual 
+	void DsShaderImp::NormalTex(int normalTex)
+	{
+		DsGLUniform1i(m_uniform_normalTex, normalTex);
+	}
 }
 
 //static

@@ -48,7 +48,7 @@ namespace DsLib
 		virtual void SetUseSpecularMap(bool isUse) =NULL;
 		virtual void SetTime(float t) = NULL;
 		virtual void DepthFieldParam(int depTex, int blurTex) = NULL;
-
+		virtual void NormalTex(int normalTex) = NULL;
 	};
 
 }

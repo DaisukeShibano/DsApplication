@@ -28,7 +28,20 @@ namespace
 
 		virtual void SSR() override
 		{
-			
+			m_shader.EnableShader(SHADER_TYPE::SSR);
+			m_shader.SetPostEffectParam(0, 1, 2);
+			DsGLActiveTexture(DS_GL_TEXTURE0);
+			m_postEffectBuffer.BindTextureOri();
+			DsGLActiveTexture(DS_GL_TEXTURE2);
+			m_postEffectBuffer.BindDepTextureOri();
+			m_postEffectBuffer.BindFrameBuffer();
+			_Draw();
+			m_postEffectBuffer.UnbindFrameBuffer();
+			m_postEffectBuffer.UnbindTexture();
+			DsGLActiveTexture(DS_GL_TEXTURE0);
+			m_shader.DisableShader();
+
+			m_postEffectBuffer.SetCurrentResult(0);//0”Ô–Ú‚ðŒ‹‰Ê‚É
 		}
 
 	private:
