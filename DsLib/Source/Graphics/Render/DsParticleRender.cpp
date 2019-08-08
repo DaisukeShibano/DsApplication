@@ -59,6 +59,21 @@ void DsParticleRender::Render() const
 	glDisable(GL_CULL_FACE);
 	glDepthMask(GL_FALSE);
 
+	{//モデルプロジェクション行列セット
+		const DsMat44f modelMat = DsMat44f::Identity();
+		DsMat44f projMat = DsMat44f::Identity();
+		glGetFloatv(GL_PROJECTION_MATRIX, projMat.mat);
+
+		DsMat44f modelProjMat = projMat;
+
+		DsMat44f modelProjInv = DsMat44f::Identity();
+		DsInverseMatrix<4, float>(modelProjMat.mat, modelProjInv.mat);
+
+		m_pShader->SetModelViewTransform(modelMat.mat);
+		m_pShader->SetModelViewProjectionTransform(modelProjMat.mat);
+		m_pShader->SetModelViewProjectionInverseTransform(modelProjInv.mat);
+	}
+
 	const DsVec3d camDir = -m_cam.GetRot().GetAxisZ();
 
 	for (const DsParticleEmitter* pEmitter : m_emitterList) {

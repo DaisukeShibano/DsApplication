@@ -371,6 +371,17 @@ namespace DsLib
 			return dst;
 		}
 
+		static DsMat44f GetTranspose(const DsMat44f& src)
+		{
+			const DsMat44f dst =
+			{
+				src.m00, src.m10, src.m20, src.m30,
+				src.m01, src.m11, src.m21, src.m31,
+				src.m02, src.m12, src.m22, src.m32,
+				src.m03, src.m13, src.m23, src.m33,
+			};
+			return dst;
+		}
 	};
 }
 

@@ -24,6 +24,8 @@ namespace DsLib
 		virtual void BindTmpColorTexture1() = 0;
 		virtual void BindTmpColorTexture2() = 0;
 		virtual void BindTmpColorTexture3() = 0;
+		virtual void BindNormalTexture() = 0;
+		virtual void BindPositionTexture() = 0;
 		virtual void UnbindTexture() = 0;
 
 		virtual void BindFrameBuffer() = 0;

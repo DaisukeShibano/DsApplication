@@ -68,12 +68,37 @@ void DsModelRender::Render() const
 #ifndef		USE_OLD_MODEL_COOD
 		//座標
 		const DsMat44f modelMat = DsMathUtil::ToMat44f(DsMat44d::GetTranspose(pModel->GetRotation(), pModel->GetPosition()));
+		DsMat44f projMat = DsMat44f::Identity();
+		glGetFloatv(GL_PROJECTION_MATRIX, projMat.mat);
 		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
 		glMultMatrixf(modelMat.mat);
-		m_pShader->SetDrawModelTransform(modelMat.mat);
-#endif
 
+		//glの行列形式で掛け算
+		DsMat44f modelProjMat = DsMat44f::Identity();
+		glPushMatrix();
+		glLoadMatrixf(projMat.mat);
+		glMultMatrixf(modelMat.mat);
+		glGetFloatv(GL_MODELVIEW_MATRIX, modelProjMat.mat);
+		glPopMatrix();
+
+		DsMat44f modelProjInv = DsMat44f::Identity();
+		DsInverseMatrix<4, float>(modelProjMat.mat, modelProjInv.mat);
+
+		//DsMat44f check = DsMat44f::Identity();
+		//check = DsMat44f::GetTranspose(projMat) * DsMat44f::GetTranspose(modelMat);
+		//check = DsMat44f::GetTranspose(check);
+		//if (check.IsNearEqual(modelProjMat)){
+		//	DS_LOG("");
+		//}else {
+		//	DS_LOG("");
+		//}
+
+		m_pShader->SetModelViewTransform(modelMat.mat);
+		m_pShader->SetModelViewProjectionTransform(modelProjMat.mat);
+		m_pShader->SetModelViewProjectionInverseTransform(modelProjInv.mat);
+
+#endif
 
 		//頂点法線
 		const bool isUseVertexNormal = pModel->IsCreateVertexNormal();

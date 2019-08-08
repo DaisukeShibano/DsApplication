@@ -13,20 +13,22 @@ namespace
 	***************************************************/
 	static const char s_vertex[] = DS_SHADER_STR(
 		// フラグメントシェーダに値を渡すための変数
-		//varying vec4 vPos;
+		varying vec4 vPos;
 		varying vec3 vNrm;
 		varying vec4 vShadowCoord;	//!< シャドウデプスマップの参照用座標
 		attribute vec3 tangent;
 		varying vec3 normalMapLight;
 		varying vec3 normalMapView;
-		uniform mat4 drawModelTransform;//!<描画モデル座標系
+		uniform mat4 modelViewTransform;//!<描画モデル座標系
+		uniform mat4 modelViewProjectionTransform;
+		uniform mat4 modelViewProjectionInverseTransform;
 
 		void main(void)
 		{
 			// フラグメントシェーダでの計算用(モデルビュー変換のみ)
-			//vPos = gl_ModelViewMatrix*gl_Vertex;			// 頂点位置
+			//vPos = gl_ModelViewProjectionMatrix*gl_Vertex;			// 頂点位置
 			vNrm = normalize(gl_NormalMatrix*gl_Normal);	// 頂点法線
-			vShadowCoord = gl_TextureMatrix[7] * drawModelTransform * gl_Vertex;	// 影用座標値(光源中心座標)
+			vShadowCoord = gl_TextureMatrix[7] * modelViewTransform * gl_Vertex;	// 影用座標値(光源中心座標)
 			
 			// 描画用
 			gl_Position = ftransform();				// 頂点位置
@@ -262,6 +264,7 @@ namespace
 			gl_FragData[0] = fragColor;
 			gl_FragData[1] = fragColor;
 			gl_FragData[2] = vec4(vec3(vNrm + 1.0), 0.0);
+
 		}
 	);
 }

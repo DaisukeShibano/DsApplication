@@ -43,7 +43,7 @@ void DsCamera::Update( const double dt)
 	m_mat[3] = m_pos.x + camPos.x;
 	m_mat[7] = m_pos.y + camPos.y;
 	m_mat[11] = m_pos.z + camPos.z;
-	DsInverseMatrix<double>(m_mat, m_matInv, 4);
+	DsInverseMatrix<4, double>(m_mat, m_matInv);
 	
 }
 

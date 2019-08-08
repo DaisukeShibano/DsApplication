@@ -4,27 +4,25 @@
 
 namespace DsLib
 {
-	template<typename TYPE>
-	bool DsInverseMatrix(const TYPE* src, TYPE* dst, const int n )
+	template<const int SIZE, typename TYPE>
+	bool DsInverseMatrix(const TYPE* src, TYPE* dst)
 	{
-		const int max_n=200;
-		if( max_n <= n)return false;
-	   //int ipv, i, j;
-	   TYPE inv_pivot, temp;
-	   TYPE big;
-	   int pivot_row;// row[max_n];
-	   TYPE inv_a[max_n][max_n];
-	   TYPE a[max_n][max_n];
+		//int ipv, i, j;
+		TYPE inv_pivot, temp;
+		TYPE big;
+		int pivot_row;// row[max_n];
+		TYPE inv_a[SIZE][SIZE];
+		TYPE a[SIZE][SIZE];
    
-	   for(int i=0;i<n;i++){
-   		  for(int j=0;j<n;j++){
-	  		  a[i][j]=src[i*n+j];
+	   for(int i=0;i<SIZE;i++){
+   		  for(int j=0;j<SIZE;j++){
+	  		  a[i][j]=src[i*SIZE +j];
    		  }
 	   }
    
 	   /* ---- 単位行列作成 ---------------------------- */
-	   for(int i=0 ; i<n ; i++){
-		  for(int j=0 ; j<n ; j++){
+	   for(int i=0 ; i<SIZE; i++){
+		  for(int j=0 ; j<SIZE; j++){
 			 if(i==j){
 				inv_a[i][j]=1.0;
 			 }else{
@@ -33,11 +31,11 @@ namespace DsLib
 		  }
 	   }
 
-	   for(int ipv=0 ; ipv < n ; ipv++){
+	   for(int ipv=0 ; ipv < SIZE; ipv++){
 		  /* ---- 最大値探索 ---------------------------- */
 		  big=0.0;
 		  pivot_row = -1;
-		  for(int i=ipv ; i<n ; i++){
+		  for(int i=ipv ; i<SIZE; i++){
 			 if(fabs(a[i][ipv]) > big){
 				big = fabs(a[i][ipv]);
 				pivot_row = i;
@@ -51,7 +49,7 @@ namespace DsLib
 
 		  /* ---- 行の入れ替え -------------------------- */
 		  if( (ipv != pivot_row) && (-1!=pivot_row) ){
-			 for(int i=0 ; i<n ; i++){
+			 for(int i=0 ; i<SIZE; i++){
 				temp = a[ipv][i];
 				a[ipv][i] = a[pivot_row][i];
 				a[pivot_row][i] = temp;          	
@@ -63,16 +61,16 @@ namespace DsLib
 
 		  /* ---- 対角成分=1(ピボット行の処理) ---------- */
 		  inv_pivot = static_cast<TYPE>(1.0)/a[ipv][ipv];
-		  for(int j=0 ; j < n ; j++){
+		  for(int j=0 ; j < SIZE; j++){
 			 a[ipv][j] *= inv_pivot;
 			 inv_a[ipv][j] *= inv_pivot;          
 		  }
       
 		  /* ---- ピボット列=0(ピボット行以外の処理) ---- */
-		  for(int i=0 ; i<n ; i++){
+		  for(int i=0 ; i<SIZE; i++){
 			 if(i != ipv){
 				temp = a[i][ipv];
-				for(int j=0 ; j<n ; j++){
+				for(int j=0 ; j<SIZE; j++){
 				   a[i][j] -= temp*a[ipv][j];
 				   inv_a[i][j] -= temp*inv_a[ipv][j];                	
 				}
@@ -80,9 +78,9 @@ namespace DsLib
 		  }
 	   }
    
-		for(int i=0;i<n;i++){
-   			for(int j=0;j<n;j++){
-	  			dst[i*n+j]=inv_a[i][j];
+		for(int i=0;i<SIZE;i++){
+   			for(int j=0;j<SIZE;j++){
+	  			dst[i*SIZE +j]=inv_a[i][j];
    			}
 		}
 		return(true);

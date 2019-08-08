@@ -20,6 +20,7 @@ namespace
 		DS_GL_COLOR_ATTACHMENT0, //   加工用カラーバッファ
 		DS_GL_COLOR_ATTACHMENT1, //   元画像カラーバッファ
 		DS_GL_COLOR_ATTACHMENT2, //   法線バッファ
+		DS_GL_COLOR_ATTACHMENT3, //   位置バッファ
 	};
 
 	static const GLenum s_bufEnumPost[] = {
@@ -38,6 +39,7 @@ namespace
 			, m_texOriId(0)
 			, m_depTexOriId(0)
 			, m_normalOriId(0)
+			, m_positionOriId(0)
 			, m_tempFbo{}
 			, m_tempColorTex{}
 			, m_currentResultTex(0)
@@ -83,12 +85,23 @@ namespace
 			glTexImage2D(GL_TEXTURE_2D, 0, DS_GL_RGB32F, width, height, 0, GL_RGBA, GL_FLOAT, 0);
 			glBindTexture(GL_TEXTURE_2D, 0);
 
+			//位置テクスチャ
+			glGenTextures(1, &m_positionOriId);
+			glBindTexture(GL_TEXTURE_2D, m_positionOriId);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+			glTexImage2D(GL_TEXTURE_2D, 0, DS_GL_RGB32F, width, height, 0, GL_RGBA, GL_FLOAT, 0);
+			glBindTexture(GL_TEXTURE_2D, 0);
+
 			//シーンレンダリングの情報保存用フレームバッファオブジェクト
 			DsGLGenFramebuffers(1, &m_fboId);
 			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_fboId);
 			DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, s_bufEnum[0], GL_TEXTURE_2D, m_texId, 0);
 			DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, s_bufEnum[1], GL_TEXTURE_2D, m_texOriId, 0);
 			DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, s_bufEnum[2], GL_TEXTURE_2D, m_normalOriId, 0);
+			DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, s_bufEnum[3], GL_TEXTURE_2D, m_positionOriId, 0);
 			DsGLFramebufferTexture2D(DS_GL_FRAMEBUFFER, DS_GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depTexOriId, 0);
 
 			//一時計算用テクスチャとfbo
@@ -123,6 +136,7 @@ namespace
 			glDeleteTextures(1, &m_texOriId);
 			glDeleteTextures(1, &m_depTexOriId);
 			glDeleteTextures(1, &m_normalOriId);
+			glDeleteTextures(1, &m_positionOriId);
 			DsGLDeleteFramebuffers(2, m_tempFbo);
 			glDeleteTextures(2, m_tempColorTex);
 		}
@@ -131,13 +145,13 @@ namespace
 		{
 			DsGLBindFramebuffer(DS_GL_FRAMEBUFFER, m_fboId);
 
-			DsGLActiveTexture(tex1);
-			glBindTexture(GL_TEXTURE_2D, m_texId);
-			DsGLActiveTexture(tex2);
-			glBindTexture(GL_TEXTURE_2D, m_texOriId);
-			DsGLActiveTexture(tex3);
-			glBindTexture(GL_TEXTURE_2D, m_normalOriId);
-			DsGLActiveTexture(DS_GL_TEXTURE0);
+			//DsGLActiveTexture(tex1);
+			//glBindTexture(GL_TEXTURE_2D, m_texId);
+			//DsGLActiveTexture(tex2);
+			//glBindTexture(GL_TEXTURE_2D, m_texOriId);
+			//DsGLActiveTexture(tex3);
+			//glBindTexture(GL_TEXTURE_2D, m_normalOriId);
+			//DsGLActiveTexture(DS_GL_TEXTURE0);
 
 			// レンダーターゲットを指定する
 			// フラグメントシェーダー内でgl_FragData[]で対応するバッファに書き出せる
@@ -231,6 +245,16 @@ namespace
 		virtual void BindTmpColorTexture3()override
 		{
 			glBindTexture(GL_TEXTURE_2D, m_tempColorTex[2]);
+		}
+
+		virtual void BindNormalTexture() override
+		{
+			glBindTexture(GL_TEXTURE_2D, m_normalOriId);
+		}
+
+		virtual void BindPositionTexture() override
+		{
+			glBindTexture(GL_TEXTURE_2D, m_positionOriId);
 		}
 
 		virtual void UnbindTexture() override
@@ -328,6 +352,7 @@ namespace
 		GLuint m_texOriId;
 		GLuint m_depTexOriId;
 		GLuint m_normalOriId;
+		GLuint m_positionOriId;
 		GLuint m_tempFbo[_TEMP_TEX_NUM];
 		GLuint m_tempColorTex[_TEMP_TEX_NUM];
 		GLuint m_currentResultTex;

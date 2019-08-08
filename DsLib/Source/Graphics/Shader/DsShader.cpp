@@ -151,7 +151,9 @@ namespace
 		virtual void Initialize(std::string& vertex, std::string& flagment) override;
 		virtual void EnableShader(SHADER_TYPE sType) override;
 		virtual void DisableShader() override;
-		virtual void SetDrawModelTransform(const float m[16]) override;
+		virtual void SetModelViewTransform(const float m[16]) override;
+		virtual void SetModelViewProjectionTransform(const float m[16]) override;
+		virtual void SetModelViewProjectionInverseTransform(const float m[16]) override;
 		virtual void SetTextureUnit(int unit) override;
 		virtual void SetUseTexture(bool isUse) override;
 		virtual void SetUseLight(bool isUse)override;
@@ -168,7 +170,9 @@ namespace
 	private:
 		unsigned int m_currentIdx;
 		GLuint m_prog[static_cast<int>(SHADER_TYPE::NUM)];
-		unsigned int m_uniform_drawModelTransform;
+		unsigned int m_uniform_modelViewTransform;
+		unsigned int m_uniform_modelViewProjectionTransform;
+		unsigned int m_uniform_modelViewProjectionInverseTransform;
 		unsigned int m_uniform_texAlbedo;
 		unsigned int m_uniform_texNormal;
 		unsigned int m_uniform_texSpecular;
@@ -199,7 +203,9 @@ namespace
 	DsShaderImp::DsShaderImp()
 		: m_currentIdx(0)
 		, m_prog{}
-		, m_uniform_drawModelTransform(0)
+		, m_uniform_modelViewTransform(0)
+		, m_uniform_modelViewProjectionTransform(0)
+		, m_uniform_modelViewProjectionInverseTransform(0)
 		, m_uniform_texAlbedo(0)
 		, m_uniform_texNormal(0)
 		, m_uniform_texSpecular(0)
@@ -280,7 +286,9 @@ namespace
 			DsGLUseProgram(m_prog[idx]);
 
 			//åƒÇ—èoÇµâÒêîÇ™ëΩÇ≠ïââ◊Ç…Ç»Ç¡ÇƒÇÈÇÃÇ≈ç≈èâÇ…ãÅÇﬂÇƒÇ®Ç≠
-			m_uniform_drawModelTransform      = DsGLGetUniformLocation(m_prog[idx], "drawModelTransform");
+			m_uniform_modelViewTransform      = DsGLGetUniformLocation(m_prog[idx], "modelViewTransform");
+			m_uniform_modelViewProjectionTransform = DsGLGetUniformLocation(m_prog[idx], "modelViewProjectionTransform");
+			m_uniform_modelViewProjectionInverseTransform = DsGLGetUniformLocation(m_prog[idx], "modelViewProjectionInverseTransform");
 			m_uniform_texAlbedo               = DsGLGetUniformLocation(m_prog[idx], "texAlbedo");
 			m_uniform_texNormal               = DsGLGetUniformLocation(m_prog[idx], "texNormal");
 			m_uniform_texSpecular			  = DsGLGetUniformLocation(m_prog[idx], "texSpecular");
@@ -321,8 +329,19 @@ namespace
 		DsGLUseProgram(0);
 	}
 	//virtual
-	void DsShaderImp::SetDrawModelTransform(const float m[16]) {
-		DsGLUniformMatrix4fv(m_uniform_drawModelTransform, 1, false, m);
+	void DsShaderImp::SetModelViewTransform(const float m[16]) 
+	{
+		DsGLUniformMatrix4fv(m_uniform_modelViewTransform, 1, false, m);
+	}
+	//virtual
+	void DsShaderImp::SetModelViewProjectionTransform(const float m[16])
+	{
+		DsGLUniformMatrix4fv(m_uniform_modelViewProjectionTransform, 1, false, m);
+	}
+	//virtual
+	void DsShaderImp::SetModelViewProjectionInverseTransform(const float m[16])
+	{
+		DsGLUniformMatrix4fv(m_uniform_modelViewProjectionInverseTransform, 1, false, m);
 	}
 
 	//virtual 
