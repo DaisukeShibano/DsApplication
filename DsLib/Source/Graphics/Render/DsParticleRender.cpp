@@ -69,7 +69,7 @@ void DsParticleRender::Render() const
 		DsMat44f modelProjInv = DsMat44f::Identity();
 		DsInverseMatrix<4, float>(modelProjMat.mat, modelProjInv.mat);
 
-		m_pShader->SetModelViewTransform(modelMat.mat);
+		m_pShader->SetModelTransform(modelMat.mat);
 		m_pShader->SetModelViewProjectionTransform(modelProjMat.mat);
 		m_pShader->SetModelViewProjectionInverseTransform(modelProjInv.mat);
 	}

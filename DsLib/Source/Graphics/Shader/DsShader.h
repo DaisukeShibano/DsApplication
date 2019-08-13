@@ -36,7 +36,7 @@ namespace DsLib
 		virtual void Initialize(std::string& vertex, std::string& flagment) = NULL;
 		virtual void EnableShader( SHADER_TYPE sType ) = NULL;
 		virtual void DisableShader() = NULL;
-		virtual void SetModelViewTransform(const float m[16]) = NULL;
+		virtual void SetModelTransform(const float m[16]) = NULL;
 		virtual void SetModelViewProjectionTransform(const float m[16]) = NULL;
 		virtual void SetModelViewProjectionInverseTransform(const float m[16]) = NULL;
 		virtual void SetTextureUnit(int unit) = NULL;

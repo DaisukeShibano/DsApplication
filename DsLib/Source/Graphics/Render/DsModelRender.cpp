@@ -69,16 +69,20 @@ void DsModelRender::Render() const
 		//座標
 		const DsMat44f modelMat = DsMathUtil::ToMat44f(DsMat44d::GetTranspose(pModel->GetRotation(), pModel->GetPosition()));
 		DsMat44f projMat = DsMat44f::Identity();
+		DsMat44f modelViewMat = DsMat44f::Identity();
 		glGetFloatv(GL_PROJECTION_MATRIX, projMat.mat);
 		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
 		glMultMatrixf(modelMat.mat);
 
+		//モデルビュー行列を取得
+		glGetFloatv(GL_MODELVIEW_MATRIX, modelViewMat.mat);
+
 		//glの行列形式で掛け算
 		DsMat44f modelProjMat = DsMat44f::Identity();
 		glPushMatrix();
 		glLoadMatrixf(projMat.mat);
-		glMultMatrixf(modelMat.mat);
+		glMultMatrixf(modelViewMat.mat);
 		glGetFloatv(GL_MODELVIEW_MATRIX, modelProjMat.mat);
 		glPopMatrix();
 
@@ -94,7 +98,7 @@ void DsModelRender::Render() const
 		//	DS_LOG("");
 		//}
 
-		m_pShader->SetModelViewTransform(modelMat.mat);
+		m_pShader->SetModelTransform(modelMat.mat);
 		m_pShader->SetModelViewProjectionTransform(modelProjMat.mat);
 		m_pShader->SetModelViewProjectionInverseTransform(modelProjInv.mat);
 
@@ -176,9 +180,40 @@ void DsModelRender::Render() const
 						{
 							glNormal3dv(pVertexNormals[vIdx].v);
 						}
+
+						//DsVec4f a(pVertex[vIdx], 1.0f);
+						//DsVec4f aa = DsMat44f::GetTranspose(modelProjMat) * a;
+						//a = DsMat44f::GetTranspose(modelProjMat) * a;
+						//a /= a.w;
+						//DsVec4d c = pVertex[vIdx];
+						//const double thre = 0.9;
+						//if( (thre < a.x) ) {
+						//	a *= aa.w;
+						//	DsVec4f b = DsMat44f::GetTranspose(modelProjInv)*DsVec4f(thre*aa.w, a.y, a.z, a.w);
+						//	c = b;
+						//}
+						//else if ((-thre > a.x)) {
+						//	a *= aa.w;
+						//	DsVec4f b = DsMat44f::GetTranspose(modelProjInv)*DsVec4f(-thre*aa.w, a.y, a.z, a.w);
+						//	c = b;
+						//}
+						//else if ((thre < a.y)) {
+						//	a *= aa.w;
+						//	DsVec4f b = DsMat44f::GetTranspose(modelProjInv)*DsVec4f(a.x, thre*aa.w, a.z, a.w);
+						//	c.y = b.y;
+						//}
+						//else if ((-thre > a.y)) {
+						//	a *= aa.w;
+						//	DsVec4f b = DsMat44f::GetTranspose(modelProjInv)*DsVec4f(a.x, -thre*aa.w, a.z, a.w);
+						//	c.y = b.y;
+						//}
+
 						glTexCoord2f(uv.x, uv.y);
 						glVertex3dv(pVertex[vIdx].v);
+						//glVertex3dv(c.v);
 						++uvIdx;
+
+						
 					}
 					glEnd();
 				}

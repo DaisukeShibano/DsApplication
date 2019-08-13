@@ -151,7 +151,7 @@ namespace
 		virtual void Initialize(std::string& vertex, std::string& flagment) override;
 		virtual void EnableShader(SHADER_TYPE sType) override;
 		virtual void DisableShader() override;
-		virtual void SetModelViewTransform(const float m[16]) override;
+		virtual void SetModelTransform(const float m[16]) override;
 		virtual void SetModelViewProjectionTransform(const float m[16]) override;
 		virtual void SetModelViewProjectionInverseTransform(const float m[16]) override;
 		virtual void SetTextureUnit(int unit) override;
@@ -170,7 +170,7 @@ namespace
 	private:
 		unsigned int m_currentIdx;
 		GLuint m_prog[static_cast<int>(SHADER_TYPE::NUM)];
-		unsigned int m_uniform_modelViewTransform;
+		unsigned int m_uniform_modelTransform;
 		unsigned int m_uniform_modelViewProjectionTransform;
 		unsigned int m_uniform_modelViewProjectionInverseTransform;
 		unsigned int m_uniform_texAlbedo;
@@ -203,7 +203,7 @@ namespace
 	DsShaderImp::DsShaderImp()
 		: m_currentIdx(0)
 		, m_prog{}
-		, m_uniform_modelViewTransform(0)
+		, m_uniform_modelTransform(0)
 		, m_uniform_modelViewProjectionTransform(0)
 		, m_uniform_modelViewProjectionInverseTransform(0)
 		, m_uniform_texAlbedo(0)
@@ -286,7 +286,7 @@ namespace
 			DsGLUseProgram(m_prog[idx]);
 
 			//åƒÇ—èoÇµâÒêîÇ™ëΩÇ≠ïââ◊Ç…Ç»Ç¡ÇƒÇÈÇÃÇ≈ç≈èâÇ…ãÅÇﬂÇƒÇ®Ç≠
-			m_uniform_modelViewTransform      = DsGLGetUniformLocation(m_prog[idx], "modelViewTransform");
+			m_uniform_modelTransform	     = DsGLGetUniformLocation(m_prog[idx], "modelTransform");
 			m_uniform_modelViewProjectionTransform = DsGLGetUniformLocation(m_prog[idx], "modelViewProjectionTransform");
 			m_uniform_modelViewProjectionInverseTransform = DsGLGetUniformLocation(m_prog[idx], "modelViewProjectionInverseTransform");
 			m_uniform_texAlbedo               = DsGLGetUniformLocation(m_prog[idx], "texAlbedo");
@@ -329,9 +329,9 @@ namespace
 		DsGLUseProgram(0);
 	}
 	//virtual
-	void DsShaderImp::SetModelViewTransform(const float m[16]) 
+	void DsShaderImp::SetModelTransform(const float m[16])
 	{
-		DsGLUniformMatrix4fv(m_uniform_modelViewTransform, 1, false, m);
+		DsGLUniformMatrix4fv(m_uniform_modelTransform, 1, false, m);
 	}
 	//virtual
 	void DsShaderImp::SetModelViewProjectionTransform(const float m[16])
