@@ -152,8 +152,11 @@ namespace
 		virtual void EnableShader(SHADER_TYPE sType) override;
 		virtual void DisableShader() override;
 		virtual void SetModelTransform(const float m[16]) override;
+		virtual void SetProjectionTransform(const float m[16]) override;
 		virtual void SetModelViewProjectionTransform(const float m[16]) override;
+		virtual void SetProjectionInverseTransform(const float m[16]) override;
 		virtual void SetModelViewProjectionInverseTransform(const float m[16]) override;
+		virtual void SetCameraPosition(DsVec3f pos) override;
 		virtual void SetTextureUnit(int unit) override;
 		virtual void SetUseTexture(bool isUse) override;
 		virtual void SetUseLight(bool isUse)override;
@@ -171,8 +174,11 @@ namespace
 		unsigned int m_currentIdx;
 		GLuint m_prog[static_cast<int>(SHADER_TYPE::NUM)];
 		unsigned int m_uniform_modelTransform;
+		unsigned int m_uniform_projectionTransform;
 		unsigned int m_uniform_modelViewProjectionTransform;
+		unsigned int m_uniform_projectionInverseTransform;
 		unsigned int m_uniform_modelViewProjectionInverseTransform;
+		unsigned int m_uniform_cameraPosition;
 		unsigned int m_uniform_texAlbedo;
 		unsigned int m_uniform_texNormal;
 		unsigned int m_uniform_texSpecular;
@@ -204,8 +210,11 @@ namespace
 		: m_currentIdx(0)
 		, m_prog{}
 		, m_uniform_modelTransform(0)
+		, m_uniform_projectionTransform(0)
 		, m_uniform_modelViewProjectionTransform(0)
+		, m_uniform_projectionInverseTransform(0)
 		, m_uniform_modelViewProjectionInverseTransform(0)
+		, m_uniform_cameraPosition(0)
 		, m_uniform_texAlbedo(0)
 		, m_uniform_texNormal(0)
 		, m_uniform_texSpecular(0)
@@ -287,8 +296,11 @@ namespace
 
 			//åƒÇ—èoÇµâÒêîÇ™ëΩÇ≠ïââ◊Ç…Ç»Ç¡ÇƒÇÈÇÃÇ≈ç≈èâÇ…ãÅÇﬂÇƒÇ®Ç≠
 			m_uniform_modelTransform	     = DsGLGetUniformLocation(m_prog[idx], "modelTransform");
+			m_uniform_projectionTransform	 = DsGLGetUniformLocation(m_prog[idx], "projectionTransform");
 			m_uniform_modelViewProjectionTransform = DsGLGetUniformLocation(m_prog[idx], "modelViewProjectionTransform");
+			m_uniform_projectionInverseTransform = DsGLGetUniformLocation(m_prog[idx], "projectionInverseTransform");
 			m_uniform_modelViewProjectionInverseTransform = DsGLGetUniformLocation(m_prog[idx], "modelViewProjectionInverseTransform");
+			m_uniform_cameraPosition		  = DsGLGetUniformLocation(m_prog[idx], "cameraPosition");
 			m_uniform_texAlbedo               = DsGLGetUniformLocation(m_prog[idx], "texAlbedo");
 			m_uniform_texNormal               = DsGLGetUniformLocation(m_prog[idx], "texNormal");
 			m_uniform_texSpecular			  = DsGLGetUniformLocation(m_prog[idx], "texSpecular");
@@ -333,15 +345,31 @@ namespace
 	{
 		DsGLUniformMatrix4fv(m_uniform_modelTransform, 1, false, m);
 	}
+	//virtual 
+	void DsShaderImp::SetProjectionTransform(const float m[16])
+	{
+		DsGLUniformMatrix4fv(m_uniform_projectionTransform, 1, false, m);
+	}
 	//virtual
 	void DsShaderImp::SetModelViewProjectionTransform(const float m[16])
 	{
 		DsGLUniformMatrix4fv(m_uniform_modelViewProjectionTransform, 1, false, m);
 	}
 	//virtual
+	void DsShaderImp::SetProjectionInverseTransform(const float m[16])
+	{
+		DsGLUniformMatrix4fv(m_uniform_projectionInverseTransform, 1, false, m);
+	}
+	//virtual
 	void DsShaderImp::SetModelViewProjectionInverseTransform(const float m[16])
 	{
 		DsGLUniformMatrix4fv(m_uniform_modelViewProjectionInverseTransform, 1, false, m);
+	}
+
+	//virtual 
+	void DsShaderImp::SetCameraPosition(DsVec3f pos)
+	{
+		DsGLUniform3fv(m_uniform_cameraPosition, 1, pos.v);
 	}
 
 	//virtual 

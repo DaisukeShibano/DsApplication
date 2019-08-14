@@ -171,13 +171,13 @@ void DsRender::Render( const double dt )
 	m_pSSR->SSR();
 
 	//SSAO
-	m_pSSAO->SSAO();
+	//m_pSSAO->SSAO();
 
 	//ブルーム
-	m_pBloom->Bloom();
+	//m_pBloom->Bloom();
 	
 	//被写界深度
-	m_pDepthField->DepthField();
+	//m_pDepthField->DepthField();
 
 	//ポストエフェクトをレンダリング画面へ
 	m_pPostEffectBuffer->RenderFrame();

@@ -29,14 +29,29 @@ namespace
 		virtual void SSR() override
 		{
 			m_shader.EnableShader(SHADER_TYPE::SSR);
+
+			//âΩâÒÇ‡åvéZÇµÇ»Ç¢Ç≈ÉÅÉìÉoÇ≈éùÇ¡ÇƒÇ®Ç≠
+			DsMat44f projMat = DsMat44f::Identity();
+			DsMat44f modelViewMat = DsMat44f::Identity();
+			glGetFloatv(GL_PROJECTION_MATRIX, projMat.mat);
+			DsMat44f projInv = DsMat44f::Identity();
+			DsInverseMatrix<4, float>(projMat.mat, projInv.mat);
+			m_shader.SetProjectionTransform(projMat.mat);
+			m_shader.SetProjectionInverseTransform(projInv.mat);
+
 			m_shader.SetPostEffectParam(0, 1, 2);
-			DsGLActiveTexture(DS_GL_TEXTURE0);
+			m_shader.NormalTex(3);
+			DsGLActiveTexture(DS_GL_TEXTURE1);
 			m_postEffectBuffer.BindTextureOri();
 			DsGLActiveTexture(DS_GL_TEXTURE2);
 			m_postEffectBuffer.BindDepTextureOri();
+			DsGLActiveTexture(DS_GL_TEXTURE3);
+			m_postEffectBuffer.BindNormalTexture();
+
 			m_postEffectBuffer.BindFrameBuffer();
 			_Draw();
 			m_postEffectBuffer.UnbindFrameBuffer();
+
 			m_postEffectBuffer.UnbindTexture();
 			DsGLActiveTexture(DS_GL_TEXTURE0);
 			m_shader.DisableShader();

@@ -96,6 +96,13 @@ DsAnimation::DsAnimation(const char* pResName, DsDrawCommand& com, DsResource& r
 		{
 			m_pSkinMesh->ApplySkeleton(*m_pSkeleton);
 		}
+		else {
+			//動かないので無駄が多いかもしれない
+			DsModel* pModel = GetModel();
+			if (pModel) {
+				pModel->UpdateNormal();
+			}
+		}
 
 		//モデルの座標を更新
 		DsModel* pModel = GetModel();
@@ -204,6 +211,13 @@ void DsAnimation::Update(double dt)
 	if (m_pSkinMesh && m_pSkeleton)
 	{
 		m_pSkinMesh->ApplySkeleton(*m_pSkeleton);
+	}
+	else {
+		//動かないので無駄が多いかもしれない
+		DsModel* pModel = GetModel();
+		if (pModel) {
+			pModel->UpdateNormal();
+		}
 	}
 
 	//モデルの座標を更新

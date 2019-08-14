@@ -4,6 +4,7 @@
 #include "Graphics/Shader/DsShader.h"
 #include "Graphics/GL/DsGLFunc.h"
 #include "Graphics/Render/DsRender.h"
+#include "Graphics/Camera/DsCamera.h"
 
 #include <gl/GL.h>
 #include <gl/GLU.h>
@@ -80,7 +81,7 @@ namespace
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
-			glTexImage2D(GL_TEXTURE_2D, 0, DS_GL_RGB32F, width, height, 0, GL_RGBA, GL_FLOAT, 0);
+			glTexImage2D(GL_TEXTURE_2D, 0, DS_GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, 0);
 			glBindTexture(GL_TEXTURE_2D, 0);
 
 
@@ -146,6 +147,8 @@ namespace
 
 			//バッファ切り替えたので再クリア
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			m_shader.SetCameraPosition(DsVec3f(m_render.RefCam().GetPos()));
 		}
 
 		virtual void CopyFrameBuffer() override
@@ -184,6 +187,7 @@ namespace
 			DsGLActiveTexture(DS_GL_TEXTURE0);
 			glEnable(GL_TEXTURE_2D);
 			glBindTexture(GL_TEXTURE_2D, m_currentResultTex);
+			//glBindTexture(GL_TEXTURE_2D, m_depTexOriId);
 			glNormal3d(0, 0, 1);
 			glBegin(GL_QUADS);
 			glTexCoord2d(0, 0); glVertex3d(0, 0, 0);

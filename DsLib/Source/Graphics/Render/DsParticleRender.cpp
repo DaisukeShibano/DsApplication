@@ -60,16 +60,23 @@ void DsParticleRender::Render() const
 	glDepthMask(GL_FALSE);
 
 	{//モデルプロジェクション行列セット
-		const DsMat44f modelMat = DsMat44f::Identity();
+		DsMat44f modelViewMat = DsMat44f::Identity();
 		DsMat44f projMat = DsMat44f::Identity();
+		glGetFloatv(GL_MODELVIEW_MATRIX, modelViewMat.mat);
 		glGetFloatv(GL_PROJECTION_MATRIX, projMat.mat);
 
-		DsMat44f modelProjMat = projMat;
+		//glの行列形式で掛け算
+		DsMat44f modelProjMat = DsMat44f::Identity();
+		glPushMatrix();
+		glLoadMatrixf(projMat.mat);
+		glMultMatrixf(modelViewMat.mat);
+		glGetFloatv(GL_MODELVIEW_MATRIX, modelProjMat.mat);
+		glPopMatrix();
 
 		DsMat44f modelProjInv = DsMat44f::Identity();
 		DsInverseMatrix<4, float>(modelProjMat.mat, modelProjInv.mat);
 
-		m_pShader->SetModelTransform(modelMat.mat);
+		m_pShader->SetModelTransform(DsMat44f::Identity().mat);
 		m_pShader->SetModelViewProjectionTransform(modelProjMat.mat);
 		m_pShader->SetModelViewProjectionInverseTransform(modelProjInv.mat);
 	}

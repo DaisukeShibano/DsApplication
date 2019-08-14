@@ -37,8 +37,11 @@ namespace DsLib
 		virtual void EnableShader( SHADER_TYPE sType ) = NULL;
 		virtual void DisableShader() = NULL;
 		virtual void SetModelTransform(const float m[16]) = NULL;
+		virtual void SetProjectionTransform(const float m[16]) = NULL;
 		virtual void SetModelViewProjectionTransform(const float m[16]) = NULL;
+		virtual void SetProjectionInverseTransform(const float m[16]) = NULL;
 		virtual void SetModelViewProjectionInverseTransform(const float m[16]) = NULL;
+		virtual void SetCameraPosition(DsVec3f pos) = NULL;
 		virtual void SetTextureUnit(int unit) = NULL;
 		virtual void SetUseTexture(bool isUse) = NULL;
 		virtual void SetUseLight(bool isUse)=NULL;

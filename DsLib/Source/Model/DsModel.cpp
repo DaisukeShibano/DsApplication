@@ -173,11 +173,10 @@ void DsModel::UpdateNormal()
 		DS_ASSERT((3 <= fvn), "DsModelの面の頂点数が３未満");
 		pFace[fi].normal = DsVec4d::CalcNormal(pVertex[pFace[fi].pIndex[0]], pVertex[pFace[fi].pIndex[1]], pVertex[pFace[fi].pIndex[2]]);
 	}
-	m_updateNormalFIdx += fi;
+	m_updateNormalFIdx += UPDATE_NORMAL_F_NUM;
 	if (fn <= m_updateNormalFIdx) {
 		m_updateNormalFIdx = 0;
 	}
-
 
 	//頂点法線更新
 	if (m_pVertexNormalIdxs && m_pVertexNormals)
@@ -193,9 +192,16 @@ void DsModel::UpdateNormal()
 				//頂点法線を、隣接している面の法線の合計から求める
 				normal = normal + DsVec3d::ToVec3(static_cast<float>(pFace[fIdx].normal.x), static_cast<float>(pFace[fIdx].normal.y), static_cast<float>(pFace[fIdx].normal.z));
 			}
+
 			m_pVertexNormals[vi] = DsVec3d::Normalize(normal);
+
+			//ゼロになってしまったら適当な面を採用
+			//if (m_pVertexNormals[vi].IsNearZero()) 
+			//{
+			//	m_pVertexNormals[vi] = safeNormal;
+			//}
 		}
-		m_updateNormalVIdx += vi;
+		m_updateNormalVIdx += UPDATE_NORMAL_V_NUM;
 		if (vn <= m_updateNormalVIdx) {
 			m_updateNormalVIdx = 0;
 		}

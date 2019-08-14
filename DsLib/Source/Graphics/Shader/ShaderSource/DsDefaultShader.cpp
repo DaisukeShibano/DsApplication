@@ -21,14 +21,13 @@ namespace
 		attribute vec3 tangent;
 		uniform mat4 modelTransform;//!<描画モデル座標系
 		uniform mat4 modelViewProjectionTransform;
-		uniform mat4 modelViewProjectionInverseTransform;
 
 		void main(void)
 		{
 			//vPos = modelViewProjectionTransform * gl_Vertex;	// 頂点位置
 			vNrm = normalize(gl_NormalMatrix*gl_Normal);	// 頂点法線
 			vShadowCoord = gl_TextureMatrix[7] * modelTransform * gl_Vertex;	// 影用座標値(光源中心座標)
-			
+
 			// 描画用
 			gl_Position = modelViewProjectionTransform * gl_Vertex;		// 頂点位置
 			gl_FrontColor = gl_Color;				// 頂点色
@@ -53,11 +52,11 @@ namespace
 			temp.x = dot(p.xyz, t);
 			temp.y = dot(p.xyz, b);
 			temp.z = dot(p.xyz, n);
-			normalMapView = -normalize(temp);
+			normalMapView = -normalize(temp);//面座標系の頂点位置
 			temp.x = dot(l, t);
 			temp.y = dot(l, b);
 			temp.z = dot(l, n);
-			normalMapLight = normalize(temp);
+			normalMapLight = normalize(temp);//面座標系の光の方向
 		}
 	);
 
@@ -67,12 +66,12 @@ namespace
 	***************************************************/
 	static const char s_fragment[] = DS_SHADER_STR(
 		// バーテックスシェーダから受け取る変数
-		varying vec4 vPos;
+		//varying vec4 vPos;
 		varying vec3 vNrm;
 		varying vec4 vShadowCoord;
 		varying vec3 normalMapLight;
 		varying vec3 normalMapView;
-		
+
 		uniform sampler2D texAlbedo;	//!< アルベドテクスチャ
 		uniform sampler2D texNormal;	//!< ノーマルテクスチャ
 		uniform sampler2D texSpecular;	//!< スペキュラテクスチャ
@@ -155,11 +154,13 @@ namespace
 		vec4 ApplyMap(const vec4 baseColor)
 		{
 			vec4 normalColor = isUseNormalMap ? texture2DProj(texNormal, gl_TexCoord[0]) : vec4(0.5, 0.5, 1.0, 1.0);
-			vec3 fnormal = vec3(normalColor) * 2.0 - 1.0;
+			vec3 fnormal = vec3(normalColor) * 2.0 - 1.0;//面座標系の法線
+
 			if (isUseWaveNormalMap) {//法線を波で揺らす
 				fnormal = WaveNormalMap(fnormal);
 			}
-			vec3 flight = normalize(normalMapLight);
+			
+			vec3 flight = normalize(normalMapLight);//面座標系の光の方向
 			
 			float diffuse = max(dot(flight, fnormal), 0.0);
 
@@ -263,7 +264,7 @@ namespace
 			//gl_FragColor = fragColor;
 			gl_FragData[0] = fragColor;
 			gl_FragData[1] = fragColor;
-			gl_FragData[2] = vec4(vec3(vNrm)*0.5 + 0.5, 0.0);
+			gl_FragData[2] = vec4(vec3(vNrm)*0.5 + 0.5, 1.0);
 		}
 	);
 }

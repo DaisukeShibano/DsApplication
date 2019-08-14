@@ -63,19 +63,27 @@ void DsModelRender::Render() const
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
+	DsMat44f projMat = DsMat44f::Identity();
+	DsMat44f modelViewMat = DsMat44f::Identity();
+	glGetFloatv(GL_PROJECTION_MATRIX, projMat.mat);
+	
+	DsMat44f projInv = DsMat44f::Identity();
+	DsInverseMatrix<4, float>(projMat.mat, projInv.mat);
+
+	m_pShader->SetProjectionTransform(projMat.mat);
+	m_pShader->SetProjectionInverseTransform(projInv.mat);
+
+
 	for(const DsModel* pModel : m_drawList) 
 	{
 #ifndef		USE_OLD_MODEL_COOD
 		//座標
 		const DsMat44f modelMat = DsMathUtil::ToMat44f(DsMat44d::GetTranspose(pModel->GetRotation(), pModel->GetPosition()));
-		DsMat44f projMat = DsMat44f::Identity();
-		DsMat44f modelViewMat = DsMat44f::Identity();
-		glGetFloatv(GL_PROJECTION_MATRIX, projMat.mat);
+		
 		glMatrixMode(GL_MODELVIEW);
 		glPushMatrix();
 		glMultMatrixf(modelMat.mat);
-
-		//モデルビュー行列を取得
+		
 		glGetFloatv(GL_MODELVIEW_MATRIX, modelViewMat.mat);
 
 		//glの行列形式で掛け算
@@ -186,6 +194,12 @@ void DsModelRender::Render() const
 						//a = DsMat44f::GetTranspose(modelProjMat) * a;
 						//a /= a.w;
 						//DsVec4d c = pVertex[vIdx];
+						//
+						////元に戻せる
+						//DsVec4f b = DsMat44f::GetTranspose(projInv)*DsVec4f(a.x, a.y, a.z, 1.0f);
+						//b /= b.w;
+						//c = b;
+
 						//const double thre = 0.9;
 						//if( (thre < a.x) ) {
 						//	a *= aa.w;
