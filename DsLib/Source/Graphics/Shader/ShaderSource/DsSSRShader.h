@@ -3,8 +3,10 @@
 
 namespace DsLib
 {
-	const char* GetSSRVertexShader();
-	const char* GetSSRFragmentShader();
+	const char* GetSSRVertexShader1();
+	const char* GetSSRFragmentShader1();
 
+	const char* GetSSRVertexShader2();
+	const char* GetSSRFragmentShader2();
 
 }

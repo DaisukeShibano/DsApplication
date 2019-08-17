@@ -167,14 +167,14 @@ void DsRender::Render( const double dt )
 	//この時点のフレームバッファをポストプロセス用バッファにコピー
 	m_pPostEffectBuffer->CopyFrameBuffer();
 
+	//SSAO
+	m_pSSAO->SSAO();
+
 	//SSR
 	m_pSSR->SSR();
 
-	//SSAO
-	//m_pSSAO->SSAO();
-
 	//ブルーム
-	//m_pBloom->Bloom();
+	m_pBloom->Bloom();
 	
 	//被写界深度
 	//m_pDepthField->DepthField();

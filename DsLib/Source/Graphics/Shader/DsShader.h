@@ -14,7 +14,8 @@ namespace DsLib
 		SSAO,
 		DEPTH_FIELD1,
 		DEPTH_FIELD2,
-		SSR,
+		SSR1,
+		SSR2,
 		NUM,
 	};
 
@@ -54,6 +55,7 @@ namespace DsLib
 		virtual void SetTime(float t) = NULL;
 		virtual void DepthFieldParam(int depTex, int blurTex) = NULL;
 		virtual void NormalTex(int normalTex) = NULL;
+		virtual void SpecularDepthTex(int tex) = NULL;
 	};
 
 }

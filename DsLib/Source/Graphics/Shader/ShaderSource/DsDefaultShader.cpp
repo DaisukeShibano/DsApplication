@@ -13,7 +13,7 @@ namespace
 	***************************************************/
 	static const char s_vertex[] = DS_SHADER_STR(
 		// フラグメントシェーダに値を渡すための変数
-		//varying vec4 vPos;
+		varying vec4 vPos;
 		varying vec3 vNrm;
 		varying vec4 vShadowCoord;	//!< シャドウデプスマップの参照用座標
 		varying vec3 normalMapLight;
@@ -24,7 +24,6 @@ namespace
 
 		void main(void)
 		{
-			//vPos = modelViewProjectionTransform * gl_Vertex;	// 頂点位置
 			vNrm = normalize(gl_NormalMatrix*gl_Normal);	// 頂点法線
 			vShadowCoord = gl_TextureMatrix[7] * modelTransform * gl_Vertex;	// 影用座標値(光源中心座標)
 
@@ -33,6 +32,7 @@ namespace
 			gl_FrontColor = gl_Color;				// 頂点色
 			gl_TexCoord[0] = gl_MultiTexCoord0;		// 頂点テクスチャ座標
 
+			vPos = gl_Position;
 			
 			//法線マップ用
 			//http://marina.sys.wakayama-u.ac.jp/~tokoi/?date=20051014
@@ -66,7 +66,7 @@ namespace
 	***************************************************/
 	static const char s_fragment[] = DS_SHADER_STR(
 		// バーテックスシェーダから受け取る変数
-		//varying vec4 vPos;
+		varying vec4 vPos;
 		varying vec3 vNrm;
 		varying vec4 vShadowCoord;
 		varying vec3 normalMapLight;
@@ -261,10 +261,11 @@ namespace
 			//glColor4f()のアルファ値だけを適用する。フェードアウト用など
 			fragColor.w = gl_Color.w * texColor.w;
 
-			//gl_FragColor = fragColor;
 			gl_FragData[0] = fragColor;
 			gl_FragData[1] = fragColor;
 			gl_FragData[2] = vec4(vec3(vNrm)*0.5 + 0.5, 1.0);
+			gl_FragData[3] = vec4(vec3(vPos.z), 1.0);
+
 		}
 	);
 }

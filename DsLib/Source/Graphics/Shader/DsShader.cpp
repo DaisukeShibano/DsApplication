@@ -169,6 +169,7 @@ namespace
 		virtual void SetTime(float t) override;
 		virtual void DepthFieldParam(int depTex, int blurTex) override;
 		virtual void NormalTex(int normalTex) override;
+		virtual void SpecularDepthTex(int tex) override;
 
 	private:
 		unsigned int m_currentIdx;
@@ -203,6 +204,7 @@ namespace
 		unsigned int m_uniform_depTexEff;
 		unsigned int m_uniform_blurTex;
 		unsigned int m_uniform_normalTex;
+		unsigned int m_uniform_specularDepthTex;
 		
 	};
 
@@ -238,7 +240,7 @@ namespace
 		, m_uniform_time(0)
 		, m_uniform_depTexEff(0)
 		, m_uniform_blurTex(0)
-
+		, m_uniform_specularDepthTex(0)
 	{
 	}
 
@@ -266,7 +268,8 @@ namespace
 			{ GetSSAOVertexShader(), GetSSAOFragmentShader() },
 			{ GetDepthFieldVertexShader1(), GetDepthFieldFragmentShader1() },
 			{ GetDepthFieldVertexShader2(), GetDepthFieldFragmentShader2() },
-			{ GetSSRVertexShader(), GetSSRFragmentShader() },
+			{ GetSSRVertexShader1(), GetSSRFragmentShader1() },
+			{ GetSSRVertexShader2(), GetSSRFragmentShader2() },
 		};
 		const int sourceNum = static_cast<int>(SHADER_TYPE::NUM);
 		static_assert(sizeof(sources) / sizeof(sources[0]) == sourceNum, "シェーダーのソースの数が合いません");
@@ -325,6 +328,7 @@ namespace
 			m_uniform_depTexEff				  = DsGLGetUniformLocation(m_prog[idx], "depTexEff");
 			m_uniform_blurTex				  = DsGLGetUniformLocation(m_prog[idx], "blurTex");
 			m_uniform_normalTex				  = DsGLGetUniformLocation(m_prog[idx], "normalTex");
+			m_uniform_specularDepthTex		  = DsGLGetUniformLocation(m_prog[idx], "specularDepthTex");
 
 			DsGLUniform1i(m_uniform_texAlbedo, 0);//普通のテクスチャは０番に
 			DsGLUniform1i(m_uniform_texNormal, 1);
@@ -450,6 +454,11 @@ namespace
 	void DsShaderImp::NormalTex(int normalTex)
 	{
 		DsGLUniform1i(m_uniform_normalTex, normalTex);
+	}
+	//virtual
+	void DsShaderImp::SpecularDepthTex(int tex)
+	{
+		DsGLUniform1i(m_uniform_specularDepthTex, tex);
 	}
 }
 
