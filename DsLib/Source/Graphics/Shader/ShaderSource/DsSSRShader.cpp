@@ -74,7 +74,7 @@ namespace //SSR
 			
 			//レイを飛ばす
 			vec3 start = pos;
-			float rayLen = 200.0;//レイを飛ばす距離
+			float rayLen = 50.0;//レイを飛ばす距離
 			vec3 end = start + (reflectDir * rayLen);
 			
 			float iteration = 1000.0;//衝突判定回数
@@ -82,6 +82,7 @@ namespace //SSR
 			
 			float thickness = 0.01;//衝突判定のための擬似的な厚さ（単位は深度値と同じ）
 			
+			float distanceRate = 1.0;
 
 			vec4 startClip4 = projectionTransform * vec4(start, 1.0);
 			vec3 startClip = (startClip4.xyz / startClip4.w)*0.5 + 0.5;
@@ -93,7 +94,7 @@ namespace //SSR
 
 
 			bool isHit = false;
-			vec2 hitPix;
+			vec2 hitPix = vec2(0);
 			
 			//vec3 searchPos = end;
 			//vec3 searchVec = end - start;
@@ -120,7 +121,8 @@ namespace //SSR
 			//hitPix.y = result.z;
 
 			float iteEnd = rayLen - 0.001;//for文終了判定誤差のため
-			for (float len = dLen; len < iteEnd; len *= 1.1){
+			float len = dLen;
+			for (; len < iteEnd; len *= 1.1){
 				
 				//線形のデプス値があれば使える
 				//startClip = startClip + dVecClip;
@@ -159,8 +161,12 @@ namespace //SSR
 				}
 			}
 
+			//距離で減衰
+			distanceRate = 1.0 - (len / rayLen);
+
 			if(isHit){
-				gl_FragColor = texture2D(colTexOri, hitPix);
+				gl_FragColor = (texture2D(colTexOri, hitPix) * distanceRate) + (texture2D(colTexOri, gl_TexCoord[0].st)*(1.0-distanceRate));
+				gl_FragColor.a = 1.0;
 			}
 			else {
 				vec3 rgb = texture2D(colTexOri, gl_TexCoord[0].st).rgb;
@@ -189,14 +195,16 @@ namespace //SSR
 	static const char s_fragment2[] = DS_SHADER_STR(
 		uniform sampler2D colTexEff;//ブラー適用
 		uniform sampler2D colTexOri;//ssr直前
+		uniform sampler2D specularDepthTex;
 
 		void main(void)
 		{
 			vec4 col1 = texture2D(colTexEff, gl_TexCoord[0].st);
 			vec4 col2 = texture2D(colTexOri, gl_TexCoord[0].st);
+			float specular = texture2D(specularDepthTex, gl_TexCoord[0].st).x;
 
 			if (0.5 < col1.a) {
-				gl_FragColor = col1*0.3 + col2*0.7;
+				gl_FragColor = col1 * specular + col2 * (1.0 - specular);
 			}
 			else {
 				gl_FragColor = vec4(col2.rgb, 1.0);

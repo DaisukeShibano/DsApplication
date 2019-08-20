@@ -13,7 +13,7 @@ namespace
 	***************************************************/
 	static const char s_vertex[] = DS_SHADER_STR(
 		// フラグメントシェーダに値を渡すための変数
-		varying vec4 vPos;
+		//varying vec4 vPos;
 		varying vec3 vNrm;
 		varying vec4 vShadowCoord;	//!< シャドウデプスマップの参照用座標
 		varying vec3 normalMapLight;
@@ -32,7 +32,7 @@ namespace
 			gl_FrontColor = gl_Color;				// 頂点色
 			gl_TexCoord[0] = gl_MultiTexCoord0;		// 頂点テクスチャ座標
 
-			vPos = gl_Position;
+			//vPos = gl_Position;
 			
 			//法線マップ用
 			//http://marina.sys.wakayama-u.ac.jp/~tokoi/?date=20051014
@@ -66,7 +66,7 @@ namespace
 	***************************************************/
 	static const char s_fragment[] = DS_SHADER_STR(
 		// バーテックスシェーダから受け取る変数
-		varying vec4 vPos;
+		//varying vec4 vPos;
 		varying vec3 vNrm;
 		varying vec4 vShadowCoord;
 		varying vec3 normalMapLight;
@@ -89,6 +89,7 @@ namespace
 		uniform bool isUseWaveNormalMap;//=false;
 		uniform bool isUseSpecularMap;// = true;
 
+		float outSpecular;
 
 		/*!
 		* Phong反射モデルによるシェーディング
@@ -173,6 +174,7 @@ namespace
 			vec4 ret = baseColor*(gl_FrontLightProduct[0].diffuse * diffuse + gl_FrontLightProduct[0].ambient + gl_FrontMaterial.emission)
 				+ specularColor * specular;
 
+			outSpecular = length(specularColor.rgb);
 			return (isUseLight) ? (ret) : (baseColor);
 		}
 
@@ -264,7 +266,7 @@ namespace
 			gl_FragData[0] = fragColor;
 			gl_FragData[1] = fragColor;
 			gl_FragData[2] = vec4(vec3(vNrm)*0.5 + 0.5, 1.0);
-			gl_FragData[3] = vec4(vec3(vPos.z), 1.0);
+			gl_FragData[3] = vec4(outSpecular, 0.0, 0.0, 1.0);
 
 		}
 	);

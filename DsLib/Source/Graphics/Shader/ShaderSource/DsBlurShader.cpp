@@ -27,7 +27,7 @@ namespace
 	uniform sampler2D textureSource;
 
 	//パラメータ
-	const int maxPixNum = 50;
+	const int maxPixNum = 100;
 	uniform int pixNum;
 	uniform float weight[maxPixNum];
 	uniform float weightSum;
@@ -36,6 +36,7 @@ namespace
 	{
 		vec4 color = vec4(0.0);
 		int minPix = pixNum / 2;
+
 		for (int i = 0; i < pixNum; ++i)
 		{
 			float pix = float(i - minPix);
@@ -54,7 +55,7 @@ namespace
 	uniform sampler2D textureSource;
 
 	//パラメータ
-	const int maxPixNum = 50;
+	const int maxPixNum = 100;
 	uniform int pixNum;
 	uniform float weight[maxPixNum];
 	uniform float weightSum;
@@ -63,6 +64,7 @@ namespace
 	{
 		vec4 color = vec4(0.0);
 		int minPix = pixNum / 2;
+
 		for (int i = 0; i < pixNum; ++i)
 		{
 			float pix = float(i - minPix);

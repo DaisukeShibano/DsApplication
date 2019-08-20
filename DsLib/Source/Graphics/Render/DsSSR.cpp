@@ -65,8 +65,7 @@ namespace
 				m_shader.EnableShader(SHADER_TYPE::BLUR_HORIZON);
 				const int width = static_cast<int>(m_render.GetWidth());
 				const int height = static_cast<int>(m_render.GetHeight());
-				const DsShader::BlurParam blurParam = DsShader::GetBlurParam(19);
-
+				const DsShader::BlurParam blurParam = DsShader::GetBlurParam(19, 0.1f);
 				m_shader.SetBlurParam(1.0f / (static_cast<float>(width)), 0, blurParam);
 				DsGLActiveTexture(DS_GL_TEXTURE0);
 				m_postEffectBuffer.BindTmpColorTexture1();
@@ -90,6 +89,9 @@ namespace
 				m_postEffectBuffer.BindTmpColorTexture3();//ブラー適用済み
 				DsGLActiveTexture(DS_GL_TEXTURE1);
 				m_postEffectBuffer.BindCurrentResultTexture();//ssr直前
+				m_shader.SpecularDepthTex(4);
+				DsGLActiveTexture(DS_GL_TEXTURE4);
+				m_postEffectBuffer.BindSpecularDepthOri();
 
 				m_postEffectBuffer.BindTmpFrameBuffer1();
 				_Draw();

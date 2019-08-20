@@ -25,7 +25,7 @@ namespace DsLib
 		struct BlurParam
 		{
 			int pixNum;
-			float weight[50];
+			float weight[100];
 			float weightSum;
 		};
 	public:
