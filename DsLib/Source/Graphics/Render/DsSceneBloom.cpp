@@ -38,6 +38,10 @@ namespace
 				m_shader.SetPostEffectParam(0, 1, 2);
 				DsGLActiveTexture(DS_GL_TEXTURE0);
 				m_postEffectBuffer.BindCurrentResultTexture();
+				m_shader.SpecularDepthTex(4);
+				DsGLActiveTexture(DS_GL_TEXTURE4);
+				m_postEffectBuffer.BindSpecularDepthOri();
+
 				m_postEffectBuffer.BindFrameBuffer();
 				_Draw();
 				m_postEffectBuffer.UnbindFrameBuffer();
@@ -47,7 +51,7 @@ namespace
 				const int height = static_cast<int>(m_render.GetHeight());
 				
 				m_shader.EnableShader(SHADER_TYPE::BLUR_HORIZON);
-				const DsShader::BlurParam blurParam = DsShader::GetBlurParam(19);
+				const DsShader::BlurParam blurParam = DsShader::GetBlurParam(49, 100.0f);
 				m_shader.SetBlurParam(1.0f / (static_cast<float>(width)), 0, blurParam);
 				DsGLActiveTexture(DS_GL_TEXTURE0);
 				m_postEffectBuffer.BindTexture();//0番目に輝度抽出したテクスチャをバインド
@@ -70,7 +74,6 @@ namespace
 				m_postEffectBuffer.BindTmpColorTexture3();//0番目に縦横方向加工済みをバインド
 				DsGLActiveTexture(DS_GL_TEXTURE1);
 				m_postEffectBuffer.BindCurrentResultTexture();//1番のテスクチャに加工前をバインド
-				//2は使わない
 
 				m_postEffectBuffer.BindFrameBuffer();
 				_Draw();

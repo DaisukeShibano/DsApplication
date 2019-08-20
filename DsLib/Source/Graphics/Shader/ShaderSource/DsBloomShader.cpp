@@ -22,10 +22,20 @@ namespace//高輝度抽出
 	***************************************************/
 	static const char s_fragment1[] = DS_SHADER_STR(
 		uniform sampler2D colTexEff;
+		uniform sampler2D specularDepthTex;
 
 		void main(void)
 		{
-			vec3 texel = max(vec3(0.0), (texture2D(colTexEff, gl_TexCoord[0].st) - 0.5).rgb);
+			float thre = (1.0 - texture2D(specularDepthTex, gl_TexCoord[0].st).x) * 0.8;
+			vec3 color = texture2D(colTexEff, gl_TexCoord[0].st).rgb;
+			vec3 lumiVec = vec3(0.298912, 0.586611, 0.114478);
+			float luminance = dot(lumiVec, color);
+
+			//輝度の閾値値に相当するrgbの値を求める
+			float subColor = thre / (lumiVec.r + lumiVec.g + lumiVec.b);
+
+			vec3 texel = (thre < luminance) ? (color - subColor) : vec3(0.0);
+			//vec3 texel = max( vec3(0.0), color - thre);//こっちでもあんまり変わらない
 			gl_FragColor = vec4(texel, 1.0);
 		}
 	);
