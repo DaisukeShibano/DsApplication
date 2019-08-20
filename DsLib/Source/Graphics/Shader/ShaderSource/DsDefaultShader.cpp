@@ -174,7 +174,7 @@ namespace
 			vec4 ret = baseColor*(gl_FrontLightProduct[0].diffuse * diffuse + gl_FrontLightProduct[0].ambient + gl_FrontMaterial.emission)
 				+ specularColor * specular;
 
-			outSpecular = length(specularColor.rgb);
+			outSpecular = specular * length(specularColor.rgb);
 			return (isUseLight) ? (ret) : (baseColor);
 		}
 
