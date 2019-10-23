@@ -9,8 +9,12 @@
 #include "Model/DsModel.h"
 #endif
 #include "Graphics/Shader/DsShader.h"
+#include "Graphics/Image/DsImage.h"
+#include "Collision/DsColliderUtil.h"
 
 using namespace DsLib;
+
+
 
 DsModelRender::DsModelRender()
 : m_drawList()
@@ -58,6 +62,180 @@ void DsModelRender::UpdateTime(double dt)
 
 void DsModelRender::Render() const
 {
+	{//UV座標デバッグ
+		static double dbgRayH = 0.0;
+		static double dbgRayDx = 0.003;
+		dbgRayH += dbgRayDx;
+		if (1.0 < dbgRayH) {
+			dbgRayDx = -0.003;
+		}
+		if (dbgRayH < 0.0) {
+			dbgRayDx = 0.003;
+		}
+
+		const DsShapeSegment seg = DsShapeSegment::Setup2Point(DsVec3d(0.01, dbgRayH, -1.0), DsVec3d(0.01, dbgRayH, 10.0));
+		double distance = DBL_MAX;
+		bool isHit = false;
+		const DsModel::Material::Texture* pHitTex = NULL;
+		DsVec3d hitVertex[4];
+		DsModel::Material::Texture::UV hitUV[4];
+
+		DsDbgSys::GetIns().RefDrawCom().SetColor(DsVec3d(1, 1, 1)).DrawCapsule(seg.origin, seg.origin + seg.dir*seg.len, 0.002);
+
+		for (const DsModel* pModel : m_drawList) {
+
+			const int fn = pModel->GetFaceNum();
+			const DsVec4d* pVertex = pModel->GetVertex();
+			const DsModel::Face* pFace = pModel->GetFace();
+
+			const int mn = pModel->GetMaterialNum();
+			const DsModel::Material* pMtr = pModel->GetMaterial();
+
+			for (int mi = 0; mi < mn; ++mi, ++pMtr) {
+				const int tn = pMtr->textureNum;
+				const DsModel::Material::Texture* pTex = pMtr->pTexture;
+				if (pTex->pAlbedoImage) {
+					for (int ti = 0; ti < tn; ++ti, ++pTex) {
+						int uvIdx = 0;
+						const DsModel::Material::Texture::UV *pUV = pTex->pUV;
+						for (const DsModel::Face* pFace : pTex->refGeomFaces) {
+							const int vn = pFace->vn;
+
+							DsVec3d buf[64];
+							DsModel::Material::Texture::UV bufUV[64];
+
+							for (int vi = 0; vi < vn; ++vi) {
+								const DsModel::Material::Texture::UV& uv = pUV[uvIdx];
+								const int vIdx = uv.vertexIdx;
+
+								buf[vi] = pModel->GetRotation()*pVertex[vIdx] + pModel->GetPosition();
+								bufUV[vi] = uv;
+
+								double tmpDistance = -1.0;
+								if (vi == 2) {
+									tmpDistance = DsColliderUtil::SegTriBackfaceCull(seg,buf);
+								}
+								else if (vi == 3) {
+									DsVec3d tmp[3] =
+									{
+										buf[2],
+										buf[3],
+										buf[0],
+									};
+
+									tmpDistance = DsColliderUtil::SegTriBackfaceCull(seg, tmp);
+								}
+
+								if (0.0 < tmpDistance) {
+									isHit = true;
+									if (tmpDistance < distance) {
+										pHitTex = pTex;
+										hitVertex[0] = buf[0];
+										hitVertex[1] = buf[1];
+										hitVertex[2] = buf[2];
+										hitVertex[3] = buf[3];
+										distance = tmpDistance;
+										hitUV[0] = bufUV[0];
+										hitUV[1] = bufUV[1];
+										hitUV[2] = bufUV[2];
+										hitUV[3] = bufUV[3];
+									}
+								}
+
+
+
+								//glTexCoord2f(uv.x, uv.y);
+								//glVertex3dv(pVertex[vIdx].v);
+								++uvIdx;
+							}
+
+						}
+					}
+				}
+
+			}
+		}
+
+		if (isHit) {
+			//UV展開参考
+			//http://esprog.hatenablog.com/entry/2016/05/08/165445
+			const unsigned char* pImp = pHitTex->pAlbedoImage->GetData();
+			const int height = pHitTex->pAlbedoImage->GetHeight();
+			const int width = pHitTex->pAlbedoImage->GetWidth();
+			const DsVec3d hitPos = seg.origin + seg.dir*distance;
+
+			DsMat44d projMat = DsMat44d::Identity();
+			glGetDoublev(GL_PROJECTION_MATRIX, projMat.mat);
+			projMat = projMat.ToTransposition();
+
+			DsMat44d viewMat = DsMat44d::Identity();
+			glGetDoublev(GL_MODELVIEW_MATRIX, viewMat.mat);
+			viewMat = viewMat.ToTransposition();
+
+			DsMat44d projViewMat = projMat * viewMat;
+
+			DsVec2d uv1 = DsVec2d(hitUV[0].x, hitUV[0].y);
+			DsVec2d uv2 = DsVec2d(hitUV[1].x, hitUV[1].y);
+			DsVec2d uv3 = DsVec2d(hitUV[2].x, hitUV[2].y);
+
+			//各点をProjectionSpaceへの変換
+			const DsVec4d p1_p = projViewMat * DsVec4d(hitVertex[0], 1.0);
+			const DsVec4d p2_p = projViewMat * DsVec4d(hitVertex[1], 1.0);
+			const DsVec4d p3_p = projViewMat * DsVec4d(hitVertex[2], 1.0);
+			const DsVec4d ph_p = projViewMat * DsVec4d(hitPos, 1.0);
+
+			//通常座標への変換(ProjectionSpace)
+			const DsVec2d p1_n = DsVec2d(p1_p.x, p1_p.y) / p1_p.w;
+			const DsVec2d p2_n = DsVec2d(p2_p.x, p2_p.y) / p2_p.w;
+			const DsVec2d p3_n = DsVec2d(p3_p.x, p3_p.y) / p3_p.w;
+			const DsVec2d p_n = DsVec2d(ph_p.x, ph_p.y) / ph_p.w;
+
+			//頂点のなす三角形を点pにより3分割し、必要になる面積を計算
+			double s = 0.5f * ((p2_n.x - p1_n.x) * (p3_n.y - p1_n.y) - (p2_n.y - p1_n.y) * (p3_n.x - p1_n.x));
+			double s1 = 0.5f * ((p3_n.x - p_n.x) * (p1_n.y - p_n.y) - (p3_n.y - p_n.y) * (p1_n.x - p_n.x));
+			double s2 = 0.5f * ((p1_n.x - p_n.x) * (p2_n.y - p_n.y) - (p1_n.y - p_n.y) * (p2_n.x - p_n.x));
+
+			//s = DsVec2d::Cross(p2_n - p1_n, p3_n - p1_n)*0.5;
+			//s1 = DsVec2d::Cross(p2_n - p1_n, p_n - p1_n)*0.5;
+			//s2 = DsVec2d::Cross(p3_n - p2_n, p_n - p1_n)*0.5;
+
+			//面積比からuvを補間
+			double u = s1 / s;
+			double v = s2 / s;
+			double w = 1.0 / ((1.0 - u - v) * 1.0 / p1_p.w + u * 1.0 / p2_p.w + v * 1.0 / p3_p.w);
+			DsVec2d uv = (uv1*(1.0 - u - v) / p1_p.w + uv2 * u / p2_p.w + uv3 * v / p3_p.w)*w;
+
+			if ((uv.x <= 1.0) && (uv.y <= 1.0)) {
+				int texU = static_cast<int>(uv.x * static_cast<double>(width));
+				int texV = static_cast<int>(uv.y * static_cast<double>(height));
+
+				if((uv.x<0.0) || (uv.y<0.0)){
+					DS_LOG("");
+				}
+				else {
+
+					ds_uint8 r = pImp[texV*width*4 + texU*4 + 0];
+					ds_uint8 g = pImp[texV*width*4 + texU*4 + 1];
+					ds_uint8 b = pImp[texV*width*4 + texU*4 + 2];
+					DsVec3d col(
+						static_cast<double>(r) / 255.0,
+						static_cast<double>(g) / 255.0,
+						static_cast<double>(b) / 255.0
+					);
+
+					DsDbgSys::GetIns().RefDrawCom().SetColor(col).DrawSphere(seg.origin + seg.dir*distance, 0.05);
+				}
+			}
+			else {
+				DS_LOG("");
+			}
+
+		}
+	}
+
+
+
+
 	m_pShader->SetTime(static_cast<float>(m_time));
 
 	glEnable(GL_BLEND);
@@ -72,7 +250,6 @@ void DsModelRender::Render() const
 
 	m_pShader->SetProjectionTransform(projMat.mat);
 	m_pShader->SetProjectionInverseTransform(projInv.mat);
-
 
 	for(const DsModel* pModel : m_drawList) 
 	{
@@ -174,7 +351,6 @@ void DsModelRender::Render() const
 					if (!isUseVertexNormal)
 					{
 						glNormal3dv(pFace->normal.v);
-
 					}
 
 					glBegin(GL_POLYGON);

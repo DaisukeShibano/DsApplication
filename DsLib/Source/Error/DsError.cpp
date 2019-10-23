@@ -7,4 +7,5 @@ using namespace DsLib;
 void DsLib::DsAssertDummyFunc()
 {
 	printf("assert");
+	throw "assert";
 }

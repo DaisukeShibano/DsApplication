@@ -161,15 +161,9 @@ namespace DsLib
 			return (src1.x*src2.x + src1.y*src2.y + src1.z*src2.z);
 		}
 
-		static DsVec2<TYPE> Cross(const DsVec2<TYPE>& src1, const DsVec2<TYPE>& src2)
+		static TYPE Cross(const DsVec2<TYPE>& src1, const DsVec2<TYPE>& src2)
 		{
-			const DsVec2<TYPE> dst =
-			{
-				src1.y*src2.z - src1.z*src2.y,
-				src1.z*src2.x - src1.x*src2.z,
-				src1.x*src2.y - src1.y*src2.x,
-			};
-			return dst;
+			return src1.x*src2.y - src1.y*src2.x;
 		}
 
 		static const DsVec2<TYPE>& GetX()

@@ -19,6 +19,12 @@ namespace DsLib
 		NUM,
 	};
 
+	enum class COMPUTE_SHADER_TYPE : int
+	{
+		RAY_TRACE,
+		NUM,
+	};
+
 	class DsShader
 	{
 	public:

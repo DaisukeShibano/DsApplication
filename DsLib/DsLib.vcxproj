@@ -198,6 +198,10 @@
     <ClCompile Include="Source\Animation\DsKeyframeAnimSet.cpp" />
     <ClCompile Include="Source\Animation\DsKeyframeInterpolate.cpp" />
     <ClCompile Include="Source\Animation\SkinMesh\DsSkinMesh.cpp" />
+    <ClCompile Include="Source\Collision\DsAabbNode.cpp" />
+    <ClCompile Include="Source\Collision\DsAabbTree.cpp" />
+    <ClCompile Include="Source\Collision\DsColliderUtil.cpp" />
+    <ClCompile Include="Source\Collision\DsShapeSegment.cpp" />
     <ClCompile Include="Source\Config\DsConf.cpp" />
     <ClCompile Include="Source\DsPch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -231,6 +235,7 @@
     <ClCompile Include="Source\Graphics\Render\Tool\Cloud\DsCloudIns.cpp" />
     <ClCompile Include="Source\Graphics\Render\Tool\Cloud\DsToolCloud.cpp" />
     <ClCompile Include="Source\Graphics\Render\Tool\DsRenderTool.cpp" />
+    <ClCompile Include="Source\Graphics\Shader\ComputeShaderSource\DsRayTraceShader.cpp" />
     <ClCompile Include="Source\Graphics\Shader\DsShader.cpp" />
     <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsBloomShader.cpp" />
     <ClCompile Include="Source\Graphics\Shader\ShaderSource\DsBlurShader.cpp" />
@@ -271,6 +276,10 @@
     <ClInclude Include="Source\Animation\DsKeyframeAnimSet.h" />
     <ClInclude Include="Source\Animation\DsKeyframeInterpolate.h" />
     <ClInclude Include="Source\Animation\SkinMesh\DsSkinMesh.h" />
+    <ClInclude Include="Source\Collision\DsAabbNode.h" />
+    <ClInclude Include="Source\Collision\DsAabbTree.h" />
+    <ClInclude Include="Source\Collision\DsColliderUtil.h" />
+    <ClInclude Include="Source\Collision\DsShapeSegment.h" />
     <ClInclude Include="Source\Config\DsConf.h" />
     <ClInclude Include="Source\DsDefine.h" />
     <ClInclude Include="Source\DsLib.h" />
@@ -304,6 +313,7 @@
     <ClInclude Include="Source\Graphics\Render\Tool\Cloud\DsCloudIns.h" />
     <ClInclude Include="Source\Graphics\Render\Tool\Cloud\DsToolCloud.h" />
     <ClInclude Include="Source\Graphics\Render\Tool\DsRenderTool.h" />
+    <ClInclude Include="Source\Graphics\Shader\ComputeShaderSource\DsRayTraceShader.h" />
     <ClInclude Include="Source\Graphics\Shader\DsShader.h" />
     <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsBloomShader.h" />
     <ClInclude Include="Source\Graphics\Shader\ShaderSource\DsBlurShader.h" />

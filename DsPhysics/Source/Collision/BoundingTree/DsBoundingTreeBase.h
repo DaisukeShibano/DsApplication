@@ -5,11 +5,6 @@
 ///#include "Collision/BoundingTree/DsBoundingTreeBase.h"
 ///#endif
 
-namespace DsLib
-{
-	class DsAabb;
-}
-
 namespace DsPhysics
 {
 	class DsBoundingTreeAabb;

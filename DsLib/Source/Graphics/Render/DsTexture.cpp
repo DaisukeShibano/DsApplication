@@ -35,11 +35,11 @@ void DsTexture::Load(const DsModel& model)
 	const int mn = model.GetMaterialNum();
 	for (int mi = 0; mi < mn; ++mi)
 	{
-		const DsModel::Material::Texture* pTexture = pMaterial[mi].pTexture;
+		DsModel::Material::Texture* pTexture = pMaterial[mi].pTexture;
 		const int tn = pMaterial[mi].textureNum;
 		for (int ti = 0; ti < tn; ++ti)
 		{
-			Load(pTexture[ti].pathAlbedo);
+			pTexture[ti].pAlbedoImage = Load(pTexture[ti].pathAlbedo);
 			Load(pTexture[ti].pathNormal);
 			Load(pTexture[ti].pathSpecular);
 		}
@@ -52,10 +52,11 @@ void DsTexture::UnLoad(const DsModel& model)
 	const int mn = model.GetMaterialNum();
 	for (int mi = 0; mi < mn; ++mi)
 	{
-		const DsModel::Material::Texture* pTexture = pMaterial[mi].pTexture;
+		DsModel::Material::Texture* pTexture = pMaterial[mi].pTexture;
 		const int tn = pMaterial[mi].textureNum;
 		for (int ti = 0; ti < tn; ++ti)
 		{
+			pTexture[ti].pAlbedoImage = NULL;
 			UnLoad(pTexture[ti].pathAlbedo);
 			UnLoad(pTexture[ti].pathNormal);
 			UnLoad(pTexture[ti].pathSpecular);
@@ -83,14 +84,16 @@ void DsTexture::_RegisterTexture(DsImage* img, std::string mapKey, const unsigne
 	m_texMap[mapKey] = map;
 	m_texMap[mapKey].refCounter = 1;
 }
-void DsTexture::Load(const std::string& path)
+DsImage* DsTexture::Load(const std::string& path)
 {
+	DsImage* pRet = NULL;
 	if (m_texMap.end() == m_texMap.find(path))
 	{
 		DsImage* pImg = new DsImage;
 		const bool isLoad = pImg->Load(path.c_str());
 		if (pImg->GetData() && isLoad) {
 			_RegisterTexture(pImg, path, pImg->GetData(), pImg->GetWidth(), pImg->GetHeight());
+			pRet = pImg;
 		}
 		else 
 		{//ダミー
@@ -110,8 +113,12 @@ void DsTexture::Load(const std::string& path)
 	else
 	{
 		//同じテクスチャは使い回し
-		m_texMap[path].refCounter += 1;
+		TexMap& texmMap = m_texMap[path];
+		texmMap.refCounter += 1;
+		pRet = texmMap.pImg;
 	}
+
+	return pRet;
 }
 
 void DsTexture::UnLoad(const std::string& path)

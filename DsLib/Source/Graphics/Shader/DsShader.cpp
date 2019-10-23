@@ -8,6 +8,7 @@
 #include "Graphics/Shader/ShaderSource/DsSSAOShader.h"
 #include "Graphics/Shader/ShaderSource/DsDepthFieldShader.h"
 #include "Graphics/Shader/ShaderSource/DsSSRShader.h"
+#include "Graphics/Shader/ComputeShaderSource/DsRayTraceShader.h"
 #ifndef _DS_GL_FUNC_
 #include "Graphics/GL/DsGLFunc.h"
 #endif
@@ -29,7 +30,7 @@ namespace
 
 		if (logSize > 1)
 		{
-			char logBuffer[1024];
+			char logBuffer[2048];
 			DsGLGetShaderInfoLog(shader, 1024, &length, logBuffer);
 			//fprintf(stderr, "Shader Compile Info Log\n%s\n", logBuffer);
 			DS_LOG(logBuffer);
@@ -128,6 +129,38 @@ namespace
 		return true;
 	}
 
+	/*
+	GPGPU compute shader
+	*/
+	static bool _compileComputeShader(GLuint& result, std::string src)
+	{
+		GLuint cs = DsGLCreateShader(DS_GL_COMPUTE_SHADER);
+		if (_loadShader(cs, src) < 0) 
+		{
+			return false;
+		}
+
+		const GLuint prog = DsGLCreateProgram();
+
+		DsGLAttachShader(prog, cs);
+		DsGLDeleteShader(cs);
+		cs = 0;
+
+		/* シェーダプログラムのリンク */
+		GLint linked;
+		DsGLLinkProgram(prog);
+		DsGLGetProgramiv(prog, DS_GL_LINK_STATUS, &linked);
+		_printProgramInfoLog(prog);
+		if (linked == GL_FALSE)
+		{
+			DS_ERROR("Link error of shader!!\n");
+			return false;
+		}
+
+		result = prog;
+		return true;
+	}
+
 	static void _versionDisp()
 	{
 		const GLubyte *version = glGetString(GL_VERSION);
@@ -174,6 +207,7 @@ namespace
 	private:
 		unsigned int m_currentIdx;
 		GLuint m_prog[static_cast<int>(SHADER_TYPE::NUM)];
+		GLuint m_computeProg[static_cast<int>(COMPUTE_SHADER_TYPE::NUM)];
 		unsigned int m_uniform_modelTransform;
 		unsigned int m_uniform_projectionTransform;
 		unsigned int m_uniform_modelViewProjectionTransform;
@@ -211,6 +245,7 @@ namespace
 	DsShaderImp::DsShaderImp()
 		: m_currentIdx(0)
 		, m_prog{}
+		, m_computeProg{}
 		, m_uniform_modelTransform(0)
 		, m_uniform_projectionTransform(0)
 		, m_uniform_modelViewProjectionTransform(0)
@@ -251,35 +286,51 @@ namespace
 	//virtual
 	void DsShaderImp::Initialize()
 	{
-		struct _ShaderSource {
-			std::string pVertexSource;
-			std::string pFragmentSource;
-		};
+		{//shader
+			struct _ShaderSource {
+				std::string pVertexSource;
+				std::string pFragmentSource;
+			};
 
-		//並びはSHADER_TYPEと対応
-		_ShaderSource sources[] =
-		{
-			{ GetDefaultVertexShader(), GetDefaultFragmentShader() },
-			{ GetShadowMapVertexShader(), GetShadowMapFragmentShader() },
-			{ GetBlurVertexShader(), GetBlurFragmentShaderH() },
-			{ GetBlurVertexShader(), GetBlurFragmentShaderV() },
-			{ GetBloomVertexShader1(), GetBloomFragmentShader1() },
-			{ GetBloomVertexShader2(), GetBloomFragmentShader2() },
-			{ GetSSAOVertexShader(), GetSSAOFragmentShader() },
-			{ GetDepthFieldVertexShader1(), GetDepthFieldFragmentShader1() },
-			{ GetDepthFieldVertexShader2(), GetDepthFieldFragmentShader2() },
-			{ GetSSRVertexShader1(), GetSSRFragmentShader1() },
-			{ GetSSRVertexShader2(), GetSSRFragmentShader2() },
-		};
-		const int sourceNum = static_cast<int>(SHADER_TYPE::NUM);
-		static_assert(sizeof(sources) / sizeof(sources[0]) == sourceNum, "シェーダーのソースの数が合いません");
+			//並びはSHADER_TYPEと対応
+			_ShaderSource sources[] =
+			{
+				{ GetDefaultVertexShader(), GetDefaultFragmentShader() },
+				{ GetShadowMapVertexShader(), GetShadowMapFragmentShader() },
+				{ GetBlurVertexShader(), GetBlurFragmentShaderH() },
+				{ GetBlurVertexShader(), GetBlurFragmentShaderV() },
+				{ GetBloomVertexShader1(), GetBloomFragmentShader1() },
+				{ GetBloomVertexShader2(), GetBloomFragmentShader2() },
+				{ GetSSAOVertexShader(), GetSSAOFragmentShader() },
+				{ GetDepthFieldVertexShader1(), GetDepthFieldFragmentShader1() },
+				{ GetDepthFieldVertexShader2(), GetDepthFieldFragmentShader2() },
+				{ GetSSRVertexShader1(), GetSSRFragmentShader1() },
+				{ GetSSRVertexShader2(), GetSSRFragmentShader2() },
+			};
+			const int sourceNum = static_cast<int>(SHADER_TYPE::NUM);
+			static_assert(sizeof(sources) / sizeof(sources[0]) == sourceNum, "シェーダーのソースの数が合いません");
 
-		_versionDisp();
+			_versionDisp();
 
-		for (int sIdx = 0; sIdx < sourceNum; ++sIdx)
-		{
-			_compileShader(m_prog[sIdx], sources[sIdx].pVertexSource, sources[sIdx].pFragmentSource);
+			for (int sIdx = 0; sIdx < sourceNum; ++sIdx)
+			{
+				_compileShader(m_prog[sIdx], sources[sIdx].pVertexSource, sources[sIdx].pFragmentSource);
+			}
 		}
+
+		//{//compute shader
+		//	const char* sources[] =
+		//	{
+		//		GetRayTraceShader(),
+		//	};
+		//	const int sourceNum = static_cast<int>(COMPUTE_SHADER_TYPE::NUM);
+		//	static_assert(sizeof(sources) / sizeof(sources[0]) == sourceNum, "シェーダーのソースの数が合いません");
+		//
+		//	for (int sIdx = 0; sIdx < sourceNum; ++sIdx)
+		//	{
+		//		_compileComputeShader(m_computeProg[sIdx], sources[sIdx]);
+		//	}
+		//}
 	}
 
 	//virtual

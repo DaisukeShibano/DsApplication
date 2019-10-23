@@ -1,10 +1,6 @@
 #ifndef __DS_BOUNDING_OCTREE__
 #define __DS_BOUNDING_OCTREE__
 
-namespace DsLib
-{
-	class DsAabb;
-}
 namespace DsPhysics
 {
 	class DsActor;

@@ -154,5 +154,9 @@ bool DsImage::Load(const char* path)
 		//テクスチャは全部作らないのでなしは許容
 	}
 
+	if (isLoad) {
+		m_imgSize = m_imgWidth * m_imgHeight * 4;
+	}
+
 	return isLoad;
 }

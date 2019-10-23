@@ -284,7 +284,7 @@ DsWindowGL& DsSimu::RefWindow()
 
 void DsSimu::Update(double dt)
 {
-	for each(DsFieldObj* pObj in m_fieldObjs)
+	for(DsFieldObj* pObj : m_fieldObjs)
 	{
 		pObj->Update1(dt);
 		pObj->Update2(dt);
@@ -340,7 +340,7 @@ DsFieldObj* DsSimu::RegisterObj(const char* drawModelPath, const char* hitModelP
 
 void DsSimu::Unregister(DsApp::DsFieldObj* pObj)
 {
-	for each(DsFieldObj* obj in m_fieldObjs)
+	for(DsFieldObj* obj : m_fieldObjs)
 	{
 		if (obj == pObj)
 		{
@@ -353,7 +353,7 @@ void DsSimu::Unregister(DsApp::DsFieldObj* pObj)
 
 void DsSimu::ClearObj()
 {
-	for each(DsFieldObj* pObj in m_fieldObjs)
+	for(DsFieldObj* pObj : m_fieldObjs)
 	{
 		delete pObj;
 	}

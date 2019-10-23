@@ -4,6 +4,7 @@
 namespace DsLib
 {
 	class DsAnimRes;
+	class DsImage;
 }
 
 namespace DsLib
@@ -53,6 +54,7 @@ namespace DsLib
 					, pathAlbedo()
 					, pathNormal()
 					, pathSpecular()
+					, pAlbedoImage(NULL)
 				{}
 				~Texture()
 				{
@@ -66,7 +68,9 @@ namespace DsLib
 				std::string pathAlbedo;
 				std::string pathNormal;
 				std::string pathSpecular;
+				DsImage* pAlbedoImage;
 			};
+
 			Material()
 				: textureNum(0)
 				, pTexture(NULL)

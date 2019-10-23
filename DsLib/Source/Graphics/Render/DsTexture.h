@@ -37,7 +37,7 @@ namespace DsLib
 	private:
 		void _RegisterTexture(DsImage* img, std::string mapKey, const unsigned char* pImg, int width, int height);
 	public:
-		void Load(const std::string& path);
+		DsImage* Load(const std::string& path);
 		void UnLoad(const std::string& path);
 
 		inline unsigned int GetTexId(const std::string texPath) const

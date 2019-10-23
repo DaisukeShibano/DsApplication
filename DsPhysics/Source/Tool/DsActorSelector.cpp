@@ -35,6 +35,7 @@ namespace
 		return ret;
 	}
 }
+
 /*
 	@param[out] depth Ì—pÕ“Ë“_‚Ü‚Å‚Ì’·‚³
 */
