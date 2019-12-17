@@ -11,6 +11,7 @@
 #include "Graphics/Shader/DsShader.h"
 #include "Graphics/Image/DsImage.h"
 #include "Collision/DsColliderUtil.h"
+#include "Collision/DsCollisionBuffer.h"
 
 using namespace DsLib;
 
@@ -91,6 +92,9 @@ void DsModelRender::Render() const
 			const int mn = pModel->GetMaterialNum();
 			const DsModel::Material* pMtr = pModel->GetMaterial();
 
+			const DsVec3d modelPos = pModel->GetPosition();
+			const DsMat33d modelRot = pModel->GetRotation();
+
 			for (int mi = 0; mi < mn; ++mi, ++pMtr) {
 				const int tn = pMtr->textureNum;
 				const DsModel::Material::Texture* pTex = pMtr->pTexture;
@@ -108,7 +112,7 @@ void DsModelRender::Render() const
 								const DsModel::Material::Texture::UV& uv = pUV[uvIdx];
 								const int vIdx = uv.vertexIdx;
 
-								buf[vi] = pModel->GetRotation()*pVertex[vIdx] + pModel->GetPosition();
+								buf[vi] = modelRot*pVertex[vIdx] + modelPos;
 								bufUV[vi] = uv;
 
 								double tmpDistance = -1.0;
@@ -233,7 +237,14 @@ void DsModelRender::Render() const
 		}
 	}
 
-
+	{
+		DsCollisionBuffer buff;
+		std::vector < const DsModel* > tmpModel(m_drawList.begin(), m_drawList.end());
+		size_t size = DsCollisionBuffer::CalcMemSize(tmpModel.data(), static_cast<int>(tmpModel.size()));
+		ds_uint8* pBuf = new ds_uint8[size];
+		buff.WriteBuffer(pBuf, size, tmpModel.data(), static_cast<int>(tmpModel.size()));
+		delete[] pBuf;
+	}
 
 
 	m_pShader->SetTime(static_cast<float>(m_time));

@@ -33,8 +33,9 @@ namespace DsLib
 			m_minX = min.x;
 			m_minY = min.y;
 			m_minZ = min.z;
-			m_center = _VEC((m_maxX + m_minX)*0.5, (m_maxY + m_minY)*0.5, (m_maxZ + m_minZ)*0.5);
-			m_extents = _VEC((m_maxX - m_minX)*0.5, (m_maxY - m_minY)*0.5, (m_maxZ - m_minZ)*0.5);
+			const _VAL half = static_cast<_VAL>(0.5);
+			m_center = _VEC((m_maxX + m_minX)*half, (m_maxY + m_minY)*half, (m_maxZ + m_minZ)*half);
+			m_extents = _VEC((m_maxX - m_minX)*half, (m_maxY - m_minY)*half, (m_maxZ - m_minZ)*half);
 		}
 
 		void Setup(const _VEC& max, const _VEC& min)
@@ -45,8 +46,9 @@ namespace DsLib
 			m_minX = min.x;
 			m_minY = min.y;
 			m_minZ = min.z;
-			m_center = _VEC((m_maxX + m_minX)*0.5, (m_maxY + m_minY)*0.5, (m_maxZ + m_minZ)*0.5);
-			m_extents = _VEC((m_maxX - m_minX)*0.5, (m_maxY - m_minY)*0.5, (m_maxZ - m_minZ)*0.5);
+			const _VAL half = static_cast<_VAL>(0.5);
+			m_center = _VEC((m_maxX + m_minX)*half, (m_maxY + m_minY)*half, (m_maxZ + m_minZ)*half);
+			m_extents = _VEC((m_maxX - m_minX)*half, (m_maxY - m_minY)*half, (m_maxZ - m_minZ)*half);
 		}
 
 		_VEC GetMax() const { return _VEC(m_maxX, m_maxY, m_maxZ); }

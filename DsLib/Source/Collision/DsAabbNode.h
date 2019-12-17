@@ -17,9 +17,13 @@ namespace DsLib
 		~DsAabbNode();
 
 	private:
-		DsAabb m_aabb;
+		DsAabbf m_aabb;
 		int m_myIdx;
 		int m_parentIdx;
 		int m_childIdx[8];
+
+		//Å™Ç¢ÇÁÇÒ
+
+		
 	};
 }

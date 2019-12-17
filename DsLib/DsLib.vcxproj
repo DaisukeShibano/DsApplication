@@ -201,6 +201,7 @@
     <ClCompile Include="Source\Collision\DsAabbNode.cpp" />
     <ClCompile Include="Source\Collision\DsAabbTree.cpp" />
     <ClCompile Include="Source\Collision\DsColliderUtil.cpp" />
+    <ClCompile Include="Source\Collision\DsCollisionBuffer.cpp" />
     <ClCompile Include="Source\Collision\DsShapeSegment.cpp" />
     <ClCompile Include="Source\Config\DsConf.cpp" />
     <ClCompile Include="Source\DsPch.cpp">
@@ -279,6 +280,7 @@
     <ClInclude Include="Source\Collision\DsAabbNode.h" />
     <ClInclude Include="Source\Collision\DsAabbTree.h" />
     <ClInclude Include="Source\Collision\DsColliderUtil.h" />
+    <ClInclude Include="Source\Collision\DsCollisionBuffer.h" />
     <ClInclude Include="Source\Collision\DsShapeSegment.h" />
     <ClInclude Include="Source\Config\DsConf.h" />
     <ClInclude Include="Source\DsDefine.h" />

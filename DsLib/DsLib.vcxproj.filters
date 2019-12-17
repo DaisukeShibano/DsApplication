@@ -337,6 +337,9 @@
     <ClCompile Include="Source\Collision\DsColliderUtil.cpp">
       <Filter>Source\Collision</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Collision\DsCollisionBuffer.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\DsPch.h">
@@ -631,6 +634,9 @@
       <Filter>Source\Collision</Filter>
     </ClInclude>
     <ClInclude Include="Source\Collision\DsShapeSegment.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\DsCollisionBuffer.h">
       <Filter>Source\Collision</Filter>
     </ClInclude>
   </ItemGroup>
