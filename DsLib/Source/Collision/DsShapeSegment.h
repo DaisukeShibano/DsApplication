@@ -4,23 +4,23 @@ namespace DsLib
 {
 	struct DsShapeSegment
 	{
-		static DsShapeSegment Setup2Point(const DsVec3d& start, const DsVec3d& end)
+		static DsShapeSegment Setup2Point(const DsVec3f& start, const DsVec3f& end)
 		{
 			DsShapeSegment ret;
-			const DsVec3d vec = end - start;
+			const DsVec3f vec = end - start;
 			ret.origin = start;
-			ret.dir = DsVec3d::Normalize(vec);
+			ret.dir = DsVec3f::Normalize(vec);
 			ret.len = vec.Length();
-			ret.halfVec = start * (ret.len*0.5);
-			ret.halfVecFabs = DsVec3d::Abs(ret.halfVec);
+			ret.halfVec = start * (ret.len*0.5f);
+			ret.halfVecFabs = DsVec3f::Abs(ret.halfVec);
 			return ret;
 		}
 
-		DsVec3d origin;
-		DsVec3d dir;
-		DsVec3d halfVec;
-		DsVec3d halfVecFabs;
-		double len;
+		DsVec3f origin;
+		DsVec3f dir;
+		DsVec3f halfVec;
+		DsVec3f halfVecFabs;
+		float len;
 	};
 
 }

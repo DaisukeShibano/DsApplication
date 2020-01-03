@@ -125,6 +125,9 @@
     <Filter Include="Source\Collision">
       <UniqueIdentifier>{dd967798-9e48-49fa-a292-6608739bcf88}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source\Test">
+      <UniqueIdentifier>{3f0b12cd-1a29-413f-98ed-7f49d1ccee99}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\DsPch.cpp">
@@ -325,12 +328,6 @@
     <ClCompile Include="Source\Graphics\Shader\ComputeShaderSource\DsRayTraceShader.cpp">
       <Filter>Source\Graphics\Shader\ComputeShaderSource</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Collision\DsAabbNode.cpp">
-      <Filter>Source\Collision</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Collision\DsAabbTree.cpp">
-      <Filter>Source\Collision</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Collision\DsShapeSegment.cpp">
       <Filter>Source\Collision</Filter>
     </ClCompile>
@@ -339,6 +336,18 @@
     </ClCompile>
     <ClCompile Include="Source\Collision\DsCollisionBuffer.cpp">
       <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\DsGridEntity.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\DsGrid.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collision\DsGridTree.cpp">
+      <Filter>Source\Collision</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Test\DsGridTreeTest.cpp">
+      <Filter>Source\Test</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -624,12 +633,6 @@
     <ClInclude Include="Source\Graphics\Shader\ComputeShaderSource\DsRayTraceShader.h">
       <Filter>Source\Graphics\Shader\ComputeShaderSource</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Collision\DsAabbNode.h">
-      <Filter>Source\Collision</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Collision\DsAabbTree.h">
-      <Filter>Source\Collision</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Collision\DsColliderUtil.h">
       <Filter>Source\Collision</Filter>
     </ClInclude>
@@ -638,6 +641,18 @@
     </ClInclude>
     <ClInclude Include="Source\Collision\DsCollisionBuffer.h">
       <Filter>Source\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\DsGridEntity.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\DsGrid.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collision\DsGridTree.h">
+      <Filter>Source\Collision</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Test\DsGridTreeTest.h">
+      <Filter>Source\Test</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

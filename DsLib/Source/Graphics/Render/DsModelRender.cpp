@@ -13,6 +13,10 @@
 #include "Collision/DsColliderUtil.h"
 #include "Collision/DsCollisionBuffer.h"
 
+
+#include "Test/DsGridTreeTest.h"
+
+
 using namespace DsLib;
 
 
@@ -63,6 +67,11 @@ void DsModelRender::UpdateTime(double dt)
 
 void DsModelRender::Render() const
 {
+	{
+		DsGridTreeTest test;
+		test.Test(m_drawList);
+	}
+
 	{//UV座標デバッグ
 		static double dbgRayH = 0.0;
 		static double dbgRayDx = 0.003;
@@ -81,7 +90,7 @@ void DsModelRender::Render() const
 		DsVec3d hitVertex[4];
 		DsModel::Material::Texture::UV hitUV[4];
 
-		DsDbgSys::GetIns().RefDrawCom().SetColor(DsVec3d(1, 1, 1)).DrawCapsule(seg.origin, seg.origin + seg.dir*seg.len, 0.002);
+		DsDbgSys::GetIns().RefDrawCom().SetColor(DsVec3d(1, 1, 1)).DrawCapsule(seg.origin, seg.origin + seg.dir*seg.len, 0.002f);
 
 		for (const DsModel* pModel : m_drawList) {
 
@@ -105,7 +114,7 @@ void DsModelRender::Render() const
 						for (const DsModel::Face* pFace : pTex->refGeomFaces) {
 							const int vn = pFace->vn;
 
-							DsVec3d buf[64];
+							DsVec3f buf[64];
 							DsModel::Material::Texture::UV bufUV[64];
 
 							for (int vi = 0; vi < vn; ++vi) {
@@ -117,10 +126,10 @@ void DsModelRender::Render() const
 
 								double tmpDistance = -1.0;
 								if (vi == 2) {
-									tmpDistance = DsColliderUtil::SegTriBackfaceCull(seg,buf);
+									tmpDistance = DsColliderUtil::SegTriBackfaceCull(seg, buf);
 								}
 								else if (vi == 3) {
-									DsVec3d tmp[3] =
+									DsVec3f tmp[3] =
 									{
 										buf[2],
 										buf[3],
@@ -227,7 +236,7 @@ void DsModelRender::Render() const
 						static_cast<double>(b) / 255.0
 					);
 
-					DsDbgSys::GetIns().RefDrawCom().SetColor(col).DrawSphere(seg.origin + seg.dir*distance, 0.05);
+					DsDbgSys::GetIns().RefDrawCom().SetColor(col).DrawSphere(seg.origin + seg.dir*distance, 0.05f);
 				}
 			}
 			else {

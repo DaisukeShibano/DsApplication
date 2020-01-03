@@ -123,7 +123,7 @@ void DsCollisionBuffer::WriteBuffer(ds_uint8* pBuf, ds_uint64 buffSize, const Ds
 			ds_uint64 top = (ds_uint64)(m_pBuffer);
 			ds_uint64 current = (ds_uint64)(pBufEnd);
 			ds_uint64 writeSize = current - top;
-			if (buffSize < writeSize) {
+			if (buffSize != writeSize) {
 				DS_ASSERT(false, "チェックダメ");
 			}
 		}

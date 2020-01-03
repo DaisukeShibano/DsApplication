@@ -132,78 +132,6 @@ void TestMainLoop::Initialize(DsMainLoopArgs& args)
 }
 
 
-#include <regex>
-void func()
-{
-	struct ENV_DATA
-	{
-		std::string prefix;
-		std::string env;
-		std::string suffix;
-		int envId;
-		int type;
-	};
-
-	std::vector<ENV_DATA> result;
-
-
-	std::map<int, const char*> nameMap;
-	nameMap[123] = "TEST";
-	nameMap[45] = "DATA";
-
-	const char* data = "hoge_if(env(123) == 1) && push_cache_0 && env(45) == 1";
-
-	std::regex re0("(.*?)(env\\((\\d+)\\))(.*(?=env))");
-	std::cmatch match0;
-
-	std::string search0 = data;
-	while (std::regex_search(search0.c_str(), match0, re0, std::regex_constants::match_default)) {
-
-		if (match0.size() == 5) {
-			ENV_DATA data0;
-
-			//文頭にpushが来た場合に対応できない
-
-			data0.prefix = match0[1].str();
-			data0.env = match0[2].str();
-			data0.envId = std::atoi(match0[3].str().c_str());
-			data0.suffix = match0[4].str();
-			data0.type = 0;
-			result.push_back(data0);
-
-			std::regex re1("(.*?)(push_cache_\\d+)");
-			std::cmatch match1;
-			std::string search1 = match0[0].str();
-			bool setPrefix = true;
-			while (std::regex_search(search1.c_str(), match1, re1, std::regex_constants::match_default)) {
-
-				if (match1.size() == 3) {
-					ENV_DATA data1;
-
-					data1.prefix = match1[1].str();
-					data1.env = match1[2].str();
-					data1.envId = -1;
-					data1.type = 1;
-
-					//サフィックスをpush_cache_直前に更新
-					if (setPrefix) {
-						result.back().suffix = data1.prefix;
-						setPrefix = false;
-					}
-
-					result.push_back(data1);
-				}
-
-
-				search1 = match1.suffix().str();
-			}
-		}
-
-		search0 = match0.suffix().str();
-	}
-}
-
-
 void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 {
 	m_gameWorld.Update(args.dt);
@@ -228,6 +156,14 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, int nCmdShow)
 {
+	static int result = 0;
+	{
+		int val = 2;
+		int p = 8;
+		val << 8;
+	}
+
+
 	ds_uint64 hwnd = DsWindowManager::MainWindowCreate((ds_uint64)hInstance, lpCmdLine, nCmdShow);
 	if (0 == hwnd) {
 		return 0;
