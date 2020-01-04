@@ -3,6 +3,8 @@
 #ifndef _DS_AABB_H_
 #define _DS_AABB_H_
 
+#include "Graphics/Command/DsDrawCommand.h"
+
 namespace DsLib
 {
 	class DsDrawCommand;
@@ -27,12 +29,12 @@ namespace DsLib
 	public:
 		void Setup(_VAL maxX, _VAL maxY, _VAL maxZ, _VAL minX, _VAL minY, _VAL minZ)
 		{
-			m_maxX = max.x;
-			m_maxY = max.y;
-			m_maxZ = max.z;
-			m_minX = min.x;
-			m_minY = min.y;
-			m_minZ = min.z;
+			m_maxX = maxX;
+			m_maxY = maxY;
+			m_maxZ = maxZ;
+			m_minX = minX;
+			m_minY = minY;
+			m_minZ = minZ;
 			const _VAL half = static_cast<_VAL>(0.5);
 			m_center = _VEC((m_maxX + m_minX)*half, (m_maxY + m_minY)*half, (m_maxZ + m_minZ)*half);
 			m_extents = _VEC((m_maxX - m_minX)*half, (m_maxY - m_minY)*half, (m_maxZ - m_minZ)*half);

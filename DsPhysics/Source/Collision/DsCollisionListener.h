@@ -4,7 +4,9 @@
 #ifndef __DS_BOUNDING_OCTREE__
 #include "Collision/BoundingTree/DsBoundingOctree.h"
 #endif
-
+#ifndef __DS_ACTOR__
+#include "Actor/DsActor.h"
+#endif
 
 namespace DsPhysics
 {

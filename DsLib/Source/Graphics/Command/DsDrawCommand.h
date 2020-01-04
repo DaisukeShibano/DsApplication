@@ -8,6 +8,7 @@
 namespace DsLib
 {
 	class DsRender;
+	class DsDrawCommand;
 }
 
 namespace DsLib
