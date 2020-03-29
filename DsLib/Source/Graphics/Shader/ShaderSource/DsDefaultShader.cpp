@@ -189,7 +189,7 @@ namespace
 			//ポイントライト
 			vec4 pointLight;
 			{
-				vec4 pointCol = vec4(1.0, 0.0, 0.0, 1.0);
+				vec4 pointCol = vec4(1.0, 1.0, 1.0, 1.0);
 				vec3 pointPos = vec3(1.0, 0.0, -1.0);//モデルビュー行列が既にかかっている座標
 				float pointLen = length(pointPos - worldPos);
 				float kc = 1.0;
