@@ -156,14 +156,6 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, int nCmdShow)
 {
-	static int result = 0;
-	{
-		int val = 2;
-		int p = 8;
-		val << 8;
-	}
-
-
 	ds_uint64 hwnd = DsWindowManager::MainWindowCreate((ds_uint64)hInstance, lpCmdLine, nCmdShow);
 	if (0 == hwnd) {
 		return 0;

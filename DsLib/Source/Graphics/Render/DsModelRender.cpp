@@ -67,6 +67,7 @@ void DsModelRender::UpdateTime(double dt)
 
 void DsModelRender::Render() const
 {
+#if 0//レイキャストテスト
 	{
 		DsGridTreeTest test;
 		test.Test(m_drawList);
@@ -254,6 +255,7 @@ void DsModelRender::Render() const
 		buff.WriteBuffer(pBuf, size, tmpModel.data(), static_cast<int>(tmpModel.size()));
 		delete[] pBuf;
 	}
+#endif
 
 
 	m_pShader->SetTime(static_cast<float>(m_time));
@@ -325,6 +327,7 @@ void DsModelRender::Render() const
 		for (int mi = 0; mi < mn; ++mi, ++pMtr)
 		{
 			glMaterialfv(GL_FRONT, GL_SPECULAR, pMtr->specular.v);
+			glMaterialf(GL_FRONT, GL_SHININESS, pMtr->shininess);
 			glMaterialfv(GL_FRONT, GL_AMBIENT, pMtr->ambient.v);
 			glMaterialfv(GL_FRONT, GL_DIFFUSE, pMtr->diffuse.v);
 			glMaterialfv(GL_FRONT, GL_EMISSION, pMtr->emissive.v);

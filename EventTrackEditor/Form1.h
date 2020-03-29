@@ -104,7 +104,7 @@ namespace EventTrackEditor {
 			 void InitializeComponent(void)
 			 {
 				 this->components = (gcnew System::ComponentModel::Container());
-				 System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle1 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
+				 System::Windows::Forms::DataGridViewCellStyle^  dataGridViewCellStyle9 = (gcnew System::Windows::Forms::DataGridViewCellStyle());
 				 System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(Form1::typeid));
 				 this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 				 this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
@@ -204,15 +204,15 @@ namespace EventTrackEditor {
 				 this->dataGridView1->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left));
 				 this->dataGridView1->BackgroundColor = System::Drawing::SystemColors::ButtonFace;
 				 this->dataGridView1->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
-				 dataGridViewCellStyle1->Alignment = System::Windows::Forms::DataGridViewContentAlignment::MiddleLeft;
-				 dataGridViewCellStyle1->BackColor = System::Drawing::SystemColors::Control;
-				 dataGridViewCellStyle1->Font = (gcnew System::Drawing::Font(L"MS UI Gothic", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				 dataGridViewCellStyle9->Alignment = System::Windows::Forms::DataGridViewContentAlignment::MiddleLeft;
+				 dataGridViewCellStyle9->BackColor = System::Drawing::SystemColors::Control;
+				 dataGridViewCellStyle9->Font = (gcnew System::Drawing::Font(L"MS UI Gothic", 9, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 					 static_cast<System::Byte>(128)));
-				 dataGridViewCellStyle1->ForeColor = System::Drawing::SystemColors::WindowText;
-				 dataGridViewCellStyle1->SelectionBackColor = System::Drawing::SystemColors::Highlight;
-				 dataGridViewCellStyle1->SelectionForeColor = System::Drawing::SystemColors::HighlightText;
-				 dataGridViewCellStyle1->WrapMode = System::Windows::Forms::DataGridViewTriState::False;
-				 this->dataGridView1->ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+				 dataGridViewCellStyle9->ForeColor = System::Drawing::SystemColors::WindowText;
+				 dataGridViewCellStyle9->SelectionBackColor = System::Drawing::SystemColors::Highlight;
+				 dataGridViewCellStyle9->SelectionForeColor = System::Drawing::SystemColors::HighlightText;
+				 dataGridViewCellStyle9->WrapMode = System::Windows::Forms::DataGridViewTriState::False;
+				 this->dataGridView1->ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
 				 this->dataGridView1->ColumnHeadersHeightSizeMode = System::Windows::Forms::DataGridViewColumnHeadersHeightSizeMode::AutoSize;
 				 this->dataGridView1->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(2) {
 					 this->Column1,
@@ -277,6 +277,9 @@ namespace EventTrackEditor {
 				 // 
 				 // panel2
 				 // 
+				 this->panel2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+					 | System::Windows::Forms::AnchorStyles::Left)
+					 | System::Windows::Forms::AnchorStyles::Right));
 				 this->panel2->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
 				 this->panel2->Controls->Add(this->AnimListBox);
 				 this->panel2->Controls->Add(this->animPathOpenButton);
@@ -290,6 +293,9 @@ namespace EventTrackEditor {
 				 // 
 				 // AnimListBox
 				 // 
+				 this->AnimListBox->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+					 | System::Windows::Forms::AnchorStyles::Left)
+					 | System::Windows::Forms::AnchorStyles::Right));
 				 this->AnimListBox->FormattingEnabled = true;
 				 this->AnimListBox->HorizontalScrollbar = true;
 				 this->AnimListBox->ItemHeight = 12;
@@ -301,6 +307,7 @@ namespace EventTrackEditor {
 				 // 
 				 // animPathOpenButton
 				 // 
+				 this->animPathOpenButton->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Right));
 				 this->animPathOpenButton->Font = (gcnew System::Drawing::Font(L"MS UI Gothic", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 					 static_cast<System::Byte>(128)));
 				 this->animPathOpenButton->Location = System::Drawing::Point(480, 12);
@@ -313,6 +320,9 @@ namespace EventTrackEditor {
 				 // 
 				 // animPathTextBox
 				 // 
+				 this->animPathTextBox->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+					 | System::Windows::Forms::AnchorStyles::Left)
+					 | System::Windows::Forms::AnchorStyles::Right));
 				 this->animPathTextBox->Location = System::Drawing::Point(14, 14);
 				 this->animPathTextBox->Name = L"animPathTextBox";
 				 this->animPathTextBox->Size = System::Drawing::Size(460, 19);
@@ -321,6 +331,8 @@ namespace EventTrackEditor {
 				 // 
 				 // panel3
 				 // 
+				 this->panel3->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left)
+					 | System::Windows::Forms::AnchorStyles::Right));
 				 this->panel3->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 				 this->panel3->Controls->Add(this->CurrentAnimLabelSub);
 				 this->panel3->Controls->Add(this->CurrentAnimLabel);

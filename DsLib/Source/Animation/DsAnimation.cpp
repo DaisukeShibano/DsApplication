@@ -132,6 +132,8 @@ DsAnimation::~DsAnimation()
 
 void DsAnimation::RegisterDraw()
 {
+	//スキンメッシュモデルを保持してる関係上描画登録がここになってしまっている
+
 	//描画に登録
 	DsModel* pModel = GetModel();
 	if (pModel) {

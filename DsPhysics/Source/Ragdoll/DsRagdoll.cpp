@@ -189,8 +189,8 @@ void DsRagdoll::FixToPhysics(double dt, std::vector<DsAnimBone*>& bones, const D
 	const DsVec3d offset = rot*innerParts.offset;
 	const DsVec3d pos = worldRot.ToTransposition()*( pActor->GetPosition() - offset - worldPos );
 
-	DsAnimBone* oBone = bones[parts.skeletonBoneIdx];
-	oBone->modelPose = DsMat44d::Get(worldRot.ToTransposition()*rot, pos);
+	DsAnimBone* pBone = bones[parts.skeletonBoneIdx];
+	pBone->modelPose = DsMat44d::Get(worldRot.ToTransposition()*rot, pos);
 #else
 	const InnerPartsInfo& innerParts = m_innerParts[parts.innerPartsIdx];
 	innerParts.pActor->RefOption().isStatic = false;

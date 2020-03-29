@@ -4,9 +4,6 @@
     <Filter Include="Source">
       <UniqueIdentifier>{c4be4de4-1d77-4e34-9534-825736005b0c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Asset">
-      <UniqueIdentifier>{fc78bf4a-455e-4d27-bd44-5ab4899a517d}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">

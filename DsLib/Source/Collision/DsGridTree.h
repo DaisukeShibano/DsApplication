@@ -36,6 +36,10 @@ namespace DsLib
 		const DsCollisionBuffer* m_pBuff;
 		DsGrid* m_pGrids;
 		DsGridEntity* m_pGridEntities;
+
+
+	public:
+		void DbgDraw(DsDrawCommand& draw);
 	};
 
 	

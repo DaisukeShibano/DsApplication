@@ -14,9 +14,11 @@ namespace
 	static const char s_vertex[] = DS_SHADER_STR(
 		// フラグメントシェーダに値を渡すための変数
 		//varying vec4 vPos;
+		varying vec3 worldPos;
 		varying vec3 vNrm;
 		varying vec4 vShadowCoord;	//!< シャドウデプスマップの参照用座標
 		varying vec3 normalMapLight;
+		varying vec3 normalMapLightEx[10];
 		varying vec3 normalMapView;
 		attribute vec3 tangent;
 		uniform mat4 modelTransform;//!<描画モデル座標系
@@ -33,7 +35,8 @@ namespace
 			gl_TexCoord[0] = gl_MultiTexCoord0;		// 頂点テクスチャ座標
 
 			//vPos = gl_Position;
-			
+			worldPos = vec3(modelTransform * gl_Vertex);
+
 			//法線マップ用
 			//http://marina.sys.wakayama-u.ac.jp/~tokoi/?date=20051014
 			float tanL = vNrm[0] * vNrm[0] + vNrm[2] * vNrm[2] + 0.00001;
@@ -43,8 +46,8 @@ namespace
 			tangent[1] = 0.0;
 			tangent[2] = -vNrm[2] / tanSq;
 
+
 			vec4 p = gl_ModelViewMatrix * gl_Vertex;
-			vec3 l = normalize((gl_LightSource[0].position * p.w - gl_LightSource[0].position.w * p).xyz);
 			vec3 n = normalize(gl_NormalMatrix * gl_Normal);
 			vec3 t = normalize(gl_NormalMatrix * tangent);
 			vec3 b = cross(n, t);
@@ -53,10 +56,25 @@ namespace
 			temp.y = dot(p.xyz, b);
 			temp.z = dot(p.xyz, n);
 			normalMapView = -normalize(temp);//面座標系の頂点位置
-			temp.x = dot(l, t);
-			temp.y = dot(l, b);
-			temp.z = dot(l, n);
-			normalMapLight = normalize(temp);//面座標系の光の方向
+			
+			{//平行光源
+				//vec3 l = normalize((gl_LightSource[0].position * p.w - gl_LightSource[0].position.w * p).xyz);
+				vec3 l = normalize((gl_LightSource[0].position - p).xyz);
+				temp.x = dot(l, t);
+				temp.y = dot(l, b);
+				temp.z = dot(l, n);
+				normalMapLight = normalize(temp);//面座標系の光の方向
+			}
+
+			//追加光源分
+			{
+				vec3 pointPos = vec3(1.0, 0.0, -1.0);//モデルビュー行列が既にかかっている座標
+				vec3 l = normalize(pointPos - p.xyz);
+				temp.x = dot(l, t);
+				temp.y = dot(l, b);
+				temp.z = dot(l, n);
+				normalMapLightEx[0] = normalize(temp);//面座標系の光の方向
+			}
 		}
 	);
 
@@ -67,9 +85,11 @@ namespace
 	static const char s_fragment[] = DS_SHADER_STR(
 		// バーテックスシェーダから受け取る変数
 		//varying vec4 vPos;
+		varying vec3 worldPos;
 		varying vec3 vNrm;
 		varying vec4 vShadowCoord;
 		varying vec3 normalMapLight;
+		varying vec3 normalMapLightEx[10];
 		varying vec3 normalMapView;
 
 		uniform sampler2D texAlbedo;	//!< アルベドテクスチャ
@@ -151,6 +171,7 @@ namespace
 
 		/*
 		法線やスペキュラマップを適用
+		なんやかんやバッファが追加されたのでポストプロセスでも可
 		*/
 		vec4 ApplyMap(const vec4 baseColor)
 		{
@@ -160,21 +181,45 @@ namespace
 			if (isUseWaveNormalMap) {//法線を波で揺らす
 				fnormal = WaveNormalMap(fnormal);
 			}
-			
-			vec3 flight = normalize(normalMapLight);//面座標系の光の方向
-			
-			float diffuse = max(dot(flight, fnormal), 0.0);
 
 			vec3 fview = normalize(normalMapView);
-			vec3 halfway = normalize(flight + fview);
-
 			vec4 specularColor = isUseSpecularMap ? texture2DProj(texSpecular, gl_TexCoord[0]) : gl_FrontLightProduct[0].specular;
+			outSpecular = 0;
+
+			//ポイントライト
+			vec4 pointLight;
+			{
+				vec4 pointCol = vec4(1.0, 0.0, 0.0, 1.0);
+				vec3 pointPos = vec3(1.0, 0.0, -1.0);//モデルビュー行列が既にかかっている座標
+				float pointLen = length(pointPos - worldPos);
+				float kc = 1.0;
+				float k1 = 1.0;
+				float k2 = 1.0;
+				float attenuation = 1.0 / (kc + k1*pointLen + k2*pointLen*pointLen);
+				
+				vec3 flight = normalize(normalMapLightEx[0]);//面座標系の光の方向
+				float diffuse = max(dot(flight, fnormal), 0.0);
+				vec3 halfway = normalize(flight + fview);
+				float specular = pow(max(dot(fnormal, halfway), 0.0), gl_FrontMaterial.shininess);
+				
+				pointLight = pointCol * (gl_FrontLightProduct[0].diffuse * diffuse + gl_FrontLightProduct[0].ambient + gl_FrontMaterial.emission)
+					+ specularColor * specular;
+				pointLight *= attenuation;
+				outSpecular += attenuation * (specular * length(specularColor.rgb));
+			}
+
+			vec3 flight = normalize(normalMapLight);//面座標系の光の方向
+			float diffuse = max(dot(flight, fnormal), 0.0);
+			
+			vec3 halfway = normalize(flight + fview);
 			float specular = pow(max(dot(fnormal, halfway), 0.0), gl_FrontMaterial.shininess);
 
-			vec4 ret = baseColor*(gl_FrontLightProduct[0].diffuse * diffuse + gl_FrontLightProduct[0].ambient + gl_FrontMaterial.emission)
+			vec4 ret;
+			ret = pointLight;
+			ret += baseColor * (gl_FrontLightProduct[0].diffuse * diffuse + gl_FrontLightProduct[0].ambient + gl_FrontMaterial.emission)
 				+ specularColor * specular;
 
-			outSpecular = specular * length(specularColor.rgb);
+			outSpecular += specular * length(specularColor.rgb);
 			return (isUseLight) ? (ret) : (baseColor);
 		}
 

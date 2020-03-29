@@ -16,7 +16,7 @@ namespace
 
 namespace
 {
-	size_t _CalcTreeSize()
+	size_t _CalcGridNum()
 	{
 		size_t ret = 0;
 		for (int i = 0; i <= MAX_TREE_DEPTH; ++i) {
@@ -29,37 +29,24 @@ namespace
 //static
 size_t DsGridTree::CalcMemSize(size_t entityNum)
 {
-	return (_CalcTreeSize() * sizeof(DsGrid)) + (entityNum * sizeof(DsGridEntity)) + sizeof(DsGridTree);
+	return (_CalcGridNum() * sizeof(DsGrid)) + (entityNum * sizeof(DsGridEntity)) + sizeof(DsGridTree);
 }
-
-static size_t s_dbgMaxIndex = 0;
 
 //static
 DsGridTree* DsGridTree::Create(ds_uint8* pBuf, const DsCollisionBuffer* pCollisionBuf, ds_uint8* pDbgTop, size_t dbgSize)
 {
 	ds_uint8* pTreeBufTop = pBuf;
 
-	//DsGridTree* pGridTree = new(pBuf) DsGridTree;  //reinterpret_cast<DsGridTree*>(pBuf);
-	//const size_t entitySize = gridTreeSize - sizeof(DsGridTree);//残りがDsGridEntity配列
-	//const size_t entityNum = entitySize / sizeof(DsGridEntity);//配列の個数に変換
-	//pGridTree->m_pGrids = new(pBuf + sizeof(DsGridTree)) DsGridEntity[entityNum]; //reinterpret_cast<DsGridEntity*>(pBuf + sizeof(DsGridTree));
-
 	//初期化は重いのでなるべく呼ばず、0クリ前提にする
 	DsGridTree* pGridTree = new(pTreeBufTop) DsGridTree;
 	pGridTree->m_pGrids = reinterpret_cast<DsGrid*>(pTreeBufTop + sizeof(DsGridTree));
-	const size_t treeSize = _CalcTreeSize();
-	pGridTree->m_pGridEntities = reinterpret_cast<DsGridEntity*>(pTreeBufTop + sizeof(DsGridTree) + treeSize *sizeof(DsGrid) );
+	const size_t gridNum = _CalcGridNum();
+	pGridTree->m_pGridEntities = reinterpret_cast<DsGridEntity*>(pTreeBufTop + sizeof(DsGridTree) + gridNum *sizeof(DsGrid) );
 
 	ds_uint8* pEnd = pDbgTop + dbgSize;
 	ds_uint64 diff = pEnd - (ds_uint8*)(pGridTree->m_pGridEntities);
 
-	s_dbgMaxIndex = diff / sizeof(DsGridEntity);
-
 	pGridTree->_Build(pCollisionBuf);
-
-
-
-
 
 	return pGridTree;
 }
@@ -403,10 +390,44 @@ void DsGridTree::_Build(const DsCollisionBuffer* pBuff)
 			++registerEntityId;
 
 		}
+	}
+}
+
+void DsGridTree::DbgDraw(DsDrawCommand& draw)
+{
+	//各格子の中心点を生成し、実際に当たり判定をさせる
 
 
+	{//格子頂点データ用意
+		const int num = static_cast<int>(pow(2, MAX_TREE_DEPTH));//一片の格子数
+		for (int x = 0; x < num; ++x) {
+			for (int y = 0; y < num; ++y) {
+				for (int z = 0; z < num; ++z) {
+
+					const float xCell = m_cellUnitLen[0] * x;
+					const float yCell = m_cellUnitLen[1] * y;
+					const float zCell = m_cellUnitLen[2] * z;
+
+					const float pos[3] =
+					{
+						m_minP[0] + xCell,
+						m_minP[1] + yCell,
+						m_minP[2] + zCell,
+					};
+
+					if (Test(pos, pos))
+					{
+						//描画
+					}
+
+				}
+			}
+
+		}
 	}
 
 
-}
 
+	
+
+}

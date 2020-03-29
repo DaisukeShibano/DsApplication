@@ -611,7 +611,7 @@ namespace
 	virtual void Exe(DsDrawCommand& owner) override
 	{
 		const GLfloat col[] = { m_color.x, m_color.y, m_color.z, 1.0f };
-		const GLfloat spec[] = { 0.4f, 0.4f, 0.4f, 1.0f };	// ‹¾–Ê”½ËF
+		const GLfloat spec[] = { 0.5f, 0.5f, 0.5f, 1.0f };	// ‹¾–Ê”½ËF
 		const GLfloat ambi[] = { 0.1f, 0.1f, 0.1f, 1.0f };	// ŠÂ‹«Œõ
 		glMaterialfv(GL_FRONT, GL_SPECULAR, spec);
 		glMaterialfv(GL_FRONT, GL_AMBIENT, ambi);
