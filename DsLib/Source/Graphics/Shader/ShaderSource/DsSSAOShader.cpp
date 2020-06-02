@@ -26,7 +26,7 @@ namespace
 
 		void main(void)
 		{
-			float edge = 0.06;//深度値が近いものだけ影つける
+			float edge = 0.04;//深度値が近いものだけ影つける
 			float fade = 0.02;//影じゃないところへのフェード距離
 
 			const int sampleNum = 15;

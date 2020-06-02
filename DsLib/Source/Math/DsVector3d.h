@@ -221,8 +221,8 @@ namespace DsLib
 		//このベクトルに垂直な平面上のベクトルを取得
 		void GetVerticalPlane(DsVec3d& cX, DsVec3d& cY) const
 		{
-			const DsVec3d cZ = DsVec3d::Abs(DsVec3d::Normalize(*this));
-			if ((cZ - DsVec3d::GetY()).IsNearZero((0.1))){
+			const DsVec3d cZ = DsVec3d::Normalize(*this);
+			if ((DsVec3d::Abs(cZ) - DsVec3d::GetY()).IsNearZero((0.1))){
 				cX = DsVec3d::Normalize(DsVec3d::Cross(-DsVec3d::GetZ(), cZ));
 			}
 			else{

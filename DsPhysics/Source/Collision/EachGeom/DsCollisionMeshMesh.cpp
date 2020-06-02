@@ -294,11 +294,6 @@ namespace
 		
 		currdir++;
 
-		//odeでは必ずどっちかのdeep_pointsが衝突点になっちゃうけど、
-		//deep_points1,deep_points2共に0以上の衝突点で当たってる、どっちかが0ならあたってない、と判定できるのでは？
-		//できない。例えば上下に平行に配置されてるとどんなに離しても当たってる判定になる
-		//odeは別途接触判定しているんだろうか。この判定単体だと当たってなくても衝突点とれてしまう
-
 		////check most dir for contacts
 		if (mostdir == 0)
 		{

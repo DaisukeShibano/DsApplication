@@ -254,7 +254,7 @@ void DsCollisionConstraint::_SetMass(const DsActor& master, const DsActor& sub)
 	m_M[10][9] = m2.inertia[3]; m_M[10][10] = m2.inertia[4]; m_M[10][11] = m2.inertia[5];
 	m_M[11][9] = m2.inertia[6]; m_M[11][10] = m2.inertia[7]; m_M[11][11] = m2.inertia[8];
 	
-	//DsInverseMatrix<12>(m_M, m_invM);//‘ÎŠp¬•ª‚µ‚©‚È‚¢‚Ì‚ÅAŒÂ•Ê‚É‹‚ß‚½‹ts—ñ‚ğŒq‚°‚é‚ÅOK
+	//DsInverseMatrix<12, double>(m_M, m_invM);//‘ÎŠp¬•ª‚µ‚©‚È‚¢‚Ì‚ÅAŒÂ•Ê‚É‹‚ß‚½‹ts—ñ‚ğŒq‚°‚é‚ÅOK
 	const double* im1 = master.GetMassInv10();
 	const double* im2 = sub.GetMassInv10();
 	m_invM[0][0]  = im1[0];  m_invM[1][1]   = im1[0];    m_invM[2][2]   = im1[0];

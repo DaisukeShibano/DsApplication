@@ -468,6 +468,25 @@ namespace
 		long ragdollNum;
 	};
 
+	struct DS_LIGHT
+	{
+		DS_LIGHT()
+			: type(0)
+			, distance(0)
+			, energy(0)
+			//, color{0}
+		{}
+		int type;
+		float distance;
+		float energy;
+		float color[3];
+	};
+
+	struct DS_LIGHT_DATA
+	{
+		std::vector<DS_LIGHT> lights;
+	};
+
 	class OutputRes
 	{
 	public:
@@ -475,6 +494,7 @@ namespace
 			: dsAnimModel()
 			, dsAnimBone()
 			, dsCustomProperty()
+			, dsLight()
 			, dataSize(0)
 		{};
 		virtual ~OutputRes(){};
@@ -483,6 +503,7 @@ namespace
 		DS_ANIM_MODEL dsAnimModel;
 		DS_ANIM_BONE dsAnimBone;
 		DS_CUSTOM_PROPERTY dsCustomProperty;
+		DS_LIGHT_DATA dsLight;
 		unsigned long long dataSize;
 	};
 //--------------------------------------------------------------------------------
@@ -502,9 +523,9 @@ namespace
 			return &res;
 		}
 
+		long version=0;
 		{//header
-			long ver;
-			fs.Read((ds_uint8*)(&ver), sizeof(long));
+			fs.Read((ds_uint8*)(&version), sizeof(long));
 
 			unsigned long long vertexOffset;
 			fs.Read((ds_uint8*)(&vertexOffset), sizeof(vertexOffset));
@@ -836,6 +857,20 @@ namespace
 				res.dsCustomProperty.pRagdollParamId = pRagdollaramId;
 			}
 
+		}
+
+
+		////////////////////ここからライトデータ
+		if(1 <= version)
+		{
+			unsigned int lightNum = 0;
+			fs.Read((ds_uint8*)(&lightNum), sizeof(lightNum));
+			if (0 < lightNum) {
+				DS_LIGHT* pLight = new DS_LIGHT[lightNum];
+				fs.Read((ds_uint8*)pLight, sizeof(DS_LIGHT)*lightNum);
+				res.dsLight.lights.assign(pLight, pLight + (lightNum-1));
+				delete[] pLight;
+			}
 		}
 
 

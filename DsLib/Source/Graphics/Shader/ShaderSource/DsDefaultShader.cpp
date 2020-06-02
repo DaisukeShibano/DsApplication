@@ -184,7 +184,7 @@ namespace
 
 			vec3 fview = normalize(normalMapView);
 			vec4 specularColor = isUseSpecularMap ? texture2DProj(texSpecular, gl_TexCoord[0]) : gl_FrontLightProduct[0].specular;
-			outSpecular = 0;
+			outSpecular = 0.0;
 
 			//ポイントライト
 			vec4 pointLight;
