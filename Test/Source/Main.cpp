@@ -43,7 +43,6 @@ private:
 	//DsRenderCamCaptureImage* m_pImage2;
 };
 
-
 void TestMainLoop::Initialize(DsMainLoopArgs& args)
 {
 	//const bool isSuccessSetUp = DsPhysicsManager::SetUpDefault();
@@ -154,17 +153,8 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 	//args.drawCom.SetColor(DsVec3d(0, 0, 0)).DrawTextScreen(DsVec2d(-0.33, 0.20), L"drag Ž‹“_‰ñ“]");
 }
 
-int func()
-{
-	using namespace std;
-	vector<int> a;
-	a.push_back(1);
-	return 1;
-}
-
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, int nCmdShow)
 {
-
 	ds_uint64 hwnd = DsWindowManager::MainWindowCreate((ds_uint64)hInstance, lpCmdLine, nCmdShow);
 	if (0 == hwnd) {
 		return 0;

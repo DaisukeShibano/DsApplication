@@ -12,10 +12,10 @@ namespace DsPhysics
 
 namespace DsPhysics
 {
-	class DsGJK
-	{
-		public:
-			bool CalcColide(const DsCollisionGeometry& convex1, const DsCollisionGeometry& convex2);
+class DsGJK
+{
+	public:
+		static bool Test(const DsVec3d* pVertA, int vertNumA, const DsVec3d* pVertB, int vertNumB);
 	};
 }
 

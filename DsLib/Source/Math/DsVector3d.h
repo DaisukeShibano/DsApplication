@@ -207,7 +207,7 @@ namespace DsLib
 			return flat;
 		}
 
-		bool IsNearZero(const double zero = (0.0001)) const
+		bool IsNearZero(const double zero = (0.00001)) const
 		{
 #ifdef DS_SYS_USE_SIMD_
 			const __m256d fabsV = _mm256_andnot_pd(_mm256_set1_pd(-0.0), m256d);//最上位ビットだけクリアして絶対値とる
