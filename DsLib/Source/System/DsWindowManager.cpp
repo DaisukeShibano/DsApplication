@@ -165,10 +165,8 @@ namespace
 @return 作成したウィンドウハンドル(HWND)
 */
 //static 
-ds_uint64 DsWindowManager::MainWindowCreate(ds_uint64 _hInstance, char* lpCmdLine, int nCmdShow)
+HWND DsWindowManager::MainWindowCreate(HINSTANCE hInstance, char* lpCmdLine, int nCmdShow)
 {
-	HINSTANCE hInstance = (HINSTANCE)_hInstance;
-
 	WNDCLASS wc;
 	/*ウィンドウクラスの登録*/
 	wc.style = CS_HREDRAW | CS_VREDRAW;
@@ -190,8 +188,8 @@ ds_uint64 DsWindowManager::MainWindowCreate(ds_uint64 _hInstance, char* lpCmdLin
 
 	HWND hwnd = CreateWindowEx(
 		0,                              // オプションのウィンドウ スタイル
-		L"MainWindow",                     // ウィンドウ クラス
-		L"DsApplication",    // ウィンドウ テキスト
+		L"MainWindow",                  // ウィンドウ クラス
+		L"DsApplication",               // ウィンドウ テキスト
 		WS_OVERLAPPEDWINDOW,            // ウィンドウ スタイル
 
 										// サイズと位置
@@ -208,7 +206,7 @@ ds_uint64 DsWindowManager::MainWindowCreate(ds_uint64 _hInstance, char* lpCmdLin
 	}
 	ShowWindow(hwnd, nCmdShow);
 
-	return (ds_uint64)hwnd;
+	return hwnd;
 }
 
 /*
@@ -216,7 +214,7 @@ ds_uint64 DsWindowManager::MainWindowCreate(ds_uint64 _hInstance, char* lpCmdLin
 @return 終了したか
 */
 //static
-bool DsWindowManager::MainWindowUpdate(ds_uint64 _hwnd, DsSys& sys)
+bool DsWindowManager::MainWindowUpdate(HWND hwnd, DsSys& sys)
 {
 	if (s_exit) {
 		return false;
@@ -233,8 +231,6 @@ bool DsWindowManager::MainWindowUpdate(ds_uint64 _hwnd, DsSys& sys)
 	LARGE_INTEGER freq;
 	BOOL isEnableTimer = QueryPerformanceFrequency(&freq);
 
-	HWND hwnd = (HWND)_hwnd;
-
 	LARGE_INTEGER start;
 	if (isEnableTimer && QueryPerformanceCounter(&start) ) {
 		LONGLONG curTimeMs = static_cast<LONGLONG>((static_cast<double>(start.QuadPart) / static_cast<double>(freq.QuadPart))*1000.0);
@@ -243,18 +239,26 @@ bool DsWindowManager::MainWindowUpdate(ds_uint64 _hwnd, DsSys& sys)
 			InvalidateRect(hwnd, 0, false);
 		}
 	}
-		
+	
+	
 	MSG msg;
-	if (PeekMessage(&msg, hwnd, 0, 0, PM_NOREMOVE)) {
-		int mesRet = GetMessage(&msg, hwnd, 0, 0);
-		if (mesRet != 0) {
+	if (PeekMessage(&msg, /*hwndhwndなぜかキー入力するとmsgがPAINT以外返らなくなる*/0, 0, 0, PM_NOREMOVE) != 0) 
+	{
+		int mesRet = GetMessage(&msg, /*hwndなぜかキー入力するとmsgがPAINT以外返らなくなる*/0, 0, 0);
+		if (mesRet == 0) {
+			//WM_QUIT
+			return false;
+		}
+		else if (mesRet == -1) {
+			//エラー
+			return false;
+		}
+		else {
 			TranslateMessage(&msg);
 			DispatchMessage(&msg);
 		}
-		else {
-			return false;
-		}
 	}
+	
 	return true;
 }
 

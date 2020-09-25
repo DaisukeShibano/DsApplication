@@ -215,23 +215,12 @@ bool DsGJK::Test(const DsVec3d* pVertA, int vertNumA, const DsVec3d* pVertB, int
 	while (true) {
 
 		//原点が三角錐に含まれるか調査
-		bool isIn = _TestTri(p[0], p[1], p[2], p[3], origin)
-			&& _TestTri(p[1], p[2], p[3], p[0], origin)
-			&& _TestTri(p[2], p[3], p[0], p[1], origin)
-			&& _TestTri(p[3], p[0], p[1], p[2], origin);
+		bool isIn =	_TestTri(p[0], p[1], p[2], p[3], origin)
+					&& _TestTri(p[1], p[2], p[3], p[0], origin)
+					&& _TestTri(p[2], p[3], p[0], p[1], origin)
+					&& _TestTri(p[3], p[0], p[1], p[2], origin);
 
 		if (isIn) {
-			//CSEzDraw& ezDraw = RendMan()().RefEzDraw_forWorld();
-			//ezDraw.SetCol(DLColorF32Op::SetF32(1, 0, 0, 1.0f));
-			//ezDraw.SetFontRenderMode(FD4EzDrawState::FONT_RENDER_MODE_World);
-			//ezDraw.DrawSphere(p[0], 0.3f);
-			//ezDraw.DrawString(p[0], L"0");
-			//ezDraw.DrawSphere(p[1], 0.3f);
-			//ezDraw.DrawString(p[1], L"1");
-			//ezDraw.DrawSphere(p[2], 0.3f);
-			//ezDraw.DrawString(p[2], L"2");
-			//ezDraw.DrawSphere(p[3], 0.3f);
-			//ezDraw.DrawString(p[3], L"3");
 			return true;//原点含んでいたので終了
 		}
 		else {

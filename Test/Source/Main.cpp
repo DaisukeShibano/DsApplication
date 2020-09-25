@@ -155,7 +155,7 @@ void TestMainLoop::BeforeWindowUpdate(DsMainLoopArgs& args)
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, int nCmdShow)
 {
-	ds_uint64 hwnd = DsWindowManager::MainWindowCreate((ds_uint64)hInstance, lpCmdLine, nCmdShow);
+	HWND hwnd = DsWindowManager::MainWindowCreate(hInstance, lpCmdLine, nCmdShow);
 	if (0 == hwnd) {
 		return 0;
 	}
@@ -171,7 +171,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine,
 	args.pLoop = pLoop;
 	args.pConfPath = "config.txt";
 	args.windowType = DS_WINDOW_SYSTEM_TYPE_GL;
-	args.windowHandle = hwnd;
+	args.windowHandle = (ds_uint64)hwnd;
 	pSys->Setup(args);
 
 	while(DsWindowManager::MainWindowUpdate(hwnd, *pSys));
